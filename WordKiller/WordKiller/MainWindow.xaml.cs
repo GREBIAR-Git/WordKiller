@@ -1658,7 +1658,7 @@ namespace WordKiller
             mainImage.Width = 230;
             mainImage.Height = 230;
             mainImage.Margin = new Thickness(0, 0, 0, 0);
-            var uriSource = new Uri(@"DragNDrop.png", UriKind.Relative);
+            var uriSource = new Uri(@"Resources/DragNDrop.png", UriKind.Relative);
             mainImage.Source = new BitmapImage(uriSource);
         }
 
@@ -1667,7 +1667,7 @@ namespace WordKiller
             mainImage.Width = 220;
             mainImage.Height = 100;
             mainImage.Margin = new Thickness(0, 0, 0, 30);
-            var uriSource = new Uri(@"Picture.png", UriKind.Relative);
+            var uriSource = new Uri(@"Resources/Picture.png", UriKind.Relative);
             mainImage.Source = new BitmapImage(uriSource);
             mainText.Margin = new Thickness(0, 110, 0, 0);
             mainText.Text = text;
@@ -1678,7 +1678,7 @@ namespace WordKiller
             mainImage.Width = 115;
             mainImage.Height = 160;
             mainImage.Margin = new Thickness(0, 0, 0, 30);
-            var uriSource = new Uri(@"Code.png", UriKind.Relative);
+            var uriSource = new Uri(@"Resources/Code.png", UriKind.Relative);
             mainImage.Source = new BitmapImage(uriSource);
             mainText.Margin = new Thickness(0, 165, 0, 0);
             mainText.Text = text;

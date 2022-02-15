@@ -37,6 +37,10 @@
   <PropertyGroup>
     <ApplicationIcon>512x512.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
@@ -113,7 +117,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -127,34 +131,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DragNDrop.png" />
+    <Resource Include="Resources\DragNDrop.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\256x256.png" />
+    <Resource Include="Resources\512x512.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DragNDrop.png" />
+    <Resource Include="Resources\Picture.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="256x256.png" />
+    <Resource Include="Resources\Code.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="512x512.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="75x75.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="20x20-export.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="512x512.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Picture.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Code.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

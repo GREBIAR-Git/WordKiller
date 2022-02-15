@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordKiller"
         mc:Ignorable="d"
-        Title="MainWindow" Height="310" Width="710" MinHeight="310" MinWidth="710" x:Name="win" Icon="/256x256.png" Loaded="Win_Loaded" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter">
+        Title="MainWindow" Height="310" Width="710" MinHeight="310" MinWidth="710" x:Name="win" Icon="Resources/512x512.png" Loaded="Win_Loaded" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter">
     <Window.Resources>
         <Style x:Key="TextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextAlignment" Value="Center"/>
@@ -273,7 +273,7 @@
                 <MenuItem Header="О программе" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
             </MenuItem>
         </Menu>
-        <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,5,0" Source="/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed" />
+        <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,5,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed" />
         <Grid x:Name="titlePanel" Grid.Row="1" Grid.Column="0" Margin="30,10,30,10" Background="#8daacc">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*"/>
@@ -413,7 +413,7 @@
                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="4 4 2 4" BorderBrush="Black">
                             <Grid>
                                 <Rectangle x:Name="pictureLeft" Fill="#bf1e2e"/>
-                                <Image Grid.Row="0" Grid.Column="1"  Width="auto" Margin="10,0,10,20" Height="70" Source="/Picture.png" Stretch="Fill" />
+                                <Image Grid.Row="0" Grid.Column="1"  Width="auto" Margin="10,0,10,20" Height="70" Source="Resources/Picture.png" Stretch="Fill" />
                                 <TextBlock x:Name="textLeft" TextWrapping="Wrap"  Margin="0,100,0,0" Text="Для картинки" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                             </Grid>
                         </Border>
@@ -422,7 +422,7 @@
                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="2 4 4 4" BorderBrush="Black">
                             <Grid>
                                 <Rectangle x:Name="codeRight" Fill="#bf1e2e"/>
-                                <Image Grid.Row="0" Grid.Column="1" Width="100" Height="145" Source="/Code.png" Stretch="Fill" />
+                                <Image Grid.Row="0" Grid.Column="1" Width="100" Height="145" Source="Resources/Code.png" Stretch="Fill" />
                                 <TextBlock x:Name="textRight" TextWrapping="Wrap" Margin="0,170,0,0" Text="Для кода" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                             </Grid>
                         </Border>
@@ -432,7 +432,7 @@
                             <Grid>
                                 <Rectangle Fill="#bf1e2e"/>
                                 <TextBlock x:Name="mainText" Text="Заголовок 1" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                <Image Grid.Row="0" Grid.Column="1" x:Name="mainImage" Width="230" Height="230" Source="/DragNDrop.png" Stretch="Fill" />
+                                <Image Grid.Row="0" Grid.Column="1" x:Name="mainImage" Width="230" Height="230" Source="Resources/DragNDrop.png" Stretch="Fill" />
                             </Grid>
                         </Border>
                     </Border>
