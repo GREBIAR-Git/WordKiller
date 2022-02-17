@@ -9,9 +9,8 @@ namespace WordKiller
 {
     public class FileAssociation
     {
-        private const string FILE_EXTENSION = ".wkr";
-        private const long SHCNE_ASSOCCHANGED = 0x8000000L;
-        private const uint SHCNF_IDLIST = 0x0U;
+        const long SHCNE_ASSOCCHANGED = 0x8000000L;
+        const uint SHCNF_IDLIST = 0x0U;
         public static bool IsRunAsAdmin()
         {
             WindowsIdentity id = WindowsIdentity.GetCurrent();
@@ -22,7 +21,7 @@ namespace WordKiller
         public static void Associate(string description, string icon)
         {
 
-            Registry.ClassesRoot.CreateSubKey(FILE_EXTENSION).SetValue("", Application.ResourceAssembly.GetName().Name);
+            Registry.ClassesRoot.CreateSubKey(Config.extension).SetValue("", Application.ResourceAssembly.GetName().Name);
 
             if (Application.ResourceAssembly.GetName().Name != null && Application.ResourceAssembly.GetName().Name.Length > 0)
             {
@@ -43,17 +42,17 @@ namespace WordKiller
         public static void Remove()
         {
 
-            Registry.ClassesRoot.DeleteSubKeyTree(FILE_EXTENSION);
+            Registry.ClassesRoot.DeleteSubKeyTree(Config.extension);
             Registry.ClassesRoot.DeleteSubKeyTree(Application.ResourceAssembly.GetName().Name);
         }
 
         [DllImport("shell32.dll", SetLastError = true)]
-        private static extern void SHChangeNotify(long wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+        static extern void SHChangeNotify(long wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
         [DllImport("Kernel32.dll")]
-        private static extern uint GetShortPathName(string lpszLongPath, [Out] StringBuilder lpszShortPath, uint cchBuffer);
+        static extern uint GetShortPathName(string lpszLongPath, [Out] StringBuilder lpszShortPath, uint cchBuffer);
 
-        private static string ToShortPathName(string longName)
+        static string ToShortPathName(string longName)
         {
             StringBuilder s = new StringBuilder(1000);
             uint iSize = (uint)s.Capacity;

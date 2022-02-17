@@ -18,8 +18,6 @@ namespace WordKiller
 {
     public partial class MainWindow : Window
     {
-        const char specialBefore = '◄';
-        const char specialAfter = '►';
         int menuLeftIndex;
         string[] menuLabels;
         MenuItem DownPanelMI;
@@ -40,7 +38,7 @@ namespace WordKiller
             saveTimer = InitializeTimer();
             if (args.Length > 0)
             {
-                if (args[0].EndsWith(".wkr") && File.Exists(args[0]))
+                if (args[0].EndsWith(Config.extension) && File.Exists(args[0]))
                 {
                     OpenWordKiller(args[0]);
                 }
@@ -58,13 +56,6 @@ namespace WordKiller
             timer.Interval = new TimeSpan(0, 0, 2);
             timer.Start();
             return timer;
-        }
-
-        bool ComboBoxSelected()
-        {
-            if (h1ComboBox.SelectedIndex != -1 || h2ComboBox.SelectedIndex != -1 || lComboBox.SelectedIndex != -1 || pComboBox.SelectedIndex != -1 || tComboBox.SelectedIndex != -1 || cComboBox.SelectedIndex != -1)
-                return true;
-            return false;
         }
 
         void ComboBoxSetup()
@@ -104,7 +95,6 @@ namespace WordKiller
             else if (control.Content.ToString() == "Картинка")
             {
                 DefaultTypeRichBox("p");
-                ImageUpdate();
             }
             else if (control.Content.ToString() == "Таблица")
             {
@@ -113,8 +103,14 @@ namespace WordKiller
             else if (control.Content.ToString() == "Код")
             {
                 DefaultTypeRichBox("c");
-                ImageUpdate();
             }
+        }
+
+        bool ComboBoxSelected()
+        {
+            if (h1ComboBox.SelectedIndex != -1 || h2ComboBox.SelectedIndex != -1 || lComboBox.SelectedIndex != -1 || pComboBox.SelectedIndex != -1 || tComboBox.SelectedIndex != -1 || cComboBox.SelectedIndex != -1)
+                return true;
+            return false;
         }
 
         void UnselectComboBoxes()
@@ -128,12 +124,11 @@ namespace WordKiller
 
         void DefaultTypeRichBox(string type)
         {
-            string beginning = AddSpecialСharacterAB(type);
+            string beginning = Config.AddSpecialBoth(type);
             richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(beginning + "\n\n" + AddSpecialСharacterAB("Содержимое") + "\n")));
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n")));
             richTextBox.Focus();
-            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(beginning.Length + 1, LogicalDirection.Forward);
+            richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(beginning.Length + 3, LogicalDirection.Forward);
         }
 
         void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
@@ -144,7 +139,7 @@ namespace WordKiller
             menuLeftIndex = 1;
             data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
             richTextBox.Document.Blocks.Clear();
-            if (DownPanelMI == TextMI)
+            if (TextMI.IsChecked)
             {
                 UpdateTypeButton();
             }
@@ -162,7 +157,7 @@ namespace WordKiller
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Filter = "|*.wkr|All|*.*;"
+                Filter = "|*" + Config.extension + "|All|*.*;"
             };
             if (openFileDialog.ShowDialog() == true)
             {
@@ -189,7 +184,7 @@ namespace WordKiller
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "|*.wkr|All|*.*;",
+                Filter = "|*."+ Config.extension + "|All|*.*;",
                 FileName = "1"
             };
             if (saveFileDialog.ShowDialog() == true)
@@ -233,7 +228,7 @@ namespace WordKiller
                 List<UIElement> controls = new List<UIElement>();
                 foreach (string line in lines)
                 {
-                    if (line.StartsWith(AddSpecialСharacterAB("Menu")))
+                    if (line.StartsWith(Config.AddSpecialBoth("Menu")))
                     {
                         string[] menuItem = line.Remove(0, 6).Split('!');
                         foreach (MenuItem f in typeMenuItem.Items)
@@ -256,13 +251,13 @@ namespace WordKiller
                         NumberHeadingMI.IsChecked = bool.Parse(menuItem[1]);
                     }
 
-                    if (line.StartsWith(AddSpecialСharacterAB("TextStart")))
+                    if (line.StartsWith(Config.AddSpecialBoth("TextStart")))
                     {
                         readingText = true;
                     }
                     else if (readingText)
                     {
-                        if (line.StartsWith(AddSpecialСharacterAB("TextEnd")))
+                        if (line.StartsWith(Config.AddSpecialBoth("TextEnd")))
                         {
                             readingText = false;
                         }
@@ -273,7 +268,7 @@ namespace WordKiller
                     }
                     else
                     {
-                        string[] variable_value = line.Split(new char[] { specialBefore, specialAfter });
+                        string[] variable_value = line.Split(new char[] { Config.specialBefore, Config.specialAfter });
                         if (variable_value.Length == 2)
                         {
                             for (int i = 0; i < controls.Count; i++)
@@ -350,22 +345,22 @@ namespace WordKiller
             {
                 if (((MenuItem)item).IsChecked)
                 {
-                    save += AddSpecialСharacterAB("Menu") + item.Name.ToString() + "!" + NumberHeadingMI.IsChecked.ToString() + "\n";
+                    save += Config.AddSpecialBoth("Menu") + item.Name.ToString() + "!" + NumberHeadingMI.IsChecked.ToString() + "\n";
                 }
             }
-            save += AddSpecialСharacterA("facultyComboBox") + facultyComboBox.Text + "\n";
-            save += AddSpecialСharacterA("numberTextBox") + numberTextBox.Text + "\n";
-            save += AddSpecialСharacterA("themeTextBox") + themeTextBox.Text + "\n";
-            save += AddSpecialСharacterA("disciplineTextBox") + disciplineTextBox.Text + "\n";
-            save += AddSpecialСharacterA("professorComboBox") + professorComboBox.Text + "\n";
-            save += AddSpecialСharacterA("yearTextBox") + yearTextBox.Text + "\n";
-            save += AddSpecialСharacterA("shifrTextBox") + shifrTextBox.Text + "\n";
-            save += AddSpecialСharacterA("studentsTextBox") + studentsTextBox.Text + "\n";
+            save += Config.AddSpecialRight("facultyComboBox") + facultyComboBox.Text + "\n";
+            save += Config.AddSpecialRight("numberTextBox") + numberTextBox.Text + "\n";
+            save += Config.AddSpecialRight("themeTextBox") + themeTextBox.Text + "\n";
+            save += Config.AddSpecialRight("disciplineTextBox") + disciplineTextBox.Text + "\n";
+            save += Config.AddSpecialRight("professorComboBox") + professorComboBox.Text + "\n";
+            save += Config.AddSpecialRight("yearTextBox") + yearTextBox.Text + "\n";
+            save += Config.AddSpecialRight("shifrTextBox") + shifrTextBox.Text + "\n";
+            save += Config.AddSpecialRight("studentsTextBox") + studentsTextBox.Text + "\n";
             foreach (KeyValuePair<string, ElementComboBox> comboBox in data.ComboBox)
             {
                 save += SaveCombobox(comboBox.Value, comboBox.Key);
             }
-            save += AddSpecialСharacterAB("TextStart") + "\n";
+            save += Config.AddSpecialBoth("TextStart") + "\n";
             if (TextMI.IsChecked)
             {
                 save += GetTextRichTextBox() + "\n";
@@ -374,7 +369,7 @@ namespace WordKiller
             {
                 save += data.Text + "\n";
             }
-            save += AddSpecialСharacterAB("TextEnd") + "\n";
+            save += Config.AddSpecialBoth("TextEnd") + "\n";
             if (Encoding0MenuItem.IsChecked)
             {
                 output.Write("0\r\n" + save);
@@ -405,7 +400,7 @@ namespace WordKiller
             string comboBoxSave = string.Empty;
             for (int i = 0; i < comboBox.Form.Items.Count; i++)
             {
-                comboBoxSave += name + "ComboBox" + AddSpecialСharacterAB(comboBox.Form.Items[i].ToString()) + comboBox.Data[i][1] + "\n";
+                comboBoxSave += name + "ComboBox" + Config.AddSpecialBoth(comboBox.Form.Items[i].ToString()) + comboBox.Data[i][1] + "\n";
             }
             return comboBoxSave;
         }
@@ -819,21 +814,6 @@ namespace WordKiller
             }
         }
 
-        string AddSpecialСharacterB(string str)
-        {
-            return specialBefore + str;
-        }
-
-        string AddSpecialСharacterA(string str)
-        {
-            return str + specialAfter;
-        }
-
-        string AddSpecialСharacterAB(string str)
-        {
-            return specialBefore + str + specialAfter;
-        }
-
         string GetTextRichTextBox()
         {
             string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
@@ -849,7 +829,7 @@ namespace WordKiller
         {
             if (ValidAddInput())
             {
-                string str = GetTextRichTextBox().Split('\n')[0].Replace(specialBefore.ToString(), "").Replace(specialAfter.ToString(), "");
+                string str = GetTextRichTextBox().Split('\n')[0].Replace(Config.specialBefore.ToString(), "").Replace(Config.specialAfter.ToString(), "");
                 string[] text = new string[] { GetTextRichTextBox().Split('\n')[1], SplitMainText() };
                 AddToComboBox(data.ComboBox[str], text);
             }
@@ -858,28 +838,28 @@ namespace WordKiller
         bool ValidAddInput()
         {
             string str = GetTextRichTextBox().Split('\n')[0];
-            if (GetTextRichTextBox().Split('\n').Length >= 4 && GetTextRichTextBox().Split('\n')[2] == AddSpecialСharacterAB("Содержимое"))
+            if (GetTextRichTextBox().Split('\n').Length >= 4 && GetTextRichTextBox().Split('\n')[2] == Config.AddSpecialBoth(Config.content))
             {
-                if (str == AddSpecialСharacterAB("h1") || str == AddSpecialСharacterAB("h2"))
+                if (str == Config.AddSpecialBoth("h1") || str == Config.AddSpecialBoth("h2"))
                 {
                     return true;
                 }
-                else if (str == AddSpecialСharacterAB("l"))
+                else if (str == Config.AddSpecialBoth("l"))
                 {
                     // ???
                 }
-                else if (str == AddSpecialСharacterAB("p"))
+                else if (str == Config.AddSpecialBoth("p"))
                 {
                     if (System.IO.File.Exists(SplitMainText()))
                     {
                         return true;
                     }
                 }
-                else if (str == AddSpecialСharacterAB("t"))
+                else if (str == Config.AddSpecialBoth("t"))
                 {
                     // ???
                 }
-                else if (str == AddSpecialСharacterAB("c"))
+                else if (str == Config.AddSpecialBoth("c"))
                 {
                     if (System.IO.File.Exists(SplitMainText()))
                     {
@@ -936,12 +916,12 @@ namespace WordKiller
 
         void DataComboBoxToRichBox(ElementComboBox comboBox)
         {
-            string text = AddSpecialСharacterAB(data.ComboBox.FirstOrDefault(x => x.Value == comboBox).Key) + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][0] + "\n" + AddSpecialСharacterAB("Содержимое") + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][1];
+            string type = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == comboBox).Key);
+            string text = type + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][0] + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][1];
             richTextBox.Document.Blocks.Clear();
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
             richTextBox.Focus();
-            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(5 + comboBox.Data[comboBox.Form.SelectedIndex][0].Length);
+            richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length+3);
         }
 
         void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1037,17 +1017,17 @@ namespace WordKiller
             {
                 data.Text = GetTextRichTextBox();
             }
-            bool q = NumberingMI.IsChecked;
+            bool isNumbering = NumberingMI.IsChecked;
             if (!Int32.TryParse(FromNumberingTextBoxMI.Text, out int fromNumber))
             {
                 fromNumber = 1;
             }
-            bool w = ContentMenuItem.IsChecked;
-            bool ee = NumberHeadingMI.IsChecked;
+            bool isContent = ContentMenuItem.IsChecked;
+            bool isNumberHeading = NumberHeadingMI.IsChecked;
             try
             {
                 await Task.Run(() =>
-                report.CreateReport(data, q, w, fromNumber, ee, typeDocument, titleData.ToArray()));
+                report.CreateReport(data, isNumbering, isContent, fromNumber, isNumberHeading, typeDocument, titleData.ToArray()));
             }
             catch
             {
@@ -1077,7 +1057,6 @@ namespace WordKiller
                         titleData.Add(c.Text);
                     }
                 }
-
             }
         }
 
@@ -1120,14 +1099,14 @@ namespace WordKiller
             if (GetCaretIndex(richTextBox) > 0)
             {
                 string str = new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text;
-                int h1Count = Regex.Matches(str, AddSpecialСharacterB("h1")).Count;
+                int h1Count = Regex.Matches(str, Config.AddSpecialLeft("h1")).Count;
                 if (h1Count > 0)
                 {
                     string h1 = data.ComboBox["h1"].Form.Items[h1Count - 1].ToString();
                     string h2 = "";
-                    if (str.Substring(str.LastIndexOf(AddSpecialСharacterB("h1"))).Contains(AddSpecialСharacterB("h2")))
+                    if (str.Substring(str.LastIndexOf(Config.AddSpecialLeft("h1"))).Contains(Config.AddSpecialLeft("h2")))
                     {
-                        h2 = " : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, AddSpecialСharacterB("h2")).Count - 1].ToString();
+                        h2 = " : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
                     }
                     cursorLocationTB.Text = h1 + h2;
                 }
@@ -1150,9 +1129,9 @@ namespace WordKiller
             {
                 string key = data.ComboBox.Keys.ElementAt(i);
                 int count = str.Length - key.Length - 1;
-                if (count > 0 && str.Substring(count).StartsWith(specialBefore + key))
+                if (count > 0 && str.Substring(count).StartsWith(Config.specialBefore + key))
                 {
-                    int pCount = Regex.Matches(str, AddSpecialСharacterB(key)).Count;
+                    int pCount = Regex.Matches(str, Config.AddSpecialLeft(key)).Count;
                     extra = "  -  " + data.ComboBox[key].Form.Items[pCount - 1].ToString();
                     break;
                 }
@@ -1168,21 +1147,21 @@ namespace WordKiller
             this.elementCB.Items.Add("Весь текст");
             string str = data.Text;
             int h1Count = 0; int h2Count = 0;
-            while (str.Contains(specialBefore + "h1") || str.Contains(specialBefore + "h2"))
+            while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
             {
-                int h1Pos = str.IndexOf(specialBefore + "h1");
+                int h1Pos = str.IndexOf(Config.specialBefore + "h1");
                 h1Pos = h1Pos == -1 ? int.MaxValue : h1Pos;
-                int h2Pos = str.IndexOf(specialBefore + "h2");
+                int h2Pos = str.IndexOf(Config.specialBefore + "h2");
                 h2Pos = h2Pos == -1 ? int.MaxValue : h2Pos;
                 if (h1Pos < h2Pos)
                 {
-                    this.elementCB.Items.Add("h1: " + data.ComboBox["h1"].Form.Items[h1Count]);
+                    elementCB.Items.Add("h1: " + data.ComboBox["h1"].Form.Items[h1Count]);
                     str = str.Substring(h1Pos + 1 + 2);
                     h1Count++;
                 }
                 else
                 {
-                    this.elementCB.Items.Add("h2: " + data.ComboBox["h2"].Form.Items[h2Count]);
+                    elementCB.Items.Add("h2: " + data.ComboBox["h2"].Form.Items[h2Count]);
                     str = str.Substring(h2Pos + 1 + 2);
                     h2Count++;
                 }
@@ -1204,7 +1183,7 @@ namespace WordKiller
 
         void CountTypeText(ElementComboBox comboBox, string name)
         {
-            if (comboBox.Data.Count <= (GetTextRichTextBox().Length - GetTextRichTextBox().Replace(AddSpecialСharacterB(name), "").Length) / (name.Length + 1))
+            if (comboBox.Data.Count <= (GetTextRichTextBox().Length - GetTextRichTextBox().Replace(Config.AddSpecialLeft(name), "").Length) / (name.Length + 1))
             {
                 Button button = (Button)panelTypeInserts.FindName(name.ToUpper());
                 button.Visibility = Visibility.Collapsed;
@@ -1239,13 +1218,13 @@ namespace WordKiller
         {
             Button button = (Button)sender;
             int idx = GetCaretIndex(richTextBox);
-            if (GetTextRichTextBox().Length > 0 && idx > 0 && GetTextRichTextBox()[idx - 1] == specialBefore)
+            if (GetTextRichTextBox().Length > 0 && idx > 0 && GetTextRichTextBox()[idx - 1] == Config.specialBefore)
             {
                 AddSpecialSymbol(button.Name.ToLower(), idx);
             }
             else
             {
-                AddSpecialSymbol(AddSpecialСharacterB(button.Name.ToLower()), idx);
+                AddSpecialSymbol(Config.AddSpecialLeft(button.Name.ToLower()), idx);
             }
         }
 
@@ -1253,7 +1232,7 @@ namespace WordKiller
         void AddSpecialSymbol(string symbol, int idx)
         {
             string d = GetTextRichTextBox();
-            if (idx == 0 || idx == 1 && GetTextRichTextBox()[idx - 1] == specialBefore || GetTextRichTextBox()[idx - 2] == '\n')
+            if (idx == 0 || idx == 1 && GetTextRichTextBox()[idx - 1] == Config.specialBefore || GetTextRichTextBox()[idx - 2] == '\n')
             {
                 richTextBox.Document.Blocks.Clear();
                 richTextBox.Document.Blocks.Add(new Paragraph(new Run(d.Insert(idx, symbol.ToLower() + "\n"))));
@@ -1265,14 +1244,13 @@ namespace WordKiller
                 richTextBox.Document.Blocks.Add(new Paragraph(new Run(d.Insert(idx, "\n" + symbol.ToLower() + "\n"))));
                 richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
                 richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(idx + symbol.Length + 2);
-
             }
             richTextBox.Focus();
         }
 
-        int GetCaretIndex(RichTextBox C)
+        int GetCaretIndex(RichTextBox r)
         {
-            return new TextRange(C.Document.ContentStart, C.CaretPosition).Text.Length;
+            return new TextRange(r.Document.ContentStart, r.CaretPosition).Text.Length;
         }
 
         int GetLineOfCursor(RichTextBox richTextBox)
@@ -1293,8 +1271,7 @@ namespace WordKiller
                     lines[3] = "";
                     richTextBox.Document.Blocks.Clear();
                     richTextBox.Document.Blocks.Add(new Paragraph(new Run(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3])));
-                    richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-                    richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(lines[0].Length + 1);
+                    richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(lines[0].Length + 3);
                     e.Handled = true;
                 }
                 else if ((line == 1 || line == 3 || (line == 2 && richTextBox.Selection.Text.Contains("\n"))) && !(e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right))
@@ -1463,11 +1440,11 @@ namespace WordKiller
         {
             Button pb = (Button)sender;
             string name = pb.Name.ToLower();
-            int index = Regex.Matches(new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text, AddSpecialСharacterB(name)).Count;
+            int index = Regex.Matches(new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text, Config.AddSpecialLeft(name)).Count;
             if (pb.Visibility == Visibility.Visible && index < data.ComboBox[name].Form.Items.Count && pb.IsMouseOver)
             {
                 string str = "Вставить " + data.ComboBox[name].Form.Items[index] + " в " + cursorLocationTB.Text;
-                if (Regex.Matches(new TextRange(richTextBox.CaretPosition, richTextBox.CaretPosition.DocumentEnd).Text, AddSpecialСharacterB(name)).Count > 0)
+                if (Regex.Matches(new TextRange(richTextBox.CaretPosition, richTextBox.CaretPosition.DocumentEnd).Text, Config.AddSpecialLeft(name)).Count > 0)
                 {
                     str += ", последующие сместить";
                 }
@@ -1531,7 +1508,7 @@ namespace WordKiller
             string str = TypeRichBox();
             singlePB.Visibility = Visibility.Visible;
             ShowDragDrop();
-            if (str == AddSpecialСharacterAB("h1"))
+            if (str == Config.AddSpecialBoth("h1"))
             {
                 mainImage.Visibility = Visibility.Collapsed;
                 int index = data.ComboBox["h1"].Form.SelectedIndex;
@@ -1551,7 +1528,7 @@ namespace WordKiller
                     DrawText("Заголовок".ToUpper());
                 }
             }
-            else if (str == AddSpecialСharacterAB("h2"))
+            else if (str == Config.AddSpecialBoth("h2"))
             {
                 mainImage.Visibility = Visibility.Collapsed;
                 int index = data.ComboBox["h2"].Form.SelectedIndex;
@@ -1571,17 +1548,17 @@ namespace WordKiller
                     DrawText("Заголовок");
                 }
             }
-            else if (str == AddSpecialСharacterAB("l"))
+            else if (str == Config.AddSpecialBoth("l"))
             {
                 mainImage.Visibility = Visibility.Collapsed;
                 DrawText("Список");
             }
-            else if (str == AddSpecialСharacterAB("t"))
+            else if (str == Config.AddSpecialBoth("t"))
             {
                 mainImage.Visibility = Visibility.Collapsed;
                 DrawText("Таблица");
             }
-            else if (str == AddSpecialСharacterAB("p"))
+            else if (str == Config.AddSpecialBoth("p"))
             {
                 mainImage.Visibility = Visibility.Visible;
                 if (pComboBox.SelectedIndex == -1)
@@ -1616,7 +1593,7 @@ namespace WordKiller
                     }
                 }
             }
-            else if (str == AddSpecialСharacterAB("c"))
+            else if (str == Config.AddSpecialBoth("c"))
             {
                 mainImage.Visibility = Visibility.Visible;
                 if (cComboBox.SelectedIndex == -1)
@@ -1709,7 +1686,7 @@ namespace WordKiller
         void PictureBox_DragOver(object sender, DragEventArgs e)
         {
             string str = TypeRichBox();
-            if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
                 e.Effects = DragDropEffects.All;
                 e.Handled = true;
@@ -1740,7 +1717,7 @@ namespace WordKiller
         void PictureBox_DragEnter(object sender, DragEventArgs e)
         {
             string str = TypeRichBox();
-            if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
                 e.Effects = DragDropEffects.All;
                 e.Handled = true;
@@ -1751,7 +1728,7 @@ namespace WordKiller
         void PictureBox_DragLeave(object sender, DragEventArgs e)
         {
             string str = TypeRichBox();
-            if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
                 e.Effects = DragDropEffects.All;
                 e.Handled = true;
@@ -1774,13 +1751,14 @@ namespace WordKiller
         {
             e.Effects = DragDropEffects.None;
             e.Handled = true;
-            if (e.GetPosition(win).X < 0 || e.GetPosition(win).X > win.RenderSize.Width || e.GetPosition(win).Y < 0 || e.GetPosition(win).Y > win.RenderSize.Height)
+            string str = TypeRichBox();
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
-                string str = TypeRichBox();
-                if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
-                {
-                    singlePB.Visibility = Visibility.Collapsed;
-                }
+                singlePB.Visibility = Visibility.Collapsed;
+                codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                textLeft.Foreground = new SolidColorBrush(Colors.Black);
+                textRight.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
 
@@ -1788,6 +1766,15 @@ namespace WordKiller
         {
             e.Effects = DragDropEffects.None;
             e.Handled = true;
+            string str = TypeRichBox();
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+            {
+                singlePB.Visibility = Visibility.Collapsed;
+                codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                textLeft.Foreground = new SolidColorBrush(Colors.Black);
+                textRight.Foreground = new SolidColorBrush(Colors.Black);
+            }
         }
 
         void Win_DragLeave(object sender, DragEventArgs e)
@@ -1795,7 +1782,7 @@ namespace WordKiller
             e.Effects = DragDropEffects.None;
             e.Handled = true;
             string str = TypeRichBox();
-            if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
                 singlePB.Visibility = Visibility.Visible;
                 ImageUpdate();
@@ -1805,7 +1792,7 @@ namespace WordKiller
         void PictureBox_Drop(object sender, DragEventArgs e)
         {
             string str = TypeRichBox();
-            if (str != AddSpecialСharacterAB("h1") && str != AddSpecialСharacterAB("h2") && str != AddSpecialСharacterAB("l") && str != AddSpecialСharacterAB("t"))
+            if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
             {
                 var data = e.Data.GetData(DataFormats.FileDrop);
                 if (data != null)
@@ -1818,16 +1805,21 @@ namespace WordKiller
                         richTextBox.Document.Blocks.Clear();
                         if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
                         {
-                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(AddSpecialСharacterAB("p") + "\n" + nameFile + "\n" + AddSpecialСharacterAB("Содержимое") + "\n" + path)));
+                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path)));
                         }
                         else
                         {
-                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(AddSpecialСharacterAB("c") + "\n" + nameFile + "\n" + AddSpecialСharacterAB("Содержимое") + "\n" + path)));
+                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path)));
                         }
                     }
                 }
             }
             ImageUpdate();
+        }
+
+        void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            UnselectComboBoxes();
         }
     }
 }

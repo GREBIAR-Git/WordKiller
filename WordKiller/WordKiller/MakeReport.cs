@@ -10,7 +10,6 @@ namespace WordKiller
         Document doc;
         Range word;
         bool pgBreak = false;
-        readonly char specialBefore = '◄';
         readonly Dictionary<string, float> pageMargins;
 
         public MakeReport()
@@ -34,7 +33,7 @@ namespace WordKiller
         {
             foreach (string key in data.ComboBox.Keys)
             {
-                RemoveENDLs(ref text, specialBefore + key);
+                RemoveENDLs(ref text, Config.specialBefore + key);
             }
             return text;
         }
@@ -329,7 +328,7 @@ namespace WordKiller
             string def = string.Empty;
             for (int i = 0; i < content.Text.Length; i++)
             {
-                if (content.Text[i] == specialBefore)
+                if (content.Text[i] == Config.specialBefore)
                 {
                     if (def != string.Empty)
                     {
@@ -394,7 +393,6 @@ namespace WordKiller
             if (def != string.Empty)
             {
                 DefaultText(def);
-                def = string.Empty;
             }
         }
 
@@ -409,7 +407,7 @@ namespace WordKiller
             string def = string.Empty;
             for (int i = 0; i < content.Text.Length; i++)
             {
-                if (content.Text[i] == specialBefore)
+                if (content.Text[i] == Config.specialBefore)
                 {
                     if (def != string.Empty)
                     {
@@ -472,7 +470,6 @@ namespace WordKiller
             if (def != string.Empty)
             {
                 DefaultText(def);
-                def = string.Empty;
             }
         }
 

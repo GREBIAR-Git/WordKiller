@@ -70,6 +70,7 @@
     <Compile Include="AboutProgram.xaml.cs">
       <DependentUpon>AboutProgram.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="DataComboBox.cs" />
     <Compile Include="DefaultUIElement.cs" />
     <Compile Include="Documentation.xaml.cs">
