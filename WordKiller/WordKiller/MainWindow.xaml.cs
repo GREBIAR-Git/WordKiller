@@ -184,7 +184,7 @@ namespace WordKiller
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "|*."+ Config.extension + "|All|*.*;",
+                Filter = "|*" + Config.extension + "|All|*.*;",
                 FileName = "1"
             };
             if (saveFileDialog.ShowDialog() == true)
@@ -921,7 +921,7 @@ namespace WordKiller
             richTextBox.Document.Blocks.Clear();
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
             richTextBox.Focus();
-            richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length+3);
+            richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length + 3);
         }
 
         void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1507,7 +1507,6 @@ namespace WordKiller
         {
             string str = TypeRichBox();
             singlePB.Visibility = Visibility.Visible;
-            ShowDragDrop();
             if (str == Config.AddSpecialBoth("h1"))
             {
                 mainImage.Visibility = Visibility.Collapsed;
@@ -1617,7 +1616,7 @@ namespace WordKiller
                 }
                 else
                 {
-                    string path = data.ComboBox["p"].Data[pComboBox.SelectedIndex][1];
+                    string path = data.ComboBox["c"].Data[cComboBox.SelectedIndex][1];
                     if (File.Exists(path))
                     {
                         ShowCode(path.Split('\\').Last());
@@ -1628,10 +1627,15 @@ namespace WordKiller
                     }
                 }
             }
+            else
+            {
+                ShowDragDrop();
+            }
         }
 
         void ShowDragDrop()
         {
+            mainImage.Visibility = Visibility.Visible;
             mainImage.Width = 230;
             mainImage.Height = 230;
             mainImage.Margin = new Thickness(0, 0, 0, 0);
@@ -1667,7 +1671,14 @@ namespace WordKiller
             mainImage.Height = Double.NaN;
             mainImage.Margin = new Thickness(0, 0, 0, 0);
             var uriSource = new Uri(path, UriKind.Absolute);
-            mainImage.Source = new BitmapImage(uriSource);
+            try
+            {
+                mainImage.Source = new BitmapImage(uriSource);
+            }
+            catch
+            {
+                mainImage.Source = new BitmapImage(new Uri(@"Resources/DragNDrop.png", UriKind.Relative));
+            }
             mainText.Margin = new Thickness(0, 0, 0, 0);
         }
 

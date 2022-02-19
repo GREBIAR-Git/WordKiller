@@ -31,13 +31,15 @@ namespace WordKiller
         }
         public DataComboBox(ComboBox h1, ComboBox h2, ComboBox l, ComboBox p, ComboBox t, ComboBox c)
         {
-            ComboBox = new Dictionary<string, ElementComboBox>();
-            ComboBox["h1"] = new ElementComboBox(h1);
-            ComboBox["h2"] = new ElementComboBox(h2);
-            ComboBox["l"] = new ElementComboBox(l);
-            ComboBox["p"] = new ElementComboBox(p);
-            ComboBox["t"] = new ElementComboBox(t);
-            ComboBox["c"] = new ElementComboBox(c);
+            ComboBox = new Dictionary<string, ElementComboBox>
+            {
+                ["h1"] = new ElementComboBox(h1),
+                ["h2"] = new ElementComboBox(h2),
+                ["l"] = new ElementComboBox(l),
+                ["p"] = new ElementComboBox(p),
+                ["t"] = new ElementComboBox(t),
+                ["c"] = new ElementComboBox(c)
+            };
             Text = string.Empty;
         }
     }

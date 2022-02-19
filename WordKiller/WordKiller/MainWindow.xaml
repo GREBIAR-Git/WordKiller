@@ -314,7 +314,7 @@
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
             <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
             <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподдаватель:" Style="{StaticResource TextBlockTitle}"/>
-            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Margin="10,10,10,5" Grid.ColumnSpan="3" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
+            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource ComboBox}"/>
             <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
             <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Margin="10,5,10,10" Text="202" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
         </Grid>
@@ -355,12 +355,12 @@
                 <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" Content="Картинка" Style="{StaticResource Button}"/>
                 <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" Content="Таблица" Style="{StaticResource Button}"/>
                 <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" Content="Код" Style="{StaticResource Button}"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="h1ComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
-                <ComboBox Grid.Row="1" Grid.Column="2" x:Name="h2ComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
-                <ComboBox Grid.Row="1" Grid.Column="3" x:Name="lComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
-                <ComboBox Grid.Row="1" Grid.Column="4" x:Name="pComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
-                <ComboBox Grid.Row="1" Grid.Column="5" x:Name="tComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
-                <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cComboBox" Margin="5,0,5,0" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" x:Name="h1ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="2" x:Name="h2ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="3" x:Name="lComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="4" x:Name="pComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="5" x:Name="tComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}" Click="ButtonForward_Click"/>
             </Grid>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,0,5" TextAlignment="Right" Text="Отображается: " Style="{StaticResource TextBlock}"/>
@@ -373,7 +373,7 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" TextAlignment="Left" Text="Нечто" Style="{StaticResource TextBlock}"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="elementCB" Visibility="Collapsed" ItemsSource="{Binding defaultComboBox}" SelectedItem="{Binding Cur, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" x:Name="panelTypeInserts" Visibility="Collapsed" Background="#8daacc">
                 <Grid.ColumnDefinitions>
@@ -404,7 +404,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="True" IsDocumentEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="True" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
                 <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
