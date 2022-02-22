@@ -125,8 +125,7 @@ namespace WordKiller
         void DefaultTypeRichBox(string type)
         {
             string beginning = Config.AddSpecialBoth(type);
-            richTextBox.Document.Blocks.Clear();
-            richTextBox.Document.Blocks.Add(new Paragraph(new Run(beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n")));
+            SetText(beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n");
             richTextBox.Focus();
             richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(beginning.Length + 3, LogicalDirection.Forward);
         }
@@ -628,12 +627,11 @@ namespace WordKiller
                     toText.Margin = new Thickness(2, 5, 5, 5);
                     elementTBl.Visibility = Visibility.Collapsed;
                     elementCB.Visibility = Visibility.Visible;
-                    elementCB.Items.Clear();
-                    elementCB.Items.Add("Весь текст");
                     elementCB.SelectedItem = "Весь текст";
                     ShowSpecials();
                     HidePictureBox();
                     richTextBox.Focus();
+                    SetText(data.Text);
                     UpdateTypeButton();
                     DownTextUpdate();
                 }
@@ -1147,10 +1145,9 @@ namespace WordKiller
         void ElementComboBoxUpdate()
         {
             //int index = richTextBox.SelectionStart;
-
             int indexSave = elementCB.SelectedIndex;
             elementCB.Items.Clear();
-            this.elementCB.Items.Add("Весь текст");
+            elementCB.Items.Add("Весь текст");
             string str = GetTextRichTextBox();
             int h1Count = 0; int h2Count = 0;
             while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
@@ -1172,9 +1169,13 @@ namespace WordKiller
                     h2Count++;
                 }
             }
-            if (indexSave < elementCB.Items.Count)
+            if (indexSave < elementCB.Items.Count&&indexSave!=-1)
             {
                 elementCB.SelectedIndex = indexSave;
+            }
+            else
+            {
+                elementCB.SelectedItem = 0;
             }
             //richTextBox.SelectionStart = index;
         }
@@ -1240,14 +1241,12 @@ namespace WordKiller
             string d = GetTextRichTextBox();
             if (idx == 0 || idx == 1 && GetTextRichTextBox()[idx - 1] == Config.specialBefore || GetTextRichTextBox()[idx - 2] == '\n')
             {
-                richTextBox.Document.Blocks.Clear();
-                richTextBox.Document.Blocks.Add(new Paragraph(new Run(d.Insert(idx, symbol.ToLower() + "\n"))));
+                SetText(d.Insert(idx, symbol.ToLower() + "\n"));
                 richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(symbol.Length + 1);
             }
             else
             {
-                richTextBox.Document.Blocks.Clear();
-                richTextBox.Document.Blocks.Add(new Paragraph(new Run(d.Insert(idx, "\n" + symbol.ToLower() + "\n"))));
+                SetText(d.Insert(idx, "\n" + symbol.ToLower() + "\n"));
                 richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
                 richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(idx + symbol.Length + 2);
             }
@@ -1275,8 +1274,7 @@ namespace WordKiller
                 {
                     lines[1] = "";
                     lines[3] = "";
-                    richTextBox.Document.Blocks.Clear();
-                    richTextBox.Document.Blocks.Add(new Paragraph(new Run(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3])));
+                    SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                     richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(lines[0].Length + 3);
                     e.Handled = true;
                 }
@@ -1819,14 +1817,13 @@ namespace WordKiller
                     {
                         string nameFile = path.Split('\\').Last();
                         nameFile = nameFile.Substring(0, nameFile.LastIndexOf('.'));
-                        richTextBox.Document.Blocks.Clear();
                         if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
                         {
-                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path)));
+                            SetText(Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
                         }
                         else
                         {
-                            richTextBox.Document.Blocks.Add(new Paragraph(new Run(Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path)));
+                            SetText(Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
                         }
                     }
                 }
