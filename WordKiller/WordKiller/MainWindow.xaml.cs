@@ -606,6 +606,7 @@ namespace WordKiller
             }
             else
             {
+                DownPanelMI = MenuItem;
                 downPanel.Visibility = Visibility.Visible;
                 if (MenuItem == SubstitutionMI)
                 {
@@ -633,13 +634,17 @@ namespace WordKiller
                     ShowSpecials();
                     HidePictureBox();
                     richTextBox.Focus();
-                    richTextBox.Document.Blocks.Clear();
-                    richTextBox.Document.Blocks.Add(new Paragraph(new Run(data.Text)));
                     UpdateTypeButton();
                     DownTextUpdate();
                 }
-                DownPanelMI = MenuItem;
             }
+        }
+
+        void SetText(string text)
+        {
+            FlowDocument allText = new FlowDocument();
+            allText.Blocks.Add(new Paragraph(new Run(text)));
+            richTextBox.Document = allText;
         }
 
         void HideElements(MenuItem MenuItem)
@@ -1142,10 +1147,11 @@ namespace WordKiller
         void ElementComboBoxUpdate()
         {
             //int index = richTextBox.SelectionStart;
+
             int indexSave = elementCB.SelectedIndex;
             elementCB.Items.Clear();
             this.elementCB.Items.Add("Весь текст");
-            string str = data.Text;
+            string str = GetTextRichTextBox();
             int h1Count = 0; int h2Count = 0;
             while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
             {
