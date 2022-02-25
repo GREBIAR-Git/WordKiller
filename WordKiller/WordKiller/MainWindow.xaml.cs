@@ -50,6 +50,7 @@ namespace WordKiller
                 }
             }
             g_text = GetTextRichTextBox();
+            ElementComboBoxUpdate();
         }
 
         DispatcherTimer InitializeTimer()
@@ -1095,10 +1096,19 @@ namespace WordKiller
             }
             else
             {
-                UpdateTypeButton();
-                g_text = GetTextRichTextBox();
-                ElementComboBoxUpdate();
+                UpdateGlobalText();
             }
+        }
+
+        void UpdateGlobalText()
+        {
+            // Порядок вызова функций важен
+            if (elementCB.SelectedItem.ToString() == "Весь текст")
+            {
+                g_text = GetTextRichTextBox();
+            }
+            UpdateTypeButton();
+            ElementComboBoxUpdate();
         }
 
         void DownTextUpdate()
