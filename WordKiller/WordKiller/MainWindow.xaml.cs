@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +26,7 @@ namespace WordKiller
         readonly DispatcherTimer saveTimer;
         string saveFileName;
         TypeDocument typeDocument;
+        string g_text;
 
         public MainWindow(string[] args)
         {
@@ -47,6 +49,7 @@ namespace WordKiller
                     throw new Exception("Ошибка открытия файла:\nФайл не найден или формат не поддерживается");
                 }
             }
+            g_text = GetTextRichTextBox();
         }
 
         DispatcherTimer InitializeTimer()
@@ -1093,6 +1096,7 @@ namespace WordKiller
             else
             {
                 UpdateTypeButton();
+                g_text = GetTextRichTextBox();
                 ElementComboBoxUpdate();
             }
         }
@@ -1148,7 +1152,7 @@ namespace WordKiller
             int indexSave = elementCB.SelectedIndex;
             elementCB.Items.Clear();
             elementCB.Items.Add("Весь текст");
-            string str = GetTextRichTextBox();
+            string str = g_text;
             int h1Count = 0; int h2Count = 0;
             while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
             {
