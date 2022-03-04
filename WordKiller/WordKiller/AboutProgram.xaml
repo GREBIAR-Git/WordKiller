@@ -5,20 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordKiller"
         mc:Ignorable="d"
-        Title="О программе" ResizeMode="NoResize" Height="200" Width="400">
-    <Grid>
+        Title="О программе" ResizeMode="NoResize" Height="200" Width="405">
+    <Grid Background="#8daacc">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*"/>
-            <ColumnDefinition Width="35*"/>
             <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="35*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Margin="10,10,5,5" Grid.Row="0" Source="/512x512.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2" Text="WordKiller" FontWeight="Bold"/>
-        <GroupBox Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Header="Информация о продукте">
+        <Image Grid.Column="0" Margin="10,10,5,5" Grid.Row="0" Source="Resources/512x512.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Margin="0,10,0,5" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="60" Grid.ColumnSpan="2" Text="WordKiller" FontWeight="Bold" Style="{StaticResource TextBlockTitle}"/>
+        <GroupBox Margin="5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#335e8f">
+            <GroupBox.Header>
+                <TextBlock Text="Информация о продукте" Style="{StaticResource TextBlockRounded}"/>
+            </GroupBox.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50*"/>
@@ -29,9 +32,9 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Программа написана на языке C#"/>
-                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Text="Интерфейс сделан на WPF"/>
-                <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Text="Версия продукта: 1.1"/>
+                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Программа написана на языке C#" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Интерфейс сделан на WPF" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Версия продукта: 1.1" Style="{StaticResource TextBlockTitle}"/>
             </Grid>
         </GroupBox>
     </Grid>
