@@ -1,14 +1,13 @@
-﻿namespace WordKiller
+﻿namespace WordKiller;
+
+public enum TypeDocument
 {
-    public enum TypeDocument
-    {
-        DefaultDocument,
-        LaboratoryWork,
-        PracticalWork,
-        Coursework,
-        ControlWork,
-        Report,
-        GraduateWork,
-        VKR
-    }
+    DefaultDocument,
+    LaboratoryWork,
+    PracticalWork,
+    Coursework,
+    ControlWork,
+    Report,
+    GraduateWork,
+    VKR
 }

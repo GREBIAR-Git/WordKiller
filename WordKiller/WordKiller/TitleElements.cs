@@ -1,188 +1,187 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace WordKiller
+namespace WordKiller;
+
+static class TitleElements
 {
-    static class TitleElements
+    static DefaultUIElement[] defaultElements;
+    public static void SaveTitleUIElements(Grid panel)
     {
-        static DefaultUIElement[] defaultElements;
-        public static void SaveTitleUIElements(Grid panel)
+        defaultElements = new DefaultUIElement[panel.Children.Count];
+        for (int i = 0; i < defaultElements.Length; i++)
         {
-            defaultElements = new DefaultUIElement[panel.Children.Count];
-            for (int i = 0; i < defaultElements.Length; i++)
+            defaultElements[i] = new DefaultUIElement();
+        }
+        for (int i = 0; i < panel.Children.Count; i++)
+        {
+            defaultElements[i].Element = panel.Children[i];
+            defaultElements[i].Row = Grid.GetRow(panel.Children[i]);
+            defaultElements[i].Column = Grid.GetColumn(panel.Children[i]);
+        }
+    }
+
+    public static void ShowTitleElems(Grid panel, string str)
+    {
+        panel.Children.Clear();
+        PushbackControls(panel);
+        ShowAllChildControls(panel);
+        ResetAllChildColumnSpans(panel);
+        SplitCell(str, out int[] rows, out int[] columns);
+        UIElement[] titleSave = CopyControls(panel, rows, columns);
+        panel.Children.Clear();
+        for (int i = 0; i < titleSave.Length; i++)
+        {
+            if (columns[i] >= 4 && RowElemCounter(rows, rows[i]) <= 4)
             {
-                defaultElements[i] = new DefaultUIElement();
+                columns[i] -= 2;
             }
-            for (int i = 0; i < panel.Children.Count; i++)
+            if (columns[i] >= 2 && RowElemCounter(rows, rows[i]) <= 2)
             {
-                defaultElements[i].Element = panel.Children[i];
-                defaultElements[i].Row = Grid.GetRow(panel.Children[i]);
-                defaultElements[i].Column = Grid.GetColumn(panel.Children[i]);
+                columns[i] -= 2;
             }
         }
-
-        public static void ShowTitleElems(Grid panel, string str)
+        PushbackControls(titleSave, panel, rows, columns);
+        for (int i = 0; i < panel.Children.Count; i++)
         {
-            panel.Children.Clear();
-            PushbackControls(panel);
-            ShowAllChildControls(panel);
-            ResetAllChildColumnSpans(panel);
-            SplitCell(str, out int[] rows, out int[] columns);
-            UIElement[] titleSave = CopyControls(panel, rows, columns);
-            panel.Children.Clear();
-            for (int i = 0; i < titleSave.Length; i++)
+            if (columns[i] == 3 && RowElemCounter(rows, rows[i]) <= 4)
             {
-                if (columns[i] >= 4 && RowElemCounter(rows, rows[i]) <= 4)
-                {
-                    columns[i] -= 2;
-                }
-                if (columns[i] >= 2 && RowElemCounter(rows, rows[i]) <= 2)
-                {
-                    columns[i] -= 2;
-                }
+                Grid.SetColumnSpan(panel.Children[i], 3);
             }
-            PushbackControls(titleSave, panel, rows, columns);
-            for (int i = 0; i < panel.Children.Count; i++)
+            else if (columns[i] == 1 && RowElemCounter(rows, rows[i]) <= 2)
             {
-                if (columns[i] == 3 && RowElemCounter(rows, rows[i]) <= 4)
-                {
-                    Grid.SetColumnSpan(panel.Children[i], 3);
-                }
-                else if (columns[i] == 1 && RowElemCounter(rows, rows[i]) <= 2)
-                {
-                    Grid.SetColumnSpan(panel.Children[i], 5);
-                }
+                Grid.SetColumnSpan(panel.Children[i], 5);
             }
         }
+    }
 
-        static void PushbackControls(UIElement[] controls, Grid panel, int[] rows, int[] colums)
+    static void PushbackControls(UIElement[] controls, Grid panel, int[] rows, int[] colums)
+    {
+        for (int i = 0; i < controls.Length; i++)
         {
-            for (int i = 0; i < controls.Length; i++)
+            panel.Children.Add(controls[i]);
+            Grid.SetRow(controls[i], rows[i]);
+            Grid.SetColumn(controls[i], colums[i]);
+        }
+    }
+
+    static void PushbackControls(Grid panel)
+    {
+        for (int i = 0; i < defaultElements.Length; i++)
+        {
+            panel.Children.Add(defaultElements[i].Element);
+            Grid.SetRow(defaultElements[i].Element, defaultElements[i].Row);
+            Grid.SetColumn(defaultElements[i].Element, defaultElements[i].Column);
+        }
+    }
+
+    static void ShowAllChildControls(Grid panel)
+    {
+        foreach (UIElement children in panel.Children)
+        {
+            children.Visibility = Visibility.Visible;
+        }
+    }
+
+    static void ResetAllChildColumnSpans(Grid panel)
+    {
+        foreach (UIElement children in panel.Children)
+        {
+            Grid.SetColumnSpan(children, 1);
+        }
+    }
+
+    static void SplitCell(string str, out int[] rows, out int[] columns)
+    {
+        string[] cells;
+        if (str != string.Empty)
+        {
+            cells = str.Split(' ');
+        }
+        else
+        {
+            cells = new string[0];
+        }
+        columns = new int[cells.Length];
+        rows = new int[cells.Length];
+        for (int i = 0; i < cells.Length; i++)
+        {
+            string[] cell = cells[i].Split('.');
+            if (cell.Length > 1)
             {
-                panel.Children.Add(controls[i]);
-                Grid.SetRow(controls[i], rows[i]);
-                Grid.SetColumn(controls[i], colums[i]);
+                columns[i] = int.Parse(cell[0]);
+                rows[i] = int.Parse(cell[1]);
             }
         }
+    }
 
-        static void PushbackControls(Grid panel)
+    static int RowElemCounter(int[] rows, int row)
+    {
+        int counter = 0;
+        for (int i = 0; i < rows.Length; i++)
         {
-            for (int i = 0; i < defaultElements.Length; i++)
+            if (rows[i] == row)
             {
-                panel.Children.Add(defaultElements[i].Element);
-                Grid.SetRow(defaultElements[i].Element, defaultElements[i].Row);
-                Grid.SetColumn(defaultElements[i].Element, defaultElements[i].Column);
+                counter++;
             }
         }
+        return counter;
+    }
 
-        static void ShowAllChildControls(Grid panel)
+
+    static T[] ArrayPushBack<T>(T[] array, T element)
+    {
+        T[] newArray = new T[array.Length + 1];
+        for (int i = 0; i < array.Length; i++)
         {
-            foreach (UIElement children in panel.Children)
-            {
-                children.Visibility = Visibility.Visible;
-            }
+            newArray[i] = array[i];
         }
+        newArray[newArray.Length - 1] = element;
+        return newArray;
+    }
 
-        static void ResetAllChildColumnSpans(Grid panel)
+    static int CheckControlPosition(Grid tableLayoutPanel, int controlIndex, int[] rows, int[] columns)
+    {
+        if (rows.Length == columns.Length)
         {
-            foreach (UIElement children in panel.Children)
-            {
-                Grid.SetColumnSpan(children, 1);
-            }
-        }
-
-        static void SplitCell(string str, out int[] rows, out int[] columns)
-        {
-            string[] cells;
-            if (str != string.Empty)
-            {
-                cells = str.Split(' ');
-            }
-            else
-            {
-                cells = new string[0];
-            }
-            columns = new int[cells.Length];
-            rows = new int[cells.Length];
-            for (int i = 0; i < cells.Length; i++)
-            {
-                string[] cell = cells[i].Split('.');
-                if (cell.Length > 1)
-                {
-                    columns[i] = int.Parse(cell[0]);
-                    rows[i] = int.Parse(cell[1]);
-                }
-            }
-        }
-
-        static int RowElemCounter(int[] rows, int row)
-        {
-            int counter = 0;
+            int ctrlToCheckR = Grid.GetRow(tableLayoutPanel.Children[controlIndex]);
+            int ctrlToCheckC = Grid.GetColumn(tableLayoutPanel.Children[controlIndex]);
             for (int i = 0; i < rows.Length; i++)
             {
-                if (rows[i] == row)
+                if (ctrlToCheckR == rows[i] && ctrlToCheckC == columns[i])
                 {
-                    counter++;
+                    return i;
                 }
             }
-            return counter;
         }
+        return -1;
+    }
 
-
-        static T[] ArrayPushBack<T>(T[] array, T element)
-        {
-            T[] newArray = new T[array.Length + 1];
-            for (int i = 0; i < array.Length; i++)
-            {
-                newArray[i] = array[i];
-            }
-            newArray[newArray.Length - 1] = element;
-            return newArray;
-        }
-
-        static int CheckControlPosition(Grid tableLayoutPanel, int controlIndex, int[] rows, int[] columns)
+    static UIElement[] CopyControls(Grid tableLayoutPanel, int[] rows, int[] columns)
+    {
+        UIElement[] newArray = new UIElement[0];
+        for (int i = 0; i < tableLayoutPanel.Children.Count; i++)
         {
             if (rows.Length == columns.Length)
             {
-                int ctrlToCheckR = Grid.GetRow(tableLayoutPanel.Children[controlIndex]);
-                int ctrlToCheckC = Grid.GetColumn(tableLayoutPanel.Children[controlIndex]);
-                for (int i = 0; i < rows.Length; i++)
+                int cellIndex = CheckControlPosition(tableLayoutPanel, i, rows, columns);
+                if (cellIndex != -1)
                 {
-                    if (ctrlToCheckR == rows[i] && ctrlToCheckC == columns[i])
-                    {
-                        return i;
-                    }
+                    newArray = ArrayPushBack(newArray, tableLayoutPanel.Children[i]);
+
+                    int tmpColumn = columns[newArray.Length - 1];
+                    int tmpRow = rows[newArray.Length - 1];
+                    columns[newArray.Length - 1] = columns[cellIndex];
+                    rows[newArray.Length - 1] = rows[cellIndex];
+                    columns[cellIndex] = tmpColumn;
+                    rows[cellIndex] = tmpRow;
                 }
             }
-            return -1;
-        }
-
-        static UIElement[] CopyControls(Grid tableLayoutPanel, int[] rows, int[] columns)
-        {
-            UIElement[] newArray = new UIElement[0];
-            for (int i = 0; i < tableLayoutPanel.Children.Count; i++)
+            else
             {
-                if (rows.Length == columns.Length)
-                {
-                    int cellIndex = CheckControlPosition(tableLayoutPanel, i, rows, columns);
-                    if (cellIndex != -1)
-                    {
-                        newArray = ArrayPushBack(newArray, tableLayoutPanel.Children[i]);
-
-                        int tmpColumn = columns[newArray.Length - 1];
-                        int tmpRow = rows[newArray.Length - 1];
-                        columns[newArray.Length - 1] = columns[cellIndex];
-                        rows[newArray.Length - 1] = rows[cellIndex];
-                        columns[cellIndex] = tmpColumn;
-                        rows[cellIndex] = tmpRow;
-                    }
-                }
-                else
-                {
-                    break;
-                }
+                break;
             }
-            return newArray;
         }
+        return newArray;
     }
 }
