@@ -1707,7 +1707,7 @@ public partial class MainWindow : Window
             e.Handled = true;
             if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
             {
-                codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
                 pictureLeft.Fill = new SolidColorBrush(Colors.Black);
                 textLeft.Foreground = new SolidColorBrush(Colors.White);
                 textRight.Foreground = new SolidColorBrush(Colors.Black);
@@ -1716,13 +1716,13 @@ public partial class MainWindow : Window
             {
                 codeRight.Fill = new SolidColorBrush(Colors.Black);
                 textLeft.Foreground = new SolidColorBrush(Colors.Black);
-                pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
                 textRight.Foreground = new SolidColorBrush(Colors.White);
             }
             else
             {
-                codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
-                pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
                 textLeft.Foreground = new SolidColorBrush(Colors.Black);
                 textRight.Foreground = new SolidColorBrush(Colors.Black);
             }
@@ -1750,8 +1750,8 @@ public partial class MainWindow : Window
             if (e.GetPosition(pictureBox).X < 0 || e.GetPosition(pictureBox).X > pictureBox.RenderSize.Width || e.GetPosition(pictureBox).Y < 0 || e.GetPosition(pictureBox).Y > pictureBox.RenderSize.Height)
             {
                 singlePB.Visibility = Visibility.Visible;
-                codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
-                pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
                 textLeft.Foreground = new SolidColorBrush(Colors.Black);
                 textRight.Foreground = new SolidColorBrush(Colors.Black);
             }
@@ -1770,8 +1770,8 @@ public partial class MainWindow : Window
         if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
         {
             singlePB.Visibility = Visibility.Collapsed;
-            codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
-            pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+            codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+            pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
             textLeft.Foreground = new SolidColorBrush(Colors.Black);
             textRight.Foreground = new SolidColorBrush(Colors.Black);
         }
@@ -1785,8 +1785,8 @@ public partial class MainWindow : Window
         if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
         {
             singlePB.Visibility = Visibility.Collapsed;
-            codeRight.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
-            pictureLeft.Fill = new SolidColorBrush(Color.FromRgb(191, 30, 46));
+            codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+            pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
             textLeft.Foreground = new SolidColorBrush(Colors.Black);
             textRight.Foreground = new SolidColorBrush(Colors.Black);
         }
