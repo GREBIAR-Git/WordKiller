@@ -39,6 +39,7 @@
                 </MenuItem.Header>
                 <MenuItem Header="Прочитать заклинание материализации" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
                 <MenuItem Header="Разложить приложение на первоначальные элементы по завершении" x:Name="CloseWindow" IsCheckable="true" Style="{StaticResource MenuItem}"/>
+                <MenuItem Header="Экспортировать как PDF" x:Name="ExportPDF" IsChecked="true" IsCheckable="true" Style="{StaticResource MenuItem}"/>
                 <Separator/>
                 <MenuItem Header="Создать" Command="New" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Открыть" Command="Open" Style="{StaticResource MenuItem}"/>
@@ -91,6 +92,8 @@
                 </MenuItem.Header>
                 <MenuItem Header="Сделать приложением по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="SetAsDefault_Click"/>
                 <MenuItem Header="Сбросить приложение по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="RemoveAsDefault_Click"/>
+                <Separator/>
+                <MenuItem Header="Открыть SubjectTracker" Style="{StaticResource MenuItem}" Click="OpenSubjectTracker"/>
                 <Separator/>
                 <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
                 <Separator/>

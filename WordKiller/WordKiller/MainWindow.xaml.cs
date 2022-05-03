@@ -183,6 +183,7 @@ public partial class MainWindow : Window
     {
         SaveFileDialog saveFileDialog = new()
         {
+            CheckFileExists = true,
             Filter = "|*" + Config.extension + "|All|*.*;",
             FileName = "1"
         };
@@ -1027,10 +1028,11 @@ public partial class MainWindow : Window
         }
         bool isContent = ContentMenuItem.IsChecked;
         bool isNumberHeading = NumberHeadingMI.IsChecked;
+        bool exportPDF = ExportPDF.IsChecked;
         try
         {
             await Task.Run(() =>
-            report.CreateReport(data, isNumbering, isContent, fromNumber, isNumberHeading, typeDocument, titleData.ToArray()));
+            report.CreateReport(data, isNumbering, isContent, fromNumber, isNumberHeading, typeDocument, titleData.ToArray(), exportPDF));
         }
         catch
         {
@@ -1834,5 +1836,10 @@ public partial class MainWindow : Window
     void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
         UnselectComboBoxes();
+    }
+
+    void OpenSubjectTracker(object sender, RoutedEventArgs e)
+    {
+        
     }
 }

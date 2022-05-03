@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.Word;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,9 +18,9 @@ class MakeReport
         pageMargins = new Dictionary<string, float>() { { "top", 2 }, { "bottom", 2 }, { "left", 3 }, { "right", 1.5f } };
     }
 
-    public void CreateReport(DataComboBox dataMainPart, bool numbering, bool content, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
+    public void CreateReport(DataComboBox dataMainPart, bool numbering, bool content, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF)
     {
-        Beginning();
+        Beginning(exportPDF);
         if (typeDocument != TypeDocument.DefaultDocument)
         {
             dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
@@ -27,6 +28,19 @@ class MakeReport
         }
         dataMainPart.Text = ProcessSpecials(dataMainPart.Text, dataMainPart);
         MainPart(dataMainPart, content, numbering, fromNumbering, numberHeading);
+        if(exportPDF)
+        {
+            SaveFileDialog saveFileDialog = new()
+            {
+                CheckFileExists = true,
+                Filter = "PDF | *.pdf",
+                FileName = "1"
+            };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
+            }
+        }
     }
 
     string ProcessSpecials(string text, DataComboBox data)
@@ -58,11 +72,11 @@ class MakeReport
         text = String.Join(symbol, str);
     }
 
-    void Beginning()
+    void Beginning(bool exportPDF)
     {
         Application app = new()
         {
-            Visible = true
+            Visible = !exportPDF
         };
         doc = app.Documents.Add();
         word = null;
