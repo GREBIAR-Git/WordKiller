@@ -1642,8 +1642,6 @@ public partial class MainWindow : Window
     void ShowDragDrop()
     {
         mainImage.Visibility = Visibility.Visible;
-        mainImage.Width = 230;
-        mainImage.Height = 230;
         mainImage.Margin = new Thickness(0, 0, 0, 0);
         var uriSource = new Uri(@"Resources/DragNDrop.png", UriKind.Relative);
         mainImage.Source = new BitmapImage(uriSource);
