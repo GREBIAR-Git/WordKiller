@@ -183,7 +183,7 @@ public partial class MainWindow : Window
     {
         SaveFileDialog saveFileDialog = new()
         {
-            CheckFileExists = true,
+            OverwritePrompt = true,
             Filter = "|*" + Config.extension + "|All|*.*;",
             FileName = "1"
         };
@@ -1171,7 +1171,7 @@ public partial class MainWindow : Window
                 h2Count++;
             }
         }
-        if (indexSave < elementCB.Items.Count&&indexSave!=-1)
+        if (indexSave < elementCB.Items.Count && indexSave != -1)
         {
             elementCB.SelectedIndex = indexSave;
         }
@@ -1840,6 +1840,15 @@ public partial class MainWindow : Window
 
     void OpenSubjectTracker(object sender, RoutedEventArgs e)
     {
-        
+
+    }
+
+    void CapsLockFix_LostFocus(object sender, RoutedEventArgs e)
+    {
+        TextBox a = (TextBox)sender;
+        if (!string.IsNullOrEmpty(a.Text))
+        {
+            a.Text = a.Text.Substring(0, 1).ToUpper() + a.Text.Substring(1).ToLower();
+        }
     }
 }

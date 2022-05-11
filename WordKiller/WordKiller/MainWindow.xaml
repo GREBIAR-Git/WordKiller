@@ -35,11 +35,11 @@
         <Menu Grid.Row="0" Grid.Column="0" Style="{StaticResource Menu}">
             <MenuItem>
                 <MenuItem.Header>
-                    <TextBlock Text="Свиток дракона" Style="{StaticResource TextBlockMenu}"/>
+                    <TextBlock Text="Файл" Style="{StaticResource TextBlockMenu}"/>
                 </MenuItem.Header>
-                <MenuItem Header="Прочитать заклинание материализации" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
-                <MenuItem Header="Разложить приложение на первоначальные элементы по завершении" x:Name="CloseWindow" IsCheckable="true" Style="{StaticResource MenuItem}"/>
-                <MenuItem Header="Экспортировать как PDF" x:Name="ExportPDF" IsChecked="true" IsCheckable="true" Style="{StaticResource MenuItem}"/>
+                <MenuItem Header="Экспорт" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
+                <MenuItem Header="Закрыть после экспорта" x:Name="CloseWindow" IsCheckable="true" Style="{StaticResource MenuItem}"/>
+                <MenuItem Header="В формате PDF" x:Name="ExportPDF" IsChecked="true" IsCheckable="true" Style="{StaticResource MenuItem}"/>
                 <Separator/>
                 <MenuItem Header="Создать" Command="New" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Открыть" Command="Open" Style="{StaticResource MenuItem}"/>
@@ -71,7 +71,7 @@
                     <MenuItem x:Name="VKRMI" Header="ВКР" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                 </MenuItem>
                 <Separator/>
-                <MenuItem x:Name="NumberingMI" Style="{StaticResource MenuItem}" Click="NumberingMI_Click">
+                <MenuItem x:Name="NumberingMI" IsChecked="True" Style="{StaticResource MenuItem}" Click="NumberingMI_Click">
                     <MenuItem.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -84,7 +84,7 @@
                     </MenuItem.Header>
                 </MenuItem>
                 <MenuItem Header="Содержание" IsCheckable="True" x:Name="ContentMenuItem" Style="{StaticResource MenuItem}"/>
-                <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" IsChecked="True" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
+                <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -147,10 +147,10 @@
             <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="Шифр:" Style="{StaticResource TextBlockTitle}"/>
             <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
             <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
-            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподдаватель:" Style="{StaticResource TextBlockTitle}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
+            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
             <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource ComboBox}"/>
             <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
             <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Margin="10,5,10,10" Text="202" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
@@ -269,8 +269,8 @@
                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="#335e8f">
                             <Grid>
                                 <Rectangle Fill="#4a76a8"/>
-                                <TextBlock x:Name="mainText" Text="Заголовок 1" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                <Image Grid.Row="0" Grid.Column="1" x:Name="mainImage" Width="230" Height="230" Source="Resources/DragNDrop.png" Stretch="Fill" />
+                                <TextBlock x:Name="mainText" Text="Заголовок 1" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
+                                <Image Grid.Row="0" Grid.Column="1" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
                             </Grid>
                         </Border>
                     </Border>

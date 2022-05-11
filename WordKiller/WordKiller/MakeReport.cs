@@ -28,11 +28,11 @@ class MakeReport
         }
         dataMainPart.Text = ProcessSpecials(dataMainPart.Text, dataMainPart);
         MainPart(dataMainPart, content, numbering, fromNumbering, numberHeading);
-        if(exportPDF)
+        if (exportPDF)
         {
             SaveFileDialog saveFileDialog = new()
             {
-                CheckFileExists = true,
+                OverwritePrompt = true,
                 Filter = "PDF | *.pdf",
                 FileName = "1"
             };
