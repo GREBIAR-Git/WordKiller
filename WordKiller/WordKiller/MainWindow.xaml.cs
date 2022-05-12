@@ -1515,7 +1515,7 @@ public partial class MainWindow : Window
         singlePB.Visibility = Visibility.Visible;
         if (str == Config.AddSpecialBoth("h1"))
         {
-            mainImage.Visibility = Visibility.Collapsed;
+            //mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h1"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1535,7 +1535,7 @@ public partial class MainWindow : Window
         }
         else if (str == Config.AddSpecialBoth("h2"))
         {
-            mainImage.Visibility = Visibility.Collapsed;
+            //mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h2"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1555,17 +1555,17 @@ public partial class MainWindow : Window
         }
         else if (str == Config.AddSpecialBoth("l"))
         {
-            mainImage.Visibility = Visibility.Collapsed;
+            //mainImage.Visibility = Visibility.Collapsed;
             DrawText("Список");
         }
         else if (str == Config.AddSpecialBoth("t"))
         {
-            mainImage.Visibility = Visibility.Collapsed;
+            //mainImage.Visibility = Visibility.Collapsed;
             DrawText("Таблица");
         }
         else if (str == Config.AddSpecialBoth("p"))
         {
-            mainImage.Visibility = Visibility.Visible;
+            //mainImage.Visibility = Visibility.Visible;
             if (pComboBox.SelectedIndex == -1)
             {
                 try
@@ -1600,7 +1600,7 @@ public partial class MainWindow : Window
         }
         else if (str == Config.AddSpecialBoth("c"))
         {
-            mainImage.Visibility = Visibility.Visible;
+            //mainImage.Visibility = Visibility.Visible;
             if (cComboBox.SelectedIndex == -1)
             {
                 try
@@ -1641,47 +1641,47 @@ public partial class MainWindow : Window
 
     void ShowDragDrop()
     {
-        mainImage.Visibility = Visibility.Visible;
-        mainImage.Margin = new Thickness(0, 0, 0, 0);
+        //mainImage.Visibility = Visibility.Visible;
+        //mainImage.Margin = new Thickness(0, 0, 0, 0);
         var uriSource = new Uri(@"Resources/DragNDrop.png", UriKind.Relative);
-        mainImage.Source = new BitmapImage(uriSource);
+        //mainImage.Source = new BitmapImage(uriSource);
     }
 
     void ShowPicture(string text)
     {
-        mainImage.Width = 220;
-        mainImage.Height = 100;
-        mainImage.Margin = new Thickness(0, 0, 0, 30);
+        //mainImage.Width = 220;
+        //mainImage.Height = 100;
+        //mainImage.Margin = new Thickness(0, 0, 0, 30);
         var uriSource = new Uri(@"Resources/Picture.png", UriKind.Relative);
-        mainImage.Source = new BitmapImage(uriSource);
+        //mainImage.Source = new BitmapImage(uriSource);
         mainText.Margin = new Thickness(0, 110, 0, 0);
         mainText.Text = text;
     }
 
     void ShowCode(string text)
     {
-        mainImage.Width = 115;
-        mainImage.Height = 160;
-        mainImage.Margin = new Thickness(0, 0, 0, 30);
+        //mainImage.Width = 115;
+        //mainImage.Height = 160;
+        //mainImage.Margin = new Thickness(0, 0, 0, 30);
         var uriSource = new Uri(@"Resources/Code.png", UriKind.Relative);
-        mainImage.Source = new BitmapImage(uriSource);
+        //mainImage.Source = new BitmapImage(uriSource);
         mainText.Margin = new Thickness(0, 165, 0, 0);
         mainText.Text = text;
     }
 
     void ShowImage(string path)
     {
-        mainImage.Width = Double.NaN;
-        mainImage.Height = Double.NaN;
-        mainImage.Margin = new Thickness(0, 0, 0, 0);
+        //mainImage.Width = Double.NaN;
+        //mainImage.Height = Double.NaN;
+        //mainImage.Margin = new Thickness(0, 0, 0, 0);
         var uriSource = new Uri(path, UriKind.Absolute);
         try
         {
-            mainImage.Source = new BitmapImage(uriSource);
+            //mainImage.Source = new BitmapImage(uriSource);
         }
         catch
         {
-            mainImage.Source = new BitmapImage(new Uri(@"Resources/DragNDrop.png", UriKind.Relative));
+            //mainImage.Source = new BitmapImage(new Uri(@"Resources/DragNDrop.png", UriKind.Relative));
         }
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
