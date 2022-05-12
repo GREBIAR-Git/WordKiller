@@ -270,7 +270,8 @@
                             <Grid>
                                 <Rectangle Fill="#4a76a8"/>
                                 <TextBlock x:Name="mainText" Text="Заголовок 1" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                <Image Grid.Row="0" Grid.Column="1" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
+                                <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
+                                <ContentControl Background="White" Style="{StaticResource TheAwesomeXAMLimage}"/>
                             </Grid>
                         </Border>
                     </Border>
