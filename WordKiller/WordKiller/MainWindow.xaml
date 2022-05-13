@@ -83,7 +83,7 @@
                         </Grid>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Header="Содержание" IsCheckable="True" x:Name="ContentMenuItem" Style="{StaticResource MenuItem}"/>
+                <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContents" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
             </MenuItem>
             <MenuItem>

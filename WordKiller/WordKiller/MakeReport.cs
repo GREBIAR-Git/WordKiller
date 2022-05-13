@@ -18,7 +18,7 @@ class MakeReport
         pageMargins = new Dictionary<string, float>() { { "top", 2 }, { "bottom", 2 }, { "left", 3 }, { "right", 1.5f } };
     }
 
-    public void CreateReport(DataComboBox dataMainPart, bool numbering, bool content, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF)
+    public void CreateReport(DataComboBox dataMainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF)
     {
         Beginning(exportPDF);
         if (typeDocument != TypeDocument.DefaultDocument)
@@ -26,8 +26,9 @@ class MakeReport
             dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
             TitlePart(typeDocument, dataTitle);
         }
+        TableOfContents(tableOfContentsOn, dataMainPart);
         dataMainPart.Text = ProcessSpecials(dataMainPart.Text, dataMainPart);
-        MainPart(dataMainPart, content, numbering, fromNumbering, numberHeading);
+        MainPart(dataMainPart, numbering, fromNumbering, numberHeading);
         if (exportPDF)
         {
             SaveFileDialog saveFileDialog = new()
@@ -40,6 +41,22 @@ class MakeReport
             {
                 doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
             }
+        }
+    }
+
+    void TableOfContents(bool on, DataComboBox dataMainPart)
+    {
+        if(on)
+        {
+            string text = "Содержание";
+            WriteTextWord(text);
+            word.Font.AllCaps = 0;
+            word.Font.Size = 14;
+            word.Font.Bold = 1;
+            word.Font.ColorIndex = 0;
+            word.Paragraphs.Space15();
+            word.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+            PageBreak();
         }
     }
 
@@ -294,12 +311,8 @@ class MakeReport
         PageBreak();
     }
 
-    void MainPart(DataComboBox content, bool cont, bool numbering, int fromNumbering, bool numberHeading)
+    void MainPart(DataComboBox content, bool numbering, int fromNumbering, bool numberHeading)
     {
-        if (cont)
-        {
-            //Сделать содержание
-        }
         if (content.Text != null)
         {
             if (numberHeading)

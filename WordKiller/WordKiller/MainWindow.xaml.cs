@@ -1021,18 +1021,18 @@ public partial class MainWindow : Window
         {
             data.Text = GetTextRichTextBox();
         }
-        bool isNumbering = NumberingMI.IsChecked;
+        bool numberingOn = NumberingMI.IsChecked;
         if (!Int32.TryParse(FromNumberingTextBoxMI.Text, out int fromNumber))
         {
             fromNumber = 1;
         }
-        bool isContent = ContentMenuItem.IsChecked;
-        bool isNumberHeading = NumberHeadingMI.IsChecked;
-        bool exportPDF = ExportPDF.IsChecked;
+        bool tableOfContentsOn = tableOfContents.IsChecked;
+        bool headingNumbersOn = NumberHeadingMI.IsChecked;
+        bool exportPDFOn = ExportPDF.IsChecked;
         try
         {
             await Task.Run(() =>
-            report.CreateReport(data, isNumbering, isContent, fromNumber, isNumberHeading, typeDocument, titleData.ToArray(), exportPDF));
+            report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
         }
         catch
         {
