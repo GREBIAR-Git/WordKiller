@@ -133,7 +133,7 @@ public partial class MainWindow : Window
     void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
     {
         NeedSave();
-        win.Title = "Сотворение документа из небытия";
+        win.Title = "WordKiller";
         ClearGlobal();
         menuLeftIndex = 1;
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
@@ -471,43 +471,43 @@ public partial class MainWindow : Window
     {
         if (DefaultDocumentMI.IsChecked)
         {
-            TextHeader("документа");
+            TextHeader("Обычный документ");
             typeDocument = TypeDocument.DefaultDocument;
         }
         else if (LabMI.IsChecked)
         {
             typeDocument = TypeDocument.LaboratoryWork;
-            TextHeader("лабораторной работы");
+            TextHeader("Лабораторная работа");
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
         }
         else if (PracticeMI.IsChecked)
         {
             typeDocument = TypeDocument.PracticalWork;
-            TextHeader("практической работы");
+            TextHeader("Практическая работа");
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
         }
         else if (CourseworkMI.IsChecked)
         {
             typeDocument = TypeDocument.Coursework;
-            TextHeader("курсовой работы");
+            TextHeader("Курсовая работа");
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
         }
         else if (ControlWorkMI.IsChecked)
         {
             typeDocument = TypeDocument.ControlWork;
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            TextHeader("контрольной работы");
+            TextHeader("Контрольная работа");
         }
         else if (RefMI.IsChecked)
         {
             typeDocument = TypeDocument.Report;
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            TextHeader("реферата");
+            TextHeader("Реферат");
         }
         else if (DiplomMI.IsChecked)
         {
             typeDocument = TypeDocument.GraduateWork;
-            TextHeader("дипломной работы");
+            TextHeader("Дипломная работа");
             TitleElements.ShowTitleElems(titlePanel, "");
         }
         else if (VKRMI.IsChecked)
@@ -544,7 +544,7 @@ public partial class MainWindow : Window
     {
         if (string.IsNullOrEmpty(saveFileName))
         {
-            win.Title = "Сотворение " + type + " из небытия";
+            win.Title = "WordKiller — " + type;
         }
     }
 

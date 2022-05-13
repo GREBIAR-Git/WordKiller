@@ -78,7 +78,7 @@
                                 <ColumnDefinition Width="40*"/>
                                 <ColumnDefinition Width="60*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="TextNumberingMI" Grid.Column="0" Text="Нумерация c"/>
+                            <TextBlock x:Name="TextNumberingMI" Grid.Column="0" Text="Нумерация c "/>
                             <TextBox Grid.Column="1" x:Name="FromNumberingTextBoxMI" Visibility="Visible"  Width="100" Style="{StaticResource TextBox}"/>
                         </Grid>
                     </MenuItem.Header>
@@ -97,7 +97,7 @@
                 <Separator/>
                 <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
                 <Separator/>
-                <MenuItem Header="Проверка синтаксиса" IsChecked="True" IsCheckable="True" x:Name="SyntaxChecking" Style="{StaticResource MenuItem}" Click="SyntaxChecking_Click"/>
+                <MenuItem Header="Проверка синтаксиса" IsChecked="False" IsCheckable="True" x:Name="SyntaxChecking" Style="{StaticResource MenuItem}" Click="SyntaxChecking_Click"/>
                 <Separator/>
                 <MenuItem Header="Кодировка" Style="{StaticResource MenuItem}">
                     <MenuItem x:Name="Encoding0MenuItem" Header="Нет" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
@@ -243,7 +243,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="True" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
                 <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
