@@ -1241,23 +1241,23 @@ public partial class MainWindow : Window
     void AddSpecialSymbol(string symbol, int idx)
     {
         string d = GetTextRichTextBox();
-        if (idx == 0 || idx == 1 && GetTextRichTextBox()[idx - 1] == Config.specialBefore || GetTextRichTextBox()[idx - 2] == '\n')
+        if (idx == 0 || (idx == 1 && GetTextRichTextBox()[idx - 1] == Config.specialBefore) || (idx >=2 && GetTextRichTextBox()[idx - 2] == '\n'))
         {
             SetText(d.Insert(idx, symbol.ToLower() + "\n"));
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(symbol.Length + 1);
+            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(symbol.Length + 2);
         }
         else
         {
             SetText(d.Insert(idx, "\n" + symbol.ToLower() + "\n"));
             richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(idx + symbol.Length + 2);
+            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(idx + symbol.Length + 1);
         }
         richTextBox.Focus();
     }
 
     int GetCaretIndex(RichTextBox r)
     {
-        return new TextRange(r.Document.ContentStart, r.CaretPosition).Text.Length;
+        return new TextRange(r.Document.ContentStart, r.CaretPosition).Text.Replace("\r", "").Length;
     }
 
     int GetLineOfCursor(RichTextBox richTextBox)
@@ -1515,7 +1515,8 @@ public partial class MainWindow : Window
         singlePB.Visibility = Visibility.Visible;
         if (str == Config.AddSpecialBoth("h1"))
         {
-            //mainImage.Visibility = Visibility.Collapsed;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h1"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1535,7 +1536,8 @@ public partial class MainWindow : Window
         }
         else if (str == Config.AddSpecialBoth("h2"))
         {
-            //mainImage.Visibility = Visibility.Collapsed;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h2"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1555,17 +1557,20 @@ public partial class MainWindow : Window
         }
         else if (str == Config.AddSpecialBoth("l"))
         {
-            //mainImage.Visibility = Visibility.Collapsed;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Collapsed;
             DrawText("Список");
         }
         else if (str == Config.AddSpecialBoth("t"))
         {
-            //mainImage.Visibility = Visibility.Collapsed;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Collapsed;
             DrawText("Таблица");
         }
         else if (str == Config.AddSpecialBoth("p"))
         {
-            //mainImage.Visibility = Visibility.Visible;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Visible;
             if (pComboBox.SelectedIndex == -1)
             {
                 try
@@ -1582,7 +1587,7 @@ public partial class MainWindow : Window
                 }
                 catch
                 {
-                    ShowPicture("Не указан");
+                    ShowIconPicture("Не указан");
                 }
             }
             else
@@ -1594,13 +1599,14 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    ShowPicture("Не найден");
+                    ShowIconPicture("Не найден");
                 }
             }
         }
         else if (str == Config.AddSpecialBoth("c"))
         {
-            //mainImage.Visibility = Visibility.Visible;
+            dragDropImage.Visibility = Visibility.Collapsed;
+            mainImage.Visibility = Visibility.Visible;
             if (cComboBox.SelectedIndex == -1)
             {
                 try
@@ -1641,47 +1647,54 @@ public partial class MainWindow : Window
 
     void ShowDragDrop()
     {
-        //mainImage.Visibility = Visibility.Visible;
-        //mainImage.Margin = new Thickness(0, 0, 0, 0);
+        mainImage.Visibility = Visibility.Collapsed;
+        dragDropImage.Visibility = Visibility.Visible;
+        mainImage.Margin = new Thickness(0, 0, 0, 0);
         var uriSource = new Uri(@"Resources/DragNDrop.png", UriKind.Relative);
-        //mainImage.Source = new BitmapImage(uriSource);
+        mainImage.Source = new BitmapImage(uriSource);
     }
 
-    void ShowPicture(string text)
+    void ShowIconPicture(string text)
     {
-        //mainImage.Width = 220;
-        //mainImage.Height = 100;
-        //mainImage.Margin = new Thickness(0, 0, 0, 30);
+        mainImage.Visibility = Visibility.Visible;
+        dragDropImage.Visibility = Visibility.Collapsed;
+        mainImage.Width = 220;
+        mainImage.Height = 100;
+        mainImage.Margin = new Thickness(0, 0, 0, 30);
         var uriSource = new Uri(@"Resources/Picture.png", UriKind.Relative);
-        //mainImage.Source = new BitmapImage(uriSource);
+        mainImage.Source = new BitmapImage(uriSource);
         mainText.Margin = new Thickness(0, 110, 0, 0);
         mainText.Text = text;
     }
 
     void ShowCode(string text)
     {
-        //mainImage.Width = 115;
-        //mainImage.Height = 160;
-        //mainImage.Margin = new Thickness(0, 0, 0, 30);
+        mainImage.Visibility = Visibility.Visible;
+        dragDropImage.Visibility = Visibility.Collapsed;
+        mainImage.Width = 115;
+        mainImage.Height = 160;
+        mainImage.Margin = new Thickness(0, 0, 0, 30);
         var uriSource = new Uri(@"Resources/Code.png", UriKind.Relative);
-        //mainImage.Source = new BitmapImage(uriSource);
+        mainImage.Source = new BitmapImage(uriSource);
         mainText.Margin = new Thickness(0, 165, 0, 0);
         mainText.Text = text;
     }
 
     void ShowImage(string path)
     {
-        //mainImage.Width = Double.NaN;
-        //mainImage.Height = Double.NaN;
-        //mainImage.Margin = new Thickness(0, 0, 0, 0);
+        mainImage.Visibility = Visibility.Visible;
+        dragDropImage.Visibility = Visibility.Collapsed;
+        mainImage.Width = Double.NaN;
+        mainImage.Height = Double.NaN;
+        mainImage.Margin = new Thickness(0, 0, 0, 0);
         var uriSource = new Uri(path, UriKind.Absolute);
         try
         {
-            //mainImage.Source = new BitmapImage(uriSource);
+            mainImage.Source = new BitmapImage(uriSource);
         }
         catch
         {
-            //mainImage.Source = new BitmapImage(new Uri(@"Resources/DragNDrop.png", UriKind.Relative));
+            mainImage.Source = new BitmapImage(new Uri(@"Resources/DragNDrop.png", UriKind.Relative));
         }
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
@@ -1847,6 +1860,18 @@ public partial class MainWindow : Window
         if (!string.IsNullOrEmpty(a.Text))
         {
             a.Text = a.Text.Substring(0, 1).ToUpper() + a.Text.Substring(1).ToLower();
+        }
+    }
+
+    void SyntaxChecking_Click(object sender, RoutedEventArgs e)
+    {
+        if (SyntaxChecking.IsChecked)
+        {
+            richTextBox.SpellCheck.IsEnabled = true;
+        }
+        else
+        {
+            richTextBox.SpellCheck.IsEnabled = false;
         }
     }
 }

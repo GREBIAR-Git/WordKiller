@@ -78,8 +78,8 @@
                                 <ColumnDefinition Width="40*"/>
                                 <ColumnDefinition Width="60*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="TextNumberingMI" Grid.Column="0" Text="Нумерация"/>
-                            <TextBox Grid.Column="1" x:Name="FromNumberingTextBoxMI" Visibility="Collapsed"  Width="100" Style="{StaticResource TextBox}"/>
+                            <TextBlock x:Name="TextNumberingMI" Grid.Column="0" Text="Нумерация c"/>
+                            <TextBox Grid.Column="1" x:Name="FromNumberingTextBoxMI" Visibility="Visible"  Width="100" Style="{StaticResource TextBox}"/>
                         </Grid>
                     </MenuItem.Header>
                 </MenuItem>
@@ -96,6 +96,8 @@
                 <MenuItem Header="Открыть SubjectTracker" Style="{StaticResource MenuItem}" Click="OpenSubjectTracker"/>
                 <Separator/>
                 <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
+                <Separator/>
+                <MenuItem Header="Проверка синтаксиса" IsChecked="True" IsCheckable="True" x:Name="SyntaxChecking" Style="{StaticResource MenuItem}" Click="SyntaxChecking_Click"/>
                 <Separator/>
                 <MenuItem Header="Кодировка" Style="{StaticResource MenuItem}">
                     <MenuItem x:Name="Encoding0MenuItem" Header="Нет" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
@@ -268,11 +270,10 @@
                     <Border Grid.Row="0" Grid.Column="0" x:Name="singlePB" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="#335e8f">
                             <Grid>
-                                <!--<Rectangle Fill="#4a76a8"/>-->
-                                <Rectangle Fill="#e3228c"/>
+                                <Rectangle Fill="#4a76a8"/>
                                 <TextBlock x:Name="mainText" Text="Заголовок 1" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                <!--<Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />-->
-                                <ContentControl Background="White" Style="{StaticResource TheAwesomeXAMLimage}" />
+                                <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
+                                <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
                             </Grid>
                         </Border>
                     </Border>
