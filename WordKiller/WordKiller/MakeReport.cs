@@ -175,7 +175,7 @@ class MakeReport
 
             SkipLinesSingle(10);
 
-            text = "Выполнил:" + dataTitle[1] + SkipLine(1) +
+            text = "Выполнил: " + dataTitle[1] + SkipLine(1) +
                 "Институт приборостроения, автоматизации и информационных технологий" + SkipLine(1) +
                 "Направление: 09.03.04 «Программная инженерия»" + SkipLine(1) +
                 "Группа: 92ПГ";

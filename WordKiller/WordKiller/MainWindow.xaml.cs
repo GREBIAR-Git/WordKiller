@@ -961,7 +961,6 @@ public partial class MainWindow : Window
         ComboBox comboBox = (ComboBox)sender;
         if (ComboBoxSelected())
         {
-
             if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.LeftAlt))
             {
                 for (int i = elementPanel.ColumnDefinitions.Count - 1; i < 2 * elementPanel.ColumnDefinitions.Count - 1 - 2; i++)
@@ -974,16 +973,15 @@ public partial class MainWindow : Window
             {
                 if (comboBox.SelectedIndex > 0)
                 {
-                    //int cursorSave = richTextBox.SelectionStart;
+                    //перемещение выбранного элемента ComboBox вверх
                     string[] save = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex];
                     data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex] = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1];
                     data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1] = save;
                     string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
                     int savef = comboBox.SelectedIndex;
-                    comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex - 1];
-                    comboBox.Items[savef] = saveName;
+                    comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex-1];
+                    comboBox.Items[savef-1] = saveName;
                     comboBox.SelectedIndex = savef - 1;
-                    //richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(cursorSave);
 
                 }
             }
@@ -991,15 +989,15 @@ public partial class MainWindow : Window
             {
                 if (comboBox.SelectedIndex < comboBox.Items.Count - 1)
                 {
-                    //int cursorSave = richTextBox.SelectionStart;
+                    //перемещение выбранного элемента ComboBox вниз
                     string[] save = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex];
                     data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex] = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1];
                     data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1] = save;
+                    string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
                     int savef = comboBox.SelectedIndex;
                     comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex + 1];
-                    comboBox.Items[savef + 1] = save;
+                    comboBox.Items[savef + 1] = saveName;
                     comboBox.SelectedIndex = savef + 1;
-                    // richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(cursorSave);
                 }
             }
             else if (Keyboard.IsKeyDown(Key.LeftAlt))
@@ -1036,7 +1034,7 @@ public partial class MainWindow : Window
         }
         catch
         {
-            MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+           MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         }
         if (CloseWindow.IsChecked)
         {
@@ -1108,7 +1106,7 @@ public partial class MainWindow : Window
             if (h1Count > 0)
             {
                 string h1 = data.ComboBox["h1"].Form.Items[h1Count - 1].ToString();
-                string h2 = "";
+                string h2 = string.Empty;
                 if (str.Substring(str.LastIndexOf(Config.AddSpecialLeft("h1"))).Contains(Config.AddSpecialLeft("h2")))
                 {
                     h2 = " : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
@@ -1117,7 +1115,17 @@ public partial class MainWindow : Window
             }
             else
             {
-                cursorLocationTB.Text = "До заголовков";
+                int h2Count = Regex.Matches(str, Config.AddSpecialLeft("h2")).Count;
+                string h2 = string.Empty;
+                if(h2Count>0)
+                {
+                    h2 = "До H1 заголовков : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
+                    cursorLocationTB.Text = h2;
+                }
+                else
+                {
+                    cursorLocationTB.Text = "До заголовков";
+                }
             }
             cursorLocationTB.Text += CursorPosExtra(str);
         }
@@ -1315,6 +1323,28 @@ public partial class MainWindow : Window
                         Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
                     }
                 }
+            }
+            else if(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.D)
+            {
+                if(string.IsNullOrEmpty(lines[1])&& !string.IsNullOrEmpty(lines[3]))
+                {
+                    lines[1] = lines[3];
+                    if (lines.Length>4)
+                    {
+                        for(int i=4;i<lines.Length;i++)
+                        {
+                            lines[3] += "\n" + lines[i];
+                        }
+                    }
+                    SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
+                }
+                else if (string.IsNullOrEmpty(lines[3]))
+                {
+                    lines[3] = lines[1];
+                    SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
+                }
+                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
+                richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 3);
             }
         }
     }
