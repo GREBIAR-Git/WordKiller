@@ -1347,6 +1347,13 @@ public partial class MainWindow : Window
                 richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 3);
             }
         }
+        else
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.V)
+            {
+                Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
+            }
+        }
     }
 
     bool BeginningSecondLines(string[] lines, int index)
