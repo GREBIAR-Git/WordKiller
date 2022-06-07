@@ -212,7 +212,7 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" TextAlignment="Left" Text="Нечто" Style="{StaticResource TextBlock}"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding textType}" SelectedItem="{Binding type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding textType}" SelectedItem="{Binding type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}" SelectionChanged="elementCB_SelectionChanged"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" x:Name="panelTypeInserts" Visibility="Collapsed" Background="#8daacc">
                 <Grid.ColumnDefinitions>
@@ -243,7 +243,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri"/>
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
                 <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>

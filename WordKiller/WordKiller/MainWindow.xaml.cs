@@ -1911,4 +1911,17 @@ public partial class MainWindow : Window
             richTextBox.SpellCheck.IsEnabled = false;
         }
     }
+
+    void elementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+    /*    string[] strings = elementCB.Text.Split(':');
+        if(strings.Length>1)
+        {
+
+        }
+        if()
+        {
+
+        }*/
+    }
 }
