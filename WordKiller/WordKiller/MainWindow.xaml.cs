@@ -80,11 +80,11 @@ public partial class MainWindow : Window
     {
         UnselectComboBoxes();
         Button control = (Button)sender;
-        if (control.Content.ToString() == "Заголовок 1")
+        if (control.Content.ToString() == "Раздел")
         {
             DefaultTypeRichBox("h1");
         }
-        else if (control.Content.ToString() == "Заголовок 2")
+        else if (control.Content.ToString() == "Подраздел")
         {
             DefaultTypeRichBox("h2");
         }
@@ -819,6 +819,17 @@ public partial class MainWindow : Window
     }
 
     string GetTextRichTextBox()
+    {
+        string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+        if (text != string.Empty)
+        {
+            text = text.Replace("\r", "");
+            text = text.Remove(text.Length - 1, 1);
+        }
+        return text;
+    }
+
+    string SetTextRichTextBox()
     {
         string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
         if (text != string.Empty)
@@ -1914,14 +1925,74 @@ public partial class MainWindow : Window
 
     void elementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-    /*    string[] strings = elementCB.Text.Split(':');
-        if(strings.Length>1)
+        if (elementCB.SelectedIndex == 0)
         {
-
+            richTextBox.Visibility = Visibility.Visible;
+            richTextBox2.Visibility = Visibility.Collapsed;
         }
-        if()
+        else
         {
+            richTextBox.Visibility = Visibility.Collapsed;
+            richTextBox2.Visibility = Visibility.Visible;
 
-        }*/
+
+            int start = FindParagraphStart("h1");
+            int end = FindParagraphEnd("h1");
+            string str = GetTextRichTextBox().Substring(start, end - start);
+
+            richTextBox2.Document.Blocks.Clear();
+            richTextBox2.Document.Blocks.Add(new Paragraph(new Run(str)));
+        }
+    }
+
+    void SwitchRichTextBoxes(object sender, RoutedEventArgs e)
+    {
+        Visibility tmp = richTextBox.Visibility;
+        richTextBox.Visibility = richTextBox2.Visibility;
+        richTextBox2.Visibility = tmp;
+    }
+
+    int FindParagraphStart(string paragraphType)
+    {
+        string searchingFor = Config.specialBefore + paragraphType; // zachem kursor ? ne nado kursor nado poschitat kolichestvo h1 i h2 i tak uznat nuzhniye h1 ili h2 dlya start i end
+
+        string str = GetTextRichTextBox();
+        str = str.Substring(0, GetRichCursorPos());
+
+        int index = str.LastIndexOf(searchingFor);
+        if (index >= 0)
+        {
+            index += searchingFor.Length;
+        }
+        else
+        {
+            index = 0;
+        }
+
+        return index;
+    }
+
+    int FindParagraphEnd(string paragraphType)
+    {
+        string searchingFor = Config.specialBefore + paragraphType;
+
+        string str = GetTextRichTextBox();
+
+        int index = str.IndexOf(searchingFor, GetRichCursorPos());
+        if (index < 0)
+        {
+            index = str.Length;
+        }
+
+        return index;
+    }
+
+    int GetRichCursorPos()
+    {
+        TextPointer start = richTextBox.Document.ContentStart;
+        TextPointer caret = richTextBox.CaretPosition;
+        TextRange range = new TextRange(start, caret);
+        int indexInText = range.Text.Length;
+        return indexInText;
     }
 }

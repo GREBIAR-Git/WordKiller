@@ -188,8 +188,8 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" x:Name="buttonBack" Grid.RowSpan="2" Content="L" Style="{StaticResource Button}" Click="ButtonBack_Click"/>
-                <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="Заголовок 1" Height="50" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" Content="Заголовок 2" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="Раздел" Height="50" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" Content="Подраздел" Style="{StaticResource Button}"/>
                 <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" Content="Список" Style="{StaticResource Button}"/>
                 <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" Content="Картинка" Style="{StaticResource Button}"/>
                 <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" Content="Таблица" Style="{StaticResource Button}"/>
@@ -200,7 +200,7 @@
                 <ComboBox Grid.Row="1" Grid.Column="4" x:Name="pComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="5" x:Name="tComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
-                <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}" Click="ButtonForward_Click"/>
+                <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}"   Click="SwitchRichTextBoxes" />
             </Grid>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,0,5" TextAlignment="Right" Text="Отображается: " Style="{StaticResource TextBlock}"/>
             <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,10,5" Background="#8daacc">
@@ -243,7 +243,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="Pink" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="Green" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
@@ -277,7 +284,7 @@
                         <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="#335e8f">
                             <Grid>
                                 <Rectangle Fill="#4a76a8"/>
-                                <TextBlock x:Name="mainText" Text="Заголовок 1" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
+                                <TextBlock x:Name="mainText" Text="Раздел" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                 <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
                                 <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
                             </Grid>
