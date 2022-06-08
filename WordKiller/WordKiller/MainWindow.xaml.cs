@@ -1579,7 +1579,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                DrawText("Заголовок".ToUpper());
+                DrawText("РАЗДЕЛ");
             }
         }
         else if (str == Config.AddSpecialBoth("h2"))
@@ -1600,7 +1600,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                DrawText("Заголовок");
+                DrawText("Подраздел");
             }
         }
         else if (str == Config.AddSpecialBoth("l"))
@@ -1954,7 +1954,7 @@ public partial class MainWindow : Window
 
     int FindParagraphStart(string paragraphType)
     {
-        string searchingFor = Config.specialBefore + paragraphType; // zachem kursor ? ne nado kursor nado poschitat kolichestvo h1 i h2 i tak uznat nuzhniye h1 ili h2 dlya start i end
+        string searchingFor = Config.specialBefore + paragraphType;
 
         string str = GetTextRichTextBox();
         str = str.Substring(0, GetRichCursorPos());
