@@ -2030,7 +2030,7 @@ public partial class MainWindow : Window
         return index;
     }
 
-    int GetRichCursorPos(RichTextBox richTB)
+    int GetRichCursorPos(RichTextBox richTB) // GetCaretIndex() SAME ???
     {
         TextPointer start = richTB.Document.ContentStart;
         TextPointer caret = richTB.CaretPosition;
@@ -2063,8 +2063,8 @@ public partial class MainWindow : Window
             return;
         }
 
-        object selectedValue = elementCB.SelectedValue;
-        TextPointer cursorPos = richTextBox2.CaretPosition; // ??? cursor
+        object selectedValueSave = elementCB.SelectedValue; // maybe better to use SelectedIndex
+        int cursorPosSave = GetCaretIndex(richTextBox2);
 
         string special = elementCB.SelectedValue.ToString().Split(':')[0];
 
@@ -2083,7 +2083,8 @@ public partial class MainWindow : Window
 
         elementCB_update();
 
-        elementCB.SelectedValue = selectedValue;
-        richTextBox2.CaretPosition = cursorPos; // ??? cursor
+        elementCB.SelectedValue = selectedValueSave;
+        richTextBox2.CaretPosition = richTextBox2.CaretPosition.DocumentStart;
+        richTextBox2.CaretPosition = richTextBox2.CaretPosition.GetPositionAtOffset(cursorPosSave);
     }
 }
