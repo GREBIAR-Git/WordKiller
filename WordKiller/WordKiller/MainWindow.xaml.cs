@@ -829,6 +829,17 @@ public partial class MainWindow : Window
         return text;
     }
 
+    string GetTextRichTextBox2()
+    {
+        string text = new TextRange(richTextBox2.Document.ContentStart, richTextBox2.Document.ContentEnd).Text;
+        if (text != string.Empty)
+        {
+            text = text.Replace("\r", "");
+            text = text.Remove(text.Length - 1, 1);
+        }
+        return text;
+    }
+
     string SetTextRichTextBox()
     {
         string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
@@ -1923,8 +1934,13 @@ public partial class MainWindow : Window
         }
     }
 
-    void elementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    void elementCB_update()
     {
+        if (elementCB.SelectedValue == null)
+        {
+            return;
+        }
+
         if (elementCB.SelectedIndex == 0)
         {
             richTextBox.Visibility = Visibility.Visible;
@@ -1935,14 +1951,18 @@ public partial class MainWindow : Window
             richTextBox.Visibility = Visibility.Collapsed;
             richTextBox2.Visibility = Visibility.Visible;
 
+            string special = elementCB.SelectedValue.ToString().Split(':')[0];
 
-            int start = FindParagraphStart("h1");
-            int end = FindParagraphEnd("h1");
+            int start = FindParagraphStart(special);
+            int end = FindParagraphEnd(special);
             string str = GetTextRichTextBox().Substring(start, end - start);
 
-            richTextBox2.Document.Blocks.Clear();
-            richTextBox2.Document.Blocks.Add(new Paragraph(new Run(str)));
+            R2_changeText(str);
         }
+    }
+    void elementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        elementCB_update();
     }
 
     void SwitchRichTextBoxes(object sender, RoutedEventArgs e)
@@ -1954,19 +1974,25 @@ public partial class MainWindow : Window
 
     int FindParagraphStart(string paragraphType)
     {
-        string searchingFor = Config.specialBefore + paragraphType;
+        string searchingFor = Config.specialBefore + paragraphType + "\n";
 
         string str = GetTextRichTextBox();
-        str = str.Substring(0, GetRichCursorPos());
 
-        int index = str.LastIndexOf(searchingFor);
-        if (index >= 0)
+        int count = 0;
+        for (int i = 1; i <= elementCB.SelectedIndex; i++)
         {
-            index += searchingFor.Length;
+            if (elementCB.Items[i].ToString().StartsWith(paragraphType))
+            {
+                count++;
+            }
         }
-        else
+
+        int index = 0;
+        while(count>0)
         {
-            index = 0;
+            count--;
+            index = str.IndexOf(searchingFor, index);
+            index += searchingFor.Length;
         }
 
         return index;
@@ -1974,12 +2000,29 @@ public partial class MainWindow : Window
 
     int FindParagraphEnd(string paragraphType)
     {
-        string searchingFor = Config.specialBefore + paragraphType;
+        string searchingFor = Config.specialBefore + paragraphType + "\n";
 
         string str = GetTextRichTextBox();
 
-        int index = str.IndexOf(searchingFor, GetRichCursorPos());
-        if (index < 0)
+        int count = 0;
+        for (int i = 1; i <= elementCB.SelectedIndex; i++)
+        {
+            if (elementCB.Items[i].ToString().StartsWith(paragraphType))
+            {
+                count++;
+            }
+        }
+
+        int index = 0;
+        while (count > 0)
+        {
+            count--;
+            index = str.IndexOf(searchingFor, index);
+            index += searchingFor.Length;
+        }
+
+        index = str.IndexOf(searchingFor, index);
+        if (index == -1)
         {
             index = str.Length;
         }
@@ -1987,12 +2030,60 @@ public partial class MainWindow : Window
         return index;
     }
 
-    int GetRichCursorPos()
+    int GetRichCursorPos(RichTextBox richTB)
     {
-        TextPointer start = richTextBox.Document.ContentStart;
-        TextPointer caret = richTextBox.CaretPosition;
+        TextPointer start = richTB.Document.ContentStart;
+        TextPointer caret = richTB.CaretPosition;
         TextRange range = new TextRange(start, caret);
         int indexInText = range.Text.Length;
         return indexInText;
+    }
+
+    void R2_changeText(string str)
+    {
+        // changes richTextBox2 text WITHOUT calling its TextChanged
+        richTextBox2_TextChanged_On = false;
+
+        richTextBox2.Document.Blocks.Clear();
+        richTextBox2.Document.Blocks.Add(new Paragraph(new Run(str)));
+
+        richTextBox2_TextChanged_On = true;
+    }
+    bool richTextBox2_TextChanged_On = true;
+
+    void RichTextBox2_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (richTextBox2_TextChanged_On == false)
+        {
+            return;
+        }
+
+        if (elementCB.SelectedValue == null)
+        {
+            return;
+        }
+
+        object selectedValue = elementCB.SelectedValue;
+        TextPointer cursorPos = richTextBox2.CaretPosition; // ??? cursor
+
+        string special = elementCB.SelectedValue.ToString().Split(':')[0];
+
+        int start = FindParagraphStart(special);
+        int end = FindParagraphEnd(special);
+
+        string str = GetTextRichTextBox();
+        string before = str.Substring(0, start);
+        string after = str.Substring(end);
+        string str2 = GetTextRichTextBox2();
+
+        str = before + str2 + after;
+
+        richTextBox.Document.Blocks.Clear();
+        richTextBox.Document.Blocks.Add(new Paragraph(new Run(str)));
+
+        elementCB_update();
+
+        elementCB.SelectedValue = selectedValue;
+        richTextBox2.CaretPosition = cursorPos; // ??? cursor
     }
 }
