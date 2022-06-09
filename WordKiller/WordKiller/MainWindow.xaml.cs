@@ -1180,6 +1180,7 @@ public partial class MainWindow : Window
         int indexSave = elementCB.SelectedIndex;
         elementCB.Items.Clear();
         elementCB.Items.Add("Весь текст");
+        elementCB.Items.Add("До разделов");
         string str = GetTextRichTextBox();
         int h1Count = 0; int h2Count = 0;
         while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
@@ -1974,6 +1975,11 @@ public partial class MainWindow : Window
 
     int FindParagraphStart(string paragraphType)
     {
+        if (paragraphType == "До разделов")
+        {
+            return 0;
+        }
+
         string searchingFor = Config.specialBefore + paragraphType + "\n";
 
         string str = GetTextRichTextBox();
@@ -2000,9 +2006,19 @@ public partial class MainWindow : Window
 
     int FindParagraphEnd(string paragraphType)
     {
-        string searchingFor = Config.specialBefore + paragraphType + "\n";
-
         string str = GetTextRichTextBox();
+
+        if (paragraphType == "До разделов")
+        {
+            int h1Pos = str.IndexOf(Config.specialBefore + "h1");
+            h1Pos = h1Pos == -1 ? int.MaxValue : h1Pos;
+            int h2Pos = str.IndexOf(Config.specialBefore + "h2");
+            h2Pos = h2Pos == -1 ? int.MaxValue : h2Pos;
+            if (h1Pos == h2Pos && h2Pos == int.MaxValue) h1Pos = str.Length; // somehow it works
+            return Math.Min(h1Pos, h2Pos);
+        }
+
+        string searchingFor = Config.specialBefore + paragraphType + "\n";
 
         int count = 0;
         for (int i = 1; i <= elementCB.SelectedIndex; i++)
@@ -2026,17 +2042,12 @@ public partial class MainWindow : Window
         {
             index = str.Length;
         }
+        else
+        {
+            index -= "\n".Length;
+        }
 
         return index;
-    }
-
-    int GetRichCursorPos(RichTextBox richTB) // GetCaretIndex() SAME ???
-    {
-        TextPointer start = richTB.Document.ContentStart;
-        TextPointer caret = richTB.CaretPosition;
-        TextRange range = new TextRange(start, caret);
-        int indexInText = range.Text.Length;
-        return indexInText;
     }
 
     void R2_changeText(string str)
