@@ -250,7 +250,7 @@
                         </Style>
                     </RichTextBox.Resources>
                 </RichTextBox>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="Green" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged">
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="Green" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>

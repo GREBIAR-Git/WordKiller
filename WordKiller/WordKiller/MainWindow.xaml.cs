@@ -1296,6 +1296,13 @@ public partial class MainWindow : Window
         return new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text.Split('\n').Length;
     }
 
+    string GetLineAtCursor(RichTextBox richTextBox)
+    {
+        string[] lines = new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text.Split('\n');
+        string last = lines[lines.Length - 1];
+        return last;
+    }
+
     void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (DownPanelMI == SubstitutionMI && ComboBoxSelected())
@@ -1376,6 +1383,10 @@ public partial class MainWindow : Window
             {
                 Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
             }
+        }
+        if (GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) // probably this is better than something above that does the same for line 0 and 2
+        {
+            e.Handled = true;
         }
     }
 
@@ -2097,5 +2108,13 @@ public partial class MainWindow : Window
         elementCB.SelectedValue = selectedValueSave;
         richTextBox2.CaretPosition = richTextBox2.CaretPosition.DocumentStart;
         richTextBox2.CaretPosition = richTextBox2.CaretPosition.GetPositionAtOffset(cursorPosSave);
+    }
+
+    void RichTextBox2_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (GetLineAtCursor(richTextBox2).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox2).Contains(Config.specialAfter))
+        {
+            e.Handled = true;
+        }
     }
 }
