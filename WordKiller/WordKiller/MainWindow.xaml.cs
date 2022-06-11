@@ -127,7 +127,7 @@ public partial class MainWindow : Window
         string beginning = Config.AddSpecialBoth(type);
         SetText(beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n");
         richTextBox.Focus();
-        richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(beginning.Length + 3, LogicalDirection.Forward);
+        SetCaret(richTextBox, beginning.Length + 3);
     }
 
     void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
@@ -363,7 +363,7 @@ public partial class MainWindow : Window
         save += Config.AddSpecialBoth("TextStart") + "\n";
         if (TextMI.IsChecked)
         {
-            save += GetTextRichTextBox() + "\n";
+            save += GetText(richTextBox) + "\n";
         }
         else
         {
@@ -668,7 +668,7 @@ public partial class MainWindow : Window
             }
             else if (MenuItem == TextMI)
             {
-                data.Text = GetTextRichTextBox();
+                data.Text = GetText(richTextBox);
                 richTextBox.Document.Blocks.Clear();
                 cursorLocationTB.Visibility = Visibility.Collapsed;
                 HideSpecials();
@@ -818,29 +818,7 @@ public partial class MainWindow : Window
         }
     }
 
-    string GetTextRichTextBox()
-    {
-        string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
-        if (text != string.Empty)
-        {
-            text = text.Replace("\r", "");
-            text = text.Remove(text.Length - 1, 1);
-        }
-        return text;
-    }
-
-    string GetTextRichTextBox2()
-    {
-        string text = new TextRange(richTextBox2.Document.ContentStart, richTextBox2.Document.ContentEnd).Text;
-        if (text != string.Empty)
-        {
-            text = text.Replace("\r", "");
-            text = text.Remove(text.Length - 1, 1);
-        }
-        return text;
-    }
-
-    string SetTextRichTextBox()
+    string GetText(RichTextBox richTextBox)
     {
         string text = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
         if (text != string.Empty)
@@ -855,16 +833,16 @@ public partial class MainWindow : Window
     {
         if (ValidAddInput())
         {
-            string str = GetTextRichTextBox().Split('\n')[0].Replace(Config.specialBefore.ToString(), "").Replace(Config.specialAfter.ToString(), "");
-            string[] text = new string[] { GetTextRichTextBox().Split('\n')[1], SplitMainText() };
+            string str = GetText(richTextBox).Split('\n')[0].Replace(Config.specialBefore.ToString(), "").Replace(Config.specialAfter.ToString(), "");
+            string[] text = new string[] { GetText(richTextBox).Split('\n')[1], SplitMainText() };
             AddToComboBox(data.ComboBox[str], text);
         }
     }
 
     bool ValidAddInput()
     {
-        string str = GetTextRichTextBox().Split('\n')[0];
-        if (GetTextRichTextBox().Split('\n').Length >= 4 && GetTextRichTextBox().Split('\n')[2] == Config.AddSpecialBoth(Config.content))
+        string str = GetText(richTextBox).Split('\n')[0];
+        if (GetText(richTextBox).Split('\n').Length >= 4 && GetText(richTextBox).Split('\n')[2] == Config.AddSpecialBoth(Config.content))
         {
             if (str == Config.AddSpecialBoth("h1") || str == Config.AddSpecialBoth("h2"))
             {
@@ -898,7 +876,7 @@ public partial class MainWindow : Window
 
     string SplitMainText()
     {
-        string[] str = GetTextRichTextBox().Split('\n');
+        string[] str = GetText(richTextBox).Split('\n');
         string mainText = str[3];
         if (str.Length > 4)
         {
@@ -947,7 +925,7 @@ public partial class MainWindow : Window
         richTextBox.Document.Blocks.Clear();
         richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
         richTextBox.Focus();
-        richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length + 3);
+        SetCaret(richTextBox, type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length + 3);
     }
 
     void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1001,8 +979,8 @@ public partial class MainWindow : Window
                     data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1] = save;
                     string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
                     int savef = comboBox.SelectedIndex;
-                    comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex-1];
-                    comboBox.Items[savef-1] = saveName;
+                    comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex - 1];
+                    comboBox.Items[savef - 1] = saveName;
                     comboBox.SelectedIndex = savef - 1;
 
                 }
@@ -1039,7 +1017,7 @@ public partial class MainWindow : Window
         AddTitleData(ref titleData);
         if (TextMI.IsChecked)
         {
-            data.Text = GetTextRichTextBox();
+            data.Text = GetText(richTextBox);
         }
         bool numberingOn = NumberingMI.IsChecked;
         if (!Int32.TryParse(FromNumberingTextBoxMI.Text, out int fromNumber))
@@ -1056,7 +1034,7 @@ public partial class MainWindow : Window
         }
         catch
         {
-           MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+            MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         }
         if (CloseWindow.IsChecked)
         {
@@ -1089,7 +1067,7 @@ public partial class MainWindow : Window
     {
         if (DownPanelMI == SubstitutionMI)
         {
-            if (ComboBoxSelected() && GetTextRichTextBox() != string.Empty)
+            if (ComboBoxSelected() && GetText(richTextBox) != string.Empty)
             {
                 if (SaveComboBoxData(data.ComboBox["h1"]))
                 {
@@ -1139,7 +1117,7 @@ public partial class MainWindow : Window
             {
                 int h2Count = Regex.Matches(str, Config.AddSpecialLeft("h2")).Count;
                 string h2 = string.Empty;
-                if(h2Count>0)
+                if (h2Count > 0)
                 {
                     h2 = "До H1 заголовков : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
                     cursorLocationTB.Text = h2;
@@ -1181,7 +1159,7 @@ public partial class MainWindow : Window
         elementCB.Items.Clear();
         elementCB.Items.Add("Весь текст");
         elementCB.Items.Add("До разделов");
-        string str = GetTextRichTextBox();
+        string str = GetText(richTextBox);
         int h1Count = 0; int h2Count = 0;
         while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
         {
@@ -1223,7 +1201,7 @@ public partial class MainWindow : Window
 
     void CountTypeText(ElementComboBox comboBox, string name)
     {
-        if (comboBox.Data.Count <= (GetTextRichTextBox().Length - GetTextRichTextBox().Replace(Config.AddSpecialLeft(name), "").Length) / (name.Length + 1))
+        if (comboBox.Data.Count <= (GetText(richTextBox).Length - GetText(richTextBox).Replace(Config.AddSpecialLeft(name), "").Length) / (name.Length + 1))
         {
             Button button = (Button)panelTypeInserts.FindName(name.ToUpper());
             button.Visibility = Visibility.Collapsed;
@@ -1241,7 +1219,7 @@ public partial class MainWindow : Window
         int index = comboBox.Form.SelectedIndex;
         if (index != -1)
         {
-            string[] lines = GetTextRichTextBox().Split('\n');
+            string[] lines = GetText(richTextBox).Split('\n');
             comboBox.Data[index][1] = SplitMainText();
             if (comboBox.Data[index][0] != lines[1])
             {
@@ -1258,7 +1236,7 @@ public partial class MainWindow : Window
     {
         Button button = (Button)sender;
         int idx = GetCaretIndex(richTextBox);
-        if (GetTextRichTextBox().Length > 0 && idx > 0 && GetTextRichTextBox()[idx - 1] == Config.specialBefore)
+        if (GetText(richTextBox).Length > 0 && idx > 0 && GetText(richTextBox)[idx - 1] == Config.specialBefore)
         {
             AddSpecialSymbol(button.Name.ToLower(), idx);
         }
@@ -1271,17 +1249,16 @@ public partial class MainWindow : Window
 
     void AddSpecialSymbol(string symbol, int idx)
     {
-        string d = GetTextRichTextBox();
-        if (idx == 0 || (idx == 1 && GetTextRichTextBox()[idx - 1] == Config.specialBefore) || (idx >=2 && GetTextRichTextBox()[idx - 2] == '\n'))
+        string d = GetText(richTextBox);
+        if (idx == 0 || (idx == 1 && GetText(richTextBox)[idx - 1] == Config.specialBefore) || (idx >= 2 && GetText(richTextBox)[idx - 2] == '\n'))
         {
             SetText(d.Insert(idx, symbol.ToLower() + "\n"));
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(symbol.Length + 2);
+            SetCaret(richTextBox, idx + symbol.Length + 3);
         }
         else
         {
             SetText(d.Insert(idx, "\n" + symbol.ToLower() + "\n"));
-            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-            richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(idx + symbol.Length + 1);
+            SetCaret(richTextBox, idx + symbol.Length + 4);
         }
         richTextBox.Focus();
     }
@@ -1308,14 +1285,14 @@ public partial class MainWindow : Window
         if (DownPanelMI == SubstitutionMI && ComboBoxSelected())
         {
             int line = GetLineOfCursor(richTextBox);
-            string[] lines = GetTextRichTextBox().Split('\n');
+            string[] lines = GetText(richTextBox).Split('\n');
             int index = GetCaretIndex(richTextBox);
             if (new TextRange(richTextBox.CaretPosition.DocumentStart, richTextBox.CaretPosition.DocumentEnd).Text == richTextBox.Selection.Text && (e.Key == Key.Back || e.Key == Key.Delete))
             {
                 lines[1] = "";
                 lines[3] = "";
                 SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
-                richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(lines[0].Length + 3);
+                SetCaret(richTextBox, lines[0].Length + 3);
                 e.Handled = true;
             }
             else if ((line == 1 || line == 3 || (line == 2 && richTextBox.Selection.Text.Contains("\n"))) && !(e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right))
@@ -1330,14 +1307,12 @@ public partial class MainWindow : Window
             }
             else if (e.Key == Key.Down && (line == 2 || BeginningSecondLines(lines, index) || EndSecondLines(lines, index)))
             {
-                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-                richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(index + lines[1].Length + lines[2].Length + 2);
+                SetCaret(richTextBox, index + lines[1].Length + lines[2].Length + 4);
                 e.Handled = true;
             }
             else if (e.Key == Key.Up && (line == 4 || BeginningFourthLines(lines, index)))
             {
-                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-                richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(index - lines[1].Length - lines[2].Length - 2);
+                SetCaret(richTextBox, index - lines[1].Length - lines[2].Length);
                 e.Handled = true;
             }
             else if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.V)
@@ -1354,14 +1329,14 @@ public partial class MainWindow : Window
                     }
                 }
             }
-            else if(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.D)
+            else if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.D)
             {
-                if(string.IsNullOrEmpty(lines[1])&& !string.IsNullOrEmpty(lines[3]))
+                if (string.IsNullOrEmpty(lines[1]) && !string.IsNullOrEmpty(lines[3]))
                 {
                     lines[1] = lines[3];
-                    if (lines.Length>4)
+                    if (lines.Length > 4)
                     {
-                        for(int i=4;i<lines.Length;i++)
+                        for (int i = 4; i < lines.Length; i++)
                         {
                             lines[3] += "\n" + lines[i];
                         }
@@ -1373,8 +1348,7 @@ public partial class MainWindow : Window
                     lines[3] = lines[1];
                     SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                 }
-                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentStart;
-                richTextBox.CaretPosition = richTextBox.CaretPosition.GetPositionAtOffset(lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 3);
+                SetCaret(richTextBox, lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 6);
             }
         }
         else
@@ -1383,10 +1357,35 @@ public partial class MainWindow : Window
             {
                 Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
             }
+            if (!CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox).Contains(Config.specialAfter))) // probably this is better than something above that does the same for line 0 and 2
+            {
+                e.Handled = true;
+            }
         }
-        if (GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) // probably this is better than something above that does the same for line 0 and 2
+    }
+
+    bool CheckPressKey(Key press, params Key[] keys)
+    {
+        foreach (Key key in keys)
         {
-            e.Handled = true;
+            if (press == key)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void SetCaret(RichTextBox richTextBox, int position)
+    {
+        TextPointer textPointer = richTextBox.Document.ContentStart.GetPositionAtOffset(position);
+        if(textPointer==null)
+        {
+            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
+        }
+        else
+        {
+            richTextBox.CaretPosition = richTextBox.Document.ContentStart.GetPositionAtOffset(position);
         }
     }
 
@@ -1569,7 +1568,7 @@ public partial class MainWindow : Window
     string TypeRichBox()
     {
         string str = string.Empty;
-        foreach (char ch in GetTextRichTextBox())
+        foreach (char ch in GetText(richTextBox))
         {
             if (ch == '\n')
             {
@@ -1967,7 +1966,7 @@ public partial class MainWindow : Window
 
             int start = FindParagraphStart(special);
             int end = FindParagraphEnd(special);
-            string str = GetTextRichTextBox().Substring(start, end - start);
+            string str = GetText(richTextBox).Substring(start, end - start);
 
             R2_changeText(str);
         }
@@ -1993,7 +1992,7 @@ public partial class MainWindow : Window
 
         string searchingFor = Config.specialBefore + paragraphType + "\n";
 
-        string str = GetTextRichTextBox();
+        string str = GetText(richTextBox);
 
         int count = 0;
         for (int i = 1; i <= elementCB.SelectedIndex; i++)
@@ -2005,7 +2004,7 @@ public partial class MainWindow : Window
         }
 
         int index = 0;
-        while(count>0)
+        while (count > 0)
         {
             count--;
             index = str.IndexOf(searchingFor, index);
@@ -2017,7 +2016,7 @@ public partial class MainWindow : Window
 
     int FindParagraphEnd(string paragraphType)
     {
-        string str = GetTextRichTextBox();
+        string str = GetText(richTextBox);
 
         if (paragraphType == "До разделов")
         {
@@ -2093,10 +2092,10 @@ public partial class MainWindow : Window
         int start = FindParagraphStart(special);
         int end = FindParagraphEnd(special);
 
-        string str = GetTextRichTextBox();
+        string str = GetText(richTextBox);
         string before = str.Substring(0, start);
         string after = str.Substring(end);
-        string str2 = GetTextRichTextBox2();
+        string str2 = GetText(richTextBox2);
 
         str = before + str2 + after;
 
@@ -2106,8 +2105,7 @@ public partial class MainWindow : Window
         elementCB_update();
 
         elementCB.SelectedValue = selectedValueSave;
-        richTextBox2.CaretPosition = richTextBox2.CaretPosition.DocumentStart;
-        richTextBox2.CaretPosition = richTextBox2.CaretPosition.GetPositionAtOffset(cursorPosSave);
+        SetCaret(richTextBox2, cursorPosSave);
     }
 
     void RichTextBox2_PreviewKeyDown(object sender, KeyEventArgs e)
