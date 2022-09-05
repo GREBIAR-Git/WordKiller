@@ -288,9 +288,9 @@ public partial class MainWindow : Window
                             {
                                 comboBox.Value.Form.Items.Add(variable_value[1]);
                                 string dataComboBox = string.Empty;
-                                foreach(string str1 in variable_value[2].Split(new string[] { "!@!" }, StringSplitOptions.None))
+                                foreach (string str1 in variable_value[2].Split(new string[] { "!@!" }, StringSplitOptions.None))
                                 {
-                                    dataComboBox += str1+"\n";
+                                    dataComboBox += str1 + "\n";
                                 }
                                 string[] str = new string[] { variable_value[1], dataComboBox };
                                 comboBox.Value.Data.Add(str);
@@ -407,7 +407,7 @@ public partial class MainWindow : Window
         for (int i = 0; i < comboBox.Form.Items.Count; i++)
         {
             string dataCombobox = string.Empty;
-            foreach(string str in comboBox.Data[i][1].Split('\n'))
+            foreach (string str in comboBox.Data[i][1].Split('\n'))
             {
                 dataCombobox += str + "!@!";
             }
@@ -1147,17 +1147,33 @@ public partial class MainWindow : Window
         }
     }
 
-    string CursorPosExtra(string str) // не пишет на первой строке если до заголовков и есть несколько списков например
+    string CursorPosExtra(string str)
     {
         string extra = "";
         for (int i = 2; i < data.ComboBox.Keys.Count; i++)
         {
             string key = data.ComboBox.Keys.ElementAt(i);
             int count = str.Length - key.Length - 1;
-            if (count > 0 && str.Substring(count).StartsWith(Config.specialBefore + key))
+            if (count >= 0 && str.Substring(count).StartsWith(Config.specialBefore + key))
             {
+                if (key == "l")
+                {
+                    extra = "Список";
+                }
+                else if (key == "p")
+                {
+                    extra = "Картинка";
+                }
+                else if (key == "t")
+                {
+                    extra = "Таблица";
+                }
+                else if (key == "c")
+                {
+                    extra = "Код";
+                }
                 int pCount = Regex.Matches(str, Config.AddSpecialLeft(key)).Count;
-                extra = "  -  " + data.ComboBox[key].Form.Items[pCount - 1].ToString();
+                extra = $"({extra} - {data.ComboBox[key].Form.Items[pCount - 1]})";
                 break;
             }
         }
@@ -1391,7 +1407,7 @@ public partial class MainWindow : Window
     void SetCaret(RichTextBox richTextBox, int position)
     {
         TextPointer textPointer = richTextBox.Document.ContentStart.GetPositionAtOffset(position);
-        if(textPointer==null)
+        if (textPointer == null)
         {
             richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
         }
