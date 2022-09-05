@@ -3,6 +3,11 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using Paragraph = Microsoft.Office.Interop.Word.Paragraph;
 
 namespace WordKiller;
 
@@ -554,6 +559,7 @@ class MakeReport
             word = doc.Range(Length - 1, Type.Missing);
             pgBreak = true;
         }
+        word.ListFormat.ApplyNumberDefault(WdListGalleryType.wdBulletGallery);
     }
 
     void PageBreak()
@@ -608,7 +614,29 @@ class MakeReport
 
     void List(string text)
     {
-        // kek
+        if(!string.IsNullOrWhiteSpace(text))
+        {
+            string items = string.Empty;
+            foreach (string str in text.Split('\n'))
+            {
+                if (!string.IsNullOrWhiteSpace(str))
+                {
+                    items+=str+"\n";
+                }
+            }
+            if(!string.IsNullOrWhiteSpace(items))
+            {
+                WriteTextWord(items);
+                word.ListFormat.ApplyNumberDefault(WdListGalleryType.wdOutlineNumberGallery);
+                word.ListFormat.ListTemplate.ListLevels[1].NumberFormat = "%1)";
+                word.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
+                word.Paragraphs.Space15();
+                word.Paragraphs.LeftIndent = CentimetersToPoints(1.88f);
+                word.Font.Size = 14;
+                word.Font.Name = "Times New Roman";
+                word.Paragraphs.SpaceAfter = 0;
+            }
+        }
     }
 
     void Picture(string text)
@@ -616,12 +644,6 @@ class MakeReport
         WriteTextWord("");
 
         word.InlineShapes.AddPicture(text, false, true);
-
-        /*using (System.Drawing.Image objImage = System.Drawing.Image.FromFile(text))
-        {
-            int width = SizePicture(420, objImage.Width);
-            int height = SizePicture(350, objImage.Height);
-        }*/
 
         word.Paragraphs.Space15();
         word.Paragraphs.FirstLineIndent = 0;
@@ -633,18 +655,6 @@ class MakeReport
         int Length = wordTemp.Text.Length;
         word = doc.Range(Length - 1, Type.Missing);
     }
-
-    /*public int SizePicture(int max,int current)
-    {
-        if (current < max)
-        {
-            return current;
-        }
-        else
-        {
-            return max;
-        }
-    }*/
 
     void СaptionForPicture(string text)
     {

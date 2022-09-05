@@ -287,7 +287,12 @@ public partial class MainWindow : Window
                             if (variable_value[0].StartsWith(comboBox.Key + "ComboBox"))
                             {
                                 comboBox.Value.Form.Items.Add(variable_value[1]);
-                                string[] str = new string[] { variable_value[1], variable_value[2] };
+                                string dataComboBox = string.Empty;
+                                foreach(string str1 in variable_value[2].Split(new string[] { "!@!" }, StringSplitOptions.None))
+                                {
+                                    dataComboBox += str1+"\n";
+                                }
+                                string[] str = new string[] { variable_value[1], dataComboBox };
                                 comboBox.Value.Data.Add(str);
                                 break;
                             }
@@ -307,6 +312,7 @@ public partial class MainWindow : Window
         }
         if (DownPanelMI == TextMI)
         {
+            richTextBox.Document.Blocks.Clear();
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(data.Text)));
             UpdateTypeButton();
         }
@@ -400,7 +406,13 @@ public partial class MainWindow : Window
         string comboBoxSave = string.Empty;
         for (int i = 0; i < comboBox.Form.Items.Count; i++)
         {
-            comboBoxSave += name + "ComboBox" + Config.AddSpecialBoth(comboBox.Form.Items[i].ToString()) + comboBox.Data[i][1] + "\n";
+            string dataCombobox = string.Empty;
+            foreach(string str in comboBox.Data[i][1].Split('\n'))
+            {
+                dataCombobox += str + "!@!";
+            }
+
+            comboBoxSave += name + "ComboBox" + Config.AddSpecialBoth(comboBox.Form.Items[i].ToString()) + dataCombobox + "\n";
         }
         return comboBoxSave;
     }
@@ -850,7 +862,7 @@ public partial class MainWindow : Window
             }
             else if (str == Config.AddSpecialBoth("l"))
             {
-                // ???
+                return true;
             }
             else if (str == Config.AddSpecialBoth("p"))
             {
@@ -1135,7 +1147,7 @@ public partial class MainWindow : Window
         }
     }
 
-    string CursorPosExtra(string str)
+    string CursorPosExtra(string str) // не пишет на первой строке если до заголовков и есть несколько списков например
     {
         string extra = "";
         for (int i = 2; i < data.ComboBox.Keys.Count; i++)
@@ -1357,7 +1369,7 @@ public partial class MainWindow : Window
             {
                 Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
             }
-            if (!CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox).Contains(Config.specialAfter))) // probably this is better than something above that does the same for line 0 and 2
+            if (!CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) && !(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.S)) // probably this is better than something above that does the same for line 0 and 2
             {
                 e.Handled = true;
             }
@@ -2114,5 +2126,15 @@ public partial class MainWindow : Window
         {
             e.Handled = true;
         }
+    }
+
+    private void CreateNetwork(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void JoinNetwork(object sender, RoutedEventArgs e)
+    {
+
     }
 }

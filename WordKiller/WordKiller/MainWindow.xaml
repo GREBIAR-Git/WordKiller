@@ -106,6 +106,14 @@
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
+                    <TextBlock Text="Сеть" Style="{StaticResource TextBlockMenu}"/>
+                </MenuItem.Header>
+                <MenuItem Header="Создать" Style="{StaticResource MenuItem}" Click="CreateNetwork"/>
+                <Separator/>
+                <MenuItem Header="Подключиться" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
                     <TextBlock Text="Справка" Style="{StaticResource TextBlockMenu}"/>
                 </MenuItem.Header>
                 <MenuItem Header="Документация" Style="{StaticResource MenuItem}" Click="DocumentationShow"/>
@@ -200,7 +208,7 @@
                 <ComboBox Grid.Row="1" Grid.Column="4" x:Name="pComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="5" x:Name="tComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="6" x:Name="cComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
-                <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}"   Click="SwitchRichTextBoxes" />
+                <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}"   Click="ButtonForward_Click" />
             </Grid>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,0,5" TextAlignment="Right" Text="Отображается: " Style="{StaticResource TextBlock}"/>
             <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,10,5" Background="#8daacc">
@@ -243,14 +251,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="Pink" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
                         </Style>
                     </RichTextBox.Resources>
                 </RichTextBox>
-                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="Green" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
+                <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
                             <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
