@@ -1128,10 +1128,9 @@ public partial class MainWindow : Window
             else
             {
                 int h2Count = Regex.Matches(str, Config.AddSpecialLeft("h2")).Count;
-                string h2 = string.Empty;
                 if (h2Count > 0)
                 {
-                    h2 = "До H1 заголовков : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
+                    string h2 = "До H1 заголовков : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
                     cursorLocationTB.Text = h2;
                 }
                 else

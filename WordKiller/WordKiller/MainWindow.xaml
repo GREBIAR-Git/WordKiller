@@ -88,6 +88,15 @@
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
+                    <TextBlock Text="Сеть" Style="{StaticResource TextBlockMenu}"/>
+                </MenuItem.Header>
+                <MenuItem Header="Создать" Style="{StaticResource MenuItem}" Click="CreateNetwork"/>
+                <Separator/>
+                <MenuItem Header="Подключиться" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
+                <MenuItem Header="Отключиться" Visibility="Collapsed" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
+            </MenuItem>
+            <MenuItem>
+                <MenuItem.Header>
                     <TextBlock Text="Разное" Style="{StaticResource TextBlockMenu}"/>
                 </MenuItem.Header>
                 <MenuItem Header="Сделать приложением по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="SetAsDefault_Click"/>
@@ -103,14 +112,6 @@
                     <MenuItem x:Name="Encoding0MenuItem" Header="Нет" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
                     <MenuItem x:Name="Encoding1MenuItem" Header="Есть" IsChecked="True" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
                 </MenuItem>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <TextBlock Text="Сеть" Style="{StaticResource TextBlockMenu}"/>
-                </MenuItem.Header>
-                <MenuItem Header="Создать" Style="{StaticResource MenuItem}" Click="CreateNetwork"/>
-                <Separator/>
-                <MenuItem Header="Подключиться" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>

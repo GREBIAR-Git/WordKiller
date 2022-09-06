@@ -3,11 +3,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using Paragraph = Microsoft.Office.Interop.Word.Paragraph;
 
 namespace WordKiller;
 
@@ -51,7 +46,7 @@ class MakeReport
 
     void TableOfContents(bool on, DataComboBox dataMainPart)
     {
-        if(on)
+        if (on)
         {
             string text = "Содержание";
             WriteTextWord(text);
@@ -85,7 +80,7 @@ class MakeReport
                 {
                     str[i] = str[i].Remove(0, 1);
                 }
-                if (str[i].Length>0 && str[i][str[i].Length - 1] == '\n')
+                if (str[i].Length > 0 && str[i][str[i].Length - 1] == '\n')
                 {
                     str[i] = str[i].Remove(str[i].Length - 1, 1);
                 }
@@ -559,7 +554,6 @@ class MakeReport
             word = doc.Range(Length - 1, Type.Missing);
             pgBreak = true;
         }
-        word.ListFormat.ApplyNumberDefault(WdListGalleryType.wdBulletGallery);
     }
 
     void PageBreak()
@@ -614,20 +608,21 @@ class MakeReport
 
     void List(string text)
     {
-        if(!string.IsNullOrWhiteSpace(text))
+        if (!string.IsNullOrWhiteSpace(text))
         {
             string items = string.Empty;
             foreach (string str in text.Split('\n'))
             {
                 if (!string.IsNullOrWhiteSpace(str))
                 {
-                    items+=str+"\n";
+                    items += str + "\n";
                 }
             }
-            if(!string.IsNullOrWhiteSpace(items))
+            if (!string.IsNullOrWhiteSpace(items))
             {
                 WriteTextWord(items);
-                word.ListFormat.ApplyNumberDefault(WdListGalleryType.wdOutlineNumberGallery);
+                word.ListFormat.ApplyBulletDefault();
+                word.ListFormat.ApplyNumberDefault(WdListGalleryType.wdNumberGallery);
                 word.ListFormat.ListTemplate.ListLevels[1].NumberFormat = "%1)";
                 word.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphJustify;
                 word.Paragraphs.Space15();
