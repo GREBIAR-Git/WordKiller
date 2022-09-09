@@ -7,7 +7,7 @@ public enum TypeDocument
     PracticalWork,
     Coursework,
     ControlWork,
-    Report,
+    Referat,
     GraduateWork,
     VKR
 }

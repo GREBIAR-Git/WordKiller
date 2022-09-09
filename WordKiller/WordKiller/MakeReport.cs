@@ -199,7 +199,7 @@ class MakeReport
 
             SkipLinesSingle(9);
         }
-        else if (typeDocument == TypeDocument.Report)
+        else if (typeDocument == TypeDocument.Referat)
         {
             SkipLinesSingle(1);
 

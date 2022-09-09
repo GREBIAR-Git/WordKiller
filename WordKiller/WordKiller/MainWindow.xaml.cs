@@ -512,7 +512,7 @@ public partial class MainWindow : Window
         }
         else if (RefMI.IsChecked)
         {
-            typeDocument = TypeDocument.Report;
+            typeDocument = TypeDocument.Referat;
             TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
             TextHeader("Реферат");
         }
@@ -1024,7 +1024,8 @@ public partial class MainWindow : Window
 
     async void ReadScrollMenuItem_Click(object sender, RoutedEventArgs e)
     {
-        MakeReport report = new();
+
+
         List<string> titleData = new();
         AddTitleData(ref titleData);
         if (TextMI.IsChecked)
@@ -1039,15 +1040,14 @@ public partial class MainWindow : Window
         bool tableOfContentsOn = tableOfContents.IsChecked;
         bool headingNumbersOn = NumberHeadingMI.IsChecked;
         bool exportPDFOn = ExportPDF.IsChecked;
-        try
-        {
-            await Task.Run(() =>
-            report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
-        }
-        catch
-        {
-            MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-        }
+
+        Report report = new();
+        await Task.Run(() =>
+            report.Create(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray()));
+        //MakeReport report = new();
+        //await Task.Run(() =>
+            //report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
+
         if (CloseWindow.IsChecked)
         {
             WindowClose();

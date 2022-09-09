@@ -62,11 +62,15 @@
                 </MenuItem.Header>
                 <MenuItem Header="Тип" Style="{StaticResource MenuItem}" x:Name="typeMenuItem">
                     <MenuItem x:Name="DefaultDocumentMI" Header="Обычный документ" IsChecked="True" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="CourseworkMI" Header="Курсовая работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                    <Separator/>
                     <MenuItem x:Name="LabMI" Header="Лабораторная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     <MenuItem x:Name="PracticeMI" Header="Практическа работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                    <Separator/>
                     <MenuItem x:Name="ControlWorkMI" Header="Контрольная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     <MenuItem x:Name="RefMI" Header="Реферат" Style="{StaticResource MenuItem}" Click="Work_Click"/>
-                    <MenuItem x:Name="CourseworkMI" Header="Курсовая работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                    <Separator/>
                     <MenuItem x:Name="DiplomMI" Header="Дипломная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     <MenuItem x:Name="VKRMI" Header="ВКР" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                 </MenuItem>
