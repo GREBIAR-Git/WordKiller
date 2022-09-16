@@ -171,7 +171,7 @@
             <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Margin="10,5,10,10" Text="202" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
         </Grid>
         <Button Grid.Row="2" Grid.Column="0" x:Name="buttonDown" Content="Вниз" Style="{StaticResource Button}" Click="ButtonDown_Click"/>
-        <Button Grid.Row="3" Grid.Column="0" x:Name="buttonUp" Content="Вверх" Style="{StaticResource Button}" Click="ButtonUp_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" x:Name="buttonUp" Content="К титульнику" Style="{StaticResource Button}" Click="ButtonUp_Click"/>
         <Grid Grid.Row="4" Grid.Column="0" x:Name="downPanel" Background="#8daacc">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="18*"/>

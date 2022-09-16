@@ -208,7 +208,7 @@ public partial class MainWindow : Window
             string text = reader.ReadToEnd();
             if (text[0] == '1' && text[1] == '\r' && text[2] == '\n')
             {
-                text = EncodingDecoding.MegaConvertD(text.Substring(3));
+                text = Encryption.MegaConvertD(text.Substring(3));
             }
             else if (text[0] == '0' && text[1] == '\r' && text[2] == '\n')
             {
@@ -231,11 +231,11 @@ public partial class MainWindow : Window
                 if (line.StartsWith(Config.AddSpecialBoth("Menu")))
                 {
                     string[] menuItem = line.Remove(0, 6).Split('!');
-                    foreach (MenuItem f in typeMenuItem.Items)
+                    foreach (Control f in typeMenuItem.Items)
                     {
-                        if (f.Name == menuItem[0])
+                        if (f.GetType() == typeof(MenuItem) && f.Name == menuItem[0])
                         {
-                            WorkChange(f);
+                            WorkChange((MenuItem)f);
                         }
                     }
                     if (menuItem[0] != "DefaultDocumentMI")
@@ -287,11 +287,7 @@ public partial class MainWindow : Window
                             if (variable_value[0].StartsWith(comboBox.Key + "ComboBox"))
                             {
                                 comboBox.Value.Form.Items.Add(variable_value[1]);
-                                string dataComboBox = string.Empty;
-                                foreach (string str1 in variable_value[2].Split(new string[] { "!@!" }, StringSplitOptions.None))
-                                {
-                                    dataComboBox += str1 + "\n";
-                                }
+                                string dataComboBox = variable_value[2].Replace("!@!", "\n");
                                 string[] str = new string[] { variable_value[1], dataComboBox };
                                 comboBox.Value.Data.Add(str);
                                 break;
@@ -347,9 +343,10 @@ public partial class MainWindow : Window
         FileStream fileStream = System.IO.File.Open(nameFile, FileMode.Create);
         StreamWriter output = new(fileStream);
         string save = string.Empty;
-        foreach (MenuItem item in typeMenuItem.Items)
+
+        foreach (Control item in typeMenuItem.Items)
         {
-            if (((MenuItem)item).IsChecked)
+            if (item.GetType()==typeof(MenuItem) && ((MenuItem)item).IsChecked)
             {
                 save += Config.AddSpecialBoth("Menu") + item.Name.ToString() + "!" + NumberHeadingMI.IsChecked.ToString() + "\n";
             }
@@ -382,7 +379,7 @@ public partial class MainWindow : Window
         }
         else if (Encoding1MenuItem.IsChecked)
         {
-            output.Write("1\r\n" + EncodingDecoding.MegaConvertE(save));
+            output.Write("1\r\n" + Encryption.MegaConvertE(save));
         }
         output.Close();
         win.Title = Path.GetFileName(nameFile);
@@ -407,9 +404,16 @@ public partial class MainWindow : Window
         for (int i = 0; i < comboBox.Form.Items.Count; i++)
         {
             string dataCombobox = string.Empty;
-            foreach (string str in comboBox.Data[i][1].Split('\n'))
+            if (comboBox.Data[i][1].Contains("\n"))
             {
-                dataCombobox += str + "!@!";
+                foreach (string str in comboBox.Data[i][1].Split('\n'))
+                {
+                    dataCombobox += str + "!@!";
+                }
+            }
+            else
+            {
+                dataCombobox = comboBox.Data[i][1];
             }
 
             comboBoxSave += name + "ComboBox" + Config.AddSpecialBoth(comboBox.Form.Items[i].ToString()) + dataCombobox + "\n";
@@ -1046,7 +1050,7 @@ public partial class MainWindow : Window
             report.Create(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray()));
         //MakeReport report = new();
         //await Task.Run(() =>
-            //report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
+        //    report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
 
         if (CloseWindow.IsChecked)
         {
@@ -1231,7 +1235,7 @@ public partial class MainWindow : Window
         if (comboBox.Data.Count <= (GetText(richTextBox).Length - GetText(richTextBox).Replace(Config.AddSpecialLeft(name), "").Length) / (name.Length + 1))
         {
             Button button = (Button)panelTypeInserts.FindName(name.ToUpper());
-            button.Visibility = Visibility.Collapsed;
+            button.Visibility = Visibility.Collapsed; 
         }
         else
         {

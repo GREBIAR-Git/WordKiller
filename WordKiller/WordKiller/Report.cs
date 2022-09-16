@@ -2,13 +2,22 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
+using System.IO;
 using System.Windows;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Style = DocumentFormat.OpenXml.Wordprocessing.Style;
 
 namespace WordKiller;
-
 class Report
 {
+    const short cm_to_pt = 567;
+
+    const byte pt_to_halfpt = 2;
+
+    const short pixel_to_EMU = 9525;
+
     public void Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
     {
         using (WordprocessingDocument doc =
@@ -18,12 +27,12 @@ class Report
             MainDocumentPart main = doc.AddMainDocumentPart();
             main.Document = new Document();
             Body body = main.Document.AppendChild(new Body());
-            SectionProperties props = new();
-            body.AppendChild(props);
+
+            //PageNumber pageNumber = main.Document.AppendChild(new PageNumber());
 
             InitStyles(doc);
 
-            PageSetup(props);
+            PageSetup(body);
             try
             {
                 if (typeDocument != TypeDocument.DefaultDocument)
@@ -37,16 +46,18 @@ class Report
                 MessageBox.Show("Ошибка в формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
             }
 
-            TableOfContents(tableOfContentsOn, mainPart);
-            try
-            {
-                ProcessSpecials(mainPart);
-                MainPart(mainPart, numbering, fromNumbering, numberHeading);
-            }
+            TableOfContents(doc, tableOfContentsOn, mainPart);
+            //try
+            //{
+            ProcessSpecials(mainPart);
+            MainPart(doc, mainPart, numbering, fromNumbering, numberHeading);
+
+
+            /*}
             catch
             {
                 MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-            }
+            }*/
             /*if (exportPDF)
             {
                 SaveFileDialog saveFileDialog = new()
@@ -63,58 +74,118 @@ class Report
         }
     }
 
+    string SpaceForYear(string year, char spaceCharacter)
+    {
+        for (int i = 0; i < 4 - year.Length; i++)
+        {
+            year += spaceCharacter;
+        }
+        return year;
+    }
+
     void InitStyles(WordprocessingDocument doc)
     {
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
-        var styles = new Styles();
+        Styles styles = new Styles();
         styles.Save(styleDefinitions);
         styles = styleDefinitions.Styles;
 
-        // EmptyLines
+        styles.Append(
+            InitStyle("EmptyLines", justify: JustificationValues.Center));
+
+        styles.Append(
+            InitStyle("Simple", justify: JustificationValues.Both, multiplier: 1.5f, firstLine: 1.25f));
+
+        styles.Append(
+            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true));
+
+        styles.Append(
+            InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f));
+        
+        styles.Append(
+            InitStyle("List", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
+
+        styles.Append(
+            InitStyle("Picture", justify: JustificationValues.Center, after: 8, multiplier: 1.5f));
+
+        styles.Append(
+            InitStyle("Code", 12, JustificationValues.Left));
+    }
+
+    Style InitStyle(string name, int size = 14,
+        JustificationValues justify = JustificationValues.Left, bool bold = false,
+        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, float hanging = 0)
+    {
         var style = new Style()
         {
             Type = StyleValues.Paragraph,
-            StyleId = "EmptyLines",
+            StyleId = name,
             CustomStyle = true,
             Default = false
         };
-        style.Append(new StyleName() { Val = "EmptyLines" });
+        style.Append(new StyleName()
+        {
+            Val = name
+        });
 
         var styleRunProperties = new StyleRunProperties();
-        styleRunProperties.Append(new RunFonts() { Ascii = "Times New Roman" });
-        styleRunProperties.Append(new FontSize() { Val = "28" });
+        styleRunProperties.Append(new RunFonts()
+        {
+            Ascii = "Times New Roman",
+            HighAnsi = "Times New Roman"
+        });
+        styleRunProperties.Append(new FontSize()
+        {
+            Val = (size * pt_to_halfpt).ToString()
+        });
+        styleRunProperties.Append(new Caps()
+        {
+            Val = caps
+        });
+        if (bold)
+        {
+            styleRunProperties.AddChild(new Bold());
+        }
 
         ParagraphProperties paragraphProperties = new();
         paragraphProperties.AddChild(new Justification()
         {
-            Val = JustificationValues.Center
+            Val = justify
         });
 
         paragraphProperties.AddChild(new SpacingBetweenLines()
         {
-            After = (0 * 20).ToString(),
-            Before = (0 * 20).ToString(),
-            Line = (1 * 240).ToString(),
+            After = (after * 20).ToString(),
+            Before = (before * 20).ToString(),
+            Line = (multiplier * 240).ToString(),
             LineRule = LineSpacingRuleValues.Auto
         });
 
-        paragraphProperties.AddChild(new Indentation()
+        if (hanging == 0)
         {
-            Left = ((int)(0 * 567)).ToString(),
-            Right = ((int)(0 * 567)).ToString(),
-            FirstLine = "0"
-        });
+            paragraphProperties.AddChild(new Indentation()
+            {
+                Left = ((int)(left * cm_to_pt)).ToString(),
+                Right = ((int)(right * cm_to_pt)).ToString(),
+                FirstLine = ((int)(firstLine * cm_to_pt)).ToString(),
+            });
+        }
+        else
+        {
+            paragraphProperties.AddChild(new Indentation()
+            {
+                Left = ((int)((left + hanging) * cm_to_pt)).ToString(),
+                Right = ((int)(right * cm_to_pt)).ToString(),
+                Hanging = ((int)(hanging * cm_to_pt)).ToString(),
+            });
+        }
+
+
 
         style.Append(styleRunProperties);
         style.Append(paragraphProperties);
-
-        styles.Append(style);
-    }
-
-    void MainPart(DataComboBox content, bool numbering, int fromNumbering, bool numberHeading)
-    {
-
+        return style;
     }
 
     void ProcessSpecials(DataComboBox data)
@@ -145,38 +216,13 @@ class Report
         return String.Join(symbol, str);
     }
 
-    void TableOfContents(bool on, DataComboBox dataMainPart)
+    void TableOfContents(WordprocessingDocument doc, bool on, DataComboBox dataMainPart)
     {
         if (on)
         {
-            /*string text = "Содержание";
-            WriteTextWord(text);
-            word.Font.AllCaps = 0;
-            word.Font.Size = 14;
-            word.Font.Bold = 1;
-            word.Font.ColorIndex = 0;
-            word.Paragraphs.Space15();
-            word.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-            PageBreak();*/
+            Run run = Text(doc, "Содержание", justify: JustificationValues.Center, bold: true, multiplier: 1.5f);
+            PageBreak(run);
         }
-    }
-
-    void PageSetup(SectionProperties props, float top = 2, float right = 1.5f, float bot = 2, float left = 3)
-    {
-        props.AddChild(new PageMargin()
-        {
-            Top = (int)(top * 567f),
-            Right = Convert.ToUInt32(right * 567f),
-            Bottom = (int)(bot * 567f),
-            Left = Convert.ToUInt32(left * 567f)
-        });
-
-        props.AppendChild(new PageSize()
-        {
-            Width = 11907,
-            Height = 16839
-        });
-
     }
 
     void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle)
@@ -306,18 +352,6 @@ class Report
         EmptyLines(doc, 2);
     }
 
-    void Orel(WordprocessingDocument doc, string year)
-    {
-        string text = "Орел, " + year;
-        Run run = Text(doc, text, justify: JustificationValues.Center);
-        PageBreak(run);
-    }
-
-    void PageBreak(Run run)
-    {
-        run.AppendChild(new Break() { Type = BreakValues.Page });
-    }
-
     void LabPra(WordprocessingDocument doc, string type, string[] dataTitle)
     {
         string text = "ОТЧЁТ";
@@ -372,6 +406,331 @@ class Report
         EmptyLines(doc, 3);
     }
 
+    void Orel(WordprocessingDocument doc, string year)
+    {
+        string text = "Орел, " + year;
+        Run run = Text(doc, text, justify: JustificationValues.Center);
+        PageBreak(run);
+    }
+
+    void MainPart(WordprocessingDocument doc, DataComboBox content, bool numbering, int fromNumbering, bool numberHeading)
+    {
+        if (content.Text != null)
+        {
+            ProcessContent(doc, content, numberHeading);
+        }
+    }
+
+    void ProcessContent(WordprocessingDocument doc, DataComboBox content, bool number = true)
+    {
+        NumberingDefinitionsPart numberingPart =
+            doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("Grebiar");
+        Numbering element = new Numbering();
+        for (int i = 1; i < content.ComboBox["l"].Data.Count + 1; i++)
+        {
+            AbstractNum abstractNum = new AbstractNum(
+                    new Level(
+                        new NumberingFormat() { Val = NumberFormatValues.Decimal },
+                        new StartNumberingValue() { Val = 1 + i },
+                        new LevelText() { Val = "%1)" }
+                    )
+                    { LevelIndex = 0 }
+                )
+            { AbstractNumberId = i };
+
+            NumberingInstance numbering = new NumberingInstance(
+                    new AbstractNumId() { Val = i }
+                )
+            { NumberID = i };
+            element.Append(abstractNum);
+            element.Append(numbering);
+        }
+        element.Save(numberingPart);
+
+
+        int h1 = 1;
+        int h2 = 1;
+        int h2all = 1;
+        int l = 1;
+        int p = 1;
+        int t = 1;
+        int c = 1;
+        string def = string.Empty;
+        for (int i = 0; i < content.Text.Length; i++)
+        {
+            if (content.Text[i] == Config.specialBefore)
+            {
+                if (def != string.Empty)
+                {
+                    Text(doc, def, "Simple");
+                    def = string.Empty;
+                }
+                if (content.Text[i + 1] == 'h')
+                {
+                    if (content.Text[i + 2] == '1')
+                    {
+                        i += 2;
+                        string text = string.Empty;
+                        if (number)
+                        {
+                            text += h1.ToString() + " ";
+                        }
+                        text += ProcessSpecial(h1, "h1", content)[0];
+                        Text(doc, text, "H1");
+                        h1++;
+                        h2 = 1;
+                    }
+                    else if (content.Text[i + 2] == '2')
+                    {
+                        i += 2;
+
+                        string text = string.Empty;
+                        if (number)
+                        {
+                            text += (h1 - 1).ToString() + "." + h2.ToString() + " ";
+                        }
+
+                        text += ProcessSpecial(h2all, "h2", content)[0];
+                        Text(doc, text, "H2");
+                        h2all++;
+                        h2++;
+                    }
+                }
+                else if (content.Text[i + 1] == 'l')
+                {
+                    i += 1;
+                    string[] text = ProcessSpecial(l, "l", content);
+                    List(doc, text[0], l, numberingPart);
+                    l++;
+                }
+                else if (content.Text[i + 1] == 'p')
+                {
+                    i += 1;
+                    string[] text = ProcessSpecial(p, "p", content);
+                    Picture(doc, text[0]);
+                    Text(doc, "Рисунок " + p + " – " + text[1], "Picture");
+                    p++;
+                }
+                else if (content.Text[i + 1] == 't')
+                {
+                    i += 1;
+                    string[] text = ProcessSpecial(t, "t", content);
+                    //Table(text[0]);
+                    t++;
+                }
+                else if (content.Text[i + 1] == 'c')
+                {
+                    i += 1;
+                    string[] text = ProcessSpecial(c, "c", content);
+                    Text(doc, text[1], "H1");
+                    FileStream file = new(text[0], FileMode.Open);
+                    StreamReader reader = new(file);
+                    string data = reader.ReadToEnd();
+                    Text(doc, data, "Code");
+                    c++;
+                }
+            }
+            else
+            {
+                def += content.Text[i];
+            }
+        }
+        if (def != string.Empty)
+        {
+            Text(doc, def, "Simple");
+        }
+
+
+    }
+
+    //не работает как нужно 
+    void List(WordprocessingDocument doc, string items, int id, NumberingDefinitionsPart numberingPart)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+
+
+
+        foreach (string item in items.Split('\n'))
+        {
+            if (!string.IsNullOrWhiteSpace(item))
+            {
+                Paragraph paragraph = body.AppendChild(new Paragraph());
+
+                paragraph.ParagraphProperties = new ParagraphProperties(
+                    new NumberingProperties(
+                        new NumberingLevelReference() { Val = 0 },
+                        new NumberingId() { Val = id }),
+                    new ParagraphStyleId() { Val = "List" });
+
+
+                Run run = paragraph.AppendChild(new Run());
+                run.AppendChild(new Text(item));
+            }
+        }
+    }
+
+    void Picture(WordprocessingDocument doc, string fileName)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+
+        using (FileStream stream = new(fileName, FileMode.Open))
+        {
+            imagePart.FeedData(stream);
+        }
+
+        AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), fileName);
+    }
+    void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, string fileName)
+    {
+        int emusPerCm = 360000;
+        float maxWidthCm = 16.51f;
+        int maxWidthEmus = (int)(maxWidthCm * emusPerCm);
+
+        int iWidth = 0;
+        int iHeight = 0;
+        using (System.Drawing.Bitmap bmp = new(fileName))
+        {
+            iWidth = bmp.Width;
+            iHeight = bmp.Height;
+        }
+        iWidth = (int)Math.Round((decimal)iWidth * pixel_to_EMU);
+        iHeight = (int)Math.Round((decimal)iHeight * pixel_to_EMU);
+        float ratio = iHeight / (float)iWidth;
+        if (iWidth > maxWidthEmus)
+        {
+            iWidth = maxWidthEmus;
+            iHeight = (int)(iWidth * ratio);
+        }
+
+        var element =
+             new Drawing(
+                 new DW.Inline(
+                     new DW.Extent() { Cx = iWidth, Cy = iHeight },
+                     new DW.EffectExtent()
+                     {
+                         LeftEdge = 0L,
+                         TopEdge = 0L,
+                         RightEdge = 0L,
+                         BottomEdge = 0L
+                     },
+                     new DW.DocProperties()
+                     {
+                         Id = (UInt32Value)1U,
+                         Name = "Picture 1"
+                     },
+                     new DW.NonVisualGraphicFrameDrawingProperties(
+                         new A.GraphicFrameLocks() { NoChangeAspect = true }),
+                     new A.Graphic(
+                         new A.GraphicData(
+                             new PIC.Picture(
+                                 new PIC.NonVisualPictureProperties(
+                                     new PIC.NonVisualDrawingProperties()
+                                     {
+                                         Id = (UInt32Value)0U,
+                                         Name = "New Bitmap Image.jpg"
+                                     },
+                                     new PIC.NonVisualPictureDrawingProperties()),
+                                 new PIC.BlipFill(
+                                     new A.Blip(
+                                         new A.BlipExtensionList(
+                                             new A.BlipExtension()
+                                             {
+                                                 Uri =
+                                                   "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                                             })
+                                     )
+                                     {
+                                         Embed = relationshipId,
+                                         CompressionState = A.BlipCompressionValues.Print
+                                     },
+                                     new A.Stretch(
+                                         new A.FillRectangle())),
+                                 new PIC.ShapeProperties(
+                                     new A.Transform2D(
+                                         new A.Offset() { X = 0L, Y = 0L },
+                                         new A.Extents() { Cx = iWidth, Cy = iHeight }),
+                                     new A.PresetGeometry(
+                                         new A.AdjustValueList()
+                                     )
+                                     { Preset = A.ShapeTypeValues.Rectangle }))
+                         )
+                         { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+                 )
+                 {
+                     DistanceFromTop = (UInt32Value)0U,
+                     DistanceFromBottom = (UInt32Value)0U,
+                     DistanceFromLeft = (UInt32Value)0U,
+                     DistanceFromRight = (UInt32Value)0U,
+                     EditId = "50D07946"
+                 });
+        Paragraph paragraph = new()
+        {
+            ParagraphProperties = new ParagraphProperties(
+                new ParagraphStyleId() { Val = "Picture" })
+        };
+        paragraph.AppendChild(new Run(element));
+        wordDoc.MainDocumentPart.Document.Body.AppendChild(paragraph);
+    }
+
+    string[] ProcessSpecial(int i, string special, DataComboBox content)
+    {
+        string[] text = new string[2];
+        if (special == "h1")
+        {
+            text[0] = content.ComboBox["h1"].Data[i - 1][1];
+        }
+        else if (special == "h2")
+        {
+            text[0] = content.ComboBox["h2"].Data[i - 1][1];
+        }
+        else if (special == "l")
+        {
+            text[0] = content.ComboBox["l"].Data[i - 1][1];
+        }
+        else if (special == "p")
+        {
+            text[0] = content.ComboBox["p"].Data[i - 1][1];
+            text[1] = content.ComboBox["p"].Data[i - 1][0];
+        }
+        else if (special == "t")
+        {
+            text[0] = content.ComboBox["t"].Data[i - 1][1];
+        }
+        else if (special == "c")
+        {
+            text[0] = content.ComboBox["c"].Data[i - 1][1];
+            text[1] = content.ComboBox["c"].Data[i - 1][0];
+        }
+        return text;
+    }
+
+    void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3)
+    {
+        SectionProperties props = new();
+        body.AppendChild(props);
+        props.AddChild(new PageMargin()
+        {
+            Top = (int)(top * cm_to_pt),
+            Right = Convert.ToUInt32(right * cm_to_pt),
+            Bottom = (int)(bot * cm_to_pt),
+            Left = Convert.ToUInt32(left * cm_to_pt)
+        });
+
+        props.AppendChild(new PageSize()
+        {
+            Width = 11907,
+            Height = 16839
+        });
+
+    }
+
+    void PageBreak(Run run)
+    {
+        run.AppendChild(new Break() { Type = BreakValues.Page });
+    }
+
     void EmptyLines(WordprocessingDocument doc, int number)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
@@ -390,18 +749,9 @@ class Report
         }
     }
 
-    string SpaceForYear(string year, char spaceCharacter)
-    {
-        for (int i = 0; i < 4 - year.Length; i++)
-        {
-            year += spaceCharacter;
-        }
-        return year;
-    }
-
     Run Text(WordprocessingDocument doc, string text, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
-        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0)
+        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -419,14 +769,14 @@ class Report
             After = (after * 20).ToString(),
             Before = (before * 20).ToString(),
             Line = (multiplier * 240).ToString(),
-            LineRule = LineSpacingRuleValues.Auto
+            LineRule = LineSpacingRuleValues.Auto,
         });
 
         paragraph.ParagraphProperties.AddChild(new Indentation()
         {
-            Left = ((int)(left * 567)).ToString(),
-            Right = ((int)(right * 567)).ToString(),
-            FirstLine = "0"
+            Left = ((int)(left * cm_to_pt)).ToString(),
+            Right = ((int)(right * cm_to_pt)).ToString(),
+            FirstLine = ((int)firstLine * cm_to_pt).ToString()
         });
 
         Run run = paragraph.AppendChild(new Run());
@@ -447,8 +797,44 @@ class Report
 
         run.RunProperties.AddChild(new FontSize()
         {
-            Val = (size * 2).ToString()
+            Val = (size * pt_to_halfpt).ToString()
+        });
+
+        run.RunProperties.AddChild(new Caps()
+        {
+            Val = caps
         });
         return run;
+    }
+
+    void Text(WordprocessingDocument doc, string text, string style)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+
+
+        string[] str = text.Split('\n');
+
+        for (int i = 0; i < str.Length - 1; i++)
+        {
+            Paragraph paragraph = body.AppendChild(new Paragraph());
+
+            paragraph.ParagraphProperties = new ParagraphProperties(
+                new ParagraphStyleId() { Val = style });
+
+            Run run = paragraph.AppendChild(new Run());
+            run.AppendChild(new Text(str[i]));
+        }
+
+        if (str.Length - 1 >= 0)
+        {
+            Paragraph paragraph = body.AppendChild(new Paragraph());
+
+            paragraph.ParagraphProperties = new ParagraphProperties(
+                new ParagraphStyleId() { Val = style });
+
+            Run run = paragraph.AppendChild(new Run());
+            run.AppendChild(new Text(str[str.Length - 1]));
+        }
     }
 }
