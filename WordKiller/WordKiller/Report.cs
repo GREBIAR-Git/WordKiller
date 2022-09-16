@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
@@ -91,6 +92,7 @@ class Report
         styles.Save(styleDefinitions);
         styles = styleDefinitions.Styles;
 
+
         styles.Append(
             InitStyle("EmptyLines", justify: JustificationValues.Center));
 
@@ -102,7 +104,7 @@ class Report
 
         styles.Append(
             InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f));
-        
+
         styles.Append(
             InitStyle("List", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
 
@@ -423,31 +425,6 @@ class Report
 
     void ProcessContent(WordprocessingDocument doc, DataComboBox content, bool number = true)
     {
-        NumberingDefinitionsPart numberingPart =
-            doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("Grebiar");
-        Numbering element = new Numbering();
-        for (int i = 1; i < content.ComboBox["l"].Data.Count + 1; i++)
-        {
-            AbstractNum abstractNum = new AbstractNum(
-                    new Level(
-                        new NumberingFormat() { Val = NumberFormatValues.Decimal },
-                        new StartNumberingValue() { Val = 1 + i },
-                        new LevelText() { Val = "%1)" }
-                    )
-                    { LevelIndex = 0 }
-                )
-            { AbstractNumberId = i };
-
-            NumberingInstance numbering = new NumberingInstance(
-                    new AbstractNumId() { Val = i }
-                )
-            { NumberID = i };
-            element.Append(abstractNum);
-            element.Append(numbering);
-        }
-        element.Save(numberingPart);
-
-
         int h1 = 1;
         int h2 = 1;
         int h2all = 1;
@@ -500,7 +477,7 @@ class Report
                 {
                     i += 1;
                     string[] text = ProcessSpecial(l, "l", content);
-                    List(doc, text[0], l, numberingPart);
+                    List(doc, text[0]);
                     l++;
                 }
                 else if (content.Text[i + 1] == 'p')
@@ -543,13 +520,50 @@ class Report
 
     }
 
-    //не работает как нужно 
-    void List(WordprocessingDocument doc, string items, int id, NumberingDefinitionsPart numberingPart)
+    void List(WordprocessingDocument doc, string items)
     {
-        MainDocumentPart mainPart = doc.MainDocumentPart;
-        Body body = mainPart.Document.Body;
+        NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
+        if (numberingPart == null)
+        {
+            numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
+            Numbering element = new Numbering();
+            element.Save(numberingPart);
+        }
 
+        int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
+        Level abstractLevel = new Level(
+            new NumberingFormat() { Val = NumberFormatValues.Decimal },
+            new StartNumberingValue() { Val = 1 },
+            new LevelText() { Val = "%1)" })
+        { LevelIndex = 0 };
+        AbstractNum abstractNum1 = new AbstractNum(abstractLevel) { AbstractNumberId = abstractNumberId };
 
+        if (abstractNumberId == 1)
+        {
+            numberingPart.Numbering.Append(abstractNum1);
+        }
+        else
+        {
+            AbstractNum lastAbstractNum = numberingPart.Numbering.Elements<AbstractNum>().Last();
+            numberingPart.Numbering.InsertAfter(abstractNum1, lastAbstractNum);
+        }
+
+        int numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
+        NumberingInstance numberingInstance1 = new NumberingInstance() { NumberID = numberId };
+        AbstractNumId abstractNumId1 = new AbstractNumId() { Val = abstractNumberId };
+        numberingInstance1.Append(abstractNumId1);
+
+        if (numberId == 1)
+        {
+            numberingPart.Numbering.Append(numberingInstance1);
+        }
+        else
+        {
+            var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
+            numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
+        }
+
+        Body body = doc.MainDocumentPart.Document.Body;
 
         foreach (string item in items.Split('\n'))
         {
@@ -560,9 +574,8 @@ class Report
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
                         new NumberingLevelReference() { Val = 0 },
-                        new NumberingId() { Val = id }),
+                        new NumberingId() { Val = numberId }),
                     new ParagraphStyleId() { Val = "List" });
-
 
                 Run run = paragraph.AppendChild(new Run());
                 run.AppendChild(new Text(item));
