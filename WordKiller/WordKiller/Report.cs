@@ -55,26 +55,27 @@ class Report
                 catch
                 {
                     MessageBox.Show("Ошибка в формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    return false;
                 }
 
                 TableOfContents(doc, tableOfContentsOn, mainPart);
-                //try
-                //{
-                ProcessSpecials(mainPart);
-                MainPart(doc, mainPart, numberHeading);
+
+                try
+                {
+                    ProcessSpecials(mainPart);
+                    MainPart(doc, mainPart, numberHeading);
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    return false;
+                }
 
                 if (numbering)
                 {
                     PageNumber(doc, fromNumbering);
                 }
-                //FooterPart f = main.AddNewPart<FooterPart>();
-                //GenerateFooterPartContent(f);
-                //InsertWordHeader(doc, newHeaderPart, "test");
-                /*}
-                catch
-                {
-                    MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-                }*/
+
                 /*if (exportPDF)
                 {
                     SaveFileDialog saveFileDialog = new()
@@ -88,6 +89,7 @@ class Report
                         doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
                     }
                 }*/
+                return true;
             }
         }
         return false;
@@ -103,7 +105,7 @@ class Report
 
         string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
 
-        GeneratePageNumberPartContent(headerPart, fromNumbering);
+        GeneratePageNumber(headerPart, fromNumbering);
 
         IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Elements<SectionProperties>();
 
@@ -114,7 +116,7 @@ class Report
         }
     }
 
-    void GeneratePageNumberPartContent(HeaderPart part, int fromNumbering)
+    void GeneratePageNumber(HeaderPart part, int fromNumbering)
     {
         Header header = new();
         header.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
@@ -594,8 +596,6 @@ class Report
         {
             Text(doc, def, "Simple");
         }
-
-
     }
 
     void List(WordprocessingDocument doc, string items)
@@ -902,7 +902,6 @@ class Report
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
-
 
         string[] str = text.Split('\n');
 
