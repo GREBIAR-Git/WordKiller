@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -19,60 +20,73 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public void Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
+    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
     {
-        using (WordprocessingDocument doc =
-            WordprocessingDocument.Create("C:\\Users\\Nikita\\Desktop\\1.docx",
-            WordprocessingDocumentType.Document, true))
+        string pathSave = string.Empty;
+        SaveFileDialog saveFileDialog = new()
         {
-            MainDocumentPart main = doc.AddMainDocumentPart();
-            main.Document = new Document();
-            Body body = main.Document.AppendChild(new Body());
-
-            //PageNumber pageNumber = main.Document.AppendChild(new PageNumber());
-
-            InitStyles(doc);
-
-            PageSetup(body);
-            try
+            OverwritePrompt = true,
+            Filter = "docx files (*.docx)|*.docx|All files (*.*)|*.*",
+            FileName = "1"
+        };
+        if (saveFileDialog.ShowDialog() == true)
+        {
+            pathSave = saveFileDialog.FileName;
+            using (WordprocessingDocument doc =
+            WordprocessingDocument.Create(pathSave,
+            WordprocessingDocumentType.Document, true))
             {
-                if (typeDocument != TypeDocument.DefaultDocument)
+                MainDocumentPart main = doc.AddMainDocumentPart();
+
+                main.Document = new Document();
+                Body body = main.Document.AppendChild(new Body());
+
+                //PageNumber pageNumber = main.Document.AppendChild(new PageNumber());
+
+                InitStyles(doc);
+
+                PageSetup(body);
+                try
                 {
-                    dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
-                    TitlePart(doc, typeDocument, dataTitle);
+                    if (typeDocument != TypeDocument.DefaultDocument)
+                    {
+                        dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
+                        TitlePart(doc, typeDocument, dataTitle);
+                    }
                 }
-            }
-            catch
-            {
-                MessageBox.Show("Ошибка в формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-            }
-
-            TableOfContents(doc, tableOfContentsOn, mainPart);
-            //try
-            //{
-            ProcessSpecials(mainPart);
-            MainPart(doc, mainPart, numbering, fromNumbering, numberHeading);
-
-
-            /*}
-            catch
-            {
-                MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-            }*/
-            /*if (exportPDF)
-            {
-                SaveFileDialog saveFileDialog = new()
+                catch
                 {
-                    OverwritePrompt = true,
-                    Filter = "PDF | *.pdf",
-                    FileName = "1"
-                };
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
+                    MessageBox.Show("Ошибка в формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
                 }
-            }*/
+
+                TableOfContents(doc, tableOfContentsOn, mainPart);
+                //try
+                //{
+                ProcessSpecials(mainPart);
+                MainPart(doc, mainPart, numbering, fromNumbering, numberHeading);
+
+
+                /*}
+                catch
+                {
+                    MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                }*/
+                /*if (exportPDF)
+                {
+                    SaveFileDialog saveFileDialog = new()
+                    {
+                        OverwritePrompt = true,
+                        Filter = "PDF | *.pdf",
+                        FileName = "1"
+                    };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
+                    }
+                }*/
+            }
         }
+        return false;
     }
 
     string SpaceForYear(string year, char spaceCharacter)
@@ -182,8 +196,6 @@ class Report
                 Hanging = ((int)(hanging * cm_to_pt)).ToString(),
             });
         }
-
-
 
         style.Append(styleRunProperties);
         style.Append(paragraphProperties);

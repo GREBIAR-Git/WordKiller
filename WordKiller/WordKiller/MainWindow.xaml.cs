@@ -156,7 +156,7 @@ public partial class MainWindow : Window
     {
         OpenFileDialog openFileDialog = new()
         {
-            Filter = "|*" + Config.extension + "|All|*.*;"
+            Filter = "wordkiller file (*" + Config.extension + ")|*" + Config.extension + "|All files (*.*)|*.*"
         };
         if (openFileDialog.ShowDialog() == true)
         {
@@ -184,7 +184,7 @@ public partial class MainWindow : Window
         SaveFileDialog saveFileDialog = new()
         {
             OverwritePrompt = true,
-            Filter = "|*" + Config.extension + "|All|*.*;",
+            Filter = "wordkiller file (*" + Config.extension + ")|*" + Config.extension + "|All files (*.*)|*.*",
             FileName = "1"
         };
         if (saveFileDialog.ShowDialog() == true)
