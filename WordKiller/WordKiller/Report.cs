@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -22,7 +23,6 @@ class Report
 
     public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
     {
-        string pathSave = string.Empty;
         SaveFileDialog saveFileDialog = new()
         {
             OverwritePrompt = true,
@@ -31,7 +31,7 @@ class Report
         };
         if (saveFileDialog.ShowDialog() == true)
         {
-            pathSave = saveFileDialog.FileName;
+            string pathSave = saveFileDialog.FileName;
             using (WordprocessingDocument doc =
             WordprocessingDocument.Create(pathSave,
             WordprocessingDocumentType.Document, true))
@@ -40,8 +40,6 @@ class Report
 
                 main.Document = new Document();
                 Body body = main.Document.AppendChild(new Body());
-
-                //PageNumber pageNumber = main.Document.AppendChild(new PageNumber());
 
                 InitStyles(doc);
 
@@ -63,9 +61,15 @@ class Report
                 //try
                 //{
                 ProcessSpecials(mainPart);
-                MainPart(doc, mainPart, numbering, fromNumbering, numberHeading);
+                MainPart(doc, mainPart, numberHeading);
 
-
+                if (numbering)
+                {
+                    PageNumber(doc, fromNumbering);
+                }
+                //FooterPart f = main.AddNewPart<FooterPart>();
+                //GenerateFooterPartContent(f);
+                //InsertWordHeader(doc, newHeaderPart, "test");
                 /*}
                 catch
                 {
@@ -89,6 +93,68 @@ class Report
         return false;
     }
 
+    void PageNumber(WordprocessingDocument document, int fromNumbering)
+    {
+        MainDocumentPart mainDocumentPart = document.MainDocumentPart;
+
+        mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
+
+        HeaderPart headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
+
+        string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
+
+        GeneratePageNumberPartContent(headerPart, fromNumbering);
+
+        IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Elements<SectionProperties>();
+
+        for (int i = 0; i < sections.Count(); i++)
+        {
+            sections.ElementAt(i).RemoveAllChildren<HeaderReference>();
+            sections.ElementAt(i).PrependChild<HeaderReference>(new HeaderReference() { Id = headerPartId });
+        }
+    }
+
+    void GeneratePageNumberPartContent(HeaderPart part, int fromNumbering)
+    {
+        Header header = new();
+        header.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
+        header.AddNamespaceDeclaration("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006");
+        header.AddNamespaceDeclaration("o", "urn:schemas-microsoft-com:office:office");
+        header.AddNamespaceDeclaration("r", "http://schemas.openxmlformats.org/officeDocument/2006/relationships");
+        header.AddNamespaceDeclaration("m", "http://schemas.openxmlformats.org/officeDocument/2006/math");
+        header.AddNamespaceDeclaration("v", "urn:schemas-microsoft-com:vml");
+        header.AddNamespaceDeclaration("wp14", "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing");
+        header.AddNamespaceDeclaration("wp", "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing");
+        header.AddNamespaceDeclaration("w10", "urn:schemas-microsoft-com:office:word");
+        header.AddNamespaceDeclaration("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+        header.AddNamespaceDeclaration("w14", "http://schemas.microsoft.com/office/word/2010/wordml");
+        header.AddNamespaceDeclaration("wpg", "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup");
+        header.AddNamespaceDeclaration("wpi", "http://schemas.microsoft.com/office/word/2010/wordprocessingInk");
+        header.AddNamespaceDeclaration("wne", "http://schemas.microsoft.com/office/word/2006/wordml");
+        header.AddNamespaceDeclaration("wps", "http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
+
+        Paragraph paragraph = new()
+        {
+            ParagraphProperties = new ParagraphProperties(
+                new ParagraphStyleId()
+                {
+                    Val = "Header"
+                },
+                new Justification()
+                {
+                    Val = JustificationValues.Center
+                })
+        };
+
+        Run run = paragraph.AppendChild(new Run());
+
+        run.Append(new PageNumber());
+
+        header.Append(paragraph);
+
+        part.Header = header;
+    }
+
     string SpaceForYear(string year, char spaceCharacter)
     {
         for (int i = 0; i < 4 - year.Length; i++)
@@ -102,7 +168,7 @@ class Report
     {
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
-        Styles styles = new Styles();
+        Styles styles = new();
         styles.Save(styleDefinitions);
         styles = styleDefinitions.Styles;
 
@@ -427,7 +493,7 @@ class Report
         PageBreak(run);
     }
 
-    void MainPart(WordprocessingDocument doc, DataComboBox content, bool numbering, int fromNumbering, bool numberHeading)
+    void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading)
     {
         if (content.Text != null)
         {
@@ -538,17 +604,17 @@ class Report
         if (numberingPart == null)
         {
             numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
-            Numbering element = new Numbering();
+            Numbering element = new();
             element.Save(numberingPart);
         }
 
         int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
-        Level abstractLevel = new Level(
+        Level abstractLevel = new(
             new NumberingFormat() { Val = NumberFormatValues.Decimal },
             new StartNumberingValue() { Val = 1 },
             new LevelText() { Val = "%1)" })
         { LevelIndex = 0 };
-        AbstractNum abstractNum1 = new AbstractNum(abstractLevel) { AbstractNumberId = abstractNumberId };
+        AbstractNum abstractNum1 = new(abstractLevel) { AbstractNumberId = abstractNumberId };
 
         if (abstractNumberId == 1)
         {
@@ -561,8 +627,8 @@ class Report
         }
 
         int numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
-        NumberingInstance numberingInstance1 = new NumberingInstance() { NumberID = numberId };
-        AbstractNumId abstractNumId1 = new AbstractNumId() { Val = abstractNumberId };
+        NumberingInstance numberingInstance1 = new() { NumberID = numberId };
+        AbstractNumId abstractNumId1 = new() { Val = abstractNumberId };
         numberingInstance1.Append(abstractNumId1);
 
         if (numberId == 1)

@@ -310,7 +310,7 @@ public partial class MainWindow : Window
         {
             richTextBox.Document.Blocks.Clear();
             richTextBox.Document.Blocks.Add(new Paragraph(new Run(data.Text)));
-            UpdateTypeButton();
+            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
         }
         reader.Close();
     }
@@ -346,7 +346,7 @@ public partial class MainWindow : Window
 
         foreach (Control item in typeMenuItem.Items)
         {
-            if (item.GetType()==typeof(MenuItem) && ((MenuItem)item).IsChecked)
+            if (item.GetType() == typeof(MenuItem) && ((MenuItem)item).IsChecked)
             {
                 save += Config.AddSpecialBoth("Menu") + item.Name.ToString() + "!" + NumberHeadingMI.IsChecked.ToString() + "\n";
             }
@@ -651,6 +651,7 @@ public partial class MainWindow : Window
                 SetText(data.Text);
                 UpdateTypeButton();
                 DownTextUpdate();
+                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
             }
         }
     }
@@ -1235,7 +1236,7 @@ public partial class MainWindow : Window
         if (comboBox.Data.Count <= (GetText(richTextBox).Length - GetText(richTextBox).Replace(Config.AddSpecialLeft(name), "").Length) / (name.Length + 1))
         {
             Button button = (Button)panelTypeInserts.FindName(name.ToUpper());
-            button.Visibility = Visibility.Collapsed; 
+            button.Visibility = Visibility.Collapsed;
         }
         else
         {
