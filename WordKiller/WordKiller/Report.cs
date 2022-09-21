@@ -21,7 +21,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
+    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -43,14 +43,24 @@ class Report
 
                 InitStyles(doc);
 
-                PageSetup(body);
-
                 try
                 {
                     if (typeDocument != TypeDocument.DefaultDocument)
                     {
+                        PageSetup(body, title: true);
                         dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
-                        TitlePart(doc, typeDocument, dataTitle);
+                        TitlePart(doc, typeDocument, dataTitle, tableOfContents);
+                    }
+                    else
+                    {
+                        if (tableOfContents)
+                        {
+                            PageSetup(body, title: true);
+                        }
+                        else
+                        {
+                            PageSetup(body, title: false);
+                        }
                     }
                 }
                 catch
@@ -61,7 +71,7 @@ class Report
 
                 try
                 {
-                    TableOfContents(doc, tableOfContentsOn, mainPart);
+                    TableOfContents(doc, tableOfContents, mainPart);
                 }
                 catch
                 {
@@ -163,13 +173,13 @@ class Report
         part.Header = header;
     }
 
-    void SectionBreak(WordprocessingDocument doc)
+    void SectionBreak(WordprocessingDocument doc, bool title = false)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
         Paragraph paragraph = body.AppendChild(new Paragraph());
         paragraph.AppendChild(new ParagraphProperties(new SectionProperties(new SectionType() { Val = SectionMarkValues.NextPage })));
-        PageSetup(body);
+        PageSetup(body, title: title);
     }
 
     string SpaceForYear(string year, char spaceCharacter)
@@ -322,7 +332,7 @@ class Report
         }
     }
 
-    void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle)
+    void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle, bool TableOfContents)
     {
         Ministry(doc, dataTitle[0]);
         switch (typeDocument)
@@ -348,7 +358,7 @@ class Report
                 break;
         }
         Orel(doc, dataTitle[dataTitle.Length - 1]);
-        SectionBreak(doc);
+        SectionBreak(doc, TableOfContents);
     }
 
     void Referat(WordprocessingDocument doc, string[] dataTitle)
@@ -812,7 +822,7 @@ class Report
         return text;
     }
 
-    void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3)
+    void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3, bool title = false)
     {
         SectionProperties props = new();
         body.AppendChild(props);
@@ -828,7 +838,10 @@ class Report
             Width = 11907,
             Height = 16839
         });
-        props.PrependChild<TitlePage>(new TitlePage());
+        if (title)
+        {
+            props.PrependChild<TitlePage>(new TitlePage());
+        }
 
     }
 
