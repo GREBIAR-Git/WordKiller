@@ -28,9 +28,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Grid.Column="0" Style="{StaticResource Menu}">
             <MenuItem>
@@ -86,7 +83,7 @@
                 <MenuItem Header="Создать" Style="{StaticResource MenuItem}" Click="CreateNetwork"/>
                 <Separator/>
                 <MenuItem Header="Подключиться" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
-                <MenuItem Header="Отключиться" Visibility="Collapsed" Style="{StaticResource MenuItem}" Click="JoinNetwork"/>
+                <MenuItem Header="Отключиться" Style="{StaticResource MenuItem}" Click="LeaveNetwork"/>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -159,9 +156,7 @@
             <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
             <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Margin="10,5,10,10" Text="202" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
         </Grid>
-        <Button Grid.Row="2" Grid.Column="0" x:Name="buttonDown" Content="Вниз" Style="{StaticResource Button}" Click="ButtonDown_Click"/>
-        <Button Grid.Row="3" Grid.Column="0" x:Name="buttonUp" Content="К титульнику" Style="{StaticResource Button}" Click="ButtonUp_Click"/>
-        <Grid Grid.Row="4" Grid.Column="0" x:Name="downPanel" Background="#8daacc">
+        <Grid Grid.Row="2" Grid.Column="0" x:Name="downPanel" Background="#8daacc">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="18*"/>
                 <ColumnDefinition Width="20*"/>
@@ -295,6 +290,6 @@
                 </Grid>
             </Grid>
         </Grid>
-        <TextBlock Grid.Row="5" Grid.Column="0" x:Name="cursorLocationTB" Visibility="Collapsed" HorizontalAlignment="Center" Style="{StaticResource TextBlockTitle}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" x:Name="cursorLocationTB" Visibility="Collapsed" HorizontalAlignment="Center" Style="{StaticResource TextBlockTitle}"/>
     </Grid>
 </Window>

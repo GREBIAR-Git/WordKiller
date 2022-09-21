@@ -542,17 +542,6 @@ public partial class MainWindow : Window
             HideElements(TitlePageMI);
             ShowElements(DownPanelMI);
         }
-        if (!TitlePageMI.IsChecked)
-        {
-            if (typeDocument == TypeDocument.DefaultDocument)
-            {
-                buttonUp.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                buttonUp.Visibility = Visibility.Visible;
-            }
-        }
         TitlePageMI.Visibility = DefaultDocumentMI.IsChecked == true ? Visibility.Collapsed : Visibility.Visible;
     }
 
@@ -616,9 +605,7 @@ public partial class MainWindow : Window
         UpdateSize(MenuItem);
         if (MenuItem == TitlePageMI)
         {
-            buttonDown.Visibility = Visibility.Visible;
             titlePanel.Visibility = Visibility.Visible;
-            buttonUp.Visibility = Visibility.Collapsed;
         }
         else
         {
@@ -667,12 +654,7 @@ public partial class MainWindow : Window
     {
         if (MenuItem == TitlePageMI)
         {
-            buttonDown.Visibility = Visibility.Collapsed;
             titlePanel.Visibility = Visibility.Collapsed;
-            if (typeDocument != TypeDocument.DefaultDocument)
-            {
-                buttonUp.Visibility = Visibility.Visible;
-            }
         }
         else
         {
@@ -721,7 +703,7 @@ public partial class MainWindow : Window
         if (MenuItem == TitlePageMI)
         {
             MainPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
-            MainPanel.RowDefinitions[4].Height = new GridLength(0, GridUnitType.Pixel);
+            MainPanel.RowDefinitions[2].Height = new GridLength(0, GridUnitType.Pixel);
             win.MinWidth = 710;
             win.MinHeight = 340;
             win.Height = win.MinHeight;
@@ -730,7 +712,7 @@ public partial class MainWindow : Window
         else
         {
             MainPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Pixel);
-            MainPanel.RowDefinitions[4].Height = new GridLength(100, GridUnitType.Star);
+            MainPanel.RowDefinitions[2].Height = new GridLength(100, GridUnitType.Star);
             win.MinWidth = 710;
             win.MinHeight = 430;
         }
@@ -754,18 +736,6 @@ public partial class MainWindow : Window
             HideElements(TextMI);
             ShowElements(ClickMenuItem);
         }
-    }
-
-    void ButtonDown_Click(object sender, RoutedEventArgs e)
-    {
-        HideElements(TitlePageMI);
-        ShowElements(DownPanelMI);
-    }
-
-    void ButtonUp_Click(object sender, RoutedEventArgs e)
-    {
-        HideElements(DownPanelMI);
-        ShowElements(TitlePageMI);
     }
 
     void RefreshMenu(int difference)
@@ -2124,12 +2094,17 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CreateNetwork(object sender, RoutedEventArgs e)
+    void CreateNetwork(object sender, RoutedEventArgs e)
     {
 
     }
 
-    private void JoinNetwork(object sender, RoutedEventArgs e)
+    void JoinNetwork(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    void LeaveNetwork(object sender, RoutedEventArgs e)
     {
 
     }
