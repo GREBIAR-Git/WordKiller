@@ -75,18 +75,7 @@
                     <MenuItem x:Name="VKRMI" Header="ВКР" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                 </MenuItem>
                 <Separator/>
-                <MenuItem x:Name="NumberingMI" IsChecked="True" Style="{StaticResource MenuItem}" Click="NumberingMI_Click">
-                    <MenuItem.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40*"/>
-                                <ColumnDefinition Width="60*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock x:Name="TextNumberingMI" Grid.Column="0" Text="Нумерация c "/>
-                            <TextBox Grid.Column="1" x:Name="FromNumberingTextBoxMI" Visibility="Visible"  Width="100" Style="{StaticResource TextBox}"/>
-                        </Grid>
-                    </MenuItem.Header>
-                </MenuItem>
+                <MenuItem Header="Нумерация" x:Name="NumberingMI" IsCheckable="True" IsChecked="True" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContents" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
             </MenuItem>
@@ -201,12 +190,12 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" x:Name="buttonBack" Grid.RowSpan="2" Content="L" Style="{StaticResource Button}" Click="ButtonBack_Click"/>
-                <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="Раздел" Height="50" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" Content="Подраздел" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" Content="Список" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" Content="Картинка" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" Content="Таблица" Style="{StaticResource Button}"/>
-                <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" Content="Код" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" FontSize="16" Content="Раздел" Height="50" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" FontSize="16" Content="Подраздел" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" FontSize="16" Content="Список" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" FontSize="16" Content="Картинка" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" FontSize="16" Content="Таблица" Style="{StaticResource Button}"/>
+                <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" FontSize="16" Content="Код" Style="{StaticResource Button}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" x:Name="h1ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="2" x:Name="h2ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                 <ComboBox Grid.Row="1" Grid.Column="3" x:Name="lComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>

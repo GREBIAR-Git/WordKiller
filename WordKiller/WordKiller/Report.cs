@@ -21,7 +21,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, int fromNumbering, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
+    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContentsOn, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -44,6 +44,7 @@ class Report
                 InitStyles(doc);
 
                 PageSetup(body);
+
                 try
                 {
                     if (typeDocument != TypeDocument.DefaultDocument)
@@ -54,11 +55,19 @@ class Report
                 }
                 catch
                 {
-                    MessageBox.Show("Ошибка в формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Ошибка при формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
                     return false;
                 }
 
-                TableOfContents(doc, tableOfContentsOn, mainPart);
+                try
+                {
+                    TableOfContents(doc, tableOfContentsOn, mainPart);
+                }
+                catch
+                {
+                    MessageBox.Show("Ошибка при формировании содержания", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    return false;
+                }
 
                 try
                 {
@@ -67,13 +76,13 @@ class Report
                 }
                 catch
                 {
-                    MessageBox.Show("Ошибка в формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show("Ошибка при формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
                     return false;
                 }
 
                 if (numbering)
                 {
-                    PageNumber(doc, fromNumbering);
+                    PageNumber(doc);
                 }
 
                 /*if (exportPDF)
@@ -95,7 +104,7 @@ class Report
         return false;
     }
 
-    void PageNumber(WordprocessingDocument document, int fromNumbering)
+    void PageNumber(WordprocessingDocument document)
     {
         MainDocumentPart mainDocumentPart = document.MainDocumentPart;
 
@@ -105,18 +114,16 @@ class Report
 
         string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
 
-        GeneratePageNumber(headerPart, fromNumbering);
-
-        IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Elements<SectionProperties>();
-
-        for (int i = 0; i < sections.Count(); i++)
+        GeneratePageNumber(headerPart);
+        IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Descendants<SectionProperties>();
+        foreach (SectionProperties section in sections)
         {
-            sections.ElementAt(i).RemoveAllChildren<HeaderReference>();
-            sections.ElementAt(i).PrependChild<HeaderReference>(new HeaderReference() { Id = headerPartId });
+            section.RemoveAllChildren<HeaderReference>();
+            section.PrependChild<HeaderReference>(new HeaderReference() { Id = headerPartId, Type = HeaderFooterValues.Default });
         }
     }
 
-    void GeneratePageNumber(HeaderPart part, int fromNumbering)
+    void GeneratePageNumber(HeaderPart part)
     {
         Header header = new();
         header.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
@@ -149,12 +156,20 @@ class Report
         };
 
         Run run = paragraph.AppendChild(new Run());
-
         run.Append(new PageNumber());
 
         header.Append(paragraph);
 
         part.Header = header;
+    }
+
+    void SectionBreak(WordprocessingDocument doc)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+        Paragraph paragraph = body.AppendChild(new Paragraph());
+        paragraph.AppendChild(new ParagraphProperties(new SectionProperties(new SectionType() { Val = SectionMarkValues.NextPage })));
+        PageSetup(body);
     }
 
     string SpaceForYear(string year, char spaceCharacter)
@@ -302,8 +317,8 @@ class Report
     {
         if (on)
         {
-            Run run = Text(doc, "Содержание", justify: JustificationValues.Center, bold: true, multiplier: 1.5f);
-            PageBreak(run);
+            Text(doc, "Содержание", justify: JustificationValues.Center, bold: true, multiplier: 1.5f);
+            SectionBreak(doc);
         }
     }
 
@@ -333,6 +348,7 @@ class Report
                 break;
         }
         Orel(doc, dataTitle[dataTitle.Length - 1]);
+        SectionBreak(doc);
     }
 
     void Referat(WordprocessingDocument doc, string[] dataTitle)
@@ -491,8 +507,7 @@ class Report
     void Orel(WordprocessingDocument doc, string year)
     {
         string text = "Орел, " + year;
-        Run run = Text(doc, text, justify: JustificationValues.Center);
-        PageBreak(run);
+        Text(doc, text, justify: JustificationValues.Center);
     }
 
     void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading)
@@ -808,12 +823,12 @@ class Report
             Bottom = (int)(bot * cm_to_pt),
             Left = Convert.ToUInt32(left * cm_to_pt)
         });
-
         props.AppendChild(new PageSize()
         {
             Width = 11907,
             Height = 16839
         });
+        props.PrependChild<TitlePage>(new TitlePage());
 
     }
 

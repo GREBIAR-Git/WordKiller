@@ -1029,8 +1029,6 @@ public partial class MainWindow : Window
 
     async void ReadScrollMenuItem_Click(object sender, RoutedEventArgs e)
     {
-
-
         List<string> titleData = new();
         AddTitleData(ref titleData);
         if (TextMI.IsChecked)
@@ -1038,20 +1036,13 @@ public partial class MainWindow : Window
             data.Text = GetText(richTextBox);
         }
         bool numberingOn = NumberingMI.IsChecked;
-        if (!Int32.TryParse(FromNumberingTextBoxMI.Text, out int fromNumber))
-        {
-            fromNumber = 1;
-        }
         bool tableOfContentsOn = tableOfContents.IsChecked;
         bool headingNumbersOn = NumberHeadingMI.IsChecked;
         bool exportPDFOn = ExportPDF.IsChecked;
 
         Report report = new();
         await Task.Run(() =>
-            report.Create(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray()));
-        //MakeReport report = new();
-        //await Task.Run(() =>
-        //    report.CreateReport(data, numberingOn, tableOfContentsOn, fromNumber, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn));
+            report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray()));
 
         if (CloseWindow.IsChecked)
         {
@@ -1568,21 +1559,6 @@ public partial class MainWindow : Window
     void Win_Loaded(object sender, RoutedEventArgs e)
     {
         UpdateProfessorComboBox();
-    }
-
-    void NumberingMI_Click(object sender, RoutedEventArgs e)
-    {
-        NumberingMI.IsChecked = !NumberingMI.IsChecked;
-        if (NumberingMI.IsChecked)
-        {
-            FromNumberingTextBoxMI.Visibility = Visibility.Visible;
-            TextNumberingMI.Text = "Нумерация с ";
-        }
-        else
-        {
-            FromNumberingTextBoxMI.Visibility = Visibility.Collapsed;
-            TextNumberingMI.Text = "Нумерация";
-        }
     }
 
     void AboutProgramShow(object sender, RoutedEventArgs e)
