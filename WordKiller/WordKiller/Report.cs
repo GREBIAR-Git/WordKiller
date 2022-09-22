@@ -21,7 +21,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle)
+    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -94,22 +94,16 @@ class Report
                 {
                     PageNumber(doc);
                 }
-
-                /*if (exportPDF)
-                {
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        OverwritePrompt = true,
-                        Filter = "PDF | *.pdf",
-                        FileName = "1"
-                    };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        doc.ExportAsFixedFormat(saveFileDialog.FileName, WdExportFormat.wdExportFormatPDF);
-                    }
-                }*/
-                return true;
             }
+            if (exportHTML)
+            {
+                DocxExport.ToHTML(pathSave);
+            }
+            if (exportPDF)
+            {
+                DocxExport.ToPDF(pathSave);
+            }
+            return true;
         }
         return false;
     }
@@ -162,6 +156,13 @@ class Report
                 new Justification()
                 {
                     Val = JustificationValues.Center
+                },
+                new SpacingBetweenLines()
+                {
+                    After = (0).ToString(),
+                    Before = (0).ToString(),
+                    Line = (240).ToString(),
+                    LineRule = LineSpacingRuleValues.Auto
                 })
         };
 

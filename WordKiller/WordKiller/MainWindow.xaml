@@ -35,8 +35,8 @@
                     <TextBlock Text="Файл" Style="{StaticResource TextBlockMenu}"/>
                 </MenuItem.Header>
                 <MenuItem Header="Экспорт" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
-                <MenuItem Header="Закрыть после экспорта" x:Name="CloseWindow" IsCheckable="true" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="В формате PDF" x:Name="ExportPDF" IsChecked="true" IsCheckable="true" Style="{StaticResource MenuItem}"/>
+                <MenuItem Header="В формате HTML" x:Name="ExportHTML" IsCheckable="true" Style="{StaticResource MenuItem}"/>
                 <Separator/>
                 <MenuItem Header="Создать" Command="New" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Открыть" Command="Open" Style="{StaticResource MenuItem}"/>
@@ -95,6 +95,7 @@
                 <MenuItem Header="Открыть SubjectTracker" Style="{StaticResource MenuItem}" Click="OpenSubjectTracker"/>
                 <Separator/>
                 <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
+                <MenuItem Header="Закрыть после экспорта" x:Name="CloseWindow" IsCheckable="true" Style="{StaticResource MenuItem}"/>
                 <Separator/>
                 <MenuItem Header="Проверка синтаксиса" IsChecked="False" IsCheckable="True" x:Name="SyntaxChecking" Style="{StaticResource MenuItem}" Click="SyntaxChecking_Click"/>
                 <Separator/>
@@ -209,7 +210,7 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" TextAlignment="Left" Text="Нечто" Style="{StaticResource TextBlock}"/>
-                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding textType}" SelectedItem="{Binding type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}" SelectionChanged="elementCB_SelectionChanged"/>
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding textType}" SelectedItem="{Binding type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}" SelectionChanged="ElementCB_SelectionChanged"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" x:Name="panelTypeInserts" Visibility="Collapsed" Background="#8daacc">
                 <Grid.ColumnDefinitions>

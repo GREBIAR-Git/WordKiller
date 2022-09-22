@@ -961,9 +961,8 @@ public partial class MainWindow : Window
                 if (comboBox.SelectedIndex > 0)
                 {
                     //перемещение выбранного элемента ComboBox вверх
-                    string[] save = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex];
-                    data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex] = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1];
-                    data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1] = save;
+                    (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex]) 
+                      = (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1]);
                     string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
                     int savef = comboBox.SelectedIndex;
                     comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex - 1];
@@ -977,9 +976,7 @@ public partial class MainWindow : Window
                 if (comboBox.SelectedIndex < comboBox.Items.Count - 1)
                 {
                     //перемещение выбранного элемента ComboBox вниз
-                    string[] save = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex];
-                    data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex] = data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1];
-                    data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1] = save;
+                    (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex]) = (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1]);
                     string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
                     int savef = comboBox.SelectedIndex;
                     comboBox.Items[comboBox.SelectedIndex] = comboBox.Items[comboBox.SelectedIndex + 1];
@@ -1009,10 +1006,11 @@ public partial class MainWindow : Window
         bool tableOfContentsOn = tableOfContents.IsChecked;
         bool headingNumbersOn = NumberHeadingMI.IsChecked;
         bool exportPDFOn = ExportPDF.IsChecked;
+        bool exportHTMLOn = ExportHTML.IsChecked;
 
         Report report = new();
         await Task.Run(() =>
-            report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray()));
+            report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn));
 
         if (CloseWindow.IsChecked)
         {
@@ -1923,7 +1921,7 @@ public partial class MainWindow : Window
         }
     }
 
-    void elementCB_update()
+    void ElementCB_update()
     {
         if (elementCB.SelectedValue == null)
         {
@@ -1949,16 +1947,16 @@ public partial class MainWindow : Window
             R2_changeText(str);
         }
     }
-    void elementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+    void ElementCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        elementCB_update();
+        ElementCB_update();
     }
 
     void SwitchRichTextBoxes(object sender, RoutedEventArgs e)
     {
-        Visibility tmp = richTextBox.Visibility;
-        richTextBox.Visibility = richTextBox2.Visibility;
-        richTextBox2.Visibility = tmp;
+        (richTextBox2.Visibility, richTextBox.Visibility) 
+            = (richTextBox.Visibility, richTextBox2.Visibility);
     }
 
     int FindParagraphStart(string paragraphType)
@@ -2080,7 +2078,7 @@ public partial class MainWindow : Window
         richTextBox.Document.Blocks.Clear();
         richTextBox.Document.Blocks.Add(new Paragraph(new Run(str)));
 
-        elementCB_update();
+        ElementCB_update();
 
         elementCB.SelectedValue = selectedValueSave;
         SetCaret(richTextBox2, cursorPosSave);
