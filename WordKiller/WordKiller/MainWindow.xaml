@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordKiller"
         mc:Ignorable="d"
-        Title="MainWindow" Height="310" Width="710" MinHeight="310" MinWidth="710" x:Name="win" Icon="Resources/512x512.png" Loaded="Win_Loaded" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter">
+        Name="win"
+        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="447" Width="695" MinHeight="310" MinWidth="710" Icon="Resources/512x512.png" Loaded="Win_Loaded" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Command="SaveAs" Key="S" Modifiers="Control+Alt"/>
         <KeyBinding Command="Close" Key="Q" Modifiers="Control"/>
@@ -49,9 +53,9 @@
                 <MenuItem.Header>
                     <TextBlock Text="Вид" Style="{StaticResource TextBlockMenu}"/>
                 </MenuItem.Header>
-                <MenuItem Header="Титульник" x:Name="TitlePageMI" IsChecked="True" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
-                <MenuItem Header="Подстановка" x:Name="SubstitutionMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
-                <MenuItem Header="Текст" x:Name="TextMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                <MenuItem Header="Титульник" IsChecked="{Binding Path=TitleOpen,Mode=TwoWay}" x:Name="TitlePageMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                <MenuItem Header="Подстановка"  IsChecked="{Binding Path=SubstitutionOpen,Mode=TwoWay}" x:Name="SubstitutionMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                <MenuItem Header="Текст" IsChecked="{Binding Path=TextOpen,Mode=TwoWay}" x:Name="TextMI"  Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -74,7 +78,7 @@
                 <Separator/>
                 <MenuItem Header="Нумерация" x:Name="NumberingMI" IsCheckable="True" IsChecked="True" Style="{StaticResource MenuItem}"/>
                 <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContents" Style="{StaticResource MenuItem}"/>
-                <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
+                <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" IsChecked="{Binding Path=NumberHeading,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -100,8 +104,8 @@
                 <MenuItem Header="Проверка синтаксиса" IsChecked="False" IsCheckable="True" x:Name="SyntaxChecking" Style="{StaticResource MenuItem}" Click="SyntaxChecking_Click"/>
                 <Separator/>
                 <MenuItem Header="Кодировка" Style="{StaticResource MenuItem}">
-                    <MenuItem x:Name="Encoding0MenuItem" Header="Нет" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
-                    <MenuItem x:Name="Encoding1MenuItem" Header="Есть" IsChecked="True" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
+                    <MenuItem x:Name="Encoding0MenuItem" Header="Нет" IsChecked="{Binding Path=Encoding0,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
+                    <MenuItem x:Name="Encoding1MenuItem" Header="Есть" IsChecked="{Binding Path=Encoding1,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="Encoding_Click"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem>
@@ -134,7 +138,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,10,10,5" Text="Кафедра:" Style="{StaticResource TextBlockTitle}"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий" Style="{StaticResource ComboBox}" SelectionChanged="FacultyComboBox_SelectionChanged">
+            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=TitleFaculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий" Style="{StaticResource ComboBox}" SelectionChanged="FacultyComboBox_SelectionChanged">
                 <ComboBoxItem IsSelected="True">информационных систем и цифровых технологий</ComboBoxItem>
                 <ComboBoxItem>приборостроения, метрологии и сертификации</ComboBoxItem>
                 <ComboBoxItem>информационной безопасности</ComboBoxItem>
@@ -143,19 +147,19 @@
                 <ComboBoxItem>электрооборудования и энергосбережения</ComboBoxItem>
             </ComboBox>
             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,10,10" Text="Выполнил(и):" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=TitleStudents,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
             <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
+            <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=TitleNumber,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
             <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="Шифр:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
+            <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=TitleShifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
             <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=TitleTheme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
             <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
+            <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=TitleDiscipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
             <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
-            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource ComboBox}"/>
+            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=TitleProfessor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource ComboBox}"/>
             <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
-            <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Margin="10,5,10,10" Text="202" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
+            <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=TitleYear,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0" x:Name="downPanel" Background="#8daacc">
             <Grid.ColumnDefinitions>

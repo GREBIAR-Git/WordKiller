@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace WordKiller;
@@ -29,6 +30,15 @@ class DataComboBox
         }
         return sum;
     }
+
+    public void AllClear()
+    {
+        foreach (KeyValuePair<string, ElementComboBox> comboBox in ComboBox)
+        {
+            comboBox.Value.Clear();
+        }
+    }
+
     public DataComboBox(ComboBox h1, ComboBox h2, ComboBox l, ComboBox p, ComboBox t, ComboBox c)
     {
         ComboBox = new Dictionary<string, ElementComboBox>

@@ -33,8 +33,8 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Программа написана на языке C#" Style="{StaticResource TextBlockTitle}"/>
-                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Интерфейс сделан на WPF" Style="{StaticResource TextBlockTitle}"/>
-                <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Версия продукта: 1.1" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Интерфейс - XAML" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Text="Версия продукта: 1.2" Style="{StaticResource TextBlockTitle}"/>
             </Grid>
         </GroupBox>
     </Grid>
