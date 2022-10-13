@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -21,7 +22,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML)
+    public static bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -48,7 +49,7 @@ class Report
                     if (typeDocument != TypeDocument.DefaultDocument)
                     {
                         PageSetup(body, title: true);
-                        dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
+                        dataTitle[^1] = SpaceForYear(dataTitle[^1], '_');
                         TitlePart(doc, typeDocument, dataTitle, tableOfContents);
                     }
                     else
@@ -108,7 +109,7 @@ class Report
         return false;
     }
 
-    void PageNumber(WordprocessingDocument document)
+    static void PageNumber(WordprocessingDocument document)
     {
         MainDocumentPart mainDocumentPart = document.MainDocumentPart;
 
@@ -127,7 +128,7 @@ class Report
         }
     }
 
-    void GeneratePageNumber(HeaderPart part)
+    static void GeneratePageNumber(HeaderPart part)
     {
         Header header = new();
         header.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
@@ -174,7 +175,7 @@ class Report
         part.Header = header;
     }
 
-    void SectionBreak(WordprocessingDocument doc, bool title = false)
+    static void SectionBreak(WordprocessingDocument doc, bool title = false)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -183,7 +184,7 @@ class Report
         PageSetup(body, title: title);
     }
 
-    string SpaceForYear(string year, char spaceCharacter)
+    static string SpaceForYear(string year, char spaceCharacter)
     {
         for (int i = 0; i < 4 - year.Length; i++)
         {
@@ -192,7 +193,7 @@ class Report
         return year;
     }
 
-    void InitStyles(WordprocessingDocument doc)
+    static void InitStyles(WordprocessingDocument doc)
     {
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
@@ -223,7 +224,7 @@ class Report
             InitStyle("Code", 12, JustificationValues.Left));
     }
 
-    Style InitStyle(string name, int size = 14,
+    static Style InitStyle(string name, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
         int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, float hanging = 0)
     {
@@ -296,7 +297,7 @@ class Report
         return style;
     }
 
-    void ProcessSpecials(DataComboBox data)
+    static void ProcessSpecials(DataComboBox data)
     {
         foreach (string key in data.ComboBox.Keys)
         {
@@ -304,7 +305,7 @@ class Report
         }
     }
 
-    string RemoveENDLs(string text, string symbol)
+    static string RemoveENDLs(string text, string symbol)
     {
         string[] str = text.Split(new string[] { symbol }, StringSplitOptions.None);
         for (int i = 0; i < str.Length; i++)
@@ -315,7 +316,7 @@ class Report
                 {
                     str[i] = str[i].Remove(0, 1);
                 }
-                if (str[i].Length > 0 && str[i][str[i].Length - 1] == '\n')
+                if (str[i].Length > 0 && str[i][^1] == '\n')
                 {
                     str[i] = str[i].Remove(str[i].Length - 1, 1);
                 }
@@ -324,7 +325,7 @@ class Report
         return String.Join(symbol, str);
     }
 
-    void TableOfContents(WordprocessingDocument doc, bool on, DataComboBox dataMainPart)
+    static void TableOfContents(WordprocessingDocument doc, bool on, DataComboBox dataMainPart)
     {
         if (on)
         {
@@ -333,7 +334,7 @@ class Report
         }
     }
 
-    void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle, bool TableOfContents)
+    static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle, bool TableOfContents)
     {
         Ministry(doc, dataTitle[0]);
         switch (typeDocument)
@@ -358,11 +359,11 @@ class Report
             case TypeDocument.VKR:
                 break;
         }
-        Orel(doc, dataTitle[dataTitle.Length - 1]);
+        Orel(doc, dataTitle[^1]);
         SectionBreak(doc, TableOfContents);
     }
 
-    void Referat(WordprocessingDocument doc, string[] dataTitle)
+    static void Referat(WordprocessingDocument doc, string[] dataTitle)
     {
         EmptyLines(doc, 1);
 
@@ -384,7 +385,7 @@ class Report
         EmptyLines(doc, 6);
     }
 
-    void ControlWork(WordprocessingDocument doc, string[] dataTitle)
+    static void ControlWork(WordprocessingDocument doc, string[] dataTitle)
     {
         string text = "Контрольная работа";
         Text(doc, text, 16, JustificationValues.Center, true);
@@ -417,13 +418,13 @@ class Report
         EmptyLines(doc, 9);
     }
 
-    void Coursework(WordprocessingDocument doc, string[] dataTitle)
+    static void Coursework(WordprocessingDocument doc, string[] dataTitle)
     {
         string text = "Работа допущена к защите";
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
         text = "______________Руководитель";
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
-        text = "«____»_____________" + dataTitle[dataTitle.Length - 1] + "г.";
+        text = "«____»_____________" + dataTitle[^1] + "г.";
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
 
         EmptyLines(doc, 3);
@@ -461,7 +462,7 @@ class Report
         EmptyLines(doc, 2);
     }
 
-    void LabPra(WordprocessingDocument doc, string type, string[] dataTitle)
+    static void LabPra(WordprocessingDocument doc, string type, string[] dataTitle)
     {
         string text = "ОТЧЁТ";
         Text(doc, text, 16, JustificationValues.Center, true);
@@ -494,7 +495,7 @@ class Report
         EmptyLines(doc, 8);
     }
 
-    void Ministry(WordprocessingDocument doc, string faculty)
+    static void Ministry(WordprocessingDocument doc, string faculty)
     {
         string text = "МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ";
         Text(doc, text, justify: JustificationValues.Center);
@@ -515,13 +516,13 @@ class Report
         EmptyLines(doc, 3);
     }
 
-    void Orel(WordprocessingDocument doc, string year)
+    static void Orel(WordprocessingDocument doc, string year)
     {
         string text = "Орел, " + year;
         Text(doc, text, justify: JustificationValues.Center);
     }
 
-    void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading)
+    static void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading)
     {
         if (content.Text != null)
         {
@@ -529,7 +530,7 @@ class Report
         }
     }
 
-    void ProcessContent(WordprocessingDocument doc, DataComboBox content, bool number = true)
+    static void ProcessContent(WordprocessingDocument doc, DataComboBox content, bool number = true)
     {
         int h1 = 1;
         int h2 = 1;
@@ -624,7 +625,7 @@ class Report
         }
     }
 
-    void List(WordprocessingDocument doc, string items)
+    static void List(WordprocessingDocument doc, string items)
     {
         NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
         if (numberingPart == null)
@@ -687,7 +688,7 @@ class Report
         }
     }
 
-    void Picture(WordprocessingDocument doc, string fileName)
+    static void Picture(WordprocessingDocument doc, string fileName)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
@@ -699,7 +700,7 @@ class Report
 
         AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), fileName);
     }
-    void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, string fileName)
+    static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, string fileName)
     {
         int emusPerCm = 360000;
         float maxWidthCm = 16.51f;
@@ -707,7 +708,7 @@ class Report
 
         int iWidth = 0;
         int iHeight = 0;
-        using (System.Drawing.Bitmap bmp = new(fileName))
+        using (Bitmap bmp = new(fileName))
         {
             iWidth = bmp.Width;
             iHeight = bmp.Height;
@@ -791,7 +792,7 @@ class Report
         wordDoc.MainDocumentPart.Document.Body.AppendChild(paragraph);
     }
 
-    string[] ProcessSpecial(int i, string special, DataComboBox content)
+    static string[] ProcessSpecial(int i, string special, DataComboBox content)
     {
         string[] text = new string[2];
         if (special == "h1")
@@ -823,7 +824,7 @@ class Report
         return text;
     }
 
-    void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3, bool title = false)
+    static void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3, bool title = false)
     {
         SectionProperties props = new();
         body.AppendChild(props);
@@ -846,12 +847,12 @@ class Report
 
     }
 
-    void PageBreak(Run run)
+    static void PageBreak(Run run)
     {
         run.AppendChild(new Break() { Type = BreakValues.Page });
     }
 
-    void EmptyLines(WordprocessingDocument doc, int number)
+    static void EmptyLines(WordprocessingDocument doc, int number)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -869,7 +870,7 @@ class Report
         }
     }
 
-    Run Text(WordprocessingDocument doc, string text, int size = 14,
+    static Run Text(WordprocessingDocument doc, string text, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
         int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false)
     {
@@ -927,7 +928,7 @@ class Report
         return run;
     }
 
-    void Text(WordprocessingDocument doc, string text, string style)
+    static void Text(WordprocessingDocument doc, string text, string style)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -953,7 +954,7 @@ class Report
                 new ParagraphStyleId() { Val = style });
 
             Run run = paragraph.AppendChild(new Run());
-            run.AppendChild(new Text(str[str.Length - 1]));
+            run.AppendChild(new Text(str[^1]));
         }
     }
 }

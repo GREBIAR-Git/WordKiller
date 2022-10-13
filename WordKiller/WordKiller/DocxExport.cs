@@ -1,7 +1,9 @@
-﻿using Mammoth;
+﻿using DocumentFormat.OpenXml.Packaging;
+using OpenXmlPowerTools;
 using System;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace WordKiller;
@@ -29,27 +31,33 @@ static class DocxExport
         ReleaseObject(WORD);
     }
 
+    //нужно починить
     public async static void ToHTML(string path)
     {
-        DocumentConverter converter = new DocumentConverter()
-            .AddStyleMap("p[style-name='H1'] => h1:fresh")
-            .AddStyleMap("p[style-name='H2'] => h2:fresh"); ;
+        var sourceDocxFileContent = File.ReadAllBytes(path);
         string HTMLFilePath = Path.ChangeExtension(path, ".html");
-        var result = converter.ConvertToHtml(path);
-        string text = result.Value;
-        using (FileStream fstream = new(HTMLFilePath, FileMode.Create))
+        using var memoryStream = new MemoryStream();
+        await memoryStream.WriteAsync(sourceDocxFileContent);
+        using var wordProcessingDocument = WordprocessingDocument.Open(memoryStream, true);
+        HtmlConverterSettings settings1 = new()
         {
-            byte[] buffer = Encoding.Default.GetBytes(text);
-            await fstream.WriteAsync(buffer, 0, buffer.Length);
-        }
+            PageTitle = "My Page Title"
+        };
+        var settings = new WmlToHtmlConverterSettings(settings1);
+        var html = WmlToHtmlConverter.ConvertToHtml(wordProcessingDocument, settings);
+        var htmlString = html.ToString(SaveOptions.DisableFormatting);
+        File.WriteAllText(HTMLFilePath, htmlString, Encoding.UTF8);
     }
 
-    static void ReleaseObject(object obj)
+    static void ReleaseObject(object? obj)
     {
         try
         {
-            System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-            obj = null;
+            if (obj != null)
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
         }
         catch (Exception ex)
         {

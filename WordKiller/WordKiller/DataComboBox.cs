@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace WordKiller;
@@ -9,7 +8,7 @@ class DataComboBox
     public Dictionary<string, ElementComboBox> ComboBox { get; set; }
     public string Text { get; set; }
 
-    public ElementComboBox SearchComboBox(ComboBox comboBoxForm)
+    public ElementComboBox? SearchComboBox(ComboBox comboBoxForm)
     {
         foreach (KeyValuePair<string, ElementComboBox> comboBox in ComboBox)
         {

@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Документация" ResizeMode="NoResize" Height="250" Width="450">
     <Grid>
-        
+
     </Grid>
 </Window>

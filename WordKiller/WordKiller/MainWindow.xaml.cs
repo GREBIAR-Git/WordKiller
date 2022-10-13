@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,13 +18,14 @@ namespace WordKiller;
 
 public partial class MainWindow : Window
 {
+    //OrelStateUniversi
     int menuLeftIndex;
-    string[] menuLabels;
+    readonly string[] menuNames;
     MenuItem DownPanelMI;
     DataComboBox data;
     TypeDocument typeDocument;
 
-    ViewModel viewModel;
+    readonly ViewModel viewModel;
 
     readonly WordKillerFile file;
     public MainWindow(string[] args)
@@ -42,7 +44,7 @@ public partial class MainWindow : Window
         DownPanelMI = SubstitutionMI;
         TextHeaderUpdate();
         RefreshMenu(1);
-        ComboBoxSetup();
+        menuNames = ComboBoxSetup();
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
         if (args.Length > 0)
         {
@@ -57,14 +59,14 @@ public partial class MainWindow : Window
         }
     }
 
-    void ComboBoxSetup()
+    string[] ComboBoxSetup()
     {
-        menuLabels = new string[(elementPanel.Children.Count) / 2 - 1];
+        string[] names = new string[(elementPanel.Children.Count) / 2 - 1];
         for (int i = 1; i < (elementPanel.Children.Count) / 2; i++)
         {
             Button button = (Button)elementPanel.Children[i];
             button.Click += Click_ComboBox;
-            menuLabels[i - 1] = button.Content.ToString();
+            names[i - 1] = button.Content.ToString();
         }
 
         for (int i = elementPanel.ColumnDefinitions.Count - 1; i < elementPanel.Children.Count - 1; i++)
@@ -73,6 +75,7 @@ public partial class MainWindow : Window
             comboBox.SelectionChanged += ComboBox_SelectionChanged;
             comboBox.PreviewMouseRightButtonDown += ComboBox_PreviewRightMouseDown;
         }
+        return names;
     }
 
     void Click_ComboBox(object sender, RoutedEventArgs e)
@@ -124,7 +127,7 @@ public partial class MainWindow : Window
     void DefaultTypeRichBox(string type)
     {
         string beginning = Config.AddSpecialBoth(type);
-        SetText(beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n");
+        RTBox.SetText(richTextBox, beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n");
         richTextBox.Focus();
         RTBox.SetCaret(richTextBox, beginning.Length + 3);
     }
@@ -343,19 +346,12 @@ public partial class MainWindow : Window
                 ShowSpecials();
                 HidePictureBox();
                 richTextBox.Focus();
-                SetText(data.Text);
+                RTBox.SetText(richTextBox, data.Text);
                 UpdateTypeButton();
                 DownTextUpdate();
                 richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
             }
         }
-    }
-
-    void SetText(string text)
-    {
-        FlowDocument allText = new();
-        allText.Blocks.Add(new Paragraph(new Run(text)));
-        richTextBox.Document = allText;
     }
 
     void HideElements(MenuItem MenuItem)
@@ -475,11 +471,11 @@ public partial class MainWindow : Window
         }
         if (menuLeftIndex == elementPanel.ColumnDefinitions.Count - 5)
         {
-            elementPanel.ColumnDefinitions[elementPanel.ColumnDefinitions.Count - 1].Width = new GridLength(0, GridUnitType.Star);
+            elementPanel.ColumnDefinitions[^1].Width = new GridLength(0, GridUnitType.Star);
         }
         else
         {
-            elementPanel.ColumnDefinitions[elementPanel.ColumnDefinitions.Count - 1].Width = new GridLength(4, GridUnitType.Star);
+            elementPanel.ColumnDefinitions[^1].Width = new GridLength(4, GridUnitType.Star);
         }
     }
 
@@ -639,7 +635,7 @@ public partial class MainWindow : Window
     {
         Control senderControl = (Control)sender;
         int i = elementPanel.Children.IndexOf(senderControl) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
-        elementTBl.Text = menuLabels[i] + ": ";
+        elementTBl.Text = menuNames[i] + ": ";
     }
 
     void ComboBox_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
@@ -709,7 +705,7 @@ public partial class MainWindow : Window
 
         Report report = new();
         await Task.Run(() =>
-            report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn));
+            Report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn));
 
         if (CloseWindow.IsChecked)
         {
@@ -782,7 +778,7 @@ public partial class MainWindow : Window
             {
                 string h1 = data.ComboBox["h1"].Form.Items[h1Count - 1].ToString();
                 string h2 = string.Empty;
-                if (str.Substring(str.LastIndexOf(Config.AddSpecialLeft("h1"))).Contains(Config.AddSpecialLeft("h2")))
+                if (str[str.LastIndexOf(Config.AddSpecialLeft("h1"))..].Contains(Config.AddSpecialLeft("h2")))
                 {
                     h2 = " : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
                 }
@@ -816,7 +812,7 @@ public partial class MainWindow : Window
         {
             string key = data.ComboBox.Keys.ElementAt(i);
             int count = str.Length - key.Length - 1;
-            if (count >= 0 && str.Substring(count).StartsWith(Config.specialBefore + key))
+            if (count >= 0 && str[count..].StartsWith(Config.specialBefore + key))
             {
                 if (key == "l")
                 {
@@ -860,13 +856,13 @@ public partial class MainWindow : Window
             if (h1Pos < h2Pos)
             {
                 elementCB.Items.Add("h1: " + data.ComboBox["h1"].Form.Items[h1Count]);
-                str = str.Substring(h1Pos + 1 + 2);
+                str = str[(h1Pos + 1 + 2)..];
                 h1Count++;
             }
             else
             {
                 elementCB.Items.Add("h2: " + data.ComboBox["h2"].Form.Items[h2Count]);
-                str = str.Substring(h2Pos + 1 + 2);
+                str = str[(h2Pos + 1 + 2)..];
                 h2Count++;
             }
         }
@@ -942,12 +938,12 @@ public partial class MainWindow : Window
         string d = RTBox.GetText(richTextBox);
         if (idx == 0 || (idx == 1 && RTBox.GetText(richTextBox)[idx - 1] == Config.specialBefore) || (idx >= 2 && RTBox.GetText(richTextBox)[idx - 2] == '\n'))
         {
-            SetText(d.Insert(idx, symbol.ToLower() + "\n"));
+            RTBox.SetText(richTextBox, d.Insert(idx, symbol.ToLower() + "\n"));
             RTBox.SetCaret(richTextBox, idx + symbol.Length + 3);
         }
         else
         {
-            SetText(d.Insert(idx, "\n" + symbol.ToLower() + "\n"));
+            RTBox.SetText(richTextBox, d.Insert(idx, "\n" + symbol.ToLower() + "\n"));
             RTBox.SetCaret(richTextBox, idx + symbol.Length + 4);
         }
         richTextBox.Focus();
@@ -964,11 +960,11 @@ public partial class MainWindow : Window
             {
                 lines[1] = "";
                 lines[3] = "";
-                SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
+                RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                 RTBox.SetCaret(richTextBox, lines[0].Length + 3);
                 e.Handled = true;
             }
-            else if ((line == 1 || line == 3 || (line == 2 && richTextBox.Selection.Text.Contains("\n"))) && !(e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right))
+            else if ((line == 1 || line == 3 || (line == 2 && richTextBox.Selection.Text.Contains('\n'))) && !(e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right))
             {
                 e.Handled = true;
             }
@@ -992,11 +988,11 @@ public partial class MainWindow : Window
             {
                 if (line == 2)
                 {
-                    if (richTextBox.Selection.Text.Contains("\n"))
+                    if (richTextBox.Selection.Text.Contains('\n'))
                     {
                         e.Handled = true;
                     }
-                    else if (Clipboard.GetText().Contains("\n"))
+                    else if (Clipboard.GetText().Contains('\n'))
                     {
                         Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
                     }
@@ -1014,12 +1010,12 @@ public partial class MainWindow : Window
                             lines[3] += "\n" + lines[i];
                         }
                     }
-                    SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
+                    RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                 }
                 else if (string.IsNullOrEmpty(lines[3]))
                 {
                     lines[3] = lines[1];
-                    SetText(lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
+                    RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                 }
                 RTBox.SetCaret(richTextBox, lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 6);
             }
@@ -1093,7 +1089,7 @@ public partial class MainWindow : Window
 
     void ChangeUser(ElementComboBox elementComboBox)
     {
-        for (int i = 0; i < elementComboBox.Data.Count(); i++)
+        for (int i = 0; i < elementComboBox.Data.Count; i++)
         {
             if (elementComboBox.Data[i][1].Contains(":\\Users\\"))
             {
@@ -1117,9 +1113,10 @@ public partial class MainWindow : Window
         {
             ProcessStartInfo proc = new()
             {
+                
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,
-                FileName = System.Reflection.Assembly.GetExecutingAssembly().Location,
+                FileName = Environment.ProcessPath,
                 Verb = "runas"
             };
             proc.Arguments += "FileAssociation";
@@ -1134,7 +1131,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            FileAssociation.Associate("WordKiller", null);
+            FileAssociation.Associate("WordKiller");
         }
     }
 
@@ -1146,7 +1143,7 @@ public partial class MainWindow : Window
             {
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,
-                FileName = System.Reflection.Assembly.GetExecutingAssembly().Location,
+                FileName = Environment.ProcessPath,
                 Verb = "runas"
             };
             proc.Arguments += "RemoveFileAssociation";
@@ -1545,14 +1542,14 @@ public partial class MainWindow : Window
                 if (path.Length > 0)
                 {
                     string nameFile = path.Split('\\').Last();
-                    nameFile = nameFile.Substring(0, nameFile.LastIndexOf('.'));
+                    nameFile = nameFile[..nameFile.LastIndexOf('.')];
                     if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
                     {
-                        SetText(Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
+                        RTBox.SetText(richTextBox, Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
                     }
                     else
                     {
-                        SetText(Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
+                        RTBox.SetText(richTextBox, Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
                     }
                 }
             }
@@ -1570,7 +1567,7 @@ public partial class MainWindow : Window
         TextBox a = (TextBox)sender;
         if (!string.IsNullOrEmpty(a.Text))
         {
-            a.Text = a.Text.Substring(0, 1).ToUpper() + a.Text.Substring(1).ToLower();
+            a.Text = a.Text[..1].ToUpper() + a.Text[1..].ToLower();
         }
     }
 
@@ -1607,7 +1604,7 @@ public partial class MainWindow : Window
 
             int start = FindParagraphStart(special);
             int end = FindParagraphEnd(special);
-            string str = RTBox.GetText(richTextBox).Substring(start, end - start);
+            string str = RTBox.GetText(richTextBox)[start..end];
 
             R2_changeText(str);
         }
@@ -1734,8 +1731,8 @@ public partial class MainWindow : Window
         int end = FindParagraphEnd(special);
 
         string str = RTBox.GetText(richTextBox);
-        string before = str.Substring(0, start);
-        string after = str.Substring(end);
+        string before = str[..start];
+        string after = str[end..];
         string str2 = RTBox.GetText(richTextBox2);
 
         str = before + str2 + after;

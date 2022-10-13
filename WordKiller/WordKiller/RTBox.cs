@@ -16,6 +16,13 @@ namespace WordKiller
             return text;
         }
 
+        public static void SetText(RichTextBox richTextBox, string text)
+        {
+            FlowDocument allText = new();
+            allText.Blocks.Add(new Paragraph(new Run(text)));
+            richTextBox.Document = allText;
+        }
+
         public static int GetCaretIndex(RichTextBox r)
         {
             return new TextRange(r.Document.ContentStart, r.CaretPosition).Text.Replace("\r", "").Length;
@@ -29,7 +36,7 @@ namespace WordKiller
         public static string GetLineAtCursor(RichTextBox richTextBox)
         {
             string[] lines = new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text.Split('\n');
-            string last = lines[lines.Length - 1];
+            string last = lines[^1];
             return last;
         }
 

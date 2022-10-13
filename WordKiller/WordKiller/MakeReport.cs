@@ -3,6 +3,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Metadata;
+using Document = Microsoft.Office.Interop.Word.Document;
+using Range = Microsoft.Office.Interop.Word.Range;
 
 namespace WordKiller;
 
@@ -23,7 +26,7 @@ class MakeReport
         Beginning(exportPDF);
         if (typeDocument != TypeDocument.DefaultDocument)
         {
-            dataTitle[dataTitle.Length - 1] = SpaceForYear(dataTitle[dataTitle.Length - 1], '_');
+            dataTitle[^1] = SpaceForYear(dataTitle[^1], '_');
             TitlePart(typeDocument, dataTitle);
         }
         TableOfContents(tableOfContentsOn, dataMainPart);
@@ -60,7 +63,7 @@ class MakeReport
         }
     }
 
-    string ProcessSpecials(string text, DataComboBox data)
+    static string ProcessSpecials(string text, DataComboBox data)
     {
         foreach (string key in data.ComboBox.Keys)
         {
@@ -69,7 +72,7 @@ class MakeReport
         return text;
     }
 
-    void RemoveENDLs(ref string text, string symbol)
+    static void RemoveENDLs(ref string text, string symbol)
     {
         string[] str = text.Split(new string[] { symbol }, StringSplitOptions.None);
         for (int i = 0; i < str.Length; i++)
@@ -80,7 +83,7 @@ class MakeReport
                 {
                     str[i] = str[i].Remove(0, 1);
                 }
-                if (str[i].Length > 0 && str[i][str[i].Length - 1] == '\n')
+                if (str[i].Length > 0 && str[i][^1] == '\n')
                 {
                     str[i] = str[i].Remove(str[i].Length - 1, 1);
                 }
@@ -112,7 +115,7 @@ class MakeReport
         }
         else if (typeDocument == TypeDocument.Coursework)
         {
-            string text = "Работа допущена к защите" + SkipLine(1) + "______________Руководитель" + SkipLine(1) + "«____»_____________" + dataTitle[dataTitle.Length - 1] + "г.";
+            string text = "Работа допущена к защите" + SkipLine(1) + "______________Руководитель" + SkipLine(1) + "«____»_____________" + dataTitle[^1] + "г.";
             WriteTextWord(text);
             word.Font.Size = 14;
             word.Font.Bold = 0;
@@ -225,7 +228,7 @@ class MakeReport
         else if (typeDocument == TypeDocument.VKR)
         {
         }
-        Orel(dataTitle[dataTitle.Length - 1]);
+        Orel(dataTitle[^1]);
     }
 
     void LabPra(string type, string[] dataTitle)
@@ -293,7 +296,7 @@ class MakeReport
         PageMargin();
     }
 
-    string SpaceForYear(string year, char spaceCharacter)
+    static string SpaceForYear(string year, char spaceCharacter)
     {
         for (int i = 0; i < 4 - year.Length; i++)
         {
@@ -500,7 +503,7 @@ class MakeReport
         }
     }
 
-    string[] ProcessSpecial(int i, string special, DataComboBox content)
+    static string[] ProcessSpecial(int i, string special, DataComboBox content)
     {
         string[] text = new string[2];
         if (special == "h1")
@@ -664,7 +667,7 @@ class MakeReport
         word.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
     }
 
-    void Table(string text)
+    static void Table(string text)
     {
         // kek
     }
@@ -693,7 +696,7 @@ class MakeReport
         word.PageSetup.RightMargin = CentimetersToPoints(pageMargins["right"]);
     }
 
-    float CentimetersToPoints(float cen)
+    static float CentimetersToPoints(float cen)
     {
         return cen * 28.3465f;
     }
@@ -711,7 +714,7 @@ class MakeReport
         word.Paragraphs.SpaceAfter = 0;
     }
 
-    string SkipLine(int quantity)
+    static string SkipLine(int quantity)
     {
         var str = string.Empty;
         for (var i = 0; i < quantity; i++)

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordKiller", "WordKiller\WordKiller.csproj", "{7B5B7E2D-9E8D-4A15-A54E-FA66581AF547}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordKiller", "WordKiller\WordKiller.csproj", "{E638BCB2-E19B-4DE4-B3F7-487A3BC1CCC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B5B7E2D-9E8D-4A15-A54E-FA66581AF547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B5B7E2D-9E8D-4A15-A54E-FA66581AF547}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B5B7E2D-9E8D-4A15-A54E-FA66581AF547}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B5B7E2D-9E8D-4A15-A54E-FA66581AF547}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E638BCB2-E19B-4DE4-B3F7-487A3BC1CCC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E638BCB2-E19B-4DE4-B3F7-487A3BC1CCC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E638BCB2-E19B-4DE4-B3F7-487A3BC1CCC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E638BCB2-E19B-4DE4-B3F7-487A3BC1CCC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {96BE9676-D461-40D5-A7F3-F1E6851E7A7C}
+		SolutionGuid = {FA9D1BA2-FE07-423E-8521-4ACE1F1EA6CE}
 	EndGlobalSection
 EndGlobal

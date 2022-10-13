@@ -100,7 +100,7 @@ static class TitleElements
         }
         else
         {
-            cells = new string[0];
+            cells = System.Array.Empty<string>();
         }
         columns = new int[cells.Length];
         rows = new int[cells.Length];
@@ -136,7 +136,7 @@ static class TitleElements
         {
             newArray[i] = array[i];
         }
-        newArray[newArray.Length - 1] = element;
+        newArray[^1] = element;
         return newArray;
     }
 
@@ -159,7 +159,7 @@ static class TitleElements
 
     static UIElement[] CopyControls(Grid tableLayoutPanel, int[] rows, int[] columns)
     {
-        UIElement[] newArray = new UIElement[0];
+        UIElement[] newArray = System.Array.Empty<UIElement>();
         for (int i = 0; i < tableLayoutPanel.Children.Count; i++)
         {
             if (rows.Length == columns.Length)

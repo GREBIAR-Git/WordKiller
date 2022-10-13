@@ -8,7 +8,7 @@ namespace WordKiller
     class SaveLogo
     {
         readonly DispatcherTimer saveTimer;
-        Image logo;
+        readonly Image logo;
 
         public SaveLogo(Image logo)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -18,28 +19,24 @@ public class FileAssociation
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
-    public static void Associate(string description, string icon)
+    public static void Associate(string description)
     {
+        string appName = Application.ResourceAssembly.GetName().Name;
+        Registry.ClassesRoot.CreateSubKey(Config.extension).SetValue("", appName);
 
-        Registry.ClassesRoot.CreateSubKey(Config.extension).SetValue("", Application.ResourceAssembly.GetName().Name);
-
-        if (Application.ResourceAssembly.GetName().Name != null && Application.ResourceAssembly.GetName().Name.Length > 0)
+        if (Application.ResourceAssembly.GetName().Name != null && appName.Length > 0)
         {
-            using RegistryKey key = Registry.ClassesRoot.CreateSubKey(Application.ResourceAssembly.GetName().Name);
+            using RegistryKey key = Registry.ClassesRoot.CreateSubKey(appName);
             if (description != null)
                 key.SetValue("", description);
 
-            if (icon != null)
-                key.CreateSubKey("DefaultIcon").SetValue("", ToShortPathName(icon));
-
-            key.CreateSubKey(@"Shell\Open\Command").SetValue("", ToShortPathName(System.Reflection.Assembly.GetExecutingAssembly().Location) + " \"%1\"");
+            key.CreateSubKey(@"Shell\Open\Command").SetValue("", ToShortPathName(Environment.ProcessPath) + " \"%1\"");
         }
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
     }
 
     public static void Remove()
     {
-
         Registry.ClassesRoot.DeleteSubKeyTree(Config.extension);
         Registry.ClassesRoot.DeleteSubKeyTree(Application.ResourceAssembly.GetName().Name);
     }
@@ -47,14 +44,14 @@ public class FileAssociation
     [DllImport("shell32.dll", SetLastError = true)]
     static extern void SHChangeNotify(long wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
-    [DllImport("Kernel32.dll")]
+    [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
     static extern uint GetShortPathName(string lpszLongPath, [Out] StringBuilder lpszShortPath, uint cchBuffer);
 
     static string ToShortPathName(string longName)
     {
         StringBuilder s = new(1000);
         uint iSize = (uint)s.Capacity;
-        GetShortPathName(longName, s, iSize);
+        _ = GetShortPathName(longName, s, iSize);
         return s.ToString();
     }
 }

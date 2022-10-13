@@ -10,7 +10,7 @@ public partial class App : Application
         {
             if (e.Args[0] == "FileAssociation")
             {
-                FileAssociation.Associate("WordKiller", null);
+                FileAssociation.Associate("WordKiller");
                 System.Environment.Exit(0);
             }
             else if (e.Args[0] == "RemoveFileAssociation")
