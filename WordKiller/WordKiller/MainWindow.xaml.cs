@@ -1,10 +1,10 @@
 ﻿using Microsoft.Win32;
+using OrelUniverEmbeddedAPI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,12 +18,12 @@ namespace WordKiller;
 
 public partial class MainWindow : Window
 {
-    //OrelStateUniversi
     int menuLeftIndex;
     readonly string[] menuNames;
     MenuItem DownPanelMI;
     DataComboBox data;
     TypeDocument typeDocument;
+    MenuItem prevSettings;
 
     readonly ViewModel viewModel;
 
@@ -35,20 +35,22 @@ public partial class MainWindow : Window
             WinTitle = "WordKiller",
             TitleYear = "202",
             TitleOpen = true,
-            Encoding1 = true
         };
         InitializeComponent();
+
         DataContext = viewModel;
         file = new(saveLogo, typeMenuItem.Items, titlePanel.Children, elementPanel, richTextBox, this);
         TitleElements.SaveTitleUIElements(titlePanel);
         DownPanelMI = SubstitutionMI;
+        prevSettings = DownPanelMI;
         TextHeaderUpdate();
         RefreshMenu(1);
         menuNames = ComboBoxSetup();
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
+        richTextBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
         if (args.Length > 0)
         {
-            if (args[0].EndsWith(Config.extension) && File.Exists(args[0]))
+            if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
             {
                 file.OpenFile(args[0], viewModel, ref data);
             }
@@ -57,7 +59,53 @@ public partial class MainWindow : Window
                 throw new Exception("Ошибка открытия файла:\nФайл не найден или формат не поддерживается");
             }
         }
+        InitSetting();
     }
+
+    async void InitSetting()
+    {
+        Universitet.Items.Add("Орловский Государственный университет имени И.С. Тургенева");
+
+        OrelUniverAPI.Result<Division>? divisions = await OrelUniverAPI.GetDivisionsForStudentsAsync();
+        if (divisions.Code != 1)
+        {
+            if (divisions != null && divisions.Response != null)
+            {
+                foreach (Division division in divisions.Response)
+                {
+                    Faculty.Items.Add(division.Title);
+                }
+            }
+        }
+    }
+
+    /*async void test()
+    {
+    //7 ипаит //498 //7286-92PG
+        OrelUniverAPI.Result<Employee>? result23456 = await OrelUniverAPI.EmployeeGetListAsync();//+
+        OrelUniverAPI.Result<EmployeeMax>? result1 = await OrelUniverAPI.EmployeeGetAsync("3686");//+
+
+        OrelUniverAPI.Result<Division>? result3 = await OrelUniverAPI.GetDivisionsForEmployeesAsync();//+
+        OrelUniverAPI.Result<EmployeeMin>? result2 = await OrelUniverAPI.ScheduleGetEmployeesAsync("7", "498");//
+        OrelUniverAPI.Result<Subdivision>? result16 = await OrelUniverAPI.ScheduleGetSubdivisionsAsync("7");//
+        OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync("7");//
+        OrelUniverAPI.Result<OrelUniverEmbeddedAPI.Group>? result15 = await OrelUniverAPI.ScheduleGetGroupsAsync("7", "4");//
+
+        OrelUniverAPI.Result<Division>? result6 = await OrelUniverAPI.GetDivisionsForStudentsAsync();//+
+        OrelUniverAPI.Result<Building>? result7 = await OrelUniverAPI.ScheduleGetBuildingsAsync();//+
+        OrelUniverAPI.Result<Cabinets>? result11 = await OrelUniverAPI.ScheduleGetCabinetsAsync("12");//+
+
+        OrelUniverAPI.Result<Schedule>? result4 = await OrelUniverAPI.ScheduleGetByEmployeeAsync(14, 10, 2022, "3686");//
+        OrelUniverAPI.Result<Schedule>? result8 = await OrelUniverAPI.ScheduleGetByCabinetAsync(14, 10, 2022, "12", "715");//
+        OrelUniverAPI.Result<Schedule>? result10 = await OrelUniverAPI.ScheduleGetByGroupAsync(14, 10, 2022, "7286");//
+        OrelUniverAPI.Result<Schedule>? result101 = await OrelUniverAPI.ScheduleGetByGroupAsync(15, 10, 2022, "7286");//
+        OrelUniverAPI.Result<Schedule>? result102 = await OrelUniverAPI.ScheduleGetByGroupAsync(16, 10, 2022, "7286");//
+        OrelUniverAPI.Result<Schedule>? result103 = await OrelUniverAPI.ScheduleGetByGroupAsync(17, 10, 2022, "7286");//
+        OrelUniverAPI.Result<Schedule>? result104 = await OrelUniverAPI.ScheduleGetByGroupAsync(18, 10, 2022, "7286");//
+
+        OrelUniverAPI.Result<Exam>? result13 = await OrelUniverAPI.ScheduleGetExamsForEmployeeAsync("498");//
+        OrelUniverAPI.Result<Exam>? result14 = await OrelUniverAPI.ScheduleGetExamsForStudentAsync("7286");//
+    }*/
 
     string[] ComboBoxSetup()
     {
@@ -145,7 +193,7 @@ public partial class MainWindow : Window
     {
         OpenFileDialog openFileDialog = new()
         {
-            Filter = "wordkiller file (*" + Config.extension + ")|*" + Config.extension + "|All files (*.*)|*.*"
+            Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" + Properties.Settings.Default.Extension + "|All files (*.*)|*.*"
         };
         if (openFileDialog.ShowDialog() == true)
         {
@@ -707,7 +755,7 @@ public partial class MainWindow : Window
         await Task.Run(() =>
             Report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn));
 
-        if (CloseWindow.IsChecked)
+        if (Properties.Settings.Default.CloseWindow)
         {
             WindowClose();
         }
@@ -953,158 +1001,18 @@ public partial class MainWindow : Window
     {
         if (DownPanelMI == SubstitutionMI && ComboBoxSelected())
         {
-            int line = RTBox.GetLineOfCursor(richTextBox);
-            string[] lines = RTBox.GetText(richTextBox).Split('\n');
-            int index = RTBox.GetCaretIndex(richTextBox);
-            if (new TextRange(richTextBox.CaretPosition.DocumentStart, richTextBox.CaretPosition.DocumentEnd).Text == richTextBox.Selection.Text && (e.Key == Key.Back || e.Key == Key.Delete))
-            {
-                lines[1] = "";
-                lines[3] = "";
-                RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
-                RTBox.SetCaret(richTextBox, lines[0].Length + 3);
-                e.Handled = true;
-            }
-            else if ((line == 1 || line == 3 || (line == 2 && richTextBox.Selection.Text.Contains('\n'))) && !(e.Key == Key.Up || e.Key == Key.Down || e.Key == Key.Left || e.Key == Key.Right))
-            {
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Enter && line == 2 || e.Key == Key.Delete && EndSecondLines(lines, index) ||
-                    (e.Key == Key.Back || Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.X) &&
-                    (BeginningSecondLines(lines, index) || BeginningFourthLines(lines, index)) && richTextBox.Selection.Text.Length == 0)
-            {
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Down && (line == 2 || BeginningSecondLines(lines, index) || EndSecondLines(lines, index)))
-            {
-                RTBox.SetCaret(richTextBox, index + lines[1].Length + lines[2].Length + 4);
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Up && (line == 4 || BeginningFourthLines(lines, index)))
-            {
-                RTBox.SetCaret(richTextBox, index - lines[1].Length - lines[2].Length);
-                e.Handled = true;
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.V)
-            {
-                if (line == 2)
-                {
-                    if (richTextBox.Selection.Text.Contains('\n'))
-                    {
-                        e.Handled = true;
-                    }
-                    else if (Clipboard.GetText().Contains('\n'))
-                    {
-                        Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
-                    }
-                }
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.D)
-            {
-                if (string.IsNullOrEmpty(lines[1]) && !string.IsNullOrEmpty(lines[3]))
-                {
-                    lines[1] = lines[3];
-                    if (lines.Length > 4)
-                    {
-                        for (int i = 4; i < lines.Length; i++)
-                        {
-                            lines[3] += "\n" + lines[i];
-                        }
-                    }
-                    RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
-                }
-                else if (string.IsNullOrEmpty(lines[3]))
-                {
-                    lines[3] = lines[1];
-                    RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
-                }
-                RTBox.SetCaret(richTextBox, lines[0].Length + lines[1].Length + lines[2].Length + lines[3].Length + 6);
-            }
+            ProcessingRichTextBox.StartForSubstitutionPanel(richTextBox, e);
         }
         else
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.V)
-            {
-                Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
-            }
-            if (!CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) && !(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.S)) // probably this is better than something above that does the same for line 0 and 2
-            {
-                e.Handled = true;
-            }
+            ProcessingRichTextBox.StartForTextPanel(richTextBox, e);
         }
-    }
-
-    bool CheckPressKey(Key press, params Key[] keys)
-    {
-        foreach (Key key in keys)
-        {
-            if (press == key)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    bool BeginningSecondLines(string[] lines, int index)
-    {
-        if (lines[0].Length == index - 1)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    bool BeginningFourthLines(string[] lines, int index)
-    {
-        if (lines[0].Length + lines[1].Length + lines[2].Length == index - 3)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    bool EndSecondLines(string[] lines, int index)
-    {
-        if (lines[1].Length + lines[0].Length == index - 1)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    void Encoding_Click(object sender, RoutedEventArgs e)
-    {
-        Encoding0MenuItem.IsChecked = false;
-        Encoding1MenuItem.IsChecked = false;
-        MenuItem menuItem = (MenuItem)sender;
-        menuItem.IsChecked = true;
     }
 
     void ChangeUserMenuItem_Click(object sender, RoutedEventArgs e)
     {
-        ChangeUser(data.ComboBox["p"]);
-        ChangeUser(data.ComboBox["c"]);
-    }
-
-    void ChangeUser(ElementComboBox elementComboBox)
-    {
-        for (int i = 0; i < elementComboBox.Data.Count; i++)
-        {
-            if (elementComboBox.Data[i][1].Contains(":\\Users\\"))
-            {
-                string[] directory = elementComboBox.Data[i][1].Split('\\');
-                for (int f = 0; f < directory.Length; f++)
-                {
-                    if (directory[f] == "Users")
-                    {
-                        directory[f + 1] = Environment.UserName;
-                        break;
-                    }
-                }
-                elementComboBox.Data[i][1] = String.Join("\\", directory);
-            }
-        }
+        ChangeUser.Start(data.ComboBox["p"]);
+        ChangeUser.Start(data.ComboBox["c"]);
     }
 
     void SetAsDefault_Click(object sender, RoutedEventArgs e)
@@ -1113,7 +1021,7 @@ public partial class MainWindow : Window
         {
             ProcessStartInfo proc = new()
             {
-                
+
                 UseShellExecute = true,
                 WorkingDirectory = Environment.CurrentDirectory,
                 FileName = Environment.ProcessPath,
@@ -1571,18 +1479,6 @@ public partial class MainWindow : Window
         }
     }
 
-    void SyntaxChecking_Click(object sender, RoutedEventArgs e)
-    {
-        if (SyntaxChecking.IsChecked)
-        {
-            richTextBox.SpellCheck.IsEnabled = true;
-        }
-        else
-        {
-            richTextBox.SpellCheck.IsEnabled = false;
-        }
-    }
-
     void ElementCB_update()
     {
         if (elementCB.SelectedValue == null)
@@ -1772,5 +1668,249 @@ public partial class MainWindow : Window
     void LeaveNetwork(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    void OpenGeneralisSetiings()
+    {
+        Profile.Visibility = Visibility.Collapsed;
+        GeneralisSetiings.Visibility = Visibility.Visible;
+        Encoding.SelectedIndex = Properties.Settings.Default.NumberEncoding;
+        CloseWindow.IsChecked = Properties.Settings.Default.CloseWindow;
+        SyntaxChecking.IsChecked = Properties.Settings.Default.SyntaxChecking;
+    }
+
+    async void OpenProfile()
+    {
+        Profile.Visibility = Visibility.Visible;
+        GeneralisSetiings.Visibility = Visibility.Collapsed;
+        FirstName.Text = Properties.Settings.Default.FirstName;
+        LastName.Text = Properties.Settings.Default.LastName;
+        MiddleName.Text = Properties.Settings.Default.MiddleName;
+        OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync("1");
+        if ((await OrelUniverAPI.ScheduleGetCourseAsync("1")).Code == 1)
+        {
+            Faculty.Items.Add(Properties.Settings.Default.FacultyString);
+            Faculty.SelectedIndex = 0;
+            Group.Items.Add(Properties.Settings.Default.GroupString);
+            Group.SelectedIndex = 0;
+            Cours.Items.Add(Properties.Settings.Default.CourseString);
+            Cours.SelectedIndex = 0;
+        }
+        else
+        {
+            Faculty.SelectedIndex = Properties.Settings.Default.Faculty;
+            Group.SelectedIndex = Properties.Settings.Default.Group;
+            Cours.SelectedIndex = Properties.Settings.Default.Course;
+        }
+        Universitet.Text = Properties.Settings.Default.Universitet;
+        Shifr.Text = Properties.Settings.Default.Shifr;
+        FirstNameCoop.Text = Properties.Settings.Default.FirstNameCoop;
+        LastNameCoop.Text = Properties.Settings.Default.LastNameCoop;
+        MiddleNameCoop.Text = Properties.Settings.Default.MiddleNameCoop;
+        ShifrCoop.Text = Properties.Settings.Default.ShifrCoop;
+    }
+
+    void FirstName_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.FirstName = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void LastName_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.LastName = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void MiddleName_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.MiddleName = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void Universitet_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+        Properties.Settings.Default.Universitet = comboBox.Items[comboBox.SelectedIndex].ToString();
+        Properties.Settings.Default.Save();
+    }
+
+    async void Faculty_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+
+        OrelUniverAPI.Result<Division>? result6 = await OrelUniverAPI.GetDivisionsForStudentsAsync();
+        if (result6.Code != 1)
+        {
+            foreach (Division division in result6.Response)
+            {
+                if (division.Title == Faculty.Items[Faculty.SelectedIndex].ToString())
+                {
+                    Cours.Items.Clear();
+                    Group.Items.Clear();
+                    OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());//
+                    foreach (Cours cours in result12.Response)
+                    {
+                        Cours.Items.Add(cours.Course);
+                    }
+                }
+            }
+            if (comboBox.SelectedIndex >= 0)
+            {
+                Properties.Settings.Default.FacultyString = comboBox.Items[comboBox.SelectedIndex].ToString();
+                Properties.Settings.Default.Faculty = comboBox.SelectedIndex;
+            }
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    async void Cours_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+
+        OrelUniverAPI.Result<Division>? result6 = await OrelUniverAPI.GetDivisionsForStudentsAsync();
+        if (result6.Code != 1)
+        {
+            foreach (Division division in result6.Response)
+            {
+                if (Faculty.SelectedIndex >= 0 && division.Title == Faculty.Items[Faculty.SelectedIndex].ToString())
+                {
+                    OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());//
+                    foreach (Cours cours in result12.Response)
+                    {
+                        if (Cours.SelectedIndex >= 0 && cours.Course == Cours.Items[Cours.SelectedIndex].ToString())
+                        {
+                            Group.Items.Clear();
+                            OrelUniverAPI.Result<OrelUniverEmbeddedAPI.Group>? result15 = await OrelUniverAPI.ScheduleGetGroupsAsync(division.Id.ToString(), cours.Course.ToString());
+                            foreach (OrelUniverEmbeddedAPI.Group groups in result15.Response)
+                            {
+                                Group.Items.Add(groups.Title);
+                            }
+                        }
+                    }
+                }
+            }
+            if (comboBox.SelectedIndex >= 0)
+            {
+                Properties.Settings.Default.CourseString = comboBox.Items[comboBox.SelectedIndex].ToString();
+                Properties.Settings.Default.Course = comboBox.SelectedIndex;
+            }
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    void Group_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ComboBox comboBox = (ComboBox)sender;
+        if (comboBox.SelectedIndex >= 0)
+        {
+            Properties.Settings.Default.GroupString = comboBox.Items[comboBox.SelectedIndex].ToString();
+            Properties.Settings.Default.Group = comboBox.SelectedIndex;
+        }
+        Properties.Settings.Default.Save();
+    }
+
+    void Shifr_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.Shifr = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void FirstNameCoop_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.FirstNameCoop = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void LastNameCoop_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.LastNameCoop = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void MiddleNameCoop_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.MiddleNameCoop = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void ShifrCoop_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        Properties.Settings.Default.ShifrCoop = textBox.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void OpenProfile(object sender, RoutedEventArgs e)
+    {
+        OpenProfile();
+    }
+
+    void OpenGeneralisSetiings(object sender, RoutedEventArgs e)
+    {
+        OpenGeneralisSetiings();
+    }
+
+    void CloseWindow_Checked(object sender, RoutedEventArgs e)
+    {
+        if (CloseWindow.IsChecked != null)
+        {
+            Properties.Settings.Default.CloseWindow = (bool)CloseWindow.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    void SyntaxChecking_Checked(object sender, RoutedEventArgs e)
+    {
+        if (SyntaxChecking.IsChecked != null)
+        {
+            Properties.Settings.Default.SyntaxChecking = (bool)SyntaxChecking.IsChecked;
+
+
+            richTextBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
+
+
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    void Encoding_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        Properties.Settings.Default.NumberEncoding = Encoding.SelectedIndex;
+        Properties.Settings.Default.Save();
+    }
+
+    void OpenSettings_Click(object sender, RoutedEventArgs e)
+    {
+        if (viewModel.TitleOpen)
+        {
+            prevSettings = TitlePageMI;
+        }
+        else
+        {
+            prevSettings = DownPanelMI;
+        }
+        HideElements(prevSettings);
+        Settings.Visibility = Visibility.Visible;
+        MenuPanel.Visibility = Visibility.Collapsed;
+        ParentPanel.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
+        ParentPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
+        OpenGeneralisSetiings();
+    }
+
+    void ExitSettings(object sender, RoutedEventArgs e)
+    {
+        ShowElements(prevSettings);
+        Settings.Visibility = Visibility.Collapsed;
+        MenuPanel.Visibility = Visibility.Visible;
+        ParentPanel.RowDefinitions[0].Height = new GridLength(100, GridUnitType.Star);
+        ParentPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Star);
     }
 }

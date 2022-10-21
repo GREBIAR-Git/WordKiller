@@ -1,9 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using OpenXmlPowerTools;
-using System;
+﻿using System;
 using System.IO;
-using System.Text;
-using System.Xml.Linq;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace WordKiller;
@@ -32,9 +28,10 @@ static class DocxExport
     }
 
     //нужно починить
-    public async static void ToHTML(string path)
+    public static void ToHTML(string path)
     {
-        var sourceDocxFileContent = File.ReadAllBytes(path);
+        Console.WriteLine("does not work");
+        /*var sourceDocxFileContent = File.ReadAllBytes(path);
         string HTMLFilePath = Path.ChangeExtension(path, ".html");
         using var memoryStream = new MemoryStream();
         await memoryStream.WriteAsync(sourceDocxFileContent);
@@ -46,7 +43,7 @@ static class DocxExport
         var settings = new WmlToHtmlConverterSettings(settings1);
         var html = WmlToHtmlConverter.ConvertToHtml(wordProcessingDocument, settings);
         var htmlString = html.ToString(SaveOptions.DisableFormatting);
-        File.WriteAllText(HTMLFilePath, htmlString, Encoding.UTF8);
+        File.WriteAllText(HTMLFilePath, htmlString, Encoding.UTF8);*/
     }
 
     static void ReleaseObject(object? obj)

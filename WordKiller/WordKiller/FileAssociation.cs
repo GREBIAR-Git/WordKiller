@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -22,7 +21,7 @@ public class FileAssociation
     public static void Associate(string description)
     {
         string appName = Application.ResourceAssembly.GetName().Name;
-        Registry.ClassesRoot.CreateSubKey(Config.extension).SetValue("", appName);
+        Registry.ClassesRoot.CreateSubKey(Properties.Settings.Default.Extension).SetValue("", appName);
 
         if (Application.ResourceAssembly.GetName().Name != null && appName.Length > 0)
         {
@@ -37,7 +36,7 @@ public class FileAssociation
 
     public static void Remove()
     {
-        Registry.ClassesRoot.DeleteSubKeyTree(Config.extension);
+        Registry.ClassesRoot.DeleteSubKeyTree(Properties.Settings.Default.Extension);
         Registry.ClassesRoot.DeleteSubKeyTree(Application.ResourceAssembly.GetName().Name);
     }
 
@@ -47,11 +46,15 @@ public class FileAssociation
     [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
     static extern uint GetShortPathName(string lpszLongPath, [Out] StringBuilder lpszShortPath, uint cchBuffer);
 
-    static string ToShortPathName(string longName)
+    static string ToShortPathName(string? longName)
     {
-        StringBuilder s = new(1000);
-        uint iSize = (uint)s.Capacity;
-        _ = GetShortPathName(longName, s, iSize);
-        return s.ToString();
+        if(longName != null)
+        {
+            StringBuilder s = new(1000);
+            uint iSize = (uint)s.Capacity;
+            _ = GetShortPathName(longName, s, iSize);
+            return s.ToString();
+        }
+        return string.Empty;
     }
 }

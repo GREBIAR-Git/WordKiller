@@ -78,6 +78,3 @@ class Encryption
         return normal;
     }
 }
-
-
-

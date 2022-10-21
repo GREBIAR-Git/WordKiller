@@ -3,7 +3,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
 using Document = Microsoft.Office.Interop.Word.Document;
 using Range = Microsoft.Office.Interop.Word.Range;
 
@@ -11,8 +10,8 @@ namespace WordKiller;
 
 class MakeReport
 {
-    Document doc;
-    Range word;
+    Document? doc;
+    Range? word;
     bool pgBreak = false;
     readonly Dictionary<string, float> pageMargins;
 

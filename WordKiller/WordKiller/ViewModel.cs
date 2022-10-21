@@ -18,8 +18,8 @@ public class ViewModel : INotifyPropertyChanged
         return false;
     }
 
-    string winTitle;
-    public string WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
+    string? winTitle;
+    public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
     bool numberHeading;
     public bool NumberHeading { get => numberHeading; set => SetProperty(ref numberHeading, value); }
@@ -56,10 +56,4 @@ public class ViewModel : INotifyPropertyChanged
 
     bool textOpen;
     public bool TextOpen { get => textOpen; set => SetProperty(ref textOpen, value); }
-
-    bool encoding0;
-    public bool Encoding0 { get => encoding0; set => SetProperty(ref encoding0, value); }
-
-    bool encoding1;
-    public bool Encoding1 { get => encoding1; set => SetProperty(ref encoding1, value); }
 }

@@ -9,7 +9,7 @@ namespace WordKiller
 {
     class WordKillerFile
     {
-        string savePath;
+        string? savePath;
 
         readonly SaveLogo saveLogo;
 
@@ -54,7 +54,7 @@ namespace WordKiller
             SaveFileDialog saveFileDialog = new()
             {
                 OverwritePrompt = true,
-                Filter = "wordkiller file (*" + Config.extension + ")|*" + Config.extension + "|All files (*.*)|*.*",
+                Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" + Properties.Settings.Default.Extension + "|All files (*.*)|*.*",
                 FileName = "1"
             };
             if (saveFileDialog.ShowDialog() == true)
@@ -101,11 +101,11 @@ namespace WordKiller
                 save += dataComboBox.Text + "\n";
             }
             save += Config.AddSpecialBoth("TextEnd") + "\n";
-            if (data.Encoding0)
+            if (Properties.Settings.Default.NumberEncoding == 0)
             {
                 output.Write("0\r\n" + save);
             }
-            else if (data.Encoding1)
+            else if (Properties.Settings.Default.NumberEncoding == 1)
             {
                 output.Write("1\r\n" + Encryption.MegaConvertE(save));
             }
@@ -114,13 +114,13 @@ namespace WordKiller
             saveLogo.Show();
         }
 
-        string SaveCombobox(ElementComboBox comboBox, string name)
+        static string SaveCombobox(ElementComboBox comboBox, string name)
         {
             string comboBoxSave = string.Empty;
             for (int i = 0; i < comboBox.Form.Items.Count; i++)
             {
                 string dataCombobox = string.Empty;
-                if (comboBox.Data[i][1].Contains("\n"))
+                if (comboBox.Data[i][1].Contains('\n'))
                 {
                     foreach (string str in comboBox.Data[i][1].Split('\n'))
                     {
@@ -149,11 +149,11 @@ namespace WordKiller
                 string text = reader.ReadToEnd();
                 if (text[0] == '1' && text[1] == '\r' && text[2] == '\n')
                 {
-                    text = Encryption.MegaConvertD(text.Substring(3));
+                    text = Encryption.MegaConvertD(text[3..]);
                 }
                 else if (text[0] == '0' && text[1] == '\r' && text[2] == '\n')
                 {
-                    text = text.Substring(3);
+                    text = text[3..];
                     text = text.Replace("\n", "\r\n");
                 }
                 for (int i = 1; i < text.Length; i++)
@@ -255,7 +255,7 @@ namespace WordKiller
             reader.Close();
         }
 
-        bool LoadingOfTwo(string[] variable_value, UIElement control)
+        static bool LoadingOfTwo(string[] variable_value, UIElement control)
         {
             if (control.GetType().ToString() == "System.Windows.Controls.TextBox")
             {

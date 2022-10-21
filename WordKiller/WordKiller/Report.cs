@@ -373,7 +373,7 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 16);
 
-        text = "Выполнил: студент группы 92ПГ";
+        text = "Выполнил: студент группы " + Properties.Settings.Default.GroupString;
         Text(doc, text, justify: JustificationValues.Right);
         text = dataTitle[1];
         Text(doc, text, justify: JustificationValues.Right);
@@ -397,11 +397,11 @@ class Report
 
         text = "Выполнил: " + dataTitle[1];
         Text(doc, text);
-        text = "Институт приборостроения, автоматизации и информационных технологий";
+        text = Properties.Settings.Default.FacultyString;
         Text(doc, text);
         text = "Направление: 09.03.04 «Программная инженерия»";
         Text(doc, text);
-        text = "Группа: 92ПГ";
+        text = "Группа: " + Properties.Settings.Default.Group;
         Text(doc, text);
 
         text = "Проверил: " + dataTitle[3];
@@ -446,11 +446,11 @@ class Report
         Text(doc, text, multiplier: 1.5f);
         text = "Шифр " + dataTitle[2];
         Text(doc, text, multiplier: 1.5f);
-        text = "Институт приборостроения, автоматизации и информационных технологий";
+        text = Properties.Settings.Default.FacultyString;
         Text(doc, text, multiplier: 1.5f);
         text = "Направление: 09.03.04 «Программная инженерия»";
         Text(doc, text, multiplier: 1.5f);
-        text = "Группа: 92ПГ";
+        text = "Группа: "+Properties.Settings.Default.GroupString;
         Text(doc, text, multiplier: 1.5f);
 
         text = "Руководитель __________________" + dataTitle[5];
@@ -475,11 +475,11 @@ class Report
         EmptyLines(doc, 8);
         text = "Выполнили: Музалевский Н.С., Аллянов М.Д.";
         Text(doc, text);
-        text = "Институт приборостроения, автоматизации и информационных технологий";
+        text = Properties.Settings.Default.FacultyString;
         Text(doc, text);
         text = "Направление: 09.03.04 «Программная инженерия»";
         Text(doc, text);
-        text = "Группа: 92ПГ";
+        text = "Группа: "+Properties.Settings.Default.GroupString;
         Text(doc, text);
 
         text = "Проверил: " + dataTitle[4];
