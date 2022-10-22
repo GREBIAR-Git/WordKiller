@@ -117,9 +117,8 @@
                     <Separator/>
                     <MenuItem Header="О программе" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
                 </MenuItem>
-                
             </Menu>
-
+            <Button Margin="0,0,55,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" Visibility="Collapsed" Style="{StaticResource Button}" Click="SwitchPanel_Click"/>
             <Button Margin="0,0,5,0" HorizontalAlignment="Right" Style="{StaticResource Button}" Click="OpenSettings_Click">
                 <Image Width="20" Height="20" Source="/Resources/Settings.png"/>
             </Button>
@@ -293,7 +292,7 @@
                                 <Grid>
                                     <Rectangle Fill="#4a76a8"/>
                                     <TextBlock x:Name="mainText" Text="Раздел" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                    <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Source="Resources/DragNDrop.png" Stretch="Fill" />
+                                    <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Stretch="Fill" />
                                     <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
                                 </Grid>
                             </Border>

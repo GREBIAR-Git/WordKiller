@@ -35,7 +35,6 @@
   <ItemGroup>
     <Resource Include="Resources\512x512.png" />
     <Resource Include="Resources\Code.png" />
-    <Resource Include="Resources\DragNDrop.png" />
     <Resource Include="Resources\Picture.png" />
     <Resource Include="Resources\Settings.png" />
   </ItemGroup>

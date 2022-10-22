@@ -247,50 +247,55 @@ public partial class MainWindow : Window
     {
         if (DefaultDocumentMI.IsChecked)
         {
+            SwitchPanel.Visibility = Visibility.Collapsed;
             TextHeader("Обычный документ");
             typeDocument = TypeDocument.DefaultDocument;
         }
-        else if (LabMI.IsChecked)
+        else
         {
-            typeDocument = TypeDocument.LaboratoryWork;
-            TextHeader("Лабораторная работа");
-            TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-        }
-        else if (PracticeMI.IsChecked)
-        {
-            typeDocument = TypeDocument.PracticalWork;
-            TextHeader("Практическая работа");
-            TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-        }
-        else if (CourseworkMI.IsChecked)
-        {
-            typeDocument = TypeDocument.Coursework;
-            TextHeader("Курсовая работа");
-            TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-        }
-        else if (ControlWorkMI.IsChecked)
-        {
-            typeDocument = TypeDocument.ControlWork;
-            TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            TextHeader("Контрольная работа");
-        }
-        else if (RefMI.IsChecked)
-        {
-            typeDocument = TypeDocument.Referat;
-            TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            TextHeader("Реферат");
-        }
-        else if (DiplomMI.IsChecked)
-        {
-            typeDocument = TypeDocument.GraduateWork;
-            TextHeader("Дипломная работа");
-            TitleElements.ShowTitleElems(titlePanel, "");
-        }
-        else if (VKRMI.IsChecked)
-        {
-            typeDocument = TypeDocument.VKR;
-            TextHeader("ВКР");
-            TitleElements.ShowTitleElems(titlePanel, "");
+            SwitchPanel.Visibility = Visibility.Visible;
+            if (LabMI.IsChecked)
+            {
+                typeDocument = TypeDocument.LaboratoryWork;
+                TextHeader("Лабораторная работа");
+                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
+            }
+            else if (PracticeMI.IsChecked)
+            {
+                typeDocument = TypeDocument.PracticalWork;
+                TextHeader("Практическая работа");
+                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
+            }
+            else if (CourseworkMI.IsChecked)
+            {
+                typeDocument = TypeDocument.Coursework;
+                TextHeader("Курсовая работа");
+                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
+            }
+            else if (ControlWorkMI.IsChecked)
+            {
+                typeDocument = TypeDocument.ControlWork;
+                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
+                TextHeader("Контрольная работа");
+            }
+            else if (RefMI.IsChecked)
+            {
+                typeDocument = TypeDocument.Referat;
+                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
+                TextHeader("Реферат");
+            }
+            else if (DiplomMI.IsChecked)
+            {
+                typeDocument = TypeDocument.GraduateWork;
+                TextHeader("Дипломная работа");
+                TitleElements.ShowTitleElems(titlePanel, "");
+            }
+            else if (VKRMI.IsChecked)
+            {
+                typeDocument = TypeDocument.VKR;
+                TextHeader("ВКР");
+                TitleElements.ShowTitleElems(titlePanel, "");
+            }
         }
         HideTitlePanel();
     }
@@ -365,9 +370,18 @@ public partial class MainWindow : Window
         if (MenuItem == TitlePageMI)
         {
             titlePanel.Visibility = Visibility.Visible;
+            if(DownPanelMI==SubstitutionMI)
+            {
+                SwitchPanel.Content = "К подстановкам";
+            }
+            else
+            {
+                SwitchPanel.Content = "К тексту";
+            }
         }
         else
         {
+            SwitchPanel.Content = "К титульнику";
             DownPanelMI = MenuItem;
             downPanel.Visibility = Visibility.Visible;
             if (MenuItem == SubstitutionMI)
@@ -382,6 +396,7 @@ public partial class MainWindow : Window
                 elementTBl.Text = "нечто";
                 ShowPictureBox();
                 ImageUpdate();
+
             }
             else if (MenuItem == TextMI)
             {
@@ -556,8 +571,6 @@ public partial class MainWindow : Window
             ShowElements(SubstitutionMI);
         }
     }
-
-
 
     void Add_Click(object sender, RoutedEventArgs e)
     {
@@ -1271,8 +1284,6 @@ public partial class MainWindow : Window
         mainImage.Visibility = Visibility.Collapsed;
         dragDropImage.Visibility = Visibility.Visible;
         mainImage.Margin = new Thickness(0, 0, 0, 0);
-        var uriSource = new Uri(@"Resources/DragNDrop.png", UriKind.Relative);
-        mainImage.Source = new BitmapImage(uriSource);
     }
 
     void ShowIconPicture(string text)
@@ -1912,5 +1923,19 @@ public partial class MainWindow : Window
         MenuPanel.Visibility = Visibility.Visible;
         ParentPanel.RowDefinitions[0].Height = new GridLength(100, GridUnitType.Star);
         ParentPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Star);
+    }
+
+    private void SwitchPanel_Click(object sender, RoutedEventArgs e)
+    {
+        if(TitlePageMI.IsChecked)
+        {
+            ShowElements(DownPanelMI);
+            HideElements(TitlePageMI);
+        }
+        else
+        {
+            ShowElements(TitlePageMI);
+            HideElements(DownPanelMI);
+        }
     }
 }
