@@ -6,6 +6,20 @@ namespace WordKiller;
 
 static class DocxExport
 {
+    public static bool WordInstall()
+    {
+        Type? officeType = Type.GetTypeFromProgID("Word.Application");
+
+        if (officeType == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     //только при наличии ворда
     public static void ToPDF(string path)
     {

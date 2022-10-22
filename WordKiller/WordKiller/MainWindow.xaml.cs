@@ -37,7 +37,11 @@ public partial class MainWindow : Window
             TitleOpen = true,
         };
         InitializeComponent();
-
+        if (!DocxExport.WordInstall())
+        {
+            ExportPDF.Visibility = Visibility.Collapsed;
+            ExportHTML.Visibility = Visibility.Collapsed;
+        }
         DataContext = viewModel;
         file = new(saveLogo, typeMenuItem.Items, titlePanel.Children, elementPanel, richTextBox, this);
         TitleElements.SaveTitleUIElements(titlePanel);
@@ -370,7 +374,7 @@ public partial class MainWindow : Window
         if (MenuItem == TitlePageMI)
         {
             titlePanel.Visibility = Visibility.Visible;
-            if(DownPanelMI==SubstitutionMI)
+            if (DownPanelMI == SubstitutionMI)
             {
                 SwitchPanel.Content = "К подстановкам";
             }
@@ -1697,7 +1701,12 @@ public partial class MainWindow : Window
         FirstName.Text = Properties.Settings.Default.FirstName;
         LastName.Text = Properties.Settings.Default.LastName;
         MiddleName.Text = Properties.Settings.Default.MiddleName;
-        OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync("1");
+        Universitet.Text = Properties.Settings.Default.Universitet;
+        Shifr.Text = Properties.Settings.Default.Shifr;
+        FirstNameCoop.Text = Properties.Settings.Default.FirstNameCoop;
+        LastNameCoop.Text = Properties.Settings.Default.LastNameCoop;
+        MiddleNameCoop.Text = Properties.Settings.Default.MiddleNameCoop;
+        ShifrCoop.Text = Properties.Settings.Default.ShifrCoop;
         if ((await OrelUniverAPI.ScheduleGetCourseAsync("1")).Code == 1)
         {
             Faculty.Items.Add(Properties.Settings.Default.FacultyString);
@@ -1713,12 +1722,6 @@ public partial class MainWindow : Window
             Group.SelectedIndex = Properties.Settings.Default.Group;
             Cours.SelectedIndex = Properties.Settings.Default.Course;
         }
-        Universitet.Text = Properties.Settings.Default.Universitet;
-        Shifr.Text = Properties.Settings.Default.Shifr;
-        FirstNameCoop.Text = Properties.Settings.Default.FirstNameCoop;
-        LastNameCoop.Text = Properties.Settings.Default.LastNameCoop;
-        MiddleNameCoop.Text = Properties.Settings.Default.MiddleNameCoop;
-        ShifrCoop.Text = Properties.Settings.Default.ShifrCoop;
     }
 
     void FirstName_TextChanged(object sender, TextChangedEventArgs e)
@@ -1925,9 +1928,9 @@ public partial class MainWindow : Window
         ParentPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Star);
     }
 
-    private void SwitchPanel_Click(object sender, RoutedEventArgs e)
+    void SwitchPanel_Click(object sender, RoutedEventArgs e)
     {
-        if(TitlePageMI.IsChecked)
+        if (TitlePageMI.IsChecked)
         {
             ShowElements(DownPanelMI);
             HideElements(TitlePageMI);

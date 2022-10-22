@@ -450,7 +450,7 @@ class Report
         Text(doc, text, multiplier: 1.5f);
         text = "Направление: 09.03.04 «Программная инженерия»";
         Text(doc, text, multiplier: 1.5f);
-        text = "Группа: "+Properties.Settings.Default.GroupString;
+        text = "Группа: " + Properties.Settings.Default.GroupString;
         Text(doc, text, multiplier: 1.5f);
 
         text = "Руководитель __________________" + dataTitle[5];
@@ -479,7 +479,7 @@ class Report
         Text(doc, text);
         text = "Направление: 09.03.04 «Программная инженерия»";
         Text(doc, text);
-        text = "Группа: "+Properties.Settings.Default.GroupString;
+        text = "Группа: " + Properties.Settings.Default.GroupString;
         Text(doc, text);
 
         text = "Проверил: " + dataTitle[4];

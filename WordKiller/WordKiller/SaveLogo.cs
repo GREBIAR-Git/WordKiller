@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Threading;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace WordKiller
 {

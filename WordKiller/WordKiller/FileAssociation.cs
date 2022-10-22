@@ -48,7 +48,7 @@ public class FileAssociation
 
     static string ToShortPathName(string? longName)
     {
-        if(longName != null)
+        if (longName != null)
         {
             StringBuilder s = new(1000);
             uint iSize = (uint)s.Capacity;
