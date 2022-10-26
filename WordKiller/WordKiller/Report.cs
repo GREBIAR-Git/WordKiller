@@ -22,7 +22,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public static bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML)
+    public static bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML, List<List<TableData>> collection)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -83,7 +83,7 @@ class Report
                 try
                 {
                     ProcessSpecials(mainPart);
-                    MainPart(doc, mainPart, numberHeading);
+                    MainPart(doc, mainPart, numberHeading, collection);
                 }
                 catch
                 {
@@ -418,6 +418,8 @@ class Report
         EmptyLines(doc, 9);
     }
 
+
+
     static void Coursework(WordprocessingDocument doc, string[] dataTitle)
     {
         string text = "Работа допущена к защите";
@@ -522,15 +524,15 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
     }
 
-    static void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading)
+    static void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading, List<List<TableData>> collection)
     {
         if (content.Text != null)
         {
-            ProcessContent(doc, content, numberHeading);
+            ProcessContent(doc, content, collection, numberHeading);
         }
     }
 
-    static void ProcessContent(WordprocessingDocument doc, DataComboBox content, bool number = true)
+    static void ProcessContent(WordprocessingDocument doc, DataComboBox content, List<List<TableData>> collection, bool number = true)
     {
         int h1 = 1;
         int h2 = 1;
@@ -599,7 +601,8 @@ class Report
                 {
                     i += 1;
                     string[] text = ProcessSpecial(t, "t", content);
-                    //Table(text[0]);
+                    Table(doc, text[0], collection[t-1]);
+                    Text(doc, "Таблица " + t + " – " + text[1], "Picture");
                     t++;
                 }
                 else if (content.Text[i + 1] == 'c')
@@ -622,6 +625,71 @@ class Report
         if (def != string.Empty)
         {
             Text(doc, def, "Simple");
+        }
+    }
+
+    public static void Table(WordprocessingDocument doc, string headingColumns, List<TableData> collection)
+    {
+        Table dTable = new Table();
+        TableProperties props = new TableProperties();
+        dTable.AppendChild<TableProperties>(props);
+
+        TableRow trHeading = new TableRow();
+        string[] columns = headingColumns.Split(" ");
+        foreach (string column in columns)
+        {
+            TableCell tc = new TableCell();
+            tc.Append(new Paragraph(new Run(new Text(column))));
+            tc.Append(new TableCellProperties());
+            trHeading.Append(tc);
+        }
+        dTable.Append(trHeading);
+
+        foreach (TableData tableData in collection)
+        {
+            TableRow tr = new TableRow();
+            DataCell(tr, columns.Length, 0, tableData.col1);
+            DataCell(tr, columns.Length, 1, tableData.col2);
+            DataCell(tr, columns.Length, 2, tableData.col3);
+            DataCell(tr, columns.Length, 3, tableData.col4);
+            DataCell(tr, columns.Length, 4, tableData.col5);
+            DataCell(tr, columns.Length, 5, tableData.col6);
+            DataCell(tr, columns.Length, 6, tableData.col7);
+            DataCell(tr, columns.Length, 7, tableData.col8);
+            DataCell(tr, columns.Length, 8, tableData.col9);
+            DataCell(tr, columns.Length, 9, tableData.col10);
+            dTable.Append(tr);
+        }
+
+        var tableWidth = new TableWidth()
+        {
+            Width = "5000",
+            Type = TableWidthUnitValues.Pct
+        };
+        props.Append(tableWidth);
+
+        EnumValue<BorderValues> borderValues = new EnumValue<BorderValues>(BorderValues.Single);
+        TableBorders tableBorders = new TableBorders(
+                             new TopBorder { Val = borderValues, Size = 4 },
+                             new BottomBorder { Val = borderValues, Size = 4 },
+                             new LeftBorder { Val = borderValues, Size = 4 },
+                             new RightBorder { Val = borderValues, Size = 4 },
+                             new InsideHorizontalBorder { Val = borderValues, Size = 4 },
+                             new InsideVerticalBorder { Val = borderValues, Size = 4 });
+
+        props.Append(tableBorders);
+
+        doc.MainDocumentPart.Document.Body.Append(dTable);
+    }
+
+    static void DataCell(TableRow tr, int numberOfСolumns, int idx,string text)
+    {
+        if (numberOfСolumns > idx)
+        {
+            TableCell tc = new TableCell();
+            tc.Append(new Paragraph(new Run(new Text(text))));
+            tc.Append(new TableCellProperties());
+            tr.Append(tc);
         }
     }
 
@@ -815,6 +883,7 @@ class Report
         else if (special == "t")
         {
             text[0] = content.ComboBox["t"].Data[i - 1][1];
+            text[1] = content.ComboBox["t"].Data[i - 1][0];
         }
         else if (special == "c")
         {

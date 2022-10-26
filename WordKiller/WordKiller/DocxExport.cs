@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Controls;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace WordKiller;
@@ -42,22 +43,32 @@ static class DocxExport
     }
 
     //нужно починить
-    public static void ToHTML(string path)
+    public static void ToHTML(object path)
     {
-        Console.WriteLine("does not work");
-        /*var sourceDocxFileContent = File.ReadAllBytes(path);
-        string HTMLFilePath = Path.ChangeExtension(path, ".html");
-        using var memoryStream = new MemoryStream();
-        await memoryStream.WriteAsync(sourceDocxFileContent);
-        using var wordProcessingDocument = WordprocessingDocument.Open(memoryStream, true);
-        HtmlConverterSettings settings1 = new()
-        {
-            PageTitle = "My Page Title"
-        };
-        var settings = new WmlToHtmlConverterSettings(settings1);
-        var html = WmlToHtmlConverter.ConvertToHtml(wordProcessingDocument, settings);
-        var htmlString = html.ToString(SaveOptions.DisableFormatting);
-        File.WriteAllText(HTMLFilePath, htmlString, Encoding.UTF8);*/
+        Word._Application WORD = new Word.Application();
+        Word.Documents doc = WORD.Documents;
+        object Unknown = Type.Missing;
+        object HTMLFilePath = Path.ChangeExtension((string)path, ".html");
+        Word.Document od = doc.Open(ref path, ref Unknown,
+                                 ref Unknown, ref Unknown, ref Unknown,
+                                 ref Unknown, ref Unknown, ref Unknown,
+                                 ref Unknown, ref Unknown, ref Unknown,
+                                 ref Unknown, ref Unknown, ref Unknown, ref Unknown);
+        object format = Word.WdSaveFormat.wdFormatHTML;
+
+
+
+        WORD.ActiveDocument.SaveAs(ref HTMLFilePath, ref format,
+                    ref Unknown, ref Unknown, ref Unknown,
+                    ref Unknown, ref Unknown, ref Unknown,
+                    ref Unknown, ref Unknown, ref Unknown,
+                    ref Unknown, ref Unknown, ref Unknown,
+                    ref Unknown, ref Unknown);
+
+        WORD.Documents.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
+
+        ReleaseObject(doc);
+        ReleaseObject(WORD);
     }
 
     static void ReleaseObject(object? obj)

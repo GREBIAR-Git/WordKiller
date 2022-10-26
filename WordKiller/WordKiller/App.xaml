@@ -47,6 +47,11 @@
                 </Style>
             </Style.Resources>
         </Style>
+        <Style x:Key="BorderGroupBox" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="BorderThickness" Value="3"/>
+        </Style>
         <Style x:Key="TextBlockTitle" TargetType="{x:Type TextBlock}">
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -100,6 +105,19 @@
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserResizeColumns" Value="False"/>
             <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+        </Style>
+        <Style x:Key="DataGrid1" TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="#8daacc"/>
+            <Setter Property="RowBackground" Value="#8daacc"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="CanUserAddRows" Value="True"/>
+            <Setter Property="CanUserDeleteRows" Value="True"/>
+            <Setter Property="CanUserResizeColumns" Value="False"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserSortColumns" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
             <Setter Property="RowHeaderWidth" Value="0"/>
         </Style>
         <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}">

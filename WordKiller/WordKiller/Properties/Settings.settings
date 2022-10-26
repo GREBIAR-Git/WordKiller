@@ -59,5 +59,11 @@
     <Setting Name="Extension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.wkr</Value>
     </Setting>
+    <Setting Name="ExportPDF" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ExportHTML" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

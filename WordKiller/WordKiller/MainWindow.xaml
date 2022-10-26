@@ -48,8 +48,8 @@
                         <TextBlock Text="Файл" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
                     <MenuItem Header="Экспорт" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
-                    <MenuItem Header="В формате PDF" x:Name="ExportPDF" IsChecked="true" IsCheckable="true" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="В формате HTML" x:Name="ExportHTML" IsCheckable="true" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="В формате PDF" x:Name="ExportPDF" Style="{StaticResource MenuItem}" Click="ExportPDF_Click"/>
+                    <MenuItem Header="В формате HTML" x:Name="ExportHTML" Style="{StaticResource MenuItem}" Click="ExportHTML_Click" />
                     <Separator/>
                     <MenuItem Header="Создать" Command="New" Style="{StaticResource MenuItem}"/>
                     <MenuItem Header="Открыть" Command="Open" Style="{StaticResource MenuItem}"/>
@@ -105,8 +105,6 @@
                     <MenuItem Header="Сделать приложением по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="SetAsDefault_Click"/>
                     <MenuItem Header="Сбросить приложение по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="RemoveAsDefault_Click"/>
                     <Separator/>
-                    <MenuItem Header="Открыть SubjectTracker" Style="{StaticResource MenuItem}" Click="OpenSubjectTracker"/>
-                    <Separator/>
                     <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem>
@@ -122,7 +120,7 @@
             <Button Margin="0,0,5,0" HorizontalAlignment="Right" Style="{StaticResource Button}" Click="OpenSettings_Click">
                 <Image Width="20" Height="20" Source="/Resources/Settings.png"/>
             </Button>
-            <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,30,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed" />
+            <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,30,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             <Grid x:Name="titlePanel" Grid.Row="1" Grid.Column="0" Margin="30,10,30,10" Background="#8daacc">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20*"/>
@@ -240,7 +238,7 @@
                     <Button Grid.Row="0" Grid.Column="4" x:Name="T" Margin="2,0,2,0" Visibility="Collapsed" Content="T" Style="{StaticResource Button}" Click="ButtonSpecial_Click" MouseEnter="MouseEnterTypeButton" MouseLeave="MouseLeaveTypeButton"/>
                     <Button Grid.Row="0" Grid.Column="5" x:Name="C" Margin="2,0,0,0" Visibility="Collapsed" Content="C" Style="{StaticResource Button}" Click="ButtonSpecial_Click" MouseEnter="MouseEnterTypeButton" MouseLeave="MouseLeaveTypeButton"/>
                 </Grid>
-                <Button Grid.Row="1" Grid.Column="3" Margin="0,0,2,5" x:Name="add" Content="Добавить" Style="{StaticResource Button}" Click="Add_Click"/>
+                <Button Grid.Row="1" Grid.Column="3" Margin="0,0,2,5" x:Name="add" Visibility="Collapsed" Content="Добавить" Style="{StaticResource Button}" Click="Add_Click"/>
                 <Button Grid.Row="1" Grid.Column="4" Margin="0,0,0,5" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click"/>
                 <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" x:Name="panelRichTextBox" Background="#8daacc">
                     <Grid.ColumnDefinitions>
@@ -264,6 +262,7 @@
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
+                    <DataGrid Grid.Row="0" Grid.Column="1" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
                     <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>
@@ -407,37 +406,37 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                     </Grid.RowDefinitions>
-                    <GroupBox Grid.Row="0" Grid.Column="0" Margin="10,10,10,0" Grid.ColumnSpan="2">
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80*"/>
-                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Нужно ли каждый раз после формирования отчёта закрывать приложение?" Style="{StaticResource TextBlock}"/>
-                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" FontSize="16" Style="{StaticResource CheckBox}" Checked="CloseWindow_Checked"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" FontSize="16" Style="{StaticResource CheckBox}" Click="CloseWindow_Checked"/>
                         </Grid>
-                    </GroupBox>
-                    <GroupBox Grid.Row="1" Grid.Column="0" Margin="10,10,10,0" Grid.ColumnSpan="2">
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80*"/>
-                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Производить ли проверку синтаксиса(Базовая)?" Style="{StaticResource TextBlock}"/>
-                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="SyntaxChecking" IsChecked="True" FontSize="16" Style="{StaticResource CheckBox}" Checked="SyntaxChecking_Checked"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="SyntaxChecking" IsChecked="True" FontSize="16" Style="{StaticResource CheckBox}" Click="SyntaxChecking_Checked"/>
                         </Grid>
-                    </GroupBox>
-                    <GroupBox Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="80*"/>
-                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
@@ -448,7 +447,7 @@
                                 <ComboBoxItem>Стандартную</ComboBoxItem>
                             </ComboBox>
                         </Grid>
-                    </GroupBox>
+                    </Border>
                 </Grid>
             </ScrollViewer>
         </Grid>

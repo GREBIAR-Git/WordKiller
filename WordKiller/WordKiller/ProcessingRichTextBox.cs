@@ -14,8 +14,8 @@ namespace WordKiller
             int index = RTBox.GetCaretIndex(richTextBox);
             if (new TextRange(richTextBox.CaretPosition.DocumentStart, richTextBox.CaretPosition.DocumentEnd).Text == richTextBox.Selection.Text && (e.Key == Key.Back || e.Key == Key.Delete))
             {
-                lines[1] = "";
-                lines[3] = "";
+                lines[1] = string.Empty;
+                lines[3] = string.Empty;
                 RTBox.SetText(richTextBox, lines[0] + "\n" + lines[1] + "\n" + lines[2] + "\n" + lines[3]);
                 RTBox.SetCaret(richTextBox, lines[0].Length + 3);
                 e.Handled = true;
