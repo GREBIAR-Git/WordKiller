@@ -85,8 +85,8 @@
                         <MenuItem x:Name="VKRMI" Header="ВКР" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem Header="Нумерация" x:Name="NumberingMI" IsCheckable="True" IsChecked="True" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContents" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="Нумерация" x:Name="NumberingMI" IsCheckable="True" IsChecked="{Binding Path=Numbering,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContentsMI" IsChecked="{Binding Path=TableOfContents,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
                     <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" IsChecked="{Binding Path=NumberHeading,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
                 </MenuItem>
                 <MenuItem>

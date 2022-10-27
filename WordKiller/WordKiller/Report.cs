@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2013.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
@@ -38,7 +39,6 @@ class Report
             WordprocessingDocumentType.Document, true))
             {
                 MainDocumentPart main = doc.AddMainDocumentPart();
-
                 main.Document = new Document();
                 Body body = main.Document.AppendChild(new Body());
 
@@ -72,7 +72,8 @@ class Report
 
                 try
                 {
-                    TableOfContents(doc, tableOfContents, mainPart);
+
+                    TableOfContents(doc, tableOfContents);
                 }
                 catch
                 {
@@ -107,6 +108,81 @@ class Report
             return true;
         }
         return false;
+    }
+
+    private static string GetTOC(string title, int titleFontSize)
+    {
+        return $@"
+    <w:sdt>
+        <w:sdtPr>
+            <w:id w:val=""-493258456"" />
+            <w:docPartObj>
+                <w:docPartGallery w:val=""Table of Contents"" />
+                <w:docPartUnique />
+            </w:docPartObj>
+        </w:sdtPr>
+        <w:sdtContent>
+            <w:p w:rsidR=""00095C65"" w:rsidRDefault=""00095C65"">
+                <w:pPr>
+                    <w:jc w:val=""center"" /> 
+                </w:pPr>
+                <w:r>
+                    <w:rPr>
+                        <w:b /> 
+                        <w:caps w:val=""true"" />  
+                        <w:rFonts w:ascii=""Courier New"" w:hAnsi=""Times New Roman"" w:cs=""Times New Roman""/>
+                        <w:sz w:val=""{titleFontSize * 2}"" /> 
+                        <w:szCs w:val=""{titleFontSize * 2}"" /> 
+                    </w:rPr>
+                    <w:t>{title}</w:t>
+                </w:r>
+            </w:p>
+            <w:p w:rsidR=""00095C65"" w:rsidRDefault=""00095C65"">
+                <w:r>
+                    <w:rPr>
+                        <w:b />
+                        <w:bCs />
+                        <w:noProof />
+                    </w:rPr>
+                    <w:fldChar w:fldCharType=""begin"" />
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:b />
+                        <w:bCs />
+                        <w:noProof />
+                    </w:rPr>
+                    <w:instrText xml:space=""preserve""> TOC \o ""1-3"" \h \z \u </w:instrText>
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:b />
+                        <w:bCs />
+                        <w:noProof />
+                    </w:rPr>
+                    <w:fldChar w:fldCharType=""separate"" />
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:caps w:val=""true"" />  
+                        <w:rFonts w:ascii=""Times New Roman"" w:hAnsi=""Times New Roman"" w:cs=""Times New Roman""/>
+                        <w:sz w:val=""{titleFontSize * 2}"" /> 
+                        <w:szCs w:val=""{titleFontSize * 2}"" /> 
+                        <w:noProof />
+                    </w:rPr>
+                    <w:t>No table of contents entries found.</w:t>
+                </w:r>
+                <w:r>
+                    <w:rPr>
+                        <w:b />
+                        <w:bCs />
+                        <w:noProof />
+                    </w:rPr>
+                    <w:fldChar w:fldCharType=""end"" />
+                </w:r>
+            </w:p>
+        </w:sdtContent>
+    </w:sdt>";
     }
 
     static void PageNumber(WordprocessingDocument document)
@@ -198,6 +274,7 @@ class Report
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
         Styles styles = new();
+        
         styles.Save(styleDefinitions);
         styles = styleDefinitions.Styles;
 
@@ -209,10 +286,10 @@ class Report
             InitStyle("Simple", justify: JustificationValues.Both, multiplier: 1.5f, firstLine: 1.25f));
 
         styles.Append(
-            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true));
+            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true, outlineLevel:1));
 
         styles.Append(
-            InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f));
+            InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, outlineLevel: 2));
 
         styles.Append(
             InitStyle("List", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
@@ -222,11 +299,12 @@ class Report
 
         styles.Append(
             InitStyle("Code", 12, JustificationValues.Left));
+
     }
 
     static Style InitStyle(string name, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
-        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, float hanging = 0)
+        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, float hanging = 0, int outlineLevel = 0)
     {
         var style = new Style()
         {
@@ -235,6 +313,8 @@ class Report
             CustomStyle = true,
             Default = false
         };
+
+        
         style.Append(new StyleName()
         {
             Val = name
@@ -243,6 +323,7 @@ class Report
         var styleRunProperties = new StyleRunProperties();
         styleRunProperties.Append(new RunFonts()
         {
+            
             Ascii = "Times New Roman",
             HighAnsi = "Times New Roman"
         });
@@ -265,6 +346,14 @@ class Report
             Val = justify
         });
 
+        if(outlineLevel != 0)
+        {
+            paragraphProperties.AddChild(new OutlineLevel()
+            {
+                Val = outlineLevel-1
+            });
+        }
+
         paragraphProperties.AddChild(new SpacingBetweenLines()
         {
             After = (after * 20).ToString(),
@@ -272,11 +361,11 @@ class Report
             Line = (multiplier * 240).ToString(),
             LineRule = LineSpacingRuleValues.Auto
         });
-
         if (hanging == 0)
         {
             paragraphProperties.AddChild(new Indentation()
             {
+                
                 Left = ((int)(left * cm_to_pt)).ToString(),
                 Right = ((int)(right * cm_to_pt)).ToString(),
                 FirstLine = ((int)(firstLine * cm_to_pt)).ToString(),
@@ -291,7 +380,6 @@ class Report
                 Hanging = ((int)(hanging * cm_to_pt)).ToString(),
             });
         }
-
         style.Append(styleRunProperties);
         style.Append(paragraphProperties);
         return style;
@@ -325,11 +413,19 @@ class Report
         return String.Join(symbol, str);
     }
 
-    static void TableOfContents(WordprocessingDocument doc, bool on, DataComboBox dataMainPart)
+    static void TableOfContents(WordprocessingDocument doc, bool on)
     {
         if (on)
         {
-            Text(doc, "Содержание", justify: JustificationValues.Center, bold: true, multiplier: 1.5f);
+            var sdtBlock = new SdtBlock();
+            sdtBlock.InnerXml = GetTOC("Содержание", 14);
+            doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
+
+            var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
+            settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
+
+            settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
+
             SectionBreak(doc);
         }
     }
@@ -601,7 +697,7 @@ class Report
                 {
                     i += 1;
                     string[] text = ProcessSpecial(t, "t", content);
-                    Table(doc, text[0], collection[t-1]);
+                    Table(doc, text[0], collection[t - 1]);
                     Text(doc, "Таблица " + t + " – " + text[1], "Picture");
                     t++;
                 }
@@ -682,7 +778,7 @@ class Report
         doc.MainDocumentPart.Document.Body.Append(dTable);
     }
 
-    static void DataCell(TableRow tr, int numberOfСolumns, int idx,string text)
+    static void DataCell(TableRow tr, int numberOfСolumns, int idx, string text)
     {
         if (numberOfСolumns > idx)
         {

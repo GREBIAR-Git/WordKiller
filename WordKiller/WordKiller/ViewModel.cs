@@ -21,6 +21,14 @@ public class ViewModel : INotifyPropertyChanged
     string? winTitle;
     public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
+    bool tableOfContents;
+
+    public bool TableOfContents { get => tableOfContents; set => SetProperty(ref tableOfContents, value); }
+
+    bool numbering;
+
+    public bool Numbering { get => numbering; set => SetProperty(ref numbering, value); }
+
     bool numberHeading;
     public bool NumberHeading { get => numberHeading; set => SetProperty(ref numberHeading, value); }
 

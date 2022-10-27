@@ -806,15 +806,12 @@ public partial class MainWindow : Window
         {
             data.Text = RTBox.GetText(richTextBox);
         }
-        bool numberingOn = NumberingMI.IsChecked;
-        bool tableOfContentsOn = tableOfContents.IsChecked;
-        bool headingNumbersOn = NumberHeadingMI.IsChecked;
         bool exportPDFOn = ExportPDF.IsChecked;
         bool exportHTMLOn = ExportHTML.IsChecked;
 
         Report report = new();
         await Task.Run(() =>
-            Report.Create(data, numberingOn, tableOfContentsOn, headingNumbersOn, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
+            Report.Create(data, viewModel.Numbering, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
 
         if (Properties.Settings.Default.CloseWindow)
         {

@@ -76,7 +76,8 @@ namespace WordKiller
             {
                 if (item.GetType() == typeof(MenuItem) && ((MenuItem)item).IsChecked)
                 {
-                    save += Config.AddSpecialBoth("Menu") + item.Name.ToString() + "!" + data.NumberHeading.ToString() + "\n";
+                    save += Config.AddSpecialBoth("Menu") + item.Name + "!" + data.NumberHeading + "!" + data.Numbering + "!" + data.TableOfContents + "\n";
+                    break;
                 }
             }
             save += Config.AddSpecialRight("facultyComboBox") + data.TitleFaculty + "\n";
@@ -189,6 +190,8 @@ namespace WordKiller
                             }
                         }
                         data.NumberHeading = bool.Parse(menuItem[1]);
+                        data.Numbering = bool.Parse(menuItem[2]);
+                        data.TableOfContents = bool.Parse(menuItem[3]);
                     }
 
                     if (line.StartsWith(Config.AddSpecialBoth("TextStart")))
