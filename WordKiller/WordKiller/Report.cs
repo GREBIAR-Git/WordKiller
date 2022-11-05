@@ -297,6 +297,12 @@ class Report
             InitStyle("Picture", justify: JustificationValues.Center, after: 8, multiplier: 1.5f));
 
         styles.Append(
+            InitStyle("TableText", justify: JustificationValues.Both, before: 8, multiplier: 1.5f));
+
+        styles.Append(
+            InitStyle("Table", justify: JustificationValues.Both, after: 6, multiplier: 1f));
+
+        styles.Append(
             InitStyle("Code", 12, JustificationValues.Left));
 
     }
@@ -696,8 +702,8 @@ class Report
                 {
                     i += 1;
                     string[] text = ProcessSpecial(t, "t", content);
+                    Text(doc, "Таблица " + t + " – " + text[1], "TableText");
                     Table(doc, text[0], collection[t - 1]);
-                    Text(doc, "Таблица " + t + " – " + text[1], "Picture");
                     t++;
                 }
                 else if (content.Text[i + 1] == 'c')
@@ -734,7 +740,13 @@ class Report
         foreach (string column in columns)
         {
             TableCell tc = new TableCell();
-            tc.Append(new Paragraph(new Run(new Text(column))));
+            tc.Append(new Paragraph(new Run(new Text(column)))
+            {
+                ParagraphProperties = new ParagraphProperties()
+                {
+                    ParagraphStyleId = new ParagraphStyleId() { Val = "Table" }
+                }
+            });
             tc.Append(new TableCellProperties());
             trHeading.Append(tc);
         }
@@ -782,7 +794,14 @@ class Report
         if (numberOfСolumns > idx)
         {
             TableCell tc = new TableCell();
-            tc.Append(new Paragraph(new Run(new Text(text))));
+            Paragraph paragraph = new Paragraph(new Run(new Text(text)));
+            tc.Append(new Paragraph(new Run(new Text(text)))
+            {
+                ParagraphProperties = new ParagraphProperties()
+                {
+                    ParagraphStyleId = new ParagraphStyleId() { Val = "Table" }
+                }
+            });
             tc.Append(new TableCellProperties());
             tr.Append(tc);
         }
@@ -810,13 +829,16 @@ class Report
                 StartNumberingValue = new StartNumberingValue() { Val = 1 },
                 LevelText = new LevelText() { Val = levelText + ")" },
                 LevelIndex = i,
+                LevelSuffix = new LevelSuffix()
+                {
+                    Val = LevelSuffixValues.Space
+                },
                 PreviousParagraphProperties = new PreviousParagraphProperties()
                 {
                     Indentation = new Indentation()
                     {
                         Start = ((int)(0.63f * i*2 * cm_to_pt)).ToString(),
                         Hanging = ((int)(0.63f * i * cm_to_pt)).ToString(),
-                        
                     }
                 }
             };
