@@ -1202,6 +1202,58 @@ public partial class MainWindow : Window
         return str;
     }
 
+
+    public static int Level(string str)
+    {
+        int level = 0;
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (str[i] == '!')
+            {
+                level++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return level;
+    }
+
+    string OverSize(int before, int after)
+    {
+        string overSize = string.Empty;
+        for (; before < after - 1; before++)
+        {
+            overSize += "1.";
+        }
+        return overSize;
+    }
+
+    public static int StartLine(string line, int current)
+    {
+        int start = 1;
+        if (line.Length < current)
+        {
+            start += current;
+        }
+        else
+        {
+            start = current;
+        }
+        return start;
+    }
+
+    string NumberOfTabs(int numberOfTabs)
+    {
+        string tabs = string.Empty;
+        for(int i=0;i<numberOfTabs;i++)
+        {
+            tabs += "  ";//\t-лсишком много
+        }
+        return tabs;
+    }
+
     void ImageUpdate()
     {
         string str = TypeRichBox();
@@ -1258,7 +1310,98 @@ public partial class MainWindow : Window
             pictureBox.Visibility = Visibility.Visible;
             dragDropImage.Visibility = Visibility.Collapsed;
             mainImage.Visibility = Visibility.Collapsed;
-            DrawText("Список");
+            int index = data.ComboBox["l"].Form.SelectedIndex;
+            if (index != -1)
+            {
+                string text = string.Empty;
+                int i = 1, level = 0;
+                string before = "0";
+                foreach (string line in data.ComboBox["l"].Data[index][1].Split('\n'))
+                {
+                    int current = Level(line);
+                    if (current == 0)
+                    {
+                        int dot = before.IndexOf('.');
+                        if (before.Length > 0)
+                        {
+                            if (dot != -1)
+                            {
+                                if (before.Length > dot)
+                                {
+                                    i = int.Parse(before.Substring(0, dot));
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                i = int.Parse(before);
+                                i++;
+                            }
+                        }
+                        text += i + ") " + line + '\n';
+                        before = i.ToString();
+                        i++;
+                    }
+                    else
+                    {
+                        int start = StartLine(line, current);
+                        text += NumberOfTabs(current);
+                        if (level == current)
+                        {
+                            string beforem2 = before;
+                            if (before.Length > 1)
+                            {
+                                beforem2 = before.Substring(0, before.Length - 2);
+                            }
+                            before = beforem2 + "." + i;
+                            text += before + ") " + line.Substring(start) + '\n';
+                            i++;
+                        }
+                        else if (level > current)
+                        {
+                            string[] numbers = before.Split('.');
+                            int endBefore = 0;
+                            if(numbers.Length> current)
+                            {
+                                i = int.Parse(numbers[current]);
+                                for(int j = 0; j < numbers.Length; j++)
+                                {
+                                    if(j==current)
+                                    {
+                                        break;
+                                    }
+                                    if(j!=0)
+                                    {
+                                        endBefore++;
+                                    }
+                                    endBefore += numbers[j].Length;
+                                }
+                            }
+                            else
+                            {
+                                i = 999;
+                            }
+                            i++;
+                            before = before.Substring(0, endBefore);
+                            text += before + "." + i + ") " + line.Substring(start) + '\n';
+                        }
+                        else
+                        {
+
+                            i = 1;
+                            before = before + "." + OverSize(level, current) + i;
+                            text += before + ") " + line.Substring(start) + '\n';
+                            i++;
+                        }
+                    }
+                    level = current;
+                }
+                DrawText(text,TextAlignment.Left,14);
+            }
+            else
+            {
+                DrawText("Список");
+            }
         }
         else if (str == Config.AddSpecialBoth("t"))
         {
@@ -1266,7 +1409,6 @@ public partial class MainWindow : Window
             dragDropImage.Visibility = Visibility.Collapsed;
             mainImage.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Collapsed;
-            //DrawText("Таблица");
         }
         else if (str == Config.AddSpecialBoth("p"))
         {
@@ -1404,9 +1546,11 @@ public partial class MainWindow : Window
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
-    void DrawText(string text)
+    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize=20)
     {
         mainText.Text = text;
+        mainText.TextAlignment = textAlignment;
+        mainText.FontSize = fontSize;
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 

@@ -1,5 +1,4 @@
 ﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Office2013.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
@@ -800,13 +799,31 @@ class Report
         }
 
         int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
-        Level abstractLevel = new(
-            new NumberingFormat() { Val = NumberFormatValues.Decimal },
-            new StartNumberingValue() { Val = 1 },
-            new LevelText() { Val = "%1)" })
-        { LevelIndex = 0 };
-        AbstractNum abstractNum1 = new(abstractLevel) { AbstractNumberId = abstractNumberId };
+        Level[] levels = new Level[9];
+        string levelText = string.Empty;
+        for(int i =0;i<9;i++)
+        {
+            levelText += "%" + (i+1);
+            levels[i] = new()
+            {
+                NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
+                StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                LevelText = new LevelText() { Val = levelText + ")" },
+                LevelIndex = i,
+                PreviousParagraphProperties = new PreviousParagraphProperties()
+                {
+                    Indentation = new Indentation()
+                    {
+                        Start = ((int)(0.63f * i*2 * cm_to_pt)).ToString(),
+                        Hanging = ((int)(0.63f * i * cm_to_pt)).ToString(),
+                        
+                    }
+                }
+            };
+            levelText += ".";
+        }
 
+        AbstractNum abstractNum1 = new(levels) { AbstractNumberId = abstractNumberId, MultiLevelType = new MultiLevelType() { Val = MultiLevelValues.HybridMultilevel } };
         if (abstractNumberId == 1)
         {
             numberingPart.Numbering.Append(abstractNum1);
@@ -839,15 +856,16 @@ class Report
             if (!string.IsNullOrWhiteSpace(item))
             {
                 Paragraph paragraph = body.AppendChild(new Paragraph());
-
+                
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
-                        new NumberingLevelReference() { Val = 0 },
+                        new NumberingLevelReference() { Val = MainWindow.Level(item) },
                         new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "List" });
+                    new ParagraphStyleId() { Val = "List" }
+                    );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text(item));
+                run.AppendChild(new Text(item.Substring(MainWindow.StartLine(item, MainWindow.Level(item)))));
             }
         }
     }
