@@ -288,7 +288,7 @@
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
-                    <DataGrid Grid.Row="0" Grid.Column="1" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
+                    <DataGrid Grid.Row="0" Grid.Column="1" Background="#4a76a8" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
                     <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>

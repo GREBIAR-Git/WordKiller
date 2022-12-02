@@ -79,6 +79,7 @@ public partial class MainWindow : Window
         }
         InitSetting();
         InitTable();
+        UpdateHeadersSubstitution();
     }
 
     async void InitSetting()
@@ -633,7 +634,7 @@ public partial class MainWindow : Window
         if (ValidAddInput())
         {
             string[] text = new string[] { HeaderSubstitution.Text, RTBox.GetText(richTextBoxSubstitution) };
-            if (TypeSubstitution.SelectedIndex==4)
+            if (TypeSubstitution.SelectedIndex == 4)
             {
                 AddTable();
             }
@@ -673,13 +674,13 @@ public partial class MainWindow : Window
 
     bool ValidAddInput()
     {
-        if(TypeSubstitution.SelectedIndex == 0 || TypeSubstitution.SelectedIndex == 1|| TypeSubstitution.SelectedIndex == 2|| TypeSubstitution.SelectedIndex == 4)
+        if (TypeSubstitution.SelectedIndex == 0 || TypeSubstitution.SelectedIndex == 1 || TypeSubstitution.SelectedIndex == 2 || TypeSubstitution.SelectedIndex == 4)
         {
             return true;
         }
         else if (TypeSubstitution.SelectedIndex != -1)
         {
-            if(System.IO.File.Exists(RTBox.GetText(richTextBoxSubstitution)))
+            if (System.IO.File.Exists(RTBox.GetText(richTextBoxSubstitution)))
             {
                 return true;
             }
@@ -719,7 +720,7 @@ public partial class MainWindow : Window
     void DataComboBoxToRichBox(ElementComboBox comboBox)
     {
         TypeSubstitutionOn.Text = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == comboBox).Key);
-        
+
         HeaderSubstitution.Text = comboBox.Data[comboBox.Form.SelectedIndex][0];
         RTBox.SetText(richTextBoxSubstitution, comboBox.Data[comboBox.Form.SelectedIndex][1]);
 
@@ -752,11 +753,11 @@ public partial class MainWindow : Window
             {
                 UnselectedTable();
             }
+            clearSubstitution = true;
             elementTBl.Text = "нечто";
             TypeSubstitution.Visibility = Visibility.Visible;
             TypeSubstitutionOn.Visibility = Visibility.Collapsed;
             TypeSubstitution.SelectedIndex = -1;
-            clearSubstitution = true;
             HeaderSubstitution.Text = string.Empty;
             richTextBoxSubstitution.Document.Blocks.Clear();
             clearSubstitution = false;
@@ -766,7 +767,7 @@ public partial class MainWindow : Window
     void InfoDisplayedText(ComboBox sender)
     {
         int i = elementPanel.Children.IndexOf(sender) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
-        elementTBl.Text = menuNames[i] + ": "+ (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
+        elementTBl.Text = menuNames[i] + ": " + (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
     }
 
     void ComboBox_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
@@ -1202,9 +1203,9 @@ public partial class MainWindow : Window
     string TypeRichBox()
     {
         string type = string.Empty;
-        if(TypeSubstitution.Visibility == Visibility.Visible)
+        if (TypeSubstitution.Visibility == Visibility.Visible)
         {
-            if(TypeSubstitution.SelectedIndex==0)
+            if (TypeSubstitution.SelectedIndex == 0)
             {
                 type = "h1";
             }
@@ -1939,7 +1940,7 @@ public partial class MainWindow : Window
         CloseWindow.IsChecked = Properties.Settings.Default.CloseWindow;
         SyntaxChecking.IsChecked = Properties.Settings.Default.SyntaxChecking;
         AutoHeader.IsChecked = Properties.Settings.Default.AutoHeader;
-        if(Properties.Settings.Default.AutoHeader)
+        if (Properties.Settings.Default.AutoHeader)
         {
             AutoHeaderVisibilityText.Visibility = Visibility.Visible;
             AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
@@ -2277,17 +2278,30 @@ public partial class MainWindow : Window
         else
         {
             AutoHeaderVisibilityText.Visibility = Visibility.Collapsed;
-            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
+            Properties.Settings.Default.AutoHeaderVisibility = true;
+            UpdateHeadersSubstitution();
         }
+        Properties.Settings.Default.Save();
     }
 
-    private void AutoHeaderVisibility_Checked(object sender, RoutedEventArgs e)
+    void AutoHeaderVisibility_Checked(object sender, RoutedEventArgs e)
     {
         Properties.Settings.Default.AutoHeaderVisibility = AutoHeaderVisibility.IsChecked ?? true;
+        Properties.Settings.Default.Save();
+        UpdateHeadersSubstitution();
     }
 
     void TypeSubstitution_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+        if(Properties.Settings.Default.AutoHeader)
+        {
+            if(!clearSubstitution)
+            {
+                ComboBoxItem item = (ComboBoxItem)TypeSubstitution.SelectedItem;
+                string type =TypeRichBox();
+                HeaderSubstitution.Text = item.Content.ToString() + " " + (data.ComboBox[TypeRichBox()].Data.Count+1);
+            }
+        }
         ImageUpdate();
         if (ValidAddInput())
         {
@@ -2296,6 +2310,17 @@ public partial class MainWindow : Window
         else
         {
             add.Visibility = Visibility.Collapsed;
+        }
+    }
+    void UpdateHeadersSubstitution()
+    {
+        if (Properties.Settings.Default.AutoHeaderVisibility)
+        {
+            Substitution.RowDefinitions[1].Height = new GridLength(20);
+        }
+        else
+        {
+            Substitution.RowDefinitions[1].Height = new GridLength(0);
         }
     }
 }
