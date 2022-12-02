@@ -81,9 +81,10 @@ namespace WordKiller
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.V)
             {
-                Clipboard.SetText(Clipboard.GetText().Replace("\r", "").Replace('\n', ' '));
+                Clipboard.SetText(Clipboard.GetText());
             }
-            if (!CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) && !(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.S)) // probably this is better than something above that does the same for line 0 and 2
+
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.A && !CheckPressKey(e.Key, Key.Delete, Key.Back, Key.Enter, Key.Up, Key.Down, Key.Left, Key.Right) && (RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialBefore) || RTBox.GetLineAtCursor(richTextBox).Contains(Config.specialAfter)) && !(Keyboard.IsKeyDown(Key.LeftCtrl) && e.Key == Key.S)) // probably this is better than something above that does the same for line 0 and 2
             {
                 e.Handled = true;
             }

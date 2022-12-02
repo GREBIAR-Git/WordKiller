@@ -248,17 +248,43 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
-                    <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                    <Grid Grid.Row="0" Grid.Column="0" Background="#4a76a8" x:Name="Substitution">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="100*"/>
+                        </Grid.RowDefinitions>
+                        <ComboBox Grid.Row="0" x:Name="TypeSubstitution" Background="#4a76a8" Style="{StaticResource ComboBox1}" SelectionChanged="TypeSubstitution_SelectionChanged">
+                            <ComboBoxItem Content="Раздел"/>
+                            <ComboBoxItem Content="Подраздел"/>
+                            <ComboBoxItem Content="Список"/>
+                            <ComboBoxItem Content="Картинка"/>
+                            <ComboBoxItem Content="Таблица"/>
+                            <ComboBoxItem Content="Код"/>
+                        </ComboBox>
+                        <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Text="Заголовок" Style="{StaticResource TextBlock}"/>
+                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="14" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
+                        <TextBlock Grid.Row="2" Text="Содержание" Style="{StaticResource TextBlock}"/>
+                        <RichTextBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
+                                </Style>
+                            </RichTextBox.Resources>
+                        </RichTextBox>
+                    </Grid>
+                    <RichTextBox Grid.Row="0" Grid.Column="0" Visibility="Collapsed" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" FontFamily="Calibri">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
-                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
+                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
                     <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="14" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
-                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,8"/>
+                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
@@ -405,6 +431,8 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="100"/>
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                         <Grid>
@@ -446,6 +474,32 @@
                                 <ComboBoxItem>Никакую</ComboBoxItem>
                                 <ComboBoxItem>Стандартную</ComboBoxItem>
                             </ComboBox>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Автоматический заголовк для объекта" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeader" IsChecked="True" FontSize="16" Style="{StaticResource CheckBox}" Click="AutoHeader_Checked"/>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="4" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed"  Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Отображать поле ввода заголовка" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeaderVisibility" FontSize="16" Style="{StaticResource CheckBox}" Click="AutoHeaderVisibility_Checked" />
                         </Grid>
                     </Border>
                 </Grid>

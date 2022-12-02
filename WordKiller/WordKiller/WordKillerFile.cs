@@ -288,6 +288,7 @@ namespace WordKiller
             ClearGlobal(ref dataComboBox);
             menuLeftIndex = 1;
             richTextBox.Document.Blocks.Clear();
+            dataComboBox.Text = string.Empty;
             foreach (UIElement control in titleElement)
             {
                 if (control.GetType().ToString() == "System.Windows.Forms.TextBox")

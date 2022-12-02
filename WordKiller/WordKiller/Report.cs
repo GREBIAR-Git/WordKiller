@@ -95,6 +95,7 @@ class Report
                 {
                     PageNumber(doc);
                 }
+             //   SimpleField f = new();
             }
             if (exportHTML)
             {
@@ -273,7 +274,7 @@ class Report
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
         Styles styles = new();
-        
+
         styles.Save(styleDefinitions);
         styles = styleDefinitions.Styles;
 
@@ -285,7 +286,7 @@ class Report
             InitStyle("Simple", justify: JustificationValues.Both, multiplier: 1.5f, firstLine: 1.25f));
 
         styles.Append(
-            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true, outlineLevel:1));
+            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true, outlineLevel: 1));
 
         styles.Append(
             InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, outlineLevel: 2));
@@ -319,7 +320,7 @@ class Report
             Default = false
         };
 
-        
+
         style.Append(new StyleName()
         {
             Val = name
@@ -328,7 +329,7 @@ class Report
         var styleRunProperties = new StyleRunProperties();
         styleRunProperties.Append(new RunFonts()
         {
-            
+
             Ascii = "Times New Roman",
             HighAnsi = "Times New Roman"
         });
@@ -351,11 +352,11 @@ class Report
             Val = justify
         });
 
-        if(outlineLevel != 0)
+        if (outlineLevel != 0)
         {
             paragraphProperties.AddChild(new OutlineLevel()
             {
-                Val = outlineLevel-1
+                Val = outlineLevel - 1
             });
         }
 
@@ -370,7 +371,7 @@ class Report
         {
             paragraphProperties.AddChild(new Indentation()
             {
-                
+
                 Left = ((int)(left * cm_to_pt)).ToString(),
                 Right = ((int)(right * cm_to_pt)).ToString(),
                 FirstLine = ((int)(firstLine * cm_to_pt)).ToString(),
@@ -422,8 +423,10 @@ class Report
     {
         if (on)
         {
-            var sdtBlock = new SdtBlock();
-            sdtBlock.InnerXml = GetTOC("Содержание", 14);
+            var sdtBlock = new SdtBlock
+            {
+                InnerXml = GetTOC("Содержание", 14)
+            };
             doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
 
             var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
@@ -731,15 +734,15 @@ class Report
 
     public static void Table(WordprocessingDocument doc, string headingColumns, List<TableData> collection)
     {
-        Table dTable = new Table();
-        TableProperties props = new TableProperties();
+        Table dTable = new();
+        TableProperties props = new();
         dTable.AppendChild<TableProperties>(props);
 
-        TableRow trHeading = new TableRow();
+        TableRow trHeading = new();
         string[] columns = headingColumns.Split(" ");
         foreach (string column in columns)
         {
-            TableCell tc = new TableCell();
+            TableCell tc = new();
             tc.Append(new Paragraph(new Run(new Text(column)))
             {
                 ParagraphProperties = new ParagraphProperties()
@@ -754,17 +757,17 @@ class Report
 
         foreach (TableData tableData in collection)
         {
-            TableRow tr = new TableRow();
-            DataCell(tr, columns.Length, 0, tableData.col1);
-            DataCell(tr, columns.Length, 1, tableData.col2);
-            DataCell(tr, columns.Length, 2, tableData.col3);
-            DataCell(tr, columns.Length, 3, tableData.col4);
-            DataCell(tr, columns.Length, 4, tableData.col5);
-            DataCell(tr, columns.Length, 5, tableData.col6);
-            DataCell(tr, columns.Length, 6, tableData.col7);
-            DataCell(tr, columns.Length, 7, tableData.col8);
-            DataCell(tr, columns.Length, 8, tableData.col9);
-            DataCell(tr, columns.Length, 9, tableData.col10);
+            TableRow tr = new();
+            DataCell(tr, columns.Length, 0, tableData.Col1);
+            DataCell(tr, columns.Length, 1, tableData.Col2);
+            DataCell(tr, columns.Length, 2, tableData.Col3);
+            DataCell(tr, columns.Length, 3, tableData.Col4);
+            DataCell(tr, columns.Length, 4, tableData.Col5);
+            DataCell(tr, columns.Length, 5, tableData.Col6);
+            DataCell(tr, columns.Length, 6, tableData.Col7);
+            DataCell(tr, columns.Length, 7, tableData.Col8);
+            DataCell(tr, columns.Length, 8, tableData.Col9);
+            DataCell(tr, columns.Length, 9, tableData.Col10);
             dTable.Append(tr);
         }
 
@@ -775,8 +778,8 @@ class Report
         };
         props.Append(tableWidth);
 
-        EnumValue<BorderValues> borderValues = new EnumValue<BorderValues>(BorderValues.Single);
-        TableBorders tableBorders = new TableBorders(
+        EnumValue<BorderValues> borderValues = new(BorderValues.Single);
+        TableBorders tableBorders = new(
                              new TopBorder { Val = borderValues, Size = 4 },
                              new BottomBorder { Val = borderValues, Size = 4 },
                              new LeftBorder { Val = borderValues, Size = 4 },
@@ -793,8 +796,7 @@ class Report
     {
         if (numberOfСolumns > idx)
         {
-            TableCell tc = new TableCell();
-            Paragraph paragraph = new Paragraph(new Run(new Text(text)));
+            TableCell tc = new();
             tc.Append(new Paragraph(new Run(new Text(text)))
             {
                 ParagraphProperties = new ParagraphProperties()
@@ -820,9 +822,9 @@ class Report
         int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
         Level[] levels = new Level[9];
         string levelText = string.Empty;
-        for(int i =0;i<9;i++)
+        for (int i = 0; i < 9; i++)
         {
-            levelText += "%" + (i+1);
+            levelText += "%" + (i + 1);
             levels[i] = new()
             {
                 NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
@@ -837,7 +839,7 @@ class Report
                 {
                     Indentation = new Indentation()
                     {
-                        Start = ((int)(0.63f * i*2 * cm_to_pt)).ToString(),
+                        Start = ((int)(0.63f * i * 2 * cm_to_pt)).ToString(),
                         Hanging = ((int)(0.63f * i * cm_to_pt)).ToString(),
                     }
                 }
@@ -878,7 +880,7 @@ class Report
             if (!string.IsNullOrWhiteSpace(item))
             {
                 Paragraph paragraph = body.AppendChild(new Paragraph());
-                
+
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
                         new NumberingLevelReference() { Val = MainWindow.Level(item) },
@@ -887,7 +889,7 @@ class Report
                     );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text(item.Substring(MainWindow.StartLine(item, MainWindow.Level(item)))));
+                run.AppendChild(new Text(item[MainWindow.StartLine(item, MainWindow.Level(item))..]));
             }
         }
     }
@@ -1052,10 +1054,10 @@ class Report
 
     }
 
-    static void PageBreak(Run run)
+    /*static void PageBreak(Run run)
     {
         run.AppendChild(new Break() { Type = BreakValues.Page });
-    }
+    }*/
 
     static void EmptyLines(WordprocessingDocument doc, int number)
     {

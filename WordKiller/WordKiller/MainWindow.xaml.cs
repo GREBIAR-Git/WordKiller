@@ -31,10 +31,12 @@ public partial class MainWindow : Window
 
     readonly WordKillerFile file;
 
-
     List<List<TableData>> collection;
+
+    bool clearSubstitution = false;
     public MainWindow(string[] args)
     {
+        //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         viewModel = new()
         {
             WinTitle = "WordKiller",
@@ -149,28 +151,29 @@ public partial class MainWindow : Window
         Button control = (Button)sender;
         if (control.Content.ToString() == "Раздел")
         {
-            DefaultTypeRichBox("h1");
+            TypeSubstitution.SelectedIndex = 0;
         }
         else if (control.Content.ToString() == "Подраздел")
         {
-            DefaultTypeRichBox("h2");
+            TypeSubstitution.SelectedIndex = 1;
         }
         else if (control.Content.ToString() == "Список")
         {
-            DefaultTypeRichBox("l");
+            TypeSubstitution.SelectedIndex = 2;
         }
         else if (control.Content.ToString() == "Картинка")
         {
-            DefaultTypeRichBox("p");
+            TypeSubstitution.SelectedIndex = 3;
         }
         else if (control.Content.ToString() == "Таблица")
         {
-            DefaultTypeRichBox("t");
+            TypeSubstitution.SelectedIndex = 4;
         }
         else if (control.Content.ToString() == "Код")
         {
-            DefaultTypeRichBox("c");
+            TypeSubstitution.SelectedIndex = 5;
         }
+        richTextBoxSubstitution.Focus();
     }
 
     bool ComboBoxSelected()
@@ -187,14 +190,6 @@ public partial class MainWindow : Window
             ComboBox cmbBox = (ComboBox)elementPanel.Children[i];
             cmbBox.SelectedIndex = -1;
         }
-    }
-
-    void DefaultTypeRichBox(string type)
-    {
-        string beginning = Config.AddSpecialBoth(type);
-        RTBox.SetText(richTextBox, beginning + "\n\n" + Config.AddSpecialBoth(Config.content) + "\n");
-        richTextBox.Focus();
-        RTBox.SetCaret(richTextBox, beginning.Length + 3);
     }
 
     void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
@@ -377,6 +372,47 @@ public partial class MainWindow : Window
         }
     }
 
+    async void ReadScrollMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        List<string> titleData = new();
+        AddTitleData(ref titleData);
+        if (TextMI.IsChecked)
+        {
+            data.Text = RTBox.GetText(richTextBox);
+        }
+        bool exportPDFOn = ExportPDF.IsChecked;
+        bool exportHTMLOn = ExportHTML.IsChecked;
+
+        Report report = new();
+        await Task.Run(() =>
+            Report.Create(data, viewModel.Numbering, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
+
+        if (Properties.Settings.Default.CloseWindow)
+        {
+            WindowClose();
+        }
+    }
+
+    void AddTitleData(ref List<string> titleData)
+    {
+        titleData = new List<string>();
+        foreach (UIElement control in titlePanel.Children)
+        {
+            if (control.GetType().ToString() != "System.Windows.Controls.TextBlock")
+            {
+                if (control.GetType().ToString() == "System.Windows.Controls.TextBox")
+                {
+                    TextBox f = (TextBox)control;
+                    titleData.Add(f.Text);
+                }
+                else if (control.GetType().ToString() == "System.Windows.Controls.ComboBox")
+                {
+                    ComboBox c = (ComboBox)control;
+                    titleData.Add(c.Text);
+                }
+            }
+        }
+    }
     void ShowElements(MenuItem MenuItem)
     {
         if (MenuItem != null)
@@ -403,12 +439,12 @@ public partial class MainWindow : Window
             downPanel.Visibility = Visibility.Visible;
             if (MenuItem == SubstitutionMI)
             {
-                //add.Visibility = Visibility.Visible;
                 elementPanel.Visibility = Visibility.Visible;
                 toText.Content = "К тексту";
                 toText.Margin = new Thickness(2, 0, 5, 5);
                 elementTBl.Visibility = Visibility.Visible;
                 elementCB.Visibility = Visibility.Collapsed;
+                Substitution.Visibility = Visibility.Visible;
                 richTextBox.Focus();
                 elementTBl.Text = "нечто";
                 ShowPictureBox();
@@ -417,6 +453,7 @@ public partial class MainWindow : Window
             }
             else if (MenuItem == TextMI)
             {
+                richTextBox.Visibility = Visibility.Visible;
                 cursorLocationTB.Visibility = Visibility.Visible;
                 toText.Content = "К подстановкам";
                 toText.Margin = new Thickness(2, 5, 5, 5);
@@ -446,6 +483,7 @@ public partial class MainWindow : Window
             if (MenuItem == SubstitutionMI)
             {
                 UnselectComboBoxes();
+                Substitution.Visibility = Visibility.Visible;
                 add.Visibility = Visibility.Collapsed;
                 elementPanel.Visibility = Visibility.Collapsed;
             }
@@ -453,6 +491,7 @@ public partial class MainWindow : Window
             {
                 data.Text = RTBox.GetText(richTextBox);
                 richTextBox.Document.Blocks.Clear();
+                richTextBox.Visibility = Visibility.Collapsed;
                 cursorLocationTB.Visibility = Visibility.Collapsed;
                 HideSpecials();
             }
@@ -593,63 +632,59 @@ public partial class MainWindow : Window
     {
         if (ValidAddInput())
         {
-            string str = RTBox.GetText(richTextBox).Split('\n')[0].Replace(Config.specialBefore.ToString(), "").Replace(Config.specialAfter.ToString(), "");
-            string[] text = new string[] { RTBox.GetText(richTextBox).Split('\n')[1], SplitMainText() };
-            if (str == "t")
+            string[] text = new string[] { HeaderSubstitution.Text, RTBox.GetText(richTextBoxSubstitution) };
+            if (TypeSubstitution.SelectedIndex==4)
             {
                 AddTable();
             }
+            string str = TypeRichBox();
             AddToComboBox(data.ComboBox[str], text);
         }
     }
 
+    int TypeIndex(string str)
+    {
+        if (str == "h1")
+        {
+            return 0;
+        }
+        else if (str == "h2")
+        {
+            return 1;
+        }
+        else if (str == "l")
+        {
+            return 2;
+        }
+        else if (str == "p")
+        {
+            return 3;
+        }
+        else if (str == "t")
+        {
+            return 4;
+        }
+        else if (str == "c")
+        {
+            return 5;
+        }
+        return -1;
+    }
+
     bool ValidAddInput()
     {
-        string str = RTBox.GetText(richTextBox).Split('\n')[0];
-        if (RTBox.GetText(richTextBox).Split('\n').Length >= 4 && RTBox.GetText(richTextBox).Split('\n')[2] == Config.AddSpecialBoth(Config.content))
+        if(TypeSubstitution.SelectedIndex == 0 || TypeSubstitution.SelectedIndex == 1|| TypeSubstitution.SelectedIndex == 2|| TypeSubstitution.SelectedIndex == 4)
         {
-            if (str == Config.AddSpecialBoth("h1") || str == Config.AddSpecialBoth("h2"))
+            return true;
+        }
+        else if (TypeSubstitution.SelectedIndex != -1)
+        {
+            if(System.IO.File.Exists(RTBox.GetText(richTextBoxSubstitution)))
             {
                 return true;
-            }
-            else if (str == Config.AddSpecialBoth("l"))
-            {
-                return true;
-            }
-            else if (str == Config.AddSpecialBoth("p"))
-            {
-                if (System.IO.File.Exists(SplitMainText()))
-                {
-                    return true;
-                }
-            }
-            else if (str == Config.AddSpecialBoth("t"))
-            {
-                return true;
-            }
-            else if (str == Config.AddSpecialBoth("c"))
-            {
-                if (System.IO.File.Exists(SplitMainText()))
-                {
-                    return true;
-                }
             }
         }
         return false;
-    }
-
-    string SplitMainText()
-    {
-        string[] str = RTBox.GetText(richTextBox).Split('\n');
-        string mainText = str[3];
-        if (str.Length > 4)
-        {
-            for (int i = 4; str.Length > i; i++)
-            {
-                mainText += "\n" + str[i];
-            }
-        }
-        return mainText;
     }
 
     void AddToComboBox(ElementComboBox comboBox, string[] strData)
@@ -677,29 +712,18 @@ public partial class MainWindow : Window
                     comboBoxToDeselect.SelectedIndex = -1;
                 }
             }
-            richTextBox.Focus();
             DataComboBoxToRichBox(data.SearchComboBox(comboBox));
         }
-        else
-        {
-            string type = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == data.SearchComboBox(comboBox)).Key);
-            if (type == "◄t►")
-            {
-                UnselectedTable();
-            }
-        }
-
     }
 
     void DataComboBoxToRichBox(ElementComboBox comboBox)
     {
-        string type = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == comboBox).Key);
-        string text = type + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][0] + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + comboBox.Data[comboBox.Form.SelectedIndex][1];
-        richTextBox.Document.Blocks.Clear();
-        richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
-        richTextBox.Focus();
-        RTBox.SetCaret(richTextBox, type.Length + comboBox.Data[comboBox.Form.SelectedIndex][0].Length + 3);
-        if (type == "◄t►")
+        TypeSubstitutionOn.Text = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == comboBox).Key);
+        
+        HeaderSubstitution.Text = comboBox.Data[comboBox.Form.SelectedIndex][0];
+        RTBox.SetText(richTextBoxSubstitution, comboBox.Data[comboBox.Form.SelectedIndex][1]);
+
+        if (TypeSubstitutionOn.Text == "t")
         {
             SelectTable(comboBox.Form.SelectedIndex);
         }
@@ -715,24 +739,34 @@ public partial class MainWindow : Window
     {
         if (comboBox.SelectedIndex != -1)
         {
-            //add.Visibility = Visibility.Collapsed;
-            LStartText(comboBox);
-            elementTBl.Text += (comboBox.Items.IndexOf(comboBox.SelectedItem) + 1).ToString();
+            ComboBoxIndexChange(comboBox);
+            TypeSubstitution.Visibility = Visibility.Collapsed;
+            TypeSubstitutionOn.Visibility = Visibility.Visible;
+            InfoDisplayedText(comboBox);
+            ImageUpdate();
         }
         else
         {
-            // add.Visibility = Visibility.Visible;
+            string type = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == data.SearchComboBox(comboBox)).Key);
+            if (type == "◄t►")
+            {
+                UnselectedTable();
+            }
             elementTBl.Text = "нечто";
-            richTextBox.Document.Blocks.Clear();
+            TypeSubstitution.Visibility = Visibility.Visible;
+            TypeSubstitutionOn.Visibility = Visibility.Collapsed;
+            TypeSubstitution.SelectedIndex = -1;
+            clearSubstitution = true;
+            HeaderSubstitution.Text = string.Empty;
+            richTextBoxSubstitution.Document.Blocks.Clear();
+            clearSubstitution = false;
         }
-        ComboBoxIndexChange(comboBox);
     }
 
-    void LStartText(object sender)
+    void InfoDisplayedText(ComboBox sender)
     {
-        Control senderControl = (Control)sender;
-        int i = elementPanel.Children.IndexOf(senderControl) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
-        elementTBl.Text = menuNames[i] + ": ";
+        int i = elementPanel.Children.IndexOf(sender) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
+        elementTBl.Text = menuNames[i] + ": "+ (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
     }
 
     void ComboBox_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
@@ -792,100 +826,106 @@ public partial class MainWindow : Window
                     DeleteTable(removeIDX);
                 }
                 comboBox.Items.RemoveAt(comboBox.SelectedIndex);
-                ComboBoxIndexChange(comboBox);
                 ComboBox_SelectionChanged(comboBox);
             }
         }
     }
 
-    async void ReadScrollMenuItem_Click(object sender, RoutedEventArgs e)
+    bool SaveComboBoxMainText(ElementComboBox comboBox)
     {
-        List<string> titleData = new();
-        AddTitleData(ref titleData);
-        if (TextMI.IsChecked)
+        int index = comboBox.Form.SelectedIndex;
+        if (index != -1 && !clearSubstitution)
         {
-            data.Text = RTBox.GetText(richTextBox);
+            comboBox.Data[index][1] = RTBox.GetText(richTextBoxSubstitution);
+            comboBox.Form.SelectedIndex = index;
+            return true;
         }
-        bool exportPDFOn = ExportPDF.IsChecked;
-        bool exportHTMLOn = ExportHTML.IsChecked;
-
-        Report report = new();
-        await Task.Run(() =>
-            Report.Create(data, viewModel.Numbering, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
-
-        if (Properties.Settings.Default.CloseWindow)
-        {
-            WindowClose();
-        }
+        return false;
     }
 
-    void AddTitleData(ref List<string> titleData)
+    bool SaveComboBoxHeader(ElementComboBox comboBox)
     {
-        titleData = new List<string>();
-        foreach (UIElement control in titlePanel.Children)
+        int index = comboBox.Form.SelectedIndex;
+        if (index != -1 && !clearSubstitution)
         {
-            if (control.GetType().ToString() != "System.Windows.Controls.TextBlock")
+            if (comboBox.Data[index][0] != HeaderSubstitution.Text)
             {
-                if (control.GetType().ToString() == "System.Windows.Controls.TextBox")
-                {
-                    TextBox f = (TextBox)control;
-                    titleData.Add(f.Text);
-                }
-                else if (control.GetType().ToString() == "System.Windows.Controls.ComboBox")
-                {
-                    ComboBox c = (ComboBox)control;
-                    titleData.Add(c.Text);
-                }
+                comboBox.Data[index][0] = HeaderSubstitution.Text;
+                comboBox.Form.Items[index] = comboBox.Data[index][0];
+            }
+            comboBox.Form.SelectedIndex = index;
+            return true;
+        }
+        return false;
+    }
+
+    void HeaderSubstitution_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (ComboBoxSelected())
+        {
+            int caret = HeaderSubstitution.CaretIndex;
+            if (SaveComboBoxHeader(data.ComboBox["h1"]))
+            {
+            }
+            else if (SaveComboBoxHeader(data.ComboBox["h2"]))
+            {
+            }
+            else if (SaveComboBoxHeader(data.ComboBox["l"]))
+            {
+            }
+            else if (SaveComboBoxHeader(data.ComboBox["p"]))
+            {
+            }
+            else if (SaveComboBoxHeader(data.ComboBox["t"]))
+            {
+            }
+            else if (SaveComboBoxHeader(data.ComboBox["c"]))
+            {
+            }
+            HeaderSubstitution.Focus();
+            HeaderSubstitution.CaretIndex = caret;
+        }
+    }
+    void RichTextBoxSubstitution_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (ComboBoxSelected())
+        {
+            add.Visibility = Visibility.Collapsed;
+            if (SaveComboBoxMainText(data.ComboBox["h1"]))
+            {
+            }
+            else if (SaveComboBoxMainText(data.ComboBox["h2"]))
+            {
+            }
+            else if (SaveComboBoxMainText(data.ComboBox["l"]))
+            {
+            }
+            else if (SaveComboBoxMainText(data.ComboBox["p"]))
+            {
+            }
+            else if (SaveComboBoxMainText(data.ComboBox["t"]))
+            {
+                UpdatingColumnsTable(RTBox.GetText(richTextBoxSubstitution));
+            }
+            else if (SaveComboBoxMainText(data.ComboBox["c"]))
+            {
             }
         }
+        else if (ValidAddInput())
+        {
+            add.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            add.Visibility = Visibility.Collapsed;
+        }
+        ImageUpdate();
     }
 
     void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (DownPanelMI == SubstitutionMI)
-        {
-            if (ComboBoxSelected() && RTBox.GetText(richTextBox) != string.Empty)
-            {
-                add.Visibility = Visibility.Collapsed;
-                if (SaveComboBoxData(data.ComboBox["h1"]))
-                {
-                }
-                else if (SaveComboBoxData(data.ComboBox["h2"]))
-                {
-                }
-                else if (SaveComboBoxData(data.ComboBox["l"]))
-                {
-                }
-                else if (SaveComboBoxData(data.ComboBox["p"]))
-                {
-                }
-                else if (SaveComboBoxData(data.ComboBox["t"]))
-                {
-                }
-                else if (SaveComboBoxData(data.ComboBox["c"]))
-                {
-                }
-            }
-            else if (ValidAddInput())
-            {
-                add.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                add.Visibility = Visibility.Collapsed;
-            }
-            string[] lines = RTBox.GetText(richTextBox).Split('\n');
-            if (lines.Length > 3)
-            {
-                UpdatingColumnsTable(lines[3]);
-            }
-            ImageUpdate();
-        }
-        else
-        {
-            UpdateTypeButton();
-            ElementComboBoxUpdate();
-        }
+        UpdateTypeButton();
+        ElementComboBoxUpdate();
     }
 
     void DownTextUpdate()
@@ -1019,25 +1059,6 @@ public partial class MainWindow : Window
         }
     }
 
-
-    bool SaveComboBoxData(ElementComboBox comboBox)
-    {
-        int index = comboBox.Form.SelectedIndex;
-        if (index != -1)
-        {
-            string[] lines = RTBox.GetText(richTextBox).Split('\n');
-            comboBox.Data[index][1] = SplitMainText();
-            if (comboBox.Data[index][0] != lines[1])
-            {
-                comboBox.Data[index][0] = lines[1];
-                comboBox.Form.Items[index] = comboBox.Data[index][0];
-            }
-            comboBox.Form.SelectedIndex = index;
-            return true;
-        }
-        return false;
-    }
-
     void ButtonSpecial_Click(object sender, RoutedEventArgs e)
     {
         Button button = (Button)sender;
@@ -1071,14 +1092,7 @@ public partial class MainWindow : Window
 
     void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (DownPanelMI == SubstitutionMI && ComboBoxSelected())
-        {
-            ProcessingRichTextBox.StartForSubstitutionPanel(richTextBox, e);
-        }
-        else
-        {
-            ProcessingRichTextBox.StartForTextPanel(richTextBox, e);
-        }
+        ProcessingRichTextBox.StartForTextPanel(richTextBox, e);
     }
 
     void ChangeUserMenuItem_Click(object sender, RoutedEventArgs e)
@@ -1144,10 +1158,7 @@ public partial class MainWindow : Window
 
     void RichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
     {
-        if (TextMI.IsChecked)
-        {
-            DownTextUpdate();
-        }
+        DownTextUpdate();
     }
 
     void MouseEnterTypeButton(object sender, MouseEventArgs e)
@@ -1190,16 +1201,39 @@ public partial class MainWindow : Window
 
     string TypeRichBox()
     {
-        string str = string.Empty;
-        foreach (char ch in RTBox.GetText(richTextBox))
+        string type = string.Empty;
+        if(TypeSubstitution.Visibility == Visibility.Visible)
         {
-            if (ch == '\n')
+            if(TypeSubstitution.SelectedIndex==0)
             {
-                break;
+                type = "h1";
             }
-            str += ch;
+            else if (TypeSubstitution.SelectedIndex == 1)
+            {
+                type = "h2";
+            }
+            else if (TypeSubstitution.SelectedIndex == 2)
+            {
+                type = "l";
+            }
+            else if (TypeSubstitution.SelectedIndex == 3)
+            {
+                type = "p";
+            }
+            else if (TypeSubstitution.SelectedIndex == 4)
+            {
+                type = "t";
+            }
+            else if (TypeSubstitution.SelectedIndex == 5)
+            {
+                type = "c";
+            }
         }
-        return str;
+        else
+        {
+            type = TypeSubstitutionOn.Text.Replace("◄", "").Replace("►", "");
+        }
+        return type;
     }
 
 
@@ -1247,7 +1281,7 @@ public partial class MainWindow : Window
     string NumberOfTabs(int numberOfTabs)
     {
         string tabs = string.Empty;
-        for(int i=0;i<numberOfTabs;i++)
+        for (int i = 0; i < numberOfTabs; i++)
         {
             tabs += "  ";//\t-лсишком много
         }
@@ -1258,7 +1292,7 @@ public partial class MainWindow : Window
     {
         string str = TypeRichBox();
         singlePB.Visibility = Visibility.Visible;
-        if (str == Config.AddSpecialBoth("h1"))
+        if (str == "h1")
         {
             tableBox.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Visible;
@@ -1281,7 +1315,7 @@ public partial class MainWindow : Window
                 DrawText("РАЗДЕЛ");
             }
         }
-        else if (str == Config.AddSpecialBoth("h2"))
+        else if (str == "h2")
         {
             tableBox.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Visible;
@@ -1304,7 +1338,7 @@ public partial class MainWindow : Window
                 DrawText("Подраздел");
             }
         }
-        else if (str == Config.AddSpecialBoth("l"))
+        else if (str == "l")
         {
             tableBox.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Visible;
@@ -1328,7 +1362,7 @@ public partial class MainWindow : Window
                             {
                                 if (before.Length > dot)
                                 {
-                                    i = int.Parse(before.Substring(0, dot));
+                                    i = int.Parse(before[..dot]);
                                     i++;
                                 }
                             }
@@ -1351,26 +1385,26 @@ public partial class MainWindow : Window
                             string beforem2 = before;
                             if (before.Length > 1)
                             {
-                                beforem2 = before.Substring(0, before.Length - 2);
+                                beforem2 = before[..^2];
                             }
                             before = beforem2 + "." + i;
-                            text += before + ") " + line.Substring(start) + '\n';
+                            text += string.Concat(before, ") ", line.AsSpan(start), "\n");
                             i++;
                         }
                         else if (level > current)
                         {
                             string[] numbers = before.Split('.');
                             int endBefore = 0;
-                            if(numbers.Length> current)
+                            if (numbers.Length > current)
                             {
                                 i = int.Parse(numbers[current]);
-                                for(int j = 0; j < numbers.Length; j++)
+                                for (int j = 0; j < numbers.Length; j++)
                                 {
-                                    if(j==current)
+                                    if (j == current)
                                     {
                                         break;
                                     }
-                                    if(j!=0)
+                                    if (j != 0)
                                     {
                                         endBefore++;
                                     }
@@ -1382,35 +1416,35 @@ public partial class MainWindow : Window
                                 i = 999;
                             }
                             i++;
-                            before = before.Substring(0, endBefore);
-                            text += before + "." + i + ") " + line.Substring(start) + '\n';
+                            before = before[..endBefore];
+                            text += before + "." + i + ") " + line[start..] + '\n';
                         }
                         else
                         {
 
                             i = 1;
                             before = before + "." + OverSize(level, current) + i;
-                            text += before + ") " + line.Substring(start) + '\n';
+                            text += string.Concat(before, ") ", line.AsSpan(start), "\n");
                             i++;
                         }
                     }
                     level = current;
                 }
-                DrawText(text,TextAlignment.Left,14);
+                DrawText(text, TextAlignment.Left, 14);
             }
             else
             {
                 DrawText("Список");
             }
         }
-        else if (str == Config.AddSpecialBoth("t"))
+        else if (str == "t")
         {
             tableBox.Visibility = Visibility.Visible;
             dragDropImage.Visibility = Visibility.Collapsed;
             mainImage.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Collapsed;
         }
-        else if (str == Config.AddSpecialBoth("p"))
+        else if (str == "p")
         {
             tableBox.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Visible;
@@ -1420,7 +1454,7 @@ public partial class MainWindow : Window
             {
                 try
                 {
-                    string path = SplitMainText();
+                    string path = RTBox.GetText(richTextBoxSubstitution);
                     if (File.Exists(path))
                     {
                         ShowImage(path);
@@ -1448,7 +1482,7 @@ public partial class MainWindow : Window
                 }
             }
         }
-        else if (str == Config.AddSpecialBoth("c"))
+        else if (str == "c")
         {
             tableBox.Visibility = Visibility.Collapsed;
             pictureBox.Visibility = Visibility.Visible;
@@ -1458,7 +1492,7 @@ public partial class MainWindow : Window
             {
                 try
                 {
-                    string path = SplitMainText();
+                    string path = RTBox.GetText(richTextBoxSubstitution);
                     if (File.Exists(path))
                     {
                         ShowCode(path.Split('\\').Last());
@@ -1546,7 +1580,7 @@ public partial class MainWindow : Window
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
-    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize=20)
+    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize = 20)
     {
         mainText.Text = text;
         mainText.TextAlignment = textAlignment;
@@ -1563,7 +1597,7 @@ public partial class MainWindow : Window
     void PictureBox_DragOver(object sender, DragEventArgs e)
     {
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             e.Effects = DragDropEffects.All;
             e.Handled = true;
@@ -1594,7 +1628,7 @@ public partial class MainWindow : Window
     void PictureBox_DragEnter(object sender, DragEventArgs e)
     {
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             e.Effects = DragDropEffects.All;
             e.Handled = true;
@@ -1605,7 +1639,7 @@ public partial class MainWindow : Window
     void PictureBox_DragLeave(object sender, DragEventArgs e)
     {
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             e.Effects = DragDropEffects.All;
             e.Handled = true;
@@ -1629,7 +1663,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         e.Handled = true;
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             singlePB.Visibility = Visibility.Collapsed;
             codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
@@ -1644,7 +1678,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         e.Handled = true;
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             singlePB.Visibility = Visibility.Collapsed;
             codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
@@ -1659,7 +1693,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         e.Handled = true;
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             singlePB.Visibility = Visibility.Visible;
             ImageUpdate();
@@ -1669,7 +1703,7 @@ public partial class MainWindow : Window
     void PictureBox_Drop(object sender, DragEventArgs e)
     {
         string str = TypeRichBox();
-        if (str != Config.AddSpecialBoth("h1") && str != Config.AddSpecialBoth("h2") && str != Config.AddSpecialBoth("l") && str != Config.AddSpecialBoth("t"))
+        if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             var data = e.Data.GetData(DataFormats.FileDrop);
             if (data != null)
@@ -1681,11 +1715,15 @@ public partial class MainWindow : Window
                     nameFile = nameFile[..nameFile.LastIndexOf('.')];
                     if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
                     {
-                        RTBox.SetText(richTextBox, Config.AddSpecialBoth("p") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
+                        TypeSubstitution.SelectedIndex = TypeIndex("p");
+                        HeaderSubstitution.Text = nameFile;
+                        RTBox.SetText(richTextBoxSubstitution, path);
                     }
                     else
                     {
-                        RTBox.SetText(richTextBox, Config.AddSpecialBoth("c") + "\n" + nameFile + "\n" + Config.AddSpecialBoth(Config.content) + "\n" + path);
+                        TypeSubstitution.SelectedIndex = TypeIndex("c");
+                        HeaderSubstitution.Text = nameFile;
+                        RTBox.SetText(richTextBoxSubstitution, path);
                     }
                 }
             }
@@ -1900,6 +1938,12 @@ public partial class MainWindow : Window
         Encoding.SelectedIndex = Properties.Settings.Default.NumberEncoding;
         CloseWindow.IsChecked = Properties.Settings.Default.CloseWindow;
         SyntaxChecking.IsChecked = Properties.Settings.Default.SyntaxChecking;
+        AutoHeader.IsChecked = Properties.Settings.Default.AutoHeader;
+        if(Properties.Settings.Default.AutoHeader)
+        {
+            AutoHeaderVisibilityText.Visibility = Visibility.Visible;
+            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
+        }
     }
 
     async void OpenProfile()
@@ -2152,10 +2196,7 @@ public partial class MainWindow : Window
 
     void InitTable()
     {
-        if (collection == null)
-        {
-            collection = new();
-        }
+        collection ??= new();
         AddTable();
     }
 
@@ -2183,9 +2224,7 @@ public partial class MainWindow : Window
 
     void SwapTable(int i, int f)
     {
-        List<TableData> buf = collection[i];
-        collection[i] = collection[f];
-        collection[f] = buf;
+        (collection[f], collection[i]) = (collection[i], collection[f]);
     }
 
     void UpdatingColumnsTable(string str)
@@ -2196,10 +2235,13 @@ public partial class MainWindow : Window
         foreach (string column in columns)
         {
             DataColumn dataColumn = new(column);
-            DataGridTextColumn textColumn = new DataGridTextColumn() { Header = dataColumn.ColumnName };
-            textColumn.Width = new DataGridLength(100 / columns.Length, DataGridLengthUnitType.Star);
+            DataGridTextColumn textColumn = new()
+            {
+                Header = dataColumn.ColumnName,
+                Width = new DataGridLength(100 / columns.Length, DataGridLengthUnitType.Star)
+            };
 
-            Binding bind = new Binding("col" + i);
+            Binding bind = new("Col" + i);
             textColumn.Binding = bind;
             tableBox.Columns.Add(textColumn);
             i++;
@@ -2223,27 +2265,60 @@ public partial class MainWindow : Window
         Properties.Settings.Default.ExportHTML = ExportHTML.IsChecked;
         Properties.Settings.Default.Save();
     }
+
+    void AutoHeader_Checked(object sender, RoutedEventArgs e)
+    {
+        Properties.Settings.Default.AutoHeader = AutoHeader.IsChecked ?? true;
+        if (Properties.Settings.Default.AutoHeader)
+        {
+            AutoHeaderVisibilityText.Visibility = Visibility.Visible;
+            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
+        }
+        else
+        {
+            AutoHeaderVisibilityText.Visibility = Visibility.Collapsed;
+            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
+        }
+    }
+
+    private void AutoHeaderVisibility_Checked(object sender, RoutedEventArgs e)
+    {
+        Properties.Settings.Default.AutoHeaderVisibility = AutoHeaderVisibility.IsChecked ?? true;
+    }
+
+    void TypeSubstitution_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ImageUpdate();
+        if (ValidAddInput())
+        {
+            add.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            add.Visibility = Visibility.Collapsed;
+        }
+    }
 }
 
 class TableData
 {
-    public string? col1 { get; set; }
+    public string? Col1 { get; set; }
 
-    public string? col2 { get; set; }
+    public string? Col2 { get; set; }
 
-    public string? col3 { get; set; }
+    public string? Col3 { get; set; }
 
-    public string? col4 { get; set; }
+    public string? Col4 { get; set; }
 
-    public string? col5 { get; set; }
+    public string? Col5 { get; set; }
 
-    public string? col6 { get; set; }
+    public string? Col6 { get; set; }
 
-    public string? col7 { get; set; }
+    public string? Col7 { get; set; }
 
-    public string? col8 { get; set; }
+    public string? Col8 { get; set; }
 
-    public string? col9 { get; set; }
+    public string? Col9 { get; set; }
 
-    public string? col10 { get; set; }
+    public string? Col10 { get; set; }
 }
