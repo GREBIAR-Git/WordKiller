@@ -9,7 +9,7 @@ namespace WordKiller;
 
 public class FileAssociation
 {
-    const long SHCNE_ASSOCCHANGED = 0x8000000L;
+    const int SHCNE_ASSOCCHANGED = 0x8000000;
     const uint SHCNF_IDLIST = 0x0U;
     public static bool IsRunAsAdmin()
     {
@@ -20,12 +20,12 @@ public class FileAssociation
 
     public static void Associate(string description)
     {
-        string appName = Application.ResourceAssembly.GetName().Name;
-        Registry.ClassesRoot.CreateSubKey(Properties.Settings.Default.Extension).SetValue("", appName);
+        string productName = Application.ResourceAssembly.GetName().Name ?? "Wordkiller";
+        Registry.ClassesRoot.CreateSubKey(Properties.Settings.Default.Extension).SetValue("", productName);
 
-        if (Application.ResourceAssembly.GetName().Name != null && appName.Length > 0)
+        if (Application.ResourceAssembly.GetName().Name != null && productName.Length > 0)
         {
-            using RegistryKey key = Registry.ClassesRoot.CreateSubKey(appName);
+            using RegistryKey key = Registry.ClassesRoot.CreateSubKey(productName);
             if (description != null)
                 key.SetValue("", description);
 
@@ -34,27 +34,29 @@ public class FileAssociation
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
     }
 
+    public static bool IsAssociated
+    {
+        get { return (Registry.ClassesRoot.OpenSubKey(Properties.Settings.Default.Extension, false) != null); }
+    }
+
     public static void Remove()
     {
+        string productName = Application.ResourceAssembly.GetName().Name ?? "Wordkiller";
         Registry.ClassesRoot.DeleteSubKeyTree(Properties.Settings.Default.Extension);
-        Registry.ClassesRoot.DeleteSubKeyTree(Application.ResourceAssembly.GetName().Name);
+        Registry.ClassesRoot.DeleteSubKeyTree(productName);
     }
 
     [DllImport("shell32.dll", SetLastError = true)]
-    static extern void SHChangeNotify(long wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+    static extern void SHChangeNotify(int wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
     [DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
     static extern uint GetShortPathName(string lpszLongPath, [Out] StringBuilder lpszShortPath, uint cchBuffer);
 
-    static string ToShortPathName(string? longName)
+    static string ToShortPathName(string longName)
     {
-        if (longName != null)
-        {
-            StringBuilder s = new(1000);
-            uint iSize = (uint)s.Capacity;
-            _ = GetShortPathName(longName, s, iSize);
-            return s.ToString();
-        }
-        return string.Empty;
+        StringBuilder s = new(1000);
+        uint iSize = (uint)s.Capacity;
+        _ = GetShortPathName(longName, s, iSize);
+        return s.ToString();
     }
 }

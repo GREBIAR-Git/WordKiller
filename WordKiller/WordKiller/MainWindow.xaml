@@ -23,7 +23,7 @@
         <CommandBinding Command="Close" Executed="WindowBinding_Quit" />
         <CommandBinding Command="Undo" Executed="CommandBinding_Executed"/>
     </Window.CommandBindings>
-    <Grid Background="#8daacc" x:Name="ParentPanel">
+    <Grid Background="{Binding Path=MainColor,Mode=TwoWay}" x:Name="ParentPanel">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*"/>
         </Grid.ColumnDefinitions>
@@ -102,9 +102,6 @@
                     <MenuItem.Header>
                         <TextBlock Text="Разное" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Сделать приложением по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="SetAsDefault_Click"/>
-                    <MenuItem Header="Сбросить приложение по умолчанию для .wkr" Style="{StaticResource MenuItem}" Click="RemoveAsDefault_Click"/>
-                    <Separator/>
                     <MenuItem Header="Поменять пользователя" Style="{StaticResource MenuItem}" Click="ChangeUserMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem>
@@ -121,7 +118,7 @@
                 <Image Width="20" Height="20" Source="/Resources/Settings.png"/>
             </Button>
             <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,30,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
-            <Grid x:Name="titlePanel" Grid.Row="1" Grid.Column="0" Margin="30,10,30,10" Background="#8daacc">
+            <Grid x:Name="titlePanel" Grid.Row="1" Grid.Column="0" Margin="30,10,30,10" Background="{Binding Path=MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20*"/>
                     <ColumnDefinition Width="16*"/>
@@ -164,7 +161,7 @@
                 <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
                 <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=TitleYear,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="0" x:Name="downPanel" Background="#8daacc">
+            <Grid Grid.Row="2" Grid.Column="0" x:Name="downPanel" Background="{Binding Path=MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="18*"/>
                     <ColumnDefinition Width="20*"/>
@@ -177,7 +174,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="10" x:Name="elementPanel" Background="#8daacc">
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Margin="10" x:Name="elementPanel" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="23*"/>
@@ -208,7 +205,7 @@
                     <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Content="R" Style="{StaticResource Button}"   Click="ButtonForward_Click" />
                 </Grid>
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,0,5" TextAlignment="Right" Text="Отображается: " Style="{StaticResource TextBlock}"/>
-                <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,10,5" Background="#8daacc">
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,5,10,5" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="100*"/>
@@ -219,7 +216,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" TextAlignment="Left" Text="Нечто" Style="{StaticResource TextBlock}"/>
                     <ComboBox Grid.Row="0" Grid.Column="1" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}" SelectionChanged="ElementCB_SelectionChanged"/>
                 </Grid>
-                <Grid Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" x:Name="panelTypeInserts" Visibility="Collapsed" Background="#8daacc">
+                <Grid Grid.Row="1" Grid.Column="2" Margin="0,5,0,5" x:Name="panelTypeInserts" Visibility="Collapsed" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="16.67*"/>
                         <ColumnDefinition Width="16.67*"/>
@@ -240,7 +237,7 @@
                 </Grid>
                 <Button Grid.Row="1" Grid.Column="3" Margin="0,0,2,5" x:Name="add" Visibility="Collapsed" Content="Добавить" Style="{StaticResource Button}" Click="Add_Click"/>
                 <Button Grid.Row="1" Grid.Column="4" Margin="0,0,0,5" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click"/>
-                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" x:Name="panelRichTextBox" Background="#8daacc">
+                <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" x:Name="panelRichTextBox" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60*"/>
                         <ColumnDefinition Width="40*"/>
@@ -248,14 +245,14 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Grid.Column="0" Background="#4a76a8" x:Name="Substitution">
+                    <Grid Grid.Row="0" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" x:Name="Substitution">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20"/>
                             <RowDefinition Height="20"/>
                             <RowDefinition Height="20"/>
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
-                        <ComboBox Grid.Row="0" x:Name="TypeSubstitution" Background="#4a76a8" Style="{StaticResource ComboBox1}" SelectionChanged="TypeSubstitution_SelectionChanged">
+                        <ComboBox Grid.Row="0" x:Name="TypeSubstitution" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource ComboBox1}" SelectionChanged="TypeSubstitution_SelectionChanged">
                             <ComboBoxItem Content="Раздел"/>
                             <ComboBoxItem Content="Подраздел"/>
                             <ComboBoxItem Content="Список"/>
@@ -288,7 +285,7 @@
                             </Style>
                         </RichTextBox.Resources>
                     </RichTextBox>
-                    <DataGrid Grid.Row="0" Grid.Column="1" Background="#4a76a8" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
+                    <DataGrid Grid.Row="0" Grid.Column="1" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
                     <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>
@@ -297,7 +294,7 @@
                         <Border Grid.Row="0" Grid.Column="0" x:Name="doubleOnePB" BorderThickness="3 3 0 3" BorderBrush="White">
                             <Border Grid.Row="0" Grid.Column="1" BorderThickness="4 4 2 4" BorderBrush="Black">
                                 <Grid>
-                                    <Rectangle x:Name="pictureLeft" Fill="#4a76a8"/>
+                                    <Rectangle x:Name="pictureLeft"/>
                                     <Image Grid.Row="0" Grid.Column="1"  Width="auto" Margin="10,0,10,20" Height="70" Source="Resources/Picture.png" Stretch="Fill" />
                                     <TextBlock x:Name="textLeft" TextWrapping="Wrap"  Margin="0,100,0,0" Text="Для картинки" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                 </Grid>
@@ -306,16 +303,16 @@
                         <Border Grid.Row="0" Grid.Column="1" x:Name="doubleTwoPB" BorderThickness="0 3 3 3" BorderBrush="White">
                             <Border Grid.Row="0" Grid.Column="1" BorderThickness="2 4 4 4" BorderBrush="Black">
                                 <Grid>
-                                    <Rectangle x:Name="codeRight" Fill="#4a76a8"/>
+                                    <Rectangle x:Name="codeRight"/>
                                     <Image Grid.Row="0" Grid.Column="1" Width="100" Height="145" Source="Resources/Code.png" Stretch="Fill" />
                                     <TextBlock x:Name="textRight" TextWrapping="Wrap" Margin="0,170,0,0" Text="Для кода" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                 </Grid>
                             </Border>
                         </Border>
                         <Border Grid.Row="0" Grid.Column="0" x:Name="singlePB" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
-                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="#335e8f">
+                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
                                 <Grid>
-                                    <Rectangle Fill="#4a76a8"/>
+                                    <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
                                     <TextBlock x:Name="mainText" Text="Раздел" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                     <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Stretch="Fill" />
                                     <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
@@ -340,7 +337,7 @@
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
             <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" FontSize="16" Content="Общие" Style="{StaticResource Button}" Click="OpenGeneralisSetiings"/>
-            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="16" Content="Персонализация" Style="{StaticResource Button}"/>
+            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="16" Content="Персонализация" Style="{StaticResource Button}" Click="OpenPersonalization"/>
             <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" FontSize="16" Content="Профиль" Style="{StaticResource Button}" Click="OpenProfile" />
             <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" FontSize="16" Content="Что-то" Style="{StaticResource Button}"/>
             <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" FontSize="16" Content="Назад" Style="{StaticResource Button}" Click="ExitSettings"/>
@@ -358,7 +355,7 @@
                     </GroupBox.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="50*"/>
                             <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="20*"/>
@@ -398,7 +395,7 @@
                     </GroupBox.Header>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="50*"/>
                             <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="20*"/>
                             <ColumnDefinition Width="20*"/>
@@ -428,14 +425,16 @@
                         <ColumnDefinition Width="20*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
+                        <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75*"/>
                                 <ColumnDefinition Width="25*"/>
@@ -443,12 +442,12 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Нужно ли каждый раз после формирования отчёта закрывать приложение?" Style="{StaticResource TextBlock}"/>
-                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" FontSize="16" Style="{StaticResource CheckBox}" Click="CloseWindow_Checked"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Aссоциировать расширение(wkr) с программой?" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AssociationWKR" FontSize="16" Style="{StaticResource CheckBox}" Click="AssociationWKR_Click"/>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid>
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75*"/>
                                 <ColumnDefinition Width="25*"/>
@@ -460,8 +459,8 @@
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="SyntaxChecking" IsChecked="True" FontSize="16" Style="{StaticResource CheckBox}" Click="SyntaxChecking_Checked"/>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid>
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75*"/>
                                 <ColumnDefinition Width="25*"/>
@@ -476,8 +475,8 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid>
+                    <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75*"/>
                                 <ColumnDefinition Width="25*"/>
@@ -489,8 +488,8 @@
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeader" IsChecked="True" FontSize="16" Style="{StaticResource CheckBox}" Click="AutoHeader_Checked"/>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="4" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed"  Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid>
+                    <Border Grid.Row="5" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed"  Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75*"/>
                                 <ColumnDefinition Width="25*"/>
@@ -502,8 +501,110 @@
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeaderVisibility" FontSize="16" Style="{StaticResource CheckBox}" Click="AutoHeaderVisibility_Checked" />
                         </Grid>
                     </Border>
+                    <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75*"/>
+                                <ColumnDefinition Width="25*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Нужно ли каждый раз после формирования отчёта закрывать приложение?" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" FontSize="16" Style="{StaticResource CheckBox}" Click="CloseWindow_Checked"/>
+                        </Grid>
+                    </Border>
                 </Grid>
             </ScrollViewer>
+
+            <Grid Grid.Row="1" Grid.Column="0" x:Name="Personalization" Visibility="Collapsed" Grid.ColumnSpan="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="100*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                    <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25*"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="0" Grid.Column="0" FontSize="16" Content="По умолчанию" Style="{StaticResource Button}" Click="ByDefault"/>
+                    </Grid>
+                </Border>
+                <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                            <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Основной цвет программы: " Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="mainColor" FontSize="16" Style="{StaticResource TextBox}" TextChanged="mainColor_TextChanged"/>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                            <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Дополнительный цвет программы: " Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="additionalColor" FontSize="16" Style="{StaticResource TextBox}" TextChanged="additionalColor_TextChanged"/>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                            <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Альтернативный цвет программы: " Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="alternativeColor" FontSize="16" Style="{StaticResource TextBox}" TextChanged="AlternativeColor_TextChanged"/>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                            <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="16" Text="Цвет при наведении: " Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="hoverColor" FontSize="16" Style="{StaticResource TextBox}" TextChanged="hoverColor_TextChanged"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

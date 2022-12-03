@@ -71,5 +71,17 @@
     <Setting Name="AutoHeaderVisibility" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="MainColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8daacc</Value>
+    </Setting>
+    <Setting Name="AdditionalColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">4a76a8</Value>
+    </Setting>
+    <Setting Name="AlternativeColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">335e8f</Value>
+    </Setting>
+    <Setting Name="HoverColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">b8860b</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

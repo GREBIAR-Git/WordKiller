@@ -39,6 +39,10 @@ public partial class MainWindow : Window
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         viewModel = new()
         {
+            MainColor = "#" + Properties.Settings.Default.MainColor,
+            AdditionalColor = "#" + Properties.Settings.Default.AdditionalColor,
+            AlternativeColor = "#" + Properties.Settings.Default.AlternativeColor,
+            HoverColor = "#" + Properties.Settings.Default.HoverColor,
             WinTitle = "WordKiller",
             TitleYear = "202",
             TitleOpen = true,
@@ -65,7 +69,7 @@ public partial class MainWindow : Window
         RefreshMenu(1);
         menuNames = ComboBoxSetup();
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
-        richTextBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
+        UpdateCheckSyntax();
         if (args.Length > 0)
         {
             if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
@@ -1074,7 +1078,6 @@ public partial class MainWindow : Window
         }
     }
 
-
     void AddSpecialSymbol(string symbol, int idx)
     {
         string d = RTBox.GetText(richTextBox);
@@ -1100,61 +1103,6 @@ public partial class MainWindow : Window
     {
         ChangeUser.Start(data.ComboBox["p"]);
         ChangeUser.Start(data.ComboBox["c"]);
-    }
-
-    void SetAsDefault_Click(object sender, RoutedEventArgs e)
-    {
-        if (!FileAssociation.IsRunAsAdmin())
-        {
-            ProcessStartInfo proc = new()
-            {
-
-                UseShellExecute = true,
-                WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Environment.ProcessPath,
-                Verb = "runas"
-            };
-            proc.Arguments += "FileAssociation";
-            try
-            {
-                Process.Start(proc);
-            }
-            catch
-            {
-                MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-            }
-        }
-        else
-        {
-            FileAssociation.Associate("WordKiller");
-        }
-    }
-
-    void RemoveAsDefault_Click(object sender, RoutedEventArgs e)
-    {
-        if (!FileAssociation.IsRunAsAdmin())
-        {
-            ProcessStartInfo proc = new()
-            {
-                UseShellExecute = true,
-                WorkingDirectory = Environment.CurrentDirectory,
-                FileName = Environment.ProcessPath,
-                Verb = "runas"
-            };
-            proc.Arguments += "RemoveFileAssociation";
-            try
-            {
-                Process.Start(proc);
-            }
-            catch
-            {
-                MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-            }
-        }
-        else
-        {
-            FileAssociation.Remove();
-        }
     }
 
     void RichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
@@ -1602,26 +1550,27 @@ public partial class MainWindow : Window
         {
             e.Effects = DragDropEffects.All;
             e.Handled = true;
+            Color additional = (Color)ColorConverter.ConvertFromString("#" + Properties.Settings.Default.AdditionalColor);
             if (e.GetPosition(pictureBox).X < pictureBox.RenderSize.Width / 2)
             {
-                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+                codeRight.Fill = new SolidColorBrush(additional);
+                textRight.Foreground = new SolidColorBrush(Colors.Black);
                 pictureLeft.Fill = new SolidColorBrush(Colors.Black);
                 textLeft.Foreground = new SolidColorBrush(Colors.White);
-                textRight.Foreground = new SolidColorBrush(Colors.Black);
             }
             else if (e.GetPosition(pictureBox).X > pictureBox.RenderSize.Width / 2)
             {
                 codeRight.Fill = new SolidColorBrush(Colors.Black);
-                textLeft.Foreground = new SolidColorBrush(Colors.Black);
-                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
                 textRight.Foreground = new SolidColorBrush(Colors.White);
+                pictureLeft.Fill = new SolidColorBrush(additional);
+                textLeft.Foreground = new SolidColorBrush(Colors.Black);
             }
             else
             {
-                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
-                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
-                textLeft.Foreground = new SolidColorBrush(Colors.Black);
+                codeRight.Fill = new SolidColorBrush(additional);
                 textRight.Foreground = new SolidColorBrush(Colors.Black);
+                pictureLeft.Fill = new SolidColorBrush(additional);
+                textLeft.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
     }
@@ -1646,9 +1595,10 @@ public partial class MainWindow : Window
             e.Handled = true;
             if (e.GetPosition(pictureBox).X < 0 || e.GetPosition(pictureBox).X > pictureBox.RenderSize.Width || e.GetPosition(pictureBox).Y < 0 || e.GetPosition(pictureBox).Y > pictureBox.RenderSize.Height)
             {
+                Color additional = (Color)ColorConverter.ConvertFromString("#" + Properties.Settings.Default.AdditionalColor);
                 singlePB.Visibility = Visibility.Visible;
-                codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
-                pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+                codeRight.Fill = new SolidColorBrush(additional);
+                pictureLeft.Fill = new SolidColorBrush(additional);
                 textLeft.Foreground = new SolidColorBrush(Colors.Black);
                 textRight.Foreground = new SolidColorBrush(Colors.Black);
             }
@@ -1667,8 +1617,9 @@ public partial class MainWindow : Window
         if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             singlePB.Visibility = Visibility.Collapsed;
-            codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
-            pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+            Color additional = (Color)ColorConverter.ConvertFromString("#" + Properties.Settings.Default.AdditionalColor);
+            codeRight.Fill = new SolidColorBrush(additional);
+            pictureLeft.Fill = new SolidColorBrush(additional);
             textLeft.Foreground = new SolidColorBrush(Colors.Black);
             textRight.Foreground = new SolidColorBrush(Colors.Black);
         }
@@ -1682,8 +1633,9 @@ public partial class MainWindow : Window
         if (str != "h1" && str != "h2" && str != "l" && str != "t")
         {
             singlePB.Visibility = Visibility.Collapsed;
-            codeRight.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
-            pictureLeft.Fill = new SolidColorBrush(Color.FromArgb(255, 74, 118, 168));
+            Color additional = (Color)ColorConverter.ConvertFromString("#" + Properties.Settings.Default.AdditionalColor);
+            codeRight.Fill = new SolidColorBrush(additional);
+            pictureLeft.Fill = new SolidColorBrush(additional);
             textLeft.Foreground = new SolidColorBrush(Colors.Black);
             textRight.Foreground = new SolidColorBrush(Colors.Black);
         }
@@ -1935,11 +1887,13 @@ public partial class MainWindow : Window
     void OpenGeneralisSetiings()
     {
         Profile.Visibility = Visibility.Collapsed;
+        Personalization.Visibility = Visibility.Collapsed;
         GeneralisSetiings.Visibility = Visibility.Visible;
         Encoding.SelectedIndex = Properties.Settings.Default.NumberEncoding;
         CloseWindow.IsChecked = Properties.Settings.Default.CloseWindow;
         SyntaxChecking.IsChecked = Properties.Settings.Default.SyntaxChecking;
         AutoHeader.IsChecked = Properties.Settings.Default.AutoHeader;
+        AssociationWKR.IsChecked = FileAssociation.IsAssociated;
         if (Properties.Settings.Default.AutoHeader)
         {
             AutoHeaderVisibilityText.Visibility = Visibility.Visible;
@@ -1947,10 +1901,22 @@ public partial class MainWindow : Window
         }
     }
 
+    void OpenPersonalization(object sender, RoutedEventArgs e)
+    {
+        Profile.Visibility = Visibility.Collapsed;
+        Personalization.Visibility = Visibility.Visible;
+        GeneralisSetiings.Visibility = Visibility.Collapsed;
+        mainColor.Text = Properties.Settings.Default.MainColor;
+        additionalColor.Text = Properties.Settings.Default.AdditionalColor;
+        alternativeColor.Text = Properties.Settings.Default.AlternativeColor;
+        hoverColor.Text = Properties.Settings.Default.HoverColor;
+    }
+
     async void OpenProfile()
     {
         Profile.Visibility = Visibility.Visible;
         GeneralisSetiings.Visibility = Visibility.Collapsed;
+        Personalization.Visibility = Visibility.Collapsed;
         FirstName.Text = Properties.Settings.Default.FirstName;
         LastName.Text = Properties.Settings.Default.LastName;
         MiddleName.Text = Properties.Settings.Default.MiddleName;
@@ -2139,13 +2105,16 @@ public partial class MainWindow : Window
         if (SyntaxChecking.IsChecked != null)
         {
             Properties.Settings.Default.SyntaxChecking = (bool)SyntaxChecking.IsChecked;
-
-
-            richTextBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
-
-
             Properties.Settings.Default.Save();
+            UpdateCheckSyntax();
         }
+    }
+
+    void UpdateCheckSyntax()
+    {
+        richTextBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
+        richTextBox2.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
+        richTextBoxSubstitution.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
     }
 
     void Encoding_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2293,13 +2262,13 @@ public partial class MainWindow : Window
 
     void TypeSubstitution_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if(Properties.Settings.Default.AutoHeader)
+        if (Properties.Settings.Default.AutoHeader)
         {
-            if(!clearSubstitution)
+            if (!clearSubstitution)
             {
                 ComboBoxItem item = (ComboBoxItem)TypeSubstitution.SelectedItem;
-                string type =TypeRichBox();
-                HeaderSubstitution.Text = item.Content.ToString() + " " + (data.ComboBox[TypeRichBox()].Data.Count+1);
+                string type = TypeRichBox();
+                HeaderSubstitution.Text = item.Content.ToString() + " " + (data.ComboBox[TypeRichBox()].Data.Count + 1);
             }
         }
         ImageUpdate();
@@ -2322,6 +2291,100 @@ public partial class MainWindow : Window
         {
             Substitution.RowDefinitions[1].Height = new GridLength(0);
         }
+    }
+
+    private void AssociationWKR_Click(object sender, RoutedEventArgs e)
+    {
+        bool association = AssociationWKR.IsChecked ?? true;
+        if (association)
+        {
+            if (!FileAssociation.IsRunAsAdmin())
+            {
+                ProcessStartInfo proc = new()
+                {
+
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = Environment.ProcessPath,
+                    Verb = "runas"
+                };
+                proc.Arguments += "FileAssociation";
+                try
+                {
+                    Process.Start(proc);
+                }
+                catch
+                {
+                    MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                }
+            }
+            else
+            {
+                FileAssociation.Associate("WordKiller");
+            }
+        }
+        else
+        {
+            if (!FileAssociation.IsRunAsAdmin())
+            {
+                ProcessStartInfo proc = new()
+                {
+                    UseShellExecute = true,
+                    WorkingDirectory = Environment.CurrentDirectory,
+                    FileName = Environment.ProcessPath,
+                    Verb = "runas"
+                };
+                proc.Arguments += "RemoveFileAssociation";
+                try
+                {
+                    Process.Start(proc);
+                }
+                catch
+                {
+                    MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                }
+            }
+            else
+            {
+                FileAssociation.Remove();
+            }
+        }
+    }
+
+    void mainColor_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        viewModel.MainColor = "#" + mainColor.Text;
+        Properties.Settings.Default.MainColor = mainColor.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void ByDefault(object sender, RoutedEventArgs e)
+    {
+        mainColor.Text = "8daacc";
+        additionalColor.Text = "4a76a8";
+        alternativeColor.Text = "335e8f";
+        hoverColor.Text = "b8860b";
+    }
+
+    private void additionalColor_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        viewModel.AdditionalColor = "#" + additionalColor.Text;
+        Properties.Settings.Default.AdditionalColor = additionalColor.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    private void AlternativeColor_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        viewModel.AlternativeColor = "#" + alternativeColor.Text;
+        Properties.Settings.Default.AlternativeColor = alternativeColor.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    private void hoverColor_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        viewModel.HoverColor = "#" + hoverColor.Text;
+        Properties.Settings.Default.HoverColor = hoverColor.Text;
+        Properties.Settings.Default.Save();
     }
 }
 

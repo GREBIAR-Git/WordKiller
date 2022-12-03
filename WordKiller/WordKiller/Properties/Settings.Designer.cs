@@ -295,5 +295,53 @@ namespace WordKiller.Properties {
                 this["AutoHeaderVisibility"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8daacc")]
+        public string MainColor {
+            get {
+                return ((string)(this["MainColor"]));
+            }
+            set {
+                this["MainColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4a76a8")]
+        public string AdditionalColor {
+            get {
+                return ((string)(this["AdditionalColor"]));
+            }
+            set {
+                this["AdditionalColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("335e8f")]
+        public string AlternativeColor {
+            get {
+                return ((string)(this["AlternativeColor"]));
+            }
+            set {
+                this["AlternativeColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("b8860b")]
+        public string HoverColor {
+            get {
+                return ((string)(this["HoverColor"]));
+            }
+            set {
+                this["HoverColor"] = value;
+            }
+        }
     }
 }
