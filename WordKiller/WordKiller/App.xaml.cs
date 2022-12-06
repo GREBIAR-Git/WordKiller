@@ -67,7 +67,7 @@ public partial class App : Application
         var dictionaryList = Application.Current.Resources.MergedDictionaries.ToList();
 
         //Search for the specified culture.     
-        string requestedCulture = string.Format("StringResources.{0}.xaml", culture);
+        string requestedCulture = string.Format("Dictionary/StringResources.{0}.xaml", culture);
         var resourceDictionary = dictionaryList.
             FirstOrDefault(d => d.Source.OriginalString == requestedCulture);
 

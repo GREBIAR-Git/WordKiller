@@ -13,31 +13,10 @@
     <Page Update="AboutProgram.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Dictionary1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.be.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.de.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.en.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Documentation.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.fr.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.ru.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StringResources.zh.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +40,7 @@ public partial class MainWindow : Window
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         viewModel = new()
         {
-            Displayed = "нечто",
+            Displayed = (string)FindResource("Something"),
             FontSize = Properties.Settings.Default.FontSize,
             MainColor = "#" + Properties.Settings.Default.MainColor,
             AdditionalColor = "#" + Properties.Settings.Default.AdditionalColor,
@@ -66,6 +64,7 @@ public partial class MainWindow : Window
             ExportHTML.IsChecked = Properties.Settings.Default.ExportHTML;
         }
         DataContext = viewModel;
+        App.SelectCulture(Properties.Settings.Default.Language);
         file = new(saveLogo, typeMenuItem.Items, titlePanel.Children, elementPanel, richTextBox, this);
         TitleElements.SaveTitleUIElements(titlePanel);
         DownPanelMI = SubstitutionMI;
@@ -83,13 +82,13 @@ public partial class MainWindow : Window
             }
             else
             {
-                throw new Exception("Ошибка открытия файла:\nФайл не найден или формат не поддерживается");
+                throw new Exception((string)FindResource("Error1"));
             }
         }
         InitSetting();
         InitTable();
         UpdateHeadersSubstitution();
-        App.SelectCulture(Properties.Settings.Default.Language);
+        
     }
 
     async void InitSetting()
@@ -160,27 +159,27 @@ public partial class MainWindow : Window
     {
         UnselectComboBoxes();
         Button control = (Button)sender;
-        if (control.Content.ToString() == "Раздел")
+        if (control.Content.ToString() == (string)FindResource("Header"))
         {
             TypeSubstitution.SelectedIndex = 0;
         }
-        else if (control.Content.ToString() == "Подраздел")
+        else if (control.Content.ToString() == (string)FindResource("SubHeader"))
         {
             TypeSubstitution.SelectedIndex = 1;
         }
-        else if (control.Content.ToString() == "Список")
+        else if (control.Content.ToString() == (string)FindResource("List"))
         {
             TypeSubstitution.SelectedIndex = 2;
         }
-        else if (control.Content.ToString() == "Картинка")
+        else if (control.Content.ToString() == (string)FindResource("Picture"))
         {
             TypeSubstitution.SelectedIndex = 3;
         }
-        else if (control.Content.ToString() == "Таблица")
+        else if (control.Content.ToString() == (string)FindResource("Table"))
         {
             TypeSubstitution.SelectedIndex = 4;
         }
-        else if (control.Content.ToString() == "Код")
+        else if (control.Content.ToString() == (string)FindResource("Code"))
         {
             TypeSubstitution.SelectedIndex = 5;
         }
@@ -271,7 +270,7 @@ public partial class MainWindow : Window
         if (DefaultDocumentMI.IsChecked)
         {
             SwitchPanel.Visibility = Visibility.Collapsed;
-            TextHeader("Обычный документ");
+            TextHeader((string)FindResource("DefaultDocument"));
             typeDocument = TypeDocument.DefaultDocument;
         }
         else
@@ -280,43 +279,43 @@ public partial class MainWindow : Window
             if (LabMI.IsChecked)
             {
                 typeDocument = TypeDocument.LaboratoryWork;
-                TextHeader("Лабораторная работа");
+                TextHeader((string)FindResource("LaboratoryWork"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
             }
             else if (PracticeMI.IsChecked)
             {
                 typeDocument = TypeDocument.PracticalWork;
-                TextHeader("Практическая работа");
+                TextHeader((string)FindResource("PracticeWork"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
             }
             else if (CourseworkMI.IsChecked)
             {
                 typeDocument = TypeDocument.Coursework;
-                TextHeader("Курсовая работа");
+                TextHeader((string)FindResource("Coursework"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
             }
             else if (ControlWorkMI.IsChecked)
             {
                 typeDocument = TypeDocument.ControlWork;
+                TextHeader((string)FindResource("ControlWork"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-                TextHeader("Контрольная работа");
             }
             else if (RefMI.IsChecked)
             {
                 typeDocument = TypeDocument.Referat;
+                TextHeader((string)FindResource("Referat"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-                TextHeader("Реферат");
             }
             else if (DiplomMI.IsChecked)
             {
                 typeDocument = TypeDocument.GraduateWork;
-                TextHeader("Дипломная работа");
+                TextHeader((string)FindResource("DiplomWork"));
                 TitleElements.ShowTitleElems(titlePanel, "");
             }
             else if (VKRMI.IsChecked)
             {
                 typeDocument = TypeDocument.VKR;
-                TextHeader("ВКР");
+                TextHeader((string)FindResource("VKR"));
                 TitleElements.ShowTitleElems(titlePanel, "");
             }
         }
@@ -436,16 +435,16 @@ public partial class MainWindow : Window
             titlePanel.Visibility = Visibility.Visible;
             if (DownPanelMI == SubstitutionMI)
             {
-                SwitchPanel.Content = "К подстановкам";
+                SwitchPanel.Content = (string)FindResource("ToSubstitutions");
             }
             else
             {
-                SwitchPanel.Content = "К тексту";
+                SwitchPanel.Content = (string)FindResource("ToText");
             }
         }
         else
         {
-            SwitchPanel.Content = "К титульнику";
+            SwitchPanel.Content = (string)FindResource("ToTitle");
             DownPanelMI = MenuItem;
             downPanel.Visibility = Visibility.Visible;
             if (MenuItem == SubstitutionMI)
@@ -454,13 +453,13 @@ public partial class MainWindow : Window
                 additionalPanel.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
                 additionalPanel.ColumnDefinitions[3].Width = new GridLength(20, GridUnitType.Star);
                 elementPanel.Visibility = Visibility.Visible;
-                toText.Content = "К тексту";
+                toText.Content = (string)FindResource("ToText");
                 additionalPanel.Margin = new Thickness(5, 0, 5, 5);
                 elementTBl.Visibility = Visibility.Visible;
                 elementCB.Visibility = Visibility.Collapsed;
                 Substitution.Visibility = Visibility.Visible;
                 richTextBox.Focus();
-                viewModel.Displayed = "нечто";
+                Displayed((string)FindResource("Something"));
                 ShowPictureBox();
                 ImageUpdate();
 
@@ -473,11 +472,10 @@ public partial class MainWindow : Window
                 additionalPanel.ColumnDefinitions[3].Width = new GridLength(0, GridUnitType.Star);
                 richTextBox.Visibility = Visibility.Visible;
                 cursorLocationTB.Visibility = Visibility.Visible;
-                toText.Content = "К подстановкам";
-                //toText.Margin = new Thickness(2, 5, 5, 5);
+                toText.Content = (string)FindResource("ToSubstitutions");
                 elementTBl.Visibility = Visibility.Collapsed;
                 elementCB.Visibility = Visibility.Visible;
-                elementCB.SelectedItem = "Весь текст";
+                elementCB.SelectedItem = (string)FindResource("AllText");
                 ShowSpecials();
                 HidePictureBox();
                 richTextBox.Focus();
@@ -771,7 +769,7 @@ public partial class MainWindow : Window
                 UnselectedTable();
             }
             clearSubstitution = true;
-            viewModel.Displayed = "нечто";
+            Displayed((string)FindResource("Something"));
             TypeSubstitution.Visibility = Visibility.Visible;
             TypeSubstitutionOn.Visibility = Visibility.Collapsed;
             TypeSubstitution.SelectedIndex = -1;
@@ -781,10 +779,15 @@ public partial class MainWindow : Window
         }
     }
 
+    void Displayed(string something)
+    {
+        viewModel.Displayed = (string)FindResource("Displayed") + ": " + something;
+    }
+
     void InfoDisplayedText(ComboBox sender)
     {
         int i = elementPanel.Children.IndexOf(sender) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
-        viewModel.Displayed = menuNames[i] + " - " + (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
+        Displayed(menuNames[i] + " - " + (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString());
     }
 
     void ComboBox_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
@@ -967,19 +970,19 @@ public partial class MainWindow : Window
                 int h2Count = Regex.Matches(str, Config.AddSpecialLeft("h2")).Count;
                 if (h2Count > 0)
                 {
-                    string h2 = "До H1 заголовков : " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
+                    string h2 = (string)FindResource("Before") + " H1: " + data.ComboBox["h2"].Form.Items[Regex.Matches(str, Config.AddSpecialLeft("h2")).Count - 1].ToString();
                     cursorLocationTB.Text = h2;
                 }
                 else
                 {
-                    cursorLocationTB.Text = "До заголовков";
+                    cursorLocationTB.Text = (string)FindResource("BeforeHeaders");
                 }
             }
             cursorLocationTB.Text += CursorPosExtra(str);
         }
         else
         {
-            cursorLocationTB.Text = "Начало";
+            cursorLocationTB.Text = (string)FindResource("Start");
         }
     }
 
@@ -994,19 +997,19 @@ public partial class MainWindow : Window
             {
                 if (key == "l")
                 {
-                    extra = "Список";
+                    extra = (string)FindResource("List");
                 }
                 else if (key == "p")
                 {
-                    extra = "Картинка";
+                    extra = (string)FindResource("Picture");
                 }
                 else if (key == "t")
                 {
-                    extra = "Таблица";
+                    extra = (string)FindResource("Table");
                 }
                 else if (key == "c")
                 {
-                    extra = "Код";
+                    extra = (string)FindResource("Code");
                 }
                 int pCount = Regex.Matches(str, Config.AddSpecialLeft(key)).Count;
                 extra = $"({extra} - {data.ComboBox[key].Form.Items[pCount - 1]})";
@@ -1018,11 +1021,10 @@ public partial class MainWindow : Window
 
     void ElementComboBoxUpdate()
     {
-        //int index = richTextBox.SelectionStart;
         int indexSave = elementCB.SelectedIndex;
         elementCB.Items.Clear();
-        elementCB.Items.Add("Весь текст");
-        elementCB.Items.Add("До разделов");
+        elementCB.Items.Add((string)FindResource("AllText"));
+        elementCB.Items.Add((string)FindResource("BeforeHeaders"));
         string str = RTBox.GetText(richTextBox);
         int h1Count = 0; int h2Count = 0;
         while (str.Contains(Config.specialBefore + "h1") || str.Contains(Config.specialBefore + "h2"))
@@ -1052,7 +1054,6 @@ public partial class MainWindow : Window
         {
             elementCB.SelectedItem = 0;
         }
-        //richTextBox.SelectionStart = index;
     }
 
     void UpdateTypeButton()
@@ -1130,10 +1131,10 @@ public partial class MainWindow : Window
         int index = Regex.Matches(new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text, Config.AddSpecialLeft(name)).Count;
         if (pb.Visibility == Visibility.Visible && index < data.ComboBox[name].Form.Items.Count && pb.IsMouseOver)
         {
-            string str = "Вставить " + data.ComboBox[name].Form.Items[index] + " в " + cursorLocationTB.Text;
+            string str = (string)FindResource("Paste") + " " + data.ComboBox[name].Form.Items[index] + " "+ (string)FindResource("In") +" " + cursorLocationTB.Text;
             if (Regex.Matches(new TextRange(richTextBox.CaretPosition, richTextBox.CaretPosition.DocumentEnd).Text, Config.AddSpecialLeft(name)).Count > 0)
             {
-                str += ", последующие сместить";
+                str += (string)FindResource("OffsetFollowing");
             }
             cursorLocationTB.Text = str;
         }
@@ -1274,7 +1275,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                DrawText("РАЗДЕЛ");
+                DrawText(FindResource("Header").ToString().ToUpperInvariant());
             }
         }
         else if (str == "h2")
@@ -1297,7 +1298,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                DrawText("Подраздел");
+                DrawText((string)FindResource("SubHeader"));
             }
         }
         else if (str == "l")
@@ -1396,7 +1397,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                DrawText("Список");
+                DrawText((string)FindResource("List"));
             }
         }
         else if (str == "t")
@@ -1412,36 +1413,26 @@ public partial class MainWindow : Window
             pictureBox.Visibility = Visibility.Visible;
             dragDropImage.Visibility = Visibility.Collapsed;
             mainImage.Visibility = Visibility.Visible;
+            string path = string.Empty;
             if (pComboBox.SelectedIndex == -1)
             {
-                try
-                {
-                    string path = RTBox.GetText(richTextBoxSubstitution);
-                    if (File.Exists(path))
-                    {
-                        ShowImage(path);
-                    }
-                    else
-                    {
-                        ShowImage("Не найден");
-                    }
-                }
-                catch
-                {
-                    ShowIconPicture("Не указан");
-                }
+                path = RTBox.GetText(richTextBoxSubstitution);
             }
             else
             {
-                string path = data.ComboBox["p"].Data[pComboBox.SelectedIndex][1];
-                if (File.Exists(path))
-                {
-                    ShowImage(path);
-                }
-                else
-                {
-                    ShowIconPicture("Не найден");
-                }
+                path = data.ComboBox["p"].Data[pComboBox.SelectedIndex][1];
+            }
+            if(string.IsNullOrWhiteSpace(path))
+            {
+                ShowIconPicture((string)FindResource("Unidentified"));
+            }
+            else if(File.Exists(path))
+            {
+                ShowImage(path);
+            }
+            else
+            {
+                ShowIconPicture((string)FindResource("NotFound"));
             }
         }
         else if (str == "c")
@@ -1450,36 +1441,27 @@ public partial class MainWindow : Window
             pictureBox.Visibility = Visibility.Visible;
             dragDropImage.Visibility = Visibility.Collapsed;
             mainImage.Visibility = Visibility.Visible;
+            string path = string.Empty;
             if (cComboBox.SelectedIndex == -1)
             {
-                try
-                {
-                    string path = RTBox.GetText(richTextBoxSubstitution);
-                    if (File.Exists(path))
-                    {
-                        ShowCode(path.Split('\\').Last());
-                    }
-                    else
-                    {
-                        ShowCode("Не найден");
-                    }
-                }
-                catch
-                {
-                    ShowCode("Не указан");
-                }
+                path = RTBox.GetText(richTextBoxSubstitution);
             }
             else
             {
-                string path = data.ComboBox["c"].Data[cComboBox.SelectedIndex][1];
-                if (File.Exists(path))
-                {
-                    ShowCode(path.Split('\\').Last());
-                }
-                else
-                {
-                    ShowCode("Не найден");
-                }
+                path = data.ComboBox["c"].Data[cComboBox.SelectedIndex][1];
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                ShowCode((string)FindResource("Unidentified"));
+            }
+            else if (File.Exists(path))
+            {
+                ShowCode(path);
+            }
+            else
+            {
+                ShowCode((string)FindResource("NotFound"));
             }
         }
         else
@@ -1699,6 +1681,9 @@ public partial class MainWindow : Window
 
     void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
+        clearSubstitution = true;
+        TypeSubstitution.SelectedIndex = -1;
+        clearSubstitution = false;
         UnselectComboBoxes();
     }
 
@@ -1751,7 +1736,7 @@ public partial class MainWindow : Window
 
     int FindParagraphStart(string paragraphType)
     {
-        if (paragraphType == "До разделов")
+        if (paragraphType == (string)FindResource("BeforeHeaders"))
         {
             return 0;
         }
@@ -1784,7 +1769,7 @@ public partial class MainWindow : Window
     {
         string str = RTBox.GetText(richTextBox);
 
-        if (paragraphType == "До разделов")
+        if (paragraphType == (string)FindResource("BeforeHeaders"))
         {
             int h1Pos = str.IndexOf(Config.specialBefore + "h1");
             h1Pos = h1Pos == -1 ? int.MaxValue : h1Pos;
@@ -2282,7 +2267,6 @@ public partial class MainWindow : Window
             if (!clearSubstitution)
             {
                 ComboBoxItem item = (ComboBoxItem)TypeSubstitution.SelectedItem;
-                string type = TypeRichBox();
                 HeaderSubstitution.Text = item.Content.ToString() + " " + (data.ComboBox[TypeRichBox()].Data.Count + 1);
             }
         }
@@ -2330,7 +2314,7 @@ public partial class MainWindow : Window
                 }
                 catch
                 {
-                    MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show((string)FindResource("Error2"), (string)FindResource("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             else
@@ -2356,7 +2340,7 @@ public partial class MainWindow : Window
                 }
                 catch
                 {
-                    MessageBox.Show("Мы не можем это сделать на вашем устройстве, обновите ОС", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                    MessageBox.Show((string)FindResource("Error2"), (string)FindResource("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             else
@@ -2366,7 +2350,7 @@ public partial class MainWindow : Window
         }
     }
 
-    void mainColor_TextChanged(object sender, TextChangedEventArgs e)
+    void MainColor_TextChanged(object sender, TextChangedEventArgs e)
     {
         viewModel.MainColor = "#" + mainColor.Text;
         Properties.Settings.Default.MainColor = mainColor.Text;
@@ -2383,31 +2367,31 @@ public partial class MainWindow : Window
         language.SelectedIndex = 0;
     }
 
-    private void additionalColor_TextChanged(object sender, TextChangedEventArgs e)
+    void AdditionalColor_TextChanged(object sender, TextChangedEventArgs e)
     {
         viewModel.AdditionalColor = "#" + additionalColor.Text;
         Properties.Settings.Default.AdditionalColor = additionalColor.Text;
         Properties.Settings.Default.Save();
     }
 
-    private void AlternativeColor_TextChanged(object sender, TextChangedEventArgs e)
+    void AlternativeColor_TextChanged(object sender, TextChangedEventArgs e)
     {
         viewModel.AlternativeColor = "#" + alternativeColor.Text;
         Properties.Settings.Default.AlternativeColor = alternativeColor.Text;
         Properties.Settings.Default.Save();
     }
 
-    private void hoverColor_TextChanged(object sender, TextChangedEventArgs e)
+    void HoverColor_TextChanged(object sender, TextChangedEventArgs e)
     {
         viewModel.HoverColor = "#" + hoverColor.Text;
         Properties.Settings.Default.HoverColor = hoverColor.Text;
         Properties.Settings.Default.Save();
     }
 
-    void fontSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    void FontSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
         string size = "1";
-        if(fontSize.Value>=1)
+        if (fontSize.Value >= 1)
         {
             size = ((int)fontSize.Value).ToString();
         }
@@ -2416,7 +2400,7 @@ public partial class MainWindow : Window
         Properties.Settings.Default.Save();
     }
 
-    void language_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         App.SelectCulture(language.SelectedIndex);
         Properties.Settings.Default.Language = language.SelectedIndex;

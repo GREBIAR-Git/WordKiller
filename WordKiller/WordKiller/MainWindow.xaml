@@ -1,4 +1,4 @@
-﻿ <Window x:Class="WordKiller.MainWindow"
+﻿<Window x:Class="WordKiller.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,10 +7,7 @@
         mc:Ignorable="d"
         Name="win"
         Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="447" Width="695" MinHeight="310" MinWidth="710" Icon="Resources/512x512.png" Loaded="Win_Loaded" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter">
-    <Window.Resources>
-        
-    </Window.Resources>
-     <Window.DataContext>
+    <Window.DataContext>
         <local:ViewModel/>
     </Window.DataContext>
     <Window.InputBindings>
@@ -50,47 +47,47 @@
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Экспорт" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
-                    <MenuItem Header="В формате PDF" x:Name="ExportPDF" Style="{StaticResource MenuItem}" Click="ExportPDF_Click"/>
-                    <MenuItem Header="В формате HTML" x:Name="ExportHTML" Style="{StaticResource MenuItem}" Click="ExportHTML_Click" />
+                    <MenuItem Header="{DynamicResource Export}" Style="{StaticResource MenuItem}" Click="ReadScrollMenuItem_Click"/>
+                    <MenuItem Header="{DynamicResource PDF}" x:Name="ExportPDF" Style="{StaticResource MenuItem}" Click="ExportPDF_Click"/>
+                    <MenuItem Header="{DynamicResource HTML}" x:Name="ExportHTML" Style="{StaticResource MenuItem}" Click="ExportHTML_Click" />
                     <Separator/>
-                    <MenuItem Header="Создать" Command="New" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Открыть" Command="Open" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Сохранить" Command="Save" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Сохранить как..." Command="SaveAs" InputGestureText="Ctrl+Alt+S" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Create}" Command="New" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Open}" Command="Open" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Save}" Command="Save" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource SaveAs}" Command="SaveAs" InputGestureText="Ctrl+Alt+S" Style="{StaticResource MenuItem}"/>
                     <Separator/>
-                    <MenuItem Header="Выход" Command="Close" InputGestureText="Ctrl+Q" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Exit}" Command="Close" InputGestureText="Ctrl+Q" Style="{StaticResource MenuItem}"/>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource View}" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Титульник" IsChecked="{Binding Path=TitleOpen,Mode=TwoWay}" x:Name="TitlePageMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
-                    <MenuItem Header="Подстановка"  IsChecked="{Binding Path=SubstitutionOpen,Mode=TwoWay}" x:Name="SubstitutionMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
-                    <MenuItem Header="Текст" IsChecked="{Binding Path=TextOpen,Mode=TwoWay}" x:Name="TextMI"  Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                    <MenuItem Header="{DynamicResource Title}" IsChecked="{Binding Path=TitleOpen,Mode=TwoWay}" x:Name="TitlePageMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                    <MenuItem Header="{DynamicResource Substitution}"  IsChecked="{Binding Path=SubstitutionOpen,Mode=TwoWay}" x:Name="SubstitutionMI" Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
+                    <MenuItem Header="{DynamicResource Text}" IsChecked="{Binding Path=TextOpen,Mode=TwoWay}" x:Name="TextMI"  Style="{StaticResource MenuItem}" Click="View_MI_Click"/>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Document}" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Тип" Style="{StaticResource MenuItem}" x:Name="typeMenuItem">
-                        <MenuItem x:Name="DefaultDocumentMI" Header="Обычный документ" IsChecked="True" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                    <MenuItem Header="{DynamicResource Type}" Style="{StaticResource MenuItem}" x:Name="typeMenuItem">
+                        <MenuItem x:Name="DefaultDocumentMI" Header="{DynamicResource DefaultDocument}" IsChecked="True" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <Separator/>
-                        <MenuItem x:Name="CourseworkMI" Header="Курсовая работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="CourseworkMI" Header="{DynamicResource Coursework}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <Separator/>
-                        <MenuItem x:Name="LabMI" Header="Лабораторная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
-                        <MenuItem x:Name="PracticeMI" Header="Практическа работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="LabMI" Header="{DynamicResource LaboratoryWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="PracticeMI" Header="{DynamicResource PracticeWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <Separator/>
-                        <MenuItem x:Name="ControlWorkMI" Header="Контрольная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
-                        <MenuItem x:Name="RefMI" Header="Реферат" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="ControlWorkMI" Header="{DynamicResource ControlWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="RefMI" Header="{DynamicResource Referat}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <Separator/>
-                        <MenuItem x:Name="DiplomMI" Header="Дипломная работа" Style="{StaticResource MenuItem}" Click="Work_Click"/>
-                        <MenuItem x:Name="VKRMI" Header="ВКР" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="DiplomMI" Header="{DynamicResource DiplomWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="VKRMI" Header="{DynamicResource VKR}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem Header="Нумерация" x:Name="NumberingMI" IsCheckable="True" IsChecked="{Binding Path=Numbering,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Содержание" IsCheckable="True" x:Name="tableOfContentsMI" IsChecked="{Binding Path=TableOfContents,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Цифры к заголовкам" x:Name="NumberHeadingMI" IsChecked="{Binding Path=NumberHeading,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
+                    <MenuItem Header="{DynamicResource Numbering}" x:Name="NumberingMI" IsCheckable="True" IsChecked="{Binding Path=Numbering,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" x:Name="tableOfContentsMI" IsChecked="{Binding Path=TableOfContents,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource NumbersToHeaders}" x:Name="NumberHeadingMI" IsChecked="{Binding Path=NumberHeading,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
@@ -111,9 +108,9 @@
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Help}" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Документация" Style="{StaticResource MenuItem}" Click="DocumentationShow"/>
+                    <MenuItem Header="{DynamicResource Documentation}" Style="{StaticResource MenuItem}" Click="DocumentationShow"/>
                     <Separator/>
-                    <MenuItem Header="О программе" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
+                    <MenuItem Header="{DynamicResource AboutProgram}" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
                 </MenuItem>
             </Menu>
             <Button Margin="0,0,55,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" Visibility="Collapsed" Style="{StaticResource Button}" Click="SwitchPanel_Click"/>
@@ -192,12 +189,12 @@
                             <Polygon Fill="White" Points="1, 57, 9, 50, 9, 64" />
                         </Grid>
                     </Button>
-                    <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Раздел" MinHeight="50" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Подраздел" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Список" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Картинка" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Таблица" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Код" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Header}" MinHeight="50" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource SubHeader}" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource List}" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Picture}" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Table}" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Code}" Style="{StaticResource Button}"/>
                     <ComboBox Grid.Row="1" Grid.Column="1" MinWidth="10" x:Name="h1ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                     <ComboBox Grid.Row="1" Grid.Column="2" MinWidth="10" x:Name="h2ComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                     <ComboBox Grid.Row="1" Grid.Column="3" MinWidth="10" x:Name="lComboBox" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
@@ -227,7 +224,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="elementTBl" TextAlignment="Left" Text="{Binding Path=Displayed,Mode=TwoWay, StringFormat=Отображается: {0}}" Style="{StaticResource TextBlock}"/>
+                        <TextBlock x:Name="elementTBl" TextAlignment="Left" Text="{Binding Path=Displayed,Mode=TwoWay}" Style="{StaticResource TextBlock}"/>
                         <ComboBox MinWidth="50" x:Name="elementCB" Visibility="Collapsed" Style="{StaticResource ComboBox}" SelectionChanged="ElementCB_SelectionChanged"/>
                     </Grid>
                     <Grid Grid.Column="2" x:Name="panelTypeInserts" Margin="2 0 2 0" Visibility="Collapsed" Background="{Binding Path=MainColor,Mode=TwoWay}">
@@ -249,7 +246,7 @@
                         <Button Grid.Row="0" Grid.Column="4" x:Name="T" Margin="2,0,2,0" Visibility="Collapsed" Content="T" Style="{StaticResource Button}" Click="ButtonSpecial_Click" MouseEnter="MouseEnterTypeButton" MouseLeave="MouseLeaveTypeButton"/>
                         <Button Grid.Row="0" Grid.Column="5" x:Name="C" Margin="2,0,0,0" Visibility="Collapsed" Content="C" Style="{StaticResource Button}" Click="ButtonSpecial_Click" MouseEnter="MouseEnterTypeButton" MouseLeave="MouseLeaveTypeButton"/>
                     </Grid>
-                    <Button Grid.Column="3" Margin="0,0,5,0" x:Name="add" Content="Добавить" Visibility="Collapsed" Style="{StaticResource Button}" Click="Add_Click"/>
+                    <Button Grid.Column="3" Margin="0,0,5,0" x:Name="add" Content="{DynamicResource Add}" Visibility="Collapsed" Style="{StaticResource Button}" Click="Add_Click"/>
                     <Button Grid.Column="4" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click"/>
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="0" x:Name="panelRichTextBox" Background="{Binding Path=MainColor,Mode=TwoWay}">
@@ -268,16 +265,16 @@
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
                         <ComboBox Grid.Row="0" x:Name="TypeSubstitution" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource ComboBox1}" SelectionChanged="TypeSubstitution_SelectionChanged">
-                            <ComboBoxItem Content="Раздел"/>
-                            <ComboBoxItem Content="Подраздел"/>
-                            <ComboBoxItem Content="Список"/>
-                            <ComboBoxItem Content="Картинка"/>
-                            <ComboBoxItem Content="Таблица"/>
-                            <ComboBoxItem Content="Код"/>
+                            <ComboBoxItem Content="{DynamicResource Header}"/>
+                            <ComboBoxItem Content="{DynamicResource SubHeader}"/>
+                            <ComboBoxItem Content="{DynamicResource List}"/>
+                            <ComboBoxItem Content="{DynamicResource Picture}"/>
+                            <ComboBoxItem Content="{DynamicResource Table}"/>
+                            <ComboBoxItem Content="{DynamicResource Code}"/>
                         </ComboBox>
-                        <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Text="Заголовок" Style="{StaticResource TextBlock}"/>
+                        <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Style="{StaticResource TextBlock}"/>
                         <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
-                        <TextBlock Grid.Row="2" Text="Содержание" Style="{StaticResource TextBlock}"/>
+                        <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
                         <RichTextBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
                             <RichTextBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
@@ -311,7 +308,7 @@
                                 <Grid>
                                     <Rectangle x:Name="pictureLeft"/>
                                     <Image Grid.Row="0" Grid.Column="1"  Width="auto" Margin="10,0,10,20" Height="70" Source="Resources/Picture.png" Stretch="Fill" />
-                                    <TextBlock x:Name="textLeft" TextWrapping="Wrap"  Margin="0,110,0,0" Text="Для картинки" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
+                                    <TextBlock x:Name="textLeft" TextWrapping="Wrap"  Margin="0,110,0,0" Text="{DynamicResource ForPicture}" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                 </Grid>
                             </Border>
                         </Border>
@@ -320,7 +317,7 @@
                                 <Grid>
                                     <Rectangle x:Name="codeRight"/>
                                     <Image Grid.Row="0" Grid.Column="1" Width="100" Height="145" Source="Resources/Code.png" Stretch="Fill" />
-                                    <TextBlock x:Name="textRight" TextWrapping="Wrap" Margin="0,180,0,0" Text="Для кода" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
+                                    <TextBlock x:Name="textRight" TextWrapping="Wrap" Margin="0,180,0,0" Text="{DynamicResource ForСode}" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                 </Grid>
                             </Border>
                         </Border>
@@ -328,7 +325,7 @@
                             <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
                                 <Grid>
                                     <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                    <TextBlock x:Name="mainText" Text="Раздел" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=20}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
+                                    <TextBlock x:Name="mainText" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=20}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
                                     <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Stretch="Fill" />
                                     <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
                                 </Grid>
@@ -351,15 +348,16 @@
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Общие" Style="{StaticResource Button}" Click="OpenGeneralisSetiings"/>
-            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Персонализация" Style="{StaticResource Button}" Click="OpenPersonalization"/>
-            <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Профиль" Style="{StaticResource Button}" Click="OpenProfile" />
+            <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource GeneralSettings}" Style="{StaticResource Button}" Click="OpenGeneralisSetiings"/>
+            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource PersonalizationSettings}" Style="{StaticResource Button}" Click="OpenPersonalization"/>
+            <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource ProfileSettings}" Style="{StaticResource Button}" Click="OpenProfile" />
             <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Что-то" Style="{StaticResource Button}"/>
-            <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Назад" Style="{StaticResource Button}" Click="ExitSettings"/>
+            <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource BackSettings}" Style="{StaticResource Button}" Click="ExitSettings"/>
             <ScrollViewer x:Name="GeneralisSetiings" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" VerticalScrollBarVisibility="Hidden">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"/>
+                        <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
@@ -376,7 +374,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Aссоциировать расширение(wkr) с программой?" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsAssociate}" Style="{StaticResource TextBlock}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AssociationWKR" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="AssociationWKR_Click">
                             <CheckBox.LayoutTransform>
                                 <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
@@ -393,7 +391,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Производить ли проверку синтаксиса(Базовая)?" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsSyntaxChecking}" Style="{StaticResource TextBlock}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="SyntaxChecking" Margin="10 0 0 0" HorizontalAlignment="Left" IsChecked="True" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="SyntaxChecking_Checked">
                                 <CheckBox.LayoutTransform>
                                     <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
@@ -410,10 +408,10 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Какую кодировку использовать при сохранении файла?" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Encoding}" Style="{StaticResource TextBlock}"/>
                             <ComboBox x:Name="Encoding" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" MinWidth="160" Margin="10 0 10 0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Encoding_SelectionChanged">
-                                <ComboBoxItem>Никакую</ComboBoxItem>
-                                <ComboBoxItem>Стандартную</ComboBoxItem>
+                                <ComboBoxItem Content="{DynamicResource Encoding0}"/>
+                                <ComboBoxItem Content="{DynamicResource Encoding1}"/>
                             </ComboBox>
                         </Grid>
                     </Border>
@@ -426,7 +424,24 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Автоматический заголовок для объекта" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource AfterExportingClose}" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="CloseWindow_Checked">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="40*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsAutoHeader}" Style="{StaticResource TextBlock}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeader" Margin="10 0 0 0" HorizontalAlignment="Left" IsChecked="True" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="AutoHeader_Checked">
                                 <CheckBox.LayoutTransform>
                                     <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
@@ -434,7 +449,7 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="5" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                    <Border Grid.Row="6" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                         <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -443,25 +458,8 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Отображать поле ввода заголовка" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsDisplayHeaderInput}" Style="{StaticResource TextBlock}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeaderVisibility" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="AutoHeaderVisibility_Checked" >
-                                <CheckBox.LayoutTransform>
-                                    <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
-                                </CheckBox.LayoutTransform>
-                            </CheckBox>
-                        </Grid>
-                    </Border>
-                    <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70*"/>
-                                <ColumnDefinition Width="40*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay}" Text="Нужно ли каждый раз после формирования отчёта закрывать приложение?" Style="{StaticResource TextBlock}"/>
-                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="CloseWindow" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="CloseWindow_Checked">
                                 <CheckBox.LayoutTransform>
                                     <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
                                 </CheckBox.LayoutTransform>
@@ -481,7 +479,7 @@
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                     <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
-                        <Button Grid.Row="0" Grid.Column="0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="По умолчанию" Style="{StaticResource Button}" Click="ByDefault"/>
+                        <Button Grid.Row="0" Grid.Column="0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource ByDefault}" Style="{StaticResource Button}" Click="ByDefault"/>
                     </Grid>
                 </Border>
                 <ScrollViewer Grid.Row="2" Grid.Column="0" VerticalScrollBarVisibility="Hidden">
@@ -508,8 +506,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Основной цвет программы:" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="mainColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="mainColor_TextChanged"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MainColor}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="mainColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="MainColor_TextChanged"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -521,8 +519,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Дополнительный цвет программы:" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="additionalColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="additionalColor_TextChanged"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource ComplementaryСolor}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="additionalColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="AdditionalColor_TextChanged"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -534,7 +532,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Альтернативный цвет программы:" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource AlternativeСolor}" Style="{StaticResource TextBlock}"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="alternativeColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="AlternativeColor_TextChanged"/>
                             </Grid>
                         </Border>
@@ -547,8 +545,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Цвет при наведении:" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="hoverColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="hoverColor_TextChanged"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource HoverColor}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="hoverColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="HoverColor_TextChanged"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="5" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -560,8 +558,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Размер шрифта:" Style="{StaticResource TextBlock}"/>
-                                <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="54" MinWidth="250" VerticalAlignment="Center" x:Name="fontSize" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" ValueChanged="fontSize_ValueChanged"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FontSize}" Style="{StaticResource TextBlock}"/>
+                                <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="54" MinWidth="250" VerticalAlignment="Center" x:Name="fontSize" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" ValueChanged="FontSize_ValueChanged"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="6" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -573,8 +571,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Язык:" Style="{StaticResource TextBlock}"/>
-                                <ComboBox x:Name="language" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" MinWidth="160" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="language_SelectionChanged">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Language}" Style="{StaticResource TextBlock}"/>
+                                <ComboBox x:Name="language" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" MinWidth="160" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Language_SelectionChanged">
                                     <ComboBoxItem>Русский</ComboBoxItem>
                                     <ComboBoxItem>Английский</ComboBoxItem>
                                     <ComboBoxItem>Белорусский</ComboBoxItem>
@@ -597,7 +595,7 @@
                 </Grid.RowDefinitions>
                 <GroupBox Grid.Row="0"  Margin="10 10 10 5">
                     <GroupBox.Header>
-                        <TextBlock Text="Вы" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
+                        <TextBlock Text="{DynamicResource You}" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
                     </GroupBox.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Hidden">
                         <Grid  HorizontalAlignment="Left">
@@ -615,28 +613,28 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 0 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Text="Имя:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="FirstName" Grid.Row="0" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstName_TextChanged"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Фамилия:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="LastName" Grid.Row="1" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastName_TextChanged"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Отчество:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="MiddleName" Grid.Row="2" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleName_TextChanged"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Институт:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
                             <ComboBox HorizontalAlignment="Left" x:Name="Universitet" Grid.Row="3" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Universitet_SelectionChanged"/>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Факультет:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Faculty}" Style="{StaticResource TextBlock}"/>
                             <ComboBox HorizontalAlignment="Left" x:Name="Faculty" Grid.Row="4" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Faculty_SelectionChanged"/>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Курс:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Cours}" Style="{StaticResource TextBlock}"/>
                             <ComboBox HorizontalAlignment="Left" x:Name="Cours" Grid.Row="5" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Cours_SelectionChanged"/>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Группа:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Group}" Style="{StaticResource TextBlock}"/>
                             <ComboBox HorizontalAlignment="Left" x:Name="Group" Grid.Row="6" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Group_SelectionChanged"/>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Margin="0 0 0 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Шифр:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="Shifr" Grid.Row="7" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="Shifr_TextChanged"/>
                         </Grid>
                     </ScrollViewer>
                 </GroupBox>
                 <GroupBox Grid.Row="1" Margin="10 10 10 5">
                     <GroupBox.Header>
-                        <TextBlock Text="Напарник" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
+                        <TextBlock Text="{DynamicResource Companion}" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
                     </GroupBox.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Hidden">
                         <Grid HorizontalAlignment="Left">
@@ -650,13 +648,13 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 0 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Имя:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="FirstNameCoop" Grid.Row="0" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstNameCoop_TextChanged"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Фамилия:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="LastNameCoop" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastNameCoop_TextChanged"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 0 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Отчество:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="MiddleNameCoop" Grid.Row="2" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleNameCoop_TextChanged"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 0 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Шифр:" Style="{StaticResource TextBlock}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
                             <TextBox HorizontalAlignment="Left" x:Name="ShifrCoop" Grid.Row="3" Grid.Column="1" Margin="0 0 0 10" HorizontalContentAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="ShifrCoop_TextChanged"/>
                         </Grid>
                     </ScrollViewer>

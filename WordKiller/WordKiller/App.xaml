@@ -9,12 +9,12 @@
         
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="StringResources.en.xaml" />
-                <ResourceDictionary Source="StringResources.be.xaml" />
-                <ResourceDictionary Source="StringResources.fr.xaml" />
-                <ResourceDictionary Source="StringResources.de.xaml" />
-                <ResourceDictionary Source="StringResources.zh.xaml" />
-                <ResourceDictionary Source="StringResources.ru.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.en.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.be.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.fr.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.de.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.zh.xaml" />
+                <ResourceDictionary Source="Dictionary/StringResources.ru.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:FontConverter x:Key="fontConverter"/>
         <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
