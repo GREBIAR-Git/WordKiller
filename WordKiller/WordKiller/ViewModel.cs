@@ -59,6 +59,10 @@ public class ViewModel : INotifyPropertyChanged
     bool titleOpen;
     public bool TitleOpen { get => titleOpen; set => SetProperty(ref titleOpen, value); }
 
+    string displayed;
+
+    public string Displayed { get => displayed; set => SetProperty(ref displayed, value); }
+
     bool substitutionOpen;
     public bool SubstitutionOpen { get => substitutionOpen; set => SetProperty(ref substitutionOpen, value); }
 
@@ -80,4 +84,8 @@ public class ViewModel : INotifyPropertyChanged
     string hoverColor;
 
     public string HoverColor { get => hoverColor; set => SetProperty(ref hoverColor, value); }
+
+    string fontSize;
+
+    public string FontSize { get => fontSize; set => SetProperty(ref fontSize, value); }
 }

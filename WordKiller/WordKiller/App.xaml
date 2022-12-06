@@ -4,6 +4,19 @@
              xmlns:local="clr-namespace:WordKiller"
              Startup="App_Startup">
     <Application.Resources>
+        
+        
+        
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StringResources.en.xaml" />
+                <ResourceDictionary Source="StringResources.be.xaml" />
+                <ResourceDictionary Source="StringResources.fr.xaml" />
+                <ResourceDictionary Source="StringResources.de.xaml" />
+                <ResourceDictionary Source="StringResources.zh.xaml" />
+                <ResourceDictionary Source="StringResources.ru.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <local:FontConverter x:Key="fontConverter"/>
         <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
             <Setter Property="Template">
                 <Setter.Value>
@@ -32,13 +45,13 @@
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
         <Style x:Key="TextBlockRounded" TargetType="{x:Type TextBlock}">
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
             <Style.Resources>
@@ -56,31 +69,30 @@
             <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
         <Style x:Key="TextBlockMenu" TargetType="{x:Type TextBlock}">
-            <Setter Property="Height" Value="20"/>
             <Setter Property="Margin" Value="0,5,0,0"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
         <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Height" Value="19"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="MinWidth" Value="300"/>
             <Style.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -90,7 +102,9 @@
         <Style x:Key="CheckBox" TargetType="{x:Type CheckBox}">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Style.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="3"/>
@@ -109,6 +123,7 @@
             <Setter Property="RowHeaderWidth" Value="0"/>
         </Style>
         <Style x:Key="DataGrid1" TargetType="{x:Type DataGrid}">
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="Background" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
             <Setter Property="RowBackground" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -122,11 +137,12 @@
             <Setter Property="RowHeaderWidth" Value="0"/>
         </Style>
         <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="MaxWidth" Value="400"/>
+            <Setter Property="MinWidth" Value="300"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox" >
@@ -170,7 +186,7 @@
         </Style>
         <Style x:Key="ComboBox1" TargetType="{x:Type ComboBox}">
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
@@ -226,9 +242,8 @@
         <Style x:Key="MenuItem" TargetType="{x:Type MenuItem}">
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="20"/>
         </Style>
         <Style x:Key="Button" TargetType="{x:Type Button}">
             <Style.Resources>
@@ -239,7 +254,7 @@
             <Style.Setters>
                 <Setter Property="Background" Value="{Binding Path=AlternativeColor,Mode=TwoWay}"/>
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Template">
@@ -265,6 +280,8 @@
                 </Style>
             </Style.Resources>
         </Style>
+        </ResourceDictionary>
+
     </Application.Resources>
 
 </Application>

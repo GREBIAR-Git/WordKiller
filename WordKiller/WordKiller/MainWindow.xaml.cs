@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,11 +36,14 @@ public partial class MainWindow : Window
     List<List<TableData>> collection;
 
     bool clearSubstitution = false;
+
     public MainWindow(string[] args)
     {
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         viewModel = new()
         {
+            Displayed = "нечто",
+            FontSize = Properties.Settings.Default.FontSize,
             MainColor = "#" + Properties.Settings.Default.MainColor,
             AdditionalColor = "#" + Properties.Settings.Default.AdditionalColor,
             AlternativeColor = "#" + Properties.Settings.Default.AlternativeColor,
@@ -84,6 +89,7 @@ public partial class MainWindow : Window
         InitSetting();
         InitTable();
         UpdateHeadersSubstitution();
+        App.SelectCulture(Properties.Settings.Default.Language);
     }
 
     async void InitSetting()
@@ -444,24 +450,31 @@ public partial class MainWindow : Window
             downPanel.Visibility = Visibility.Visible;
             if (MenuItem == SubstitutionMI)
             {
+                additionalPanel.ColumnDefinitions[1].Width = new GridLength(38, GridUnitType.Star);
+                additionalPanel.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
+                additionalPanel.ColumnDefinitions[3].Width = new GridLength(20, GridUnitType.Star);
                 elementPanel.Visibility = Visibility.Visible;
                 toText.Content = "К тексту";
-                toText.Margin = new Thickness(2, 0, 5, 5);
+                additionalPanel.Margin = new Thickness(5, 0, 5, 5);
                 elementTBl.Visibility = Visibility.Visible;
                 elementCB.Visibility = Visibility.Collapsed;
                 Substitution.Visibility = Visibility.Visible;
                 richTextBox.Focus();
-                elementTBl.Text = "нечто";
+                viewModel.Displayed = "нечто";
                 ShowPictureBox();
                 ImageUpdate();
 
             }
             else if (MenuItem == TextMI)
             {
+                additionalPanel.Margin = new Thickness(5, 2.5, 5, 2.5);
+                additionalPanel.ColumnDefinitions[1].Width = new GridLength(22, GridUnitType.Star);
+                additionalPanel.ColumnDefinitions[2].Width = new GridLength(36, GridUnitType.Star);
+                additionalPanel.ColumnDefinitions[3].Width = new GridLength(0, GridUnitType.Star);
                 richTextBox.Visibility = Visibility.Visible;
                 cursorLocationTB.Visibility = Visibility.Visible;
                 toText.Content = "К подстановкам";
-                toText.Margin = new Thickness(2, 5, 5, 5);
+                //toText.Margin = new Thickness(2, 5, 5, 5);
                 elementTBl.Visibility = Visibility.Collapsed;
                 elementCB.Visibility = Visibility.Visible;
                 elementCB.SelectedItem = "Весь текст";
@@ -573,7 +586,7 @@ public partial class MainWindow : Window
         {
             if (i >= menuLeftIndex && i < menuLeftIndex + 4)
             {
-                elementPanel.ColumnDefinitions[i].Width = new GridLength(23, GridUnitType.Star);
+                elementPanel.ColumnDefinitions[i].Width = new GridLength(23.5, GridUnitType.Star);
             }
             else
             {
@@ -591,7 +604,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            elementPanel.ColumnDefinitions[0].Width = new GridLength(4, GridUnitType.Star);
+            elementPanel.ColumnDefinitions[0].Width = new GridLength(3, GridUnitType.Star);
         }
         if (menuLeftIndex == elementPanel.ColumnDefinitions.Count - 5)
         {
@@ -599,7 +612,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            elementPanel.ColumnDefinitions[^1].Width = new GridLength(4, GridUnitType.Star);
+            elementPanel.ColumnDefinitions[^1].Width = new GridLength(3, GridUnitType.Star);
         }
     }
 
@@ -758,7 +771,7 @@ public partial class MainWindow : Window
                 UnselectedTable();
             }
             clearSubstitution = true;
-            elementTBl.Text = "нечто";
+            viewModel.Displayed = "нечто";
             TypeSubstitution.Visibility = Visibility.Visible;
             TypeSubstitutionOn.Visibility = Visibility.Collapsed;
             TypeSubstitution.SelectedIndex = -1;
@@ -771,7 +784,7 @@ public partial class MainWindow : Window
     void InfoDisplayedText(ComboBox sender)
     {
         int i = elementPanel.Children.IndexOf(sender) - 1 - (elementPanel.ColumnDefinitions.Count - 2);
-        elementTBl.Text = menuNames[i] + ": " + (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
+        viewModel.Displayed = menuNames[i] + " - " + (sender.Items.IndexOf(sender.SelectedItem) + 1).ToString();
     }
 
     void ComboBox_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
@@ -1533,7 +1546,7 @@ public partial class MainWindow : Window
     {
         mainText.Text = text;
         mainText.TextAlignment = textAlignment;
-        mainText.FontSize = fontSize;
+        //mainText.FontSize = fontSize;
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
@@ -1910,6 +1923,8 @@ public partial class MainWindow : Window
         additionalColor.Text = Properties.Settings.Default.AdditionalColor;
         alternativeColor.Text = Properties.Settings.Default.AlternativeColor;
         hoverColor.Text = Properties.Settings.Default.HoverColor;
+        fontSize.Value = int.Parse(Properties.Settings.Default.FontSize);
+        language.SelectedIndex = Properties.Settings.Default.Language;
     }
 
     async void OpenProfile()
@@ -2285,7 +2300,7 @@ public partial class MainWindow : Window
     {
         if (Properties.Settings.Default.AutoHeaderVisibility)
         {
-            Substitution.RowDefinitions[1].Height = new GridLength(20);
+            Substitution.RowDefinitions[1].Height = GridLength.Auto;
         }
         else
         {
@@ -2364,6 +2379,8 @@ public partial class MainWindow : Window
         additionalColor.Text = "4a76a8";
         alternativeColor.Text = "335e8f";
         hoverColor.Text = "b8860b";
+        fontSize.Value = 6;
+        language.SelectedIndex = 0;
     }
 
     private void additionalColor_TextChanged(object sender, TextChangedEventArgs e)
@@ -2384,6 +2401,25 @@ public partial class MainWindow : Window
     {
         viewModel.HoverColor = "#" + hoverColor.Text;
         Properties.Settings.Default.HoverColor = hoverColor.Text;
+        Properties.Settings.Default.Save();
+    }
+
+    void fontSize_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        string size = "1";
+        if(fontSize.Value>=1)
+        {
+            size = ((int)fontSize.Value).ToString();
+        }
+        viewModel.FontSize = size;
+        Properties.Settings.Default.FontSize = size;
+        Properties.Settings.Default.Save();
+    }
+
+    void language_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        App.SelectCulture(language.SelectedIndex);
+        Properties.Settings.Default.Language = language.SelectedIndex;
         Properties.Settings.Default.Save();
     }
 }
