@@ -309,7 +309,7 @@ public partial class MainWindow : Window
             else if (DiplomMI.IsChecked)
             {
                 typeDocument = TypeDocument.GraduateWork;
-                TextHeader((string)FindResource("DiplomWork"));
+                TextHeader((string)FindResource("DiplomaWork"));
                 TitleElements.ShowTitleElems(titlePanel, "");
             }
             else if (VKRMI.IsChecked)
@@ -395,7 +395,7 @@ public partial class MainWindow : Window
 
         Report report = new();
         await Task.Run(() =>
-            Report.Create(data, viewModel.Numbering, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
+            Report.Create(data, viewModel.PageNumbers, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
 
         if (Properties.Settings.Default.CloseWindow)
         {

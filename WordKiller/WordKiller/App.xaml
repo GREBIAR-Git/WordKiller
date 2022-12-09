@@ -1,12 +1,9 @@
 ﻿<Application x:Class="WordKiller.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WordKiller"
-             Startup="App_Startup">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WordKiller"
+    Startup="App_Startup">
     <Application.Resources>
-        
-        
-        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Dictionary/StringResources.en.xaml" />
@@ -17,272 +14,297 @@
                 <ResourceDictionary Source="Dictionary/StringResources.ru.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:FontConverter x:Key="fontConverter"/>
-        <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ContentControl">
-                        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Stretch="Fill">
-                            <Canvas Height="240" Width="240">
-                                <Canvas.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform ScaleX="0.100000" ScaleY="-0.100000" />
-                                        <TranslateTransform X="0.000000" Y="240.000000" />
-                                    </TransformGroup>
-                                </Canvas.RenderTransform>
-                                <Rectangle Width="2400" Height="2400" Fill="White"></Rectangle>
-                                <Path Data="M0 1200 l0 -1200 1200 0 1200 0 0 1200 0 1200 -1200 0 -1200 0 0 -1200z m1628 878 c8 -8 12 -56 12 -149 l0 -138 38 -3 c32 -3 37 -6 37 -28 0 -22 -5 -25 -37 -28 l-38 -3 0 -144 0 -143 29 -7 c39 -8 198 -174 231 -240 22 -44 25 -63 25 -155 0 -97 -2 -110 -30 -164 -37 -73 -98 -134 -172 -172 -55 -27 -66 -29 -203 -32 -164 -3 -182 2 -236 74 -26 33 -29 47 -33 123 -3 73 -7 90 -27 114 -13 16 -24 35 -24 43 0 12 -64 14 -402 16 l-403 3 -3 342 -2 342 -43 3 c-37 3 -42 6 -42 28 0 22 5 25 43 28 l42 3 0 138 c0 93 4 141 12 149 17 17 1209 17 1226 0z m-1453 -318 c0 -22 -5 -25 -37 -28 -34 -3 -38 -6 -38 -32 0 -26 -22 -60 -39 -60 -20 0 -31 29 -31 80 0 31 3 60 7 64 4 4 37 6 73 4 62 -3 65 -4 65 -28z m1900 0 l0 -25 -113 -3 c-93 -2 -113 0 -118 13 -3 8 -3 22 0 30 5 13 25 15 118 13 l113 -3 0 -25z m273 -33 c3 -55 -8 -87 -29 -87 -17 0 -39 33 -39 61 0 27 -3 29 -35 29 -37 0 -52 17 -41 45 5 13 20 15 73 13 l68 -3 3 -58z m-2263 -223 c13 -13 15 -35 13 -116 -3 -106 -14 -129 -52 -115 -13 5 -16 24 -16 115 0 126 14 156 55 116z m2254 2 c8 -9 11 -51 9 -122 -3 -106 -4 -109 -27 -112 -13 -2 -28 2 -32 10 -12 19 -11 196 1 219 13 22 33 25 49 5z m-2249 -385 c16 -31 13 -193 -4 -217 -12 -15 -18 -17 -33 -8 -15 9 -18 27 -21 114 -1 57 0 110 2 117 8 20 44 16 56 -6z m2255 -100 c0 -99 -2 -115 -18 -125 -32 -20 -47 16 -47 117 0 99 10 130 43 125 21 -3 22 -7 22 -117z m-2251 -277 c3 -9 6 -58 6 -109 0 -72 -4 -97 -16 -109 -19 -19 -26 -20 -42 -4 -13 13 -18 219 -5 231 12 13 51 7 57 -9z m2254 -98 c3 -128 -11 -161 -52 -120 -12 12 -16 37 -16 109 0 114 4 127 39 123 l26 -3 3 -109z m-2258 -275 c5 -11 10 -29 10 -40 0 -15 8 -20 31 -23 39 -4 59 -29 40 -52 -16 -19 -111 -22 -129 -4 -12 12 -16 95 -6 122 8 22 41 20 54 -3z m2258 -50 c2 -45 -1 -67 -10 -72 -24 -15 -114 -10 -129 7 -19 23 1 48 40 52 23 3 31 8 31 23 0 35 20 60 43 57 20 -3 22 -10 25 -67z m-1860 -23 c19 -19 14 -47 -10 -53 -13 -3 -61 -5 -108 -3 -81 3 -85 4 -88 27 -2 13 2 28 10 32 21 14 182 11 196 -3z m322 -3 c6 -8 10 -22 8 -32 -3 -16 -15 -18 -108 -18 -93 0 -105 2 -108 18 -7 37 16 47 108 47 64 0 91 -4 100 -15z m320 0 c6 -8 10 -22 8 -32 -3 -16 -15 -18 -108 -18 -93 0 -105 2 -108 18 -7 37 16 47 108 47 64 0 91 -4 100 -15z m324 -1 c12 -12 13 -20 6 -35 -9 -17 -22 -19 -100 -19 -100 0 -120 5 -120 29 0 33 22 41 111 41 66 0 91 -4 103 -16z m320 0 c40 -39 7 -55 -104 -52 -74 2 -95 6 -103 20 -8 12 -7 21 2 32 19 23 183 23 205 0z m320 0 c40 -39 7 -55 -104 -52 -74 2 -95 6 -103 20 -8 12 -7 21 2 32 19 23 183 23 205 0z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                <Path Data="M460 1643 l0 -378 113 113 c62 61 121 112 131 112 10 0 47 -30 84 -66 l65 -65 201 200 c111 111 206 201 211 201 5 0 76 -66 157 -147 l148 -148 0 278 0 277 -555 0 -555 0 0 -377z m387 217 c81 -49 85 -159 8 -230 -22 -21 -37 -25 -83 -25 -98 0 -149 57 -140 157 5 44 11 57 42 85 31 29 43 33 88 33 35 0 64 -7 85 -20z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                <Path Data="M715 1795 c-14 -13 -25 -36 -25 -50 0 -35 42 -75 78 -75 45 0 76 30 76 75 0 70 -79 101 -129 50z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}" Stroke="#000000" />
-                                <Path Data="M1065 1480 c-110 -110 -206 -200 -215 -200 -8 0 -45 30 -82 67 l-68 68 -120 -120 c-111 -111 -120 -123 -120 -157 l0 -38 366 0 365 0 25 29 c14 17 34 33 44 36 11 4 20 14 20 23 0 35 38 81 75 91 22 6 50 25 69 47 25 29 42 38 76 43 24 3 45 11 47 16 2 6 -61 74 -140 153 l-142 142 -200 -200z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                <Path Data="M1613 1344 c-3 -8 0 -27 8 -40 9 -18 10 -30 2 -42 -17 -27 -39 -25 -76 8 -59 51 -99 13 -47 -46 34 -40 36 -47 14 -68 -22 -22 -29 -21 -73 19 -41 37 -75 45 -85 19 -3 -9 -6 -17 -6 -18 0 -2 25 -29 55 -61 57 -61 63 -73 43 -93 -21 -21 -43 -13 -88 33 -33 34 -51 45 -70 43 -47 -6 -34 -34 52 -121 121 -121 122 -122 108 -146 -15 -29 -39 -26 -80 10 l-35 30 -3 -30 c-4 -41 22 -78 66 -92 55 -18 231 -6 284 20 69 33 115 77 145 139 23 48 28 69 27 133 -1 98 -22 140 -122 242 -75 76 -107 92 -119 61z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                            </Canvas>
-                        </Viewbox>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="TextBlock" TargetType="{x:Type TextBlock}">
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-        <Style x:Key="TextBlockRounded" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="BorderGroupBox" TargetType="{x:Type Border}">
-            <Setter Property="BorderBrush" Value="White"/>
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="BorderThickness" Value="3"/>
-        </Style>
-        <Style x:Key="TextBlockTitle" TargetType="{x:Type TextBlock}">
-            <Setter Property="TextAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-        <Style x:Key="TextBlockMenu" TargetType="{x:Type TextBlock}">
-            <Setter Property="Margin" Value="0,5,0,0"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-        <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="TextAlignment" Value="Left"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="LightGray"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="MinWidth" Value="300"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="CheckBox" TargetType="{x:Type CheckBox}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Width" Value="20"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="3"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="DataGrid" TargetType="{x:Type DataGrid}">
-            <Setter Property="Background" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
-            <Setter Property="RowBackground" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="CanUserDeleteRows" Value="False"/>
-            <Setter Property="CanUserResizeColumns" Value="False"/>
-            <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="RowHeaderWidth" Value="0"/>
-        </Style>
-        <Style x:Key="DataGrid1" TargetType="{x:Type DataGrid}">
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="Background" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
-            <Setter Property="RowBackground" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="CanUserAddRows" Value="True"/>
-            <Setter Property="CanUserDeleteRows" Value="True"/>
-            <Setter Property="CanUserResizeColumns" Value="False"/>
-            <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="CanUserSortColumns" Value="False"/>
-            <Setter Property="CanUserReorderColumns" Value="False"/>
-            <Setter Property="RowHeaderWidth" Value="0"/>
-        </Style>
-        <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}">
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="MinWidth" Value="300"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox" >
-                        <Grid>
-                            <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
-                                <ToggleButton.Template>
-                                    <ControlTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="27" />
-                                            </Grid.ColumnDefinitions>
-                                            <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="3" Background="{Binding Path=AlternativeColor,Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" />
-                                            <Border Grid.Column="0" CornerRadius="5,0,0,5"  Margin="1"  Background="AliceBlue"  BorderBrush="Black" BorderThickness="0,0,1,0" />
-                                            <Path x:Name="Arrow" Grid.Column="1"  Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                                                <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
-                                            </Trigger>
-                                            <Trigger Property="ToggleButton.IsChecked" Value="true">
-                                                <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3 3 28 3"  />
-                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
-                                <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" />
-                                    <ScrollViewer SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True"/>
-                                    </ScrollViewer>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ComboBox1" TargetType="{x:Type ComboBox}">
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox" >
-                        <Grid>
-                            <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
-                                <ToggleButton.Template>
-                                    <ControlTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="27" />
-                                            </Grid.ColumnDefinitions>
-                                            <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="3" Background="{Binding Path=AdditiveColor,Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" />
-                                            <Path x:Name="Arrow" Grid.Column="1"  Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
-                                        </Grid>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                                                <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </ToggleButton.Template>
-                            </ToggleButton>
-                            <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3 3 28 3"  />
-                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
-                                <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" />
-                                    <ScrollViewer SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True"/>
-                                    </ScrollViewer>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="Menu" TargetType="{x:Type Menu}">
-            <Setter Property="Background" Value="{Binding Path=AlternativeColor,Mode=TwoWay}"/>
-            <Style.Resources>
-                <Style TargetType="MenuItem">
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Style.Triggers>
-                        <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Background" Value="{Binding Path=AdditionalColor,Mode=TwoWay}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="MenuItem" TargetType="{x:Type MenuItem}">
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="FontFamily" Value="Serif"/>
-            <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-        <Style x:Key="Button" TargetType="{x:Type Button}">
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="3"/>
-                </Style>
-            </Style.Resources>
-            <Style.Setters>
-                <Setter Property="Background" Value="{Binding Path=AlternativeColor,Mode=TwoWay}"/>
+            <local:AdaptiveFontSizeConverter x:Key="fontConverter1"/>
+            <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ContentControl">
+                            <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Stretch="Fill">
+                                <Canvas Height="240" Width="240">
+                                    <Canvas.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="0.100000" ScaleY="-0.100000" />
+                                            <TranslateTransform X="0.000000" Y="240.000000" />
+                                        </TransformGroup>
+                                    </Canvas.RenderTransform>
+                                    <Rectangle Width="2400" Height="2400" Fill="White"></Rectangle>
+                                    <Path Data="M0 1200 l0 -1200 1200 0 1200 0 0 1200 0 1200 -1200 0 -1200 0 0 -1200z m1628 878 c8 -8 12 -56 12 -149 l0 -138 38 -3 c32 -3 37 -6 37 -28 0 -22 -5 -25 -37 -28 l-38 -3 0 -144 0 -143 29 -7 c39 -8 198 -174 231 -240 22 -44 25 -63 25 -155 0 -97 -2 -110 -30 -164 -37 -73 -98 -134 -172 -172 -55 -27 -66 -29 -203 -32 -164 -3 -182 2 -236 74 -26 33 -29 47 -33 123 -3 73 -7 90 -27 114 -13 16 -24 35 -24 43 0 12 -64 14 -402 16 l-403 3 -3 342 -2 342 -43 3 c-37 3 -42 6 -42 28 0 22 5 25 43 28 l42 3 0 138 c0 93 4 141 12 149 17 17 1209 17 1226 0z m-1453 -318 c0 -22 -5 -25 -37 -28 -34 -3 -38 -6 -38 -32 0 -26 -22 -60 -39 -60 -20 0 -31 29 -31 80 0 31 3 60 7 64 4 4 37 6 73 4 62 -3 65 -4 65 -28z m1900 0 l0 -25 -113 -3 c-93 -2 -113 0 -118 13 -3 8 -3 22 0 30 5 13 25 15 118 13 l113 -3 0 -25z m273 -33 c3 -55 -8 -87 -29 -87 -17 0 -39 33 -39 61 0 27 -3 29 -35 29 -37 0 -52 17 -41 45 5 13 20 15 73 13 l68 -3 3 -58z m-2263 -223 c13 -13 15 -35 13 -116 -3 -106 -14 -129 -52 -115 -13 5 -16 24 -16 115 0 126 14 156 55 116z m2254 2 c8 -9 11 -51 9 -122 -3 -106 -4 -109 -27 -112 -13 -2 -28 2 -32 10 -12 19 -11 196 1 219 13 22 33 25 49 5z m-2249 -385 c16 -31 13 -193 -4 -217 -12 -15 -18 -17 -33 -8 -15 9 -18 27 -21 114 -1 57 0 110 2 117 8 20 44 16 56 -6z m2255 -100 c0 -99 -2 -115 -18 -125 -32 -20 -47 16 -47 117 0 99 10 130 43 125 21 -3 22 -7 22 -117z m-2251 -277 c3 -9 6 -58 6 -109 0 -72 -4 -97 -16 -109 -19 -19 -26 -20 -42 -4 -13 13 -18 219 -5 231 12 13 51 7 57 -9z m2254 -98 c3 -128 -11 -161 -52 -120 -12 12 -16 37 -16 109 0 114 4 127 39 123 l26 -3 3 -109z m-2258 -275 c5 -11 10 -29 10 -40 0 -15 8 -20 31 -23 39 -4 59 -29 40 -52 -16 -19 -111 -22 -129 -4 -12 12 -16 95 -6 122 8 22 41 20 54 -3z m2258 -50 c2 -45 -1 -67 -10 -72 -24 -15 -114 -10 -129 7 -19 23 1 48 40 52 23 3 31 8 31 23 0 35 20 60 43 57 20 -3 22 -10 25 -67z m-1860 -23 c19 -19 14 -47 -10 -53 -13 -3 -61 -5 -108 -3 -81 3 -85 4 -88 27 -2 13 2 28 10 32 21 14 182 11 196 -3z m322 -3 c6 -8 10 -22 8 -32 -3 -16 -15 -18 -108 -18 -93 0 -105 2 -108 18 -7 37 16 47 108 47 64 0 91 -4 100 -15z m320 0 c6 -8 10 -22 8 -32 -3 -16 -15 -18 -108 -18 -93 0 -105 2 -108 18 -7 37 16 47 108 47 64 0 91 -4 100 -15z m324 -1 c12 -12 13 -20 6 -35 -9 -17 -22 -19 -100 -19 -100 0 -120 5 -120 29 0 33 22 41 111 41 66 0 91 -4 103 -16z m320 0 c40 -39 7 -55 -104 -52 -74 2 -95 6 -103 20 -8 12 -7 21 2 32 19 23 183 23 205 0z m320 0 c40 -39 7 -55 -104 -52 -74 2 -95 6 -103 20 -8 12 -7 21 2 32 19 23 183 23 205 0z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                    <Path Data="M460 1643 l0 -378 113 113 c62 61 121 112 131 112 10 0 47 -30 84 -66 l65 -65 201 200 c111 111 206 201 211 201 5 0 76 -66 157 -147 l148 -148 0 278 0 277 -555 0 -555 0 0 -377z m387 217 c81 -49 85 -159 8 -230 -22 -21 -37 -25 -83 -25 -98 0 -149 57 -140 157 5 44 11 57 42 85 31 29 43 33 88 33 35 0 64 -7 85 -20z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                    <Path Data="M715 1795 c-14 -13 -25 -36 -25 -50 0 -35 42 -75 78 -75 45 0 76 30 76 75 0 70 -79 101 -129 50z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}" Stroke="#000000" />
+                                    <Path Data="M1065 1480 c-110 -110 -206 -200 -215 -200 -8 0 -45 30 -82 67 l-68 68 -120 -120 c-111 -111 -120 -123 -120 -157 l0 -38 366 0 365 0 25 29 c14 17 34 33 44 36 11 4 20 14 20 23 0 35 38 81 75 91 22 6 50 25 69 47 25 29 42 38 76 43 24 3 45 11 47 16 2 6 -61 74 -140 153 l-142 142 -200 -200z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                    <Path Data="M1613 1344 c-3 -8 0 -27 8 -40 9 -18 10 -30 2 -42 -17 -27 -39 -25 -76 8 -59 51 -99 13 -47 -46 34 -40 36 -47 14 -68 -22 -22 -29 -21 -73 19 -41 37 -75 45 -85 19 -3 -9 -6 -17 -6 -18 0 -2 25 -29 55 -61 57 -61 63 -73 43 -93 -21 -21 -43 -13 -88 33 -33 34 -51 45 -70 43 -47 -6 -34 -34 52 -121 121 -121 122 -122 108 -146 -15 -29 -39 -26 -80 10 l-35 30 -3 -30 c-4 -41 22 -78 66 -92 55 -18 231 -6 284 20 69 33 115 77 145 139 23 48 28 69 27 133 -1 98 -22 140 -122 242 -75 76 -107 92 -119 61z" Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                </Canvas>
+                            </Viewbox>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TextBlock" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style x:Key="TextBlockRounded" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style x:Key="BorderGroupBox" TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="White"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BorderThickness" Value="3"/>
+            </Style>
+            <Style x:Key="TextBlockTitle" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Right"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style x:Key="TextBlockMenu" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="0,5,0,0"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+            <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="LightGray"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="MinWidth" Value="300"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style x:Key="CheckBox" TargetType="{x:Type CheckBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="20"/>
+                <Setter Property="Height" Value="20"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style x:Key="DataGrid" TargetType="{x:Type DataGrid}">
+                <Setter Property="Background" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
+                <Setter Property="RowBackground" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserDeleteRows" Value="False"/>
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="RowHeaderWidth" Value="0"/>
+            </Style>
+            <Style x:Key="DataGrid1" TargetType="{x:Type DataGrid}">
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="Background" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
+                <Setter Property="RowBackground" Value="{Binding Path=MainColor,Mode=TwoWay}"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+                <Setter Property="CanUserAddRows" Value="True"/>
+                <Setter Property="CanUserDeleteRows" Value="True"/>
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="CanUserSortColumns" Value="False"/>
+                <Setter Property="CanUserReorderColumns" Value="False"/>
+                <Setter Property="RowHeaderWidth" Value="0"/>
+            </Style>
+            <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="MinWidth" Value="300"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox" >
+                            <Grid>
+                                <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
+                                    <ToggleButton.Template>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="27" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="3" Background="{Binding Path=AlternativeColor,Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" />
+                                                <Border Grid.Column="0" CornerRadius="5,0,0,5"  Margin="1"  Background="AliceBlue"  BorderBrush="Black" BorderThickness="0,0,1,0" />
+                                                <Path x:Name="Arrow" Grid.Column="1"  Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
+                                                </Trigger>
+                                                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3 3 30 3"  />
+                                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
+                                    <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border x:Name="DropDownBorder" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" />
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True"/>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ComboBox1" TargetType="{x:Type ComboBox}">
                 <Setter Property="FontFamily" Value="Serif"/>
                 <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
+                        <ControlTemplate TargetType="ComboBox" >
+                            <Grid>
+                                <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" >
+                                    <ToggleButton.Template>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="27" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="3" Background="{Binding Path=AdditiveColor,Mode=TwoWay}" BorderBrush="Black" BorderThickness="1" />
+                                                <Path x:Name="Arrow" Grid.Column="1"  Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                                                    <Setter TargetName="Border" Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <ContentPresenter Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3 3 28 3"  />
+                                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True"  Focusable="False" PopupAnimation="Slide">
+                                    <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border x:Name="DropDownBorder" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" />
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True"/>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="RichTextBox" TargetType="{x:Type RichTextBox}">
-            <Style.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </Style.Resources>
-        </Style>
+            </Style>
+            <Style x:Key="Menu" TargetType="{x:Type Menu}">
+                <Setter Property="Background" Value="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                <Style.Resources>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Padding" Value="6 0 6 3"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background" Value="{Binding Path=AlternativeColor,Mode=TwoWay}" />
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style x:Key="MenuItem" TargetType="{x:Type MenuItem}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+            <Style x:Key="Button" TargetType="{x:Type Button}">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+                <Style.Setters>
+                    <Setter Property="Background" Value="{Binding Path=AlternativeColor,Mode=TwoWay}"/>
+                    <Setter Property="FontFamily" Value="Serif"/>
+                    <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="Button1" TargetType="{x:Type Button}">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+                <Style.Setters>
+                    <Setter Property="Background" Value="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                    <Setter Property="FontFamily" Value="Serif"/>
+                    <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{Binding Path=HoverColor,Mode=TwoWay}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="RichTextBox" TargetType="{x:Type RichTextBox}">
+                <Style.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
         </ResourceDictionary>
 
     </Application.Resources>
-
 </Application>
 

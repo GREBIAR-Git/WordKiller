@@ -30,10 +30,10 @@
     <system:String x:Key="PracticeWork">Практическая работа</system:String>
     <system:String x:Key="ControlWork">Контрольная работа</system:String>
     <system:String x:Key="Referat">Реферат</system:String>
-    <system:String x:Key="DiplomWork">Дипломная работа</system:String>
+    <system:String x:Key="DiplomaWork">Дипломная работа</system:String>
     <system:String x:Key="VKR">ВКР</system:String>
     
-    <system:String x:Key="Numbering">Нумерация</system:String>
+    <system:String x:Key="PageNumbers">Нумерация</system:String>
     <system:String x:Key="TOC">Содержание</system:String>
     <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
     
@@ -43,7 +43,7 @@
     
     <system:String x:Key="Help">Справка</system:String>
 
-    <system:String x:Key="Documentation">Справка</system:String>
+    <system:String x:Key="Documentation">Документация</system:String>
     <system:String x:Key="AboutProgram">О программе</system:String>
 
 

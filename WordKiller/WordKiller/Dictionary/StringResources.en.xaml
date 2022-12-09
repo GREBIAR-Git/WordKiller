@@ -6,8 +6,8 @@
     <system:String x:Key="File">File</system:String>
 
     <system:String x:Key="Export">Export</system:String>
-    <system:String x:Key="PDF">В формате PDF</system:String>
-    <system:String x:Key="HTML">В формате HTML</system:String>
+    <system:String x:Key="PDF">As PDF</system:String>
+    <system:String x:Key="HTML">As HTML</system:String>
     <system:String x:Key="Create">Create</system:String>
     <system:String x:Key="Open">Open</system:String>
     <system:String x:Key="Save">Save</system:String>
@@ -17,26 +17,26 @@
 
     <system:String x:Key="View">View</system:String>
 
-    <system:String x:Key="Title">Титульник</system:String>
-    <system:String x:Key="Substitution">Подстановка</system:String>
-    <system:String x:Key="Text">Текст</system:String>
+    <system:String x:Key="Title">Title menu</system:String>
+    <system:String x:Key="Substitution">Substitution menu</system:String>
+    <system:String x:Key="Text">Text menu</system:String>
 
 
     <system:String x:Key="Document">Document</system:String>
 
-    <system:String x:Key="Type">Тип</system:String>
-    <system:String x:Key="DefaultDocument">Обычный документ</system:String>
-    <system:String x:Key="Coursework">Курсовая работа</system:String>
-    <system:String x:Key="LaboratoryWork">Лабораторная работа</system:String>
-    <system:String x:Key="PracticeWork">Практическая работа</system:String>
-    <system:String x:Key="ControlWork">Контрольная работа</system:String>
-    <system:String x:Key="Referat">Реферат</system:String>
-    <system:String x:Key="DiplomWork">Дипломная работа</system:String>
-    <system:String x:Key="VKR">ВКР</system:String>
+    <system:String x:Key="Type">Type</system:String>
+    <system:String x:Key="DefaultDocument">Default document</system:String>
+    <system:String x:Key="Coursework">Coursework</system:String>
+    <system:String x:Key="LaboratoryWork">Laboratory work</system:String>
+    <system:String x:Key="PracticeWork">Practice work</system:String>
+    <system:String x:Key="ControlWork">Control work</system:String>
+    <system:String x:Key="Referat">Referat</system:String>
+    <system:String x:Key="DiplomaWork">Diploma work</system:String>
+    <system:String x:Key="VKR">VKR</system:String>
 
-    <system:String x:Key="Numbering">Нумерация</system:String>
-    <system:String x:Key="TOC">Содержание</system:String>
-    <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
+    <system:String x:Key="PageNumbers">Page numbers</system:String>
+    <system:String x:Key="TOC">Table of Columns</system:String>
+    <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
 
 
     <system:String x:Key="Network">Network</system:String>
@@ -45,75 +45,75 @@
     <system:String x:Key="Help">Help</system:String>
 
     <system:String x:Key="Documentation">Documentation</system:String>
-    <system:String x:Key="AboutProgram">О программе</system:String>
+    <system:String x:Key="AboutProgram">About</system:String>
 
 
-    <system:String x:Key="Header">Раздел</system:String>
-    <system:String x:Key="SubHeader">Подраздел</system:String>
+    <system:String x:Key="Header">Section</system:String>
+    <system:String x:Key="SubHeader">Subsection</system:String>
     <system:String x:Key="List">List</system:String>
     <system:String x:Key="Picture">Image</system:String>
     <system:String x:Key="Table">Table</system:String>
     <system:String x:Key="Code">Code</system:String>
 
-    <system:String x:Key="ToTitle">К титульнику</system:String>
-    <system:String x:Key="ToText">К тексту</system:String>
-    <system:String x:Key="ToSubstitutions">К подстановкам</system:String>
+    <system:String x:Key="ToTitle">To title</system:String>
+    <system:String x:Key="ToText">To text</system:String>
+    <system:String x:Key="ToSubstitutions">To substitutions</system:String>
     <system:String x:Key="Add">Add</system:String>
 
     <system:String x:Key="Content">Content</system:String>
 
-    <system:String x:Key="Displayed">Displayed</system:String>
-    <system:String x:Key="Something">нечто</system:String>
+    <system:String x:Key="Displayed">Displaying</system:String>
+    <system:String x:Key="Something">something</system:String>
 
-    <system:String x:Key="Unidentified">Не указан</system:String>
-    <system:String x:Key="NotFound">Не найден</system:String>
-    <system:String x:Key="ForPicture">Для картинки</system:String>
-    <system:String x:Key="ForСode">Для кода</system:String>
+    <system:String x:Key="Unidentified">Not given</system:String>
+    <system:String x:Key="NotFound">Not found</system:String>
+    <system:String x:Key="ForPicture">Picture here</system:String>
+    <system:String x:Key="ForСode">Code here</system:String>
 
-    <system:String x:Key="AllText">Весь текст</system:String>
-    <system:String x:Key="BeforeHeaders">До разделов</system:String>
-    <system:String x:Key="Before">До</system:String>
-    <system:String x:Key="Paste">Вставить</system:String>
-    <system:String x:Key="In">в</system:String>
-    <system:String x:Key="Start">Начало</system:String>
+    <system:String x:Key="AllText">Whole text</system:String>
+    <system:String x:Key="BeforeHeaders">Before section</system:String>
+    <system:String x:Key="Before">Before</system:String>
+    <system:String x:Key="Paste">Insert</system:String>
+    <system:String x:Key="In">into</system:String>
+    <system:String x:Key="Start">Beginning</system:String>
 
-    <system:String x:Key="OffsetFollowing">, последующие сместить</system:String>
+    <system:String x:Key="OffsetFollowing">offset the following</system:String>
 
-    <system:String x:Key="Error">Ошибка</system:String>
-    <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
-    <system:String x:Key="Error2">Мы не можем это сделать на вашем устройстве, обновите ОС</system:String>
+    <system:String x:Key="Error">Error</system:String>
+    <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
+    <system:String x:Key="Error2">We can't do this on your device, update the OS</system:String>
 
-    <system:String x:Key="GeneralSettings">Общее</system:String>
-    <system:String x:Key="PersonalizationSettings">Персонализация</system:String>
-    <system:String x:Key="ProfileSettings">Профиль</system:String>
-    <system:String x:Key="BackSettings">Назад</system:String>
+    <system:String x:Key="GeneralSettings">General</system:String>
+    <system:String x:Key="PersonalizationSettings">Personalization</system:String>
+    <system:String x:Key="ProfileSettings">Profile</system:String>
+    <system:String x:Key="BackSettings">Back</system:String>
 
-    <system:String x:Key="IsAssociate">Aссоциировать расширение(wkr) с программой?</system:String>
-    <system:String x:Key="IsSyntaxChecking">Производить ли проверку синтаксиса(Базовая)?</system:String>
-    <system:String x:Key="Encoding">Какую кодировку использовать при сохранении файла?</system:String>
-    <system:String x:Key="Encoding0">Никакую</system:String>
-    <system:String x:Key="Encoding1">Стандартную</system:String>
-    <system:String x:Key="AfterExportingClose">Нужно ли каждый раз после формирования отчёта закрывать приложение?</system:String>
-    <system:String x:Key="IsAutoHeader">Автоматический заголовок для объекта</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">Отображать поле ввода заголовка</system:String>
+    <system:String x:Key="IsAssociate">Associate an extension (wkr) with a program?</system:String>
+    <system:String x:Key="IsSyntaxChecking">Whether to perform a syntax check (Basic)?</system:String>
+    <system:String x:Key="Encoding">What encoding should be used when saving the file?</system:String>
+    <system:String x:Key="Encoding0">None</system:String>
+    <system:String x:Key="Encoding1">Standard</system:String>
+    <system:String x:Key="AfterExportingClose">Do I need to close the application every time after generating a report?</system:String>
+    <system:String x:Key="IsAutoHeader">Automatic title for an object</system:String>
+    <system:String x:Key="IsDisplayHeaderInput">Show header input field</system:String>
 
     <system:String x:Key="ByDefault">By default</system:String>
-    <system:String x:Key="MainColor">Основной цвет программы</system:String>
-    <system:String x:Key="ComplementaryСolor">Дополнительный цвет программы</system:String>
-    <system:String x:Key="AlternativeСolor">Альтернативный цвет программы</system:String>
-    <system:String x:Key="HoverColor">Цвет при наведении</system:String>
-    <system:String x:Key="FontSize">Размер шрифта</system:String>
+    <system:String x:Key="MainColor">Primary colour</system:String>
+    <system:String x:Key="ComplementaryСolor">Secondary colour</system:String>
+    <system:String x:Key="AlternativeСolor">Alternative colour</system:String>
+    <system:String x:Key="HoverColor">Selection colour</system:String>
+    <system:String x:Key="FontSize">Font size</system:String>
     <system:String x:Key="Language">Language</system:String>
 
-    <system:String x:Key="You">Вы</system:String>
-    <system:String x:Key="FirstName">Имя:</system:String>
-    <system:String x:Key="LastName">Фамилия:</system:String>
-    <system:String x:Key="MiddleName">Отчество:</system:String>
-    <system:String x:Key="Universitet">Институт:</system:String>
-    <system:String x:Key="Faculty">Факультет:</system:String>
-    <system:String x:Key="Cours">Курс:</system:String>
-    <system:String x:Key="Group">Группа:</system:String>
-    <system:String x:Key="Shifr">Шифр:</system:String>
-    <system:String x:Key="Companion">Напарник</system:String>
+    <system:String x:Key="You">You</system:String>
+    <system:String x:Key="FirstName">Firstname:</system:String>
+    <system:String x:Key="LastName">Lastname:</system:String>
+    <system:String x:Key="MiddleName">Middlename:</system:String>
+    <system:String x:Key="Universitet">Universitet:</system:String>
+    <system:String x:Key="Faculty">Faculty:</system:String>
+    <system:String x:Key="Cours">Years:</system:String>
+    <system:String x:Key="Group">Group:</system:String>
+    <system:String x:Key="Shifr">Shifr:</system:String>
+    <system:String x:Key="Companion">Mate</system:String>
 
 </ResourceDictionary>

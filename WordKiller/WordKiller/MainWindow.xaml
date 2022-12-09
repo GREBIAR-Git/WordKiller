@@ -81,15 +81,15 @@
                         <MenuItem x:Name="ControlWorkMI" Header="{DynamicResource ControlWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <MenuItem x:Name="RefMI" Header="{DynamicResource Referat}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <Separator/>
-                        <MenuItem x:Name="DiplomMI" Header="{DynamicResource DiplomWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
+                        <MenuItem x:Name="DiplomMI" Header="{DynamicResource DiplomaWork}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                         <MenuItem x:Name="VKRMI" Header="{DynamicResource VKR}" Style="{StaticResource MenuItem}" Click="Work_Click"/>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource Numbering}" x:Name="NumberingMI" IsCheckable="True" IsChecked="{Binding Path=Numbering,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource PageNumbers}" x:Name="NumberingMI" IsCheckable="True" IsChecked="{Binding Path=PageNumbers,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
                     <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" x:Name="tableOfContentsMI" IsChecked="{Binding Path=TableOfContents,Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
                     <MenuItem Header="{DynamicResource NumbersToHeaders}" x:Name="NumberHeadingMI" IsChecked="{Binding Path=NumberHeading,Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="NumberHeadingMI_Click"/>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem Visibility="Collapsed">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Network}" Style="{StaticResource TextBlockMenu}"/>
                     </MenuItem.Header>
@@ -113,11 +113,11 @@
                     <MenuItem Header="{DynamicResource AboutProgram}" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
                 </MenuItem>
             </Menu>
-            <Button Margin="0,0,55,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" Visibility="Collapsed" Style="{StaticResource Button}" Click="SwitchPanel_Click"/>
-            <Button Margin="0,0,5,0" HorizontalAlignment="Right" Style="{StaticResource Button}" Click="OpenSettings_Click">
+            <Button Margin="0,0,53,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" Visibility="Collapsed" Style="{StaticResource Button1}" Click="SwitchPanel_Click"/>
+            <Button Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource Button1}" Click="OpenSettings_Click">
                 <Image Width="20" Height="20" Source="/Resources/Settings.png"/>
             </Button>
-            <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,30,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
+            <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,28,0" Source="Resources/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             <Grid x:Name="titlePanel" Grid.Row="1" Grid.Column="0" Margin="30,10,30,10" Background="{Binding Path=MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20*"/>
@@ -150,7 +150,7 @@
                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=TitleStudents,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
                 <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=TitleNumber,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
-                <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="Шифр:" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlockTitle}"/>
                 <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=TitleShifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBox}"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
                 <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=TitleTheme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" Style="{StaticResource TextBox}" LostFocus="CapsLockFix_LostFocus"/>
@@ -598,10 +598,10 @@
                         <TextBlock Text="{DynamicResource You}" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
                     </GroupBox.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                        <Grid  HorizontalAlignment="Left">
+                        <Grid HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition x:Name="MainProfil" Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -614,21 +614,21 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="FirstName" Grid.Row="0" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstName_TextChanged"/>
+                            <TextBox x:Name="FirstName" Grid.Row="0" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstName_TextChanged"/>
                             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="LastName" Grid.Row="1" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastName_TextChanged"/>
+                            <TextBox x:Name="LastName" Grid.Row="1" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastName_TextChanged"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="MiddleName" Grid.Row="2" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleName_TextChanged"/>
+                            <TextBox x:Name="MiddleName" Grid.Row="2" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleName_TextChanged"/>
                             <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox HorizontalAlignment="Left" x:Name="Universitet" Grid.Row="3" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Universitet_SelectionChanged"/>
+                            <ComboBox x:Name="Universitet" Grid.Row="3" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Universitet_SelectionChanged"/>
                             <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Faculty}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox HorizontalAlignment="Left" x:Name="Faculty" Grid.Row="4" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Faculty_SelectionChanged"/>
+                            <ComboBox x:Name="Faculty" Grid.Row="4" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Faculty_SelectionChanged"/>
                             <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Cours}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox HorizontalAlignment="Left" x:Name="Cours" Grid.Row="5" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Cours_SelectionChanged"/>
+                            <ComboBox x:Name="Cours" Grid.Row="5" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Cours_SelectionChanged"/>
                             <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Group}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox HorizontalAlignment="Left" x:Name="Group" Grid.Row="6" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Group_SelectionChanged"/>
+                            <ComboBox x:Name="Group" Grid.Row="6" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Group_SelectionChanged"/>
                             <TextBlock Grid.Row="7" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="Shifr" Grid.Row="7" Margin="0 0 0 10" Grid.Column="1" HorizontalContentAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="Shifr_TextChanged"/>
+                            <TextBox x:Name="Shifr" Grid.Row="7" Margin="0 0 0 10" Grid.Column="1" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="Shifr_TextChanged"/>
                         </Grid>
                     </ScrollViewer>
                 </GroupBox>
@@ -639,8 +639,8 @@
                     <ScrollViewer VerticalScrollBarVisibility="Hidden">
                         <Grid HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50*"/>
-                                <ColumnDefinition Width="50*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="100*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -649,13 +649,13 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="FirstNameCoop" Grid.Row="0" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstNameCoop_TextChanged"/>
+                            <TextBox x:Name="FirstNameCoop" Grid.Row="0" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="FirstNameCoop_TextChanged"/>
                             <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="LastNameCoop" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastNameCoop_TextChanged"/>
+                            <TextBox x:Name="LastNameCoop" Grid.Row="1" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="LastNameCoop_TextChanged"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="MiddleNameCoop" Grid.Row="2" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleNameCoop_TextChanged"/>
+                            <TextBox x:Name="MiddleNameCoop" Grid.Row="2" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="MiddleNameCoop_TextChanged"/>
                             <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                            <TextBox HorizontalAlignment="Left" x:Name="ShifrCoop" Grid.Row="3" Grid.Column="1" Margin="0 0 0 10" HorizontalContentAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="ShifrCoop_TextChanged"/>
+                            <TextBox x:Name="ShifrCoop" Grid.Row="3" Grid.Column="1" Margin="0 0 0 10" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" Style="{StaticResource TextBox}" TextChanged="ShifrCoop_TextChanged"/>
                         </Grid>
                     </ScrollViewer>
                 </GroupBox>

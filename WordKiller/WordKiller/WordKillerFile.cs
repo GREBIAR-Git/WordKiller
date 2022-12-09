@@ -76,7 +76,7 @@ namespace WordKiller
             {
                 if (item.GetType() == typeof(MenuItem) && ((MenuItem)item).IsChecked)
                 {
-                    save += Config.AddSpecialBoth("Menu") + item.Name + "!" + data.NumberHeading + "!" + data.Numbering + "!" + data.TableOfContents + "\n";
+                    save += Config.AddSpecialBoth("Menu") + item.Name + "!" + data.NumberHeading + "!" + data.PageNumbers + "!" + data.TableOfContents + "\n";
                     break;
                 }
             }
@@ -190,7 +190,7 @@ namespace WordKiller
                             }
                         }
                         data.NumberHeading = bool.Parse(menuItem[1]);
-                        data.Numbering = bool.Parse(menuItem[2]);
+                        data.PageNumbers = bool.Parse(menuItem[2]);
                         data.TableOfContents = bool.Parse(menuItem[3]);
                     }
 

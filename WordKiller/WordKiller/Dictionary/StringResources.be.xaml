@@ -3,10 +3,116 @@
             xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
-    <system:String x:Key="File">Файл</system:String>
-    <system:String x:Key="View">Выгляд</system:String>
+    <system:String x:Key="File">Напільнік</system:String>
+
+    <system:String x:Key="Export">Экспарт</system:String>
+    <system:String x:Key="PDF">У фармаце PDF</system:String>
+    <system:String x:Key="HTML">У фармаце HTML</system:String>
+    <system:String x:Key="Create">Тварыць</system:String>
+    <system:String x:Key="Open">Адкрыты</system:String>
+    <system:String x:Key="Save">Ашчаджаць</system:String>
+    <system:String x:Key="SaveAs">Захаваць як...</system:String>
+    <system:String x:Key="Exit">Выхадзіць</system:String>
+
+
+    <system:String x:Key="View">Від</system:String>
+
+    <system:String x:Key="Title">Загаловак</system:String>
+    <system:String x:Key="Substitution">Замена</system:String>
+    <system:String x:Key="Text">Тэкст</system:String>
+
+
     <system:String x:Key="Document">Дакумент</system:String>
+
+    <system:String x:Key="Type">Тып</system:String>
+    <system:String x:Key="DefaultDocument">Звычайны дакумент</system:String>
+    <system:String x:Key="Coursework">Курсавая праца</system:String>
+    <system:String x:Key="LaboratoryWork">Лабараторная праца</system:String>
+    <system:String x:Key="PracticeWork">Практычная праца</system:String>
+    <system:String x:Key="ControlWork">Кантрольная праца</system:String>
+    <system:String x:Key="Referat">Урывак</system:String>
+    <system:String x:Key="DiplomaWork">Дыпломная праца</system:String>
+    <system:String x:Key="VKR">ВКР</system:String>
+
+    <system:String x:Key="PageNumbers">Нумараванне</system:String>
+    <system:String x:Key="TOC">Задаволены</system:String>
+    <system:String x:Key="NumbersToHeaders">Лічбы для загалоўкаў</system:String>
+
+
     <system:String x:Key="Network">Сетка</system:String>
-    <system:String x:Key="Help">Даведка</system:String>
-    
+
+
+    <system:String x:Key="Help">Рэкамендацыя</system:String>
+
+    <system:String x:Key="Documentation">Дакументацыя</system:String>
+    <system:String x:Key="AboutProgram">Пра праграму</system:String>
+
+
+    <system:String x:Key="Header">Раздзел</system:String>
+    <system:String x:Key="SubHeader">Падліў</system:String>
+    <system:String x:Key="List">Спіс</system:String>
+    <system:String x:Key="Picture">Карціна</system:String>
+    <system:String x:Key="Table">Стол</system:String>
+    <system:String x:Key="Code">Код</system:String>
+
+    <system:String x:Key="ToTitle">Да загалоўка</system:String>
+    <system:String x:Key="ToText">Да тэксту</system:String>
+    <system:String x:Key="ToSubstitutions">Падстаноўкі</system:String>
+    <system:String x:Key="Add">Дадаваць</system:String>
+
+    <system:String x:Key="Content">Задаволены</system:String>
+
+    <system:String x:Key="Displayed">Адлюстроўваць</system:String>
+    <system:String x:Key="Something">нешта</system:String>
+
+    <system:String x:Key="Unidentified">Ня вызначана</system:String>
+    <system:String x:Key="NotFound">Не знойдзены</system:String>
+    <system:String x:Key="ForPicture">Для малюнка</system:String>
+    <system:String x:Key="ForСode">Для кода</system:String>
+
+    <system:String x:Key="AllText">Увесь тэкст</system:String>
+    <system:String x:Key="BeforeHeaders">Да раздзелаў</system:String>
+    <system:String x:Key="Before">Раней</system:String>
+    <system:String x:Key="Paste">Устаўляць</system:String>
+    <system:String x:Key="In">у</system:String>
+    <system:String x:Key="Start">Пачынаць</system:String>
+
+    <system:String x:Key="OffsetFollowing">пасля змены</system:String>
+
+    <system:String x:Key="Error">Памылка</system:String>
+    <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
+    <system:String x:Key="Error2">Мы не можам зрабіць гэта на вашым прыладзе, абнавіць АС</system:String>
+
+    <system:String x:Key="GeneralSettings">Генерал</system:String>
+    <system:String x:Key="PersonalizationSettings">Персаналізацыя</system:String>
+    <system:String x:Key="ProfileSettings">Профіль</system:String>
+    <system:String x:Key="BackSettings">Назад</system:String>
+
+    <system:String x:Key="IsAssociate">Асацыяваны пашырэнне (WKR) з праграмай?</system:String>
+    <system:String x:Key="IsSyntaxChecking">Ці з'яўляецца праверку сінтаксісу (асноўны)?</system:String>
+    <system:String x:Key="Encoding">Якое кадаванне выкарыстоўваць пры захаванні файла?</system:String>
+    <system:String x:Key="Encoding0">Не</system:String>
+    <system:String x:Key="Encoding1">Стандарт</system:String>
+    <system:String x:Key="AfterExportingClose">Ці трэба мне закрываць заяўку кожны раз пасля справаздачы справаздачы?</system:String>
+    <system:String x:Key="IsAutoHeader">Аўтаматычны загаловак для аб'екта</system:String>
+    <system:String x:Key="IsDisplayHeaderInput">Адлюстраваць поле ўводу загалоўкаў</system:String>
+
+    <system:String x:Key="ByDefault">Па змаўчанні</system:String>
+    <system:String x:Key="MainColor">Асноўны колер праграмы</system:String>
+    <system:String x:Key="ComplementaryСolor">Дадатковы колер праграмы</system:String>
+    <system:String x:Key="AlternativeСolor">Альтэрнатыўны колер колеру</system:String>
+    <system:String x:Key="HoverColor">Колер пры навядзенні</system:String>
+    <system:String x:Key="FontSize">Памер шрыфта</system:String>
+    <system:String x:Key="Language">Мова</system:String>
+
+    <system:String x:Key="You">Ты</system:String>
+    <system:String x:Key="FirstName">Імя:</system:String>
+    <system:String x:Key="LastName">Прозвішча:</system:String>
+    <system:String x:Key="MiddleName">Імя па бацьку:</system:String>
+    <system:String x:Key="Universitet">Інстытут:</system:String>
+    <system:String x:Key="Faculty">Факультэт:</system:String>
+    <system:String x:Key="Cours">Ну:</system:String>
+    <system:String x:Key="Group">Група:</system:String>
+    <system:String x:Key="Shifr">Cipher:</system:String>
+    <system:String x:Key="Companion">Партнёр</system:String>
 </ResourceDictionary>
