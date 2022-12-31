@@ -298,7 +298,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8daacc")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#8daacc")]
         public string MainColor {
             get {
                 return ((string)(this["MainColor"]));
@@ -310,7 +310,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4a76a8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#4a76a8")]
         public string AdditionalColor {
             get {
                 return ((string)(this["AdditionalColor"]));
@@ -322,7 +322,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("335e8f")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#335e8f")]
         public string AlternativeColor {
             get {
                 return ((string)(this["AlternativeColor"]));
@@ -334,7 +334,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("b8860b")]
+        [global::System.Configuration.DefaultSettingValueAttribute("#b8860b")]
         public string HoverColor {
             get {
                 return ((string)(this["HoverColor"]));
@@ -365,6 +365,18 @@ namespace WordKiller.Properties {
             }
             set {
                 this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int MaxRowAndColumn {
+            get {
+                return ((int)(this["MaxRowAndColumn"]));
+            }
+            set {
+                this["MaxRowAndColumn"] = value;
             }
         }
     }

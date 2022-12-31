@@ -82,10 +82,18 @@
     <system:String x:Key="Error">Erreur</system:String>
     <system:String x:Key="Error1">Erreur d'ouverture du fichier: le fichier n'est pas trouvé ou le format n'est pas pris en charge</system:String>
     <system:String x:Key="Error2">Nous ne pouvons pas faire cela sur votre appareil, mettre à jour le système d'exploitation</system:String>
+    <system:String x:Key="Error3">Erreur de génération de la page de couverture</system:String>
+    <system:String x:Key="Error4">Erreur de mise en forme du contenu</system:String>
+    <system:String x:Key="Error5">Erreur de génération du corps du texte</system:String>
+    <system:String x:Key="Error6">Erreur lors de la génération du rapport : le fichier que vous voulez remplacer est ouvert</system:String>
+    <system:String x:Key="Error7">Erreur d'ouverture du fichier : le fichier est corrompu</system:String>
 
+    <system:String x:Key="Question1">Avez-vous besoin d'économiser ?</system:String>
+    
     <system:String x:Key="GeneralSettings">Général</system:String>
     <system:String x:Key="PersonalizationSettings">Personnalisation</system:String>
     <system:String x:Key="ProfileSettings">Profil</system:String>
+    <system:String x:Key="Styles">Styles</system:String>
     <system:String x:Key="BackSettings">Retour</system:String>
 
     <system:String x:Key="IsAssociate">Associer l'expansion (WKR) au programme?</system:String>

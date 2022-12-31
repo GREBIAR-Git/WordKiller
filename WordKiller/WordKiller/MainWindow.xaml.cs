@@ -2,7 +2,6 @@
 using OrelUniverEmbeddedAPI;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,7 +9,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,9 +29,9 @@ public partial class MainWindow : Window
 
     readonly WordKillerFile file;
 
-    List<List<TableData>> collection;
-
     bool clearSubstitution = false;
+
+    TablesData tablesData = new TablesData();
 
     public MainWindow(string[] args)
     {
@@ -42,10 +40,10 @@ public partial class MainWindow : Window
         {
             Displayed = (string)FindResource("Something"),
             FontSize = Properties.Settings.Default.FontSize,
-            MainColor = "#" + Properties.Settings.Default.MainColor,
-            AdditionalColor = "#" + Properties.Settings.Default.AdditionalColor,
-            AlternativeColor = "#" + Properties.Settings.Default.AlternativeColor,
-            HoverColor = "#" + Properties.Settings.Default.HoverColor,
+            MainColor = Properties.Settings.Default.MainColor,
+            AdditionalColor = Properties.Settings.Default.AdditionalColor,
+            AlternativeColor = Properties.Settings.Default.AlternativeColor,
+            HoverColor = Properties.Settings.Default.HoverColor,
             WinTitle = "WordKiller",
             TitleYear = "202",
             TitleOpen = true,
@@ -74,11 +72,12 @@ public partial class MainWindow : Window
         menuNames = ComboBoxSetup();
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
         UpdateCheckSyntax();
+        tablesData.InitTable();
         if (args.Length > 0)
         {
             if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
             {
-                file.OpenFile(args[0], viewModel, ref data);
+                file.OpenFile(args[0], viewModel, ref data, ref tablesData);
             }
             else
             {
@@ -86,9 +85,27 @@ public partial class MainWindow : Window
             }
         }
         InitSetting();
-        InitTable();
         UpdateHeadersSubstitution();
-        
+        //OpenDrawing();
+    }
+
+    void ShowPictureBox()
+    {
+        pictureBox.Visibility = Visibility.Visible;
+        SubstitutionPanelRTB.ColumnDefinitions[1].Width = new GridLength(40, GridUnitType.Star);
+    }
+
+    void HidePictureBox()
+    {
+        pictureBox.Visibility = Visibility.Collapsed;
+        SubstitutionPanelRTB.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
+    }
+
+
+
+    public static string FindResourse(string key)
+    {
+        return Application.Current.FindResource(key) as string;
     }
 
     async void InitSetting()
@@ -204,7 +221,7 @@ public partial class MainWindow : Window
 
     void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
     {
-        file.NewFile(viewModel, ref data, ref menuLeftIndex);
+        file.NewFile(viewModel, ref data, ref menuLeftIndex, tablesData);
         if (viewModel.TextOpen)
         {
             UpdateTypeButton();
@@ -219,16 +236,16 @@ public partial class MainWindow : Window
         };
         if (openFileDialog.ShowDialog() == true)
         {
-            file.OpenFile(openFileDialog.FileName, viewModel, ref data);
+            file.OpenFile(openFileDialog.FileName, viewModel, ref data, ref tablesData);
         }
     }
     void WindowBinding_Save(object sender, ExecutedRoutedEventArgs e)
     {
-        file.Save(viewModel, data);
+        file.Save(viewModel, data, tablesData);
     }
     void WindowBinding_SaveAs(object sender, ExecutedRoutedEventArgs e)
     {
-        file.SaveAs(viewModel, data);
+        file.SaveAs(viewModel, data, tablesData);
     }
 
     void WindowBinding_Quit(object sender, ExecutedRoutedEventArgs e)
@@ -395,7 +412,7 @@ public partial class MainWindow : Window
 
         Report report = new();
         await Task.Run(() =>
-            Report.Create(data, viewModel.PageNumbers, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, collection));
+            Report.Create(data, viewModel.PageNumbers, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, tablesData.collection));
 
         if (Properties.Settings.Default.CloseWindow)
         {
@@ -449,6 +466,10 @@ public partial class MainWindow : Window
             downPanel.Visibility = Visibility.Visible;
             if (MenuItem == SubstitutionMI)
             {
+                if (ValidAddInput())
+                {
+                    add.Visibility = Visibility.Visible;
+                }
                 additionalPanel.ColumnDefinitions[1].Width = new GridLength(38, GridUnitType.Star);
                 additionalPanel.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
                 additionalPanel.ColumnDefinitions[3].Width = new GridLength(20, GridUnitType.Star);
@@ -460,9 +481,8 @@ public partial class MainWindow : Window
                 Substitution.Visibility = Visibility.Visible;
                 richTextBox.Focus();
                 Displayed((string)FindResource("Something"));
-                ShowPictureBox();
+                SubstitutionPanelRTB.Visibility = Visibility.Visible;
                 ImageUpdate();
-
             }
             else if (MenuItem == TextMI)
             {
@@ -477,7 +497,7 @@ public partial class MainWindow : Window
                 elementCB.Visibility = Visibility.Visible;
                 elementCB.SelectedItem = (string)FindResource("AllText");
                 ShowSpecials();
-                HidePictureBox();
+                TextPanelRTB.Visibility = Visibility.Visible;
                 richTextBox.Focus();
                 RTBox.SetText(richTextBox, data.Text);
                 UpdateTypeButton();
@@ -502,6 +522,7 @@ public partial class MainWindow : Window
                 Substitution.Visibility = Visibility.Visible;
                 add.Visibility = Visibility.Collapsed;
                 elementPanel.Visibility = Visibility.Collapsed;
+                SubstitutionPanelRTB.Visibility = Visibility.Collapsed;
             }
             else if (MenuItem == TextMI)
             {
@@ -509,6 +530,7 @@ public partial class MainWindow : Window
                 richTextBox.Document.Blocks.Clear();
                 richTextBox.Visibility = Visibility.Collapsed;
                 cursorLocationTB.Visibility = Visibility.Collapsed;
+                TextPanelRTB.Visibility = Visibility.Collapsed;
                 HideSpecials();
             }
         }
@@ -523,18 +545,6 @@ public partial class MainWindow : Window
     void HideSpecials()
     {
         panelTypeInserts.Visibility = Visibility.Collapsed;
-    }
-
-    void ShowPictureBox()
-    {
-        pictureBox.Visibility = Visibility.Visible;
-        panelRichTextBox.ColumnDefinitions[1].Width = new GridLength(40, GridUnitType.Star);
-    }
-
-    void HidePictureBox()
-    {
-        pictureBox.Visibility = Visibility.Collapsed;
-        panelRichTextBox.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
     }
 
     void UpdateSize(MenuItem MenuItem)
@@ -651,7 +661,7 @@ public partial class MainWindow : Window
             string[] text = new string[] { HeaderSubstitution.Text, RTBox.GetText(richTextBoxSubstitution) };
             if (TypeSubstitution.SelectedIndex == 4)
             {
-                AddTable();
+                tablesData.AddTable();
             }
             string str = TypeRichBox();
             AddToComboBox(data.ComboBox[str], text);
@@ -739,9 +749,51 @@ public partial class MainWindow : Window
         HeaderSubstitution.Text = comboBox.Data[comboBox.Form.SelectedIndex][0];
         RTBox.SetText(richTextBoxSubstitution, comboBox.Data[comboBox.Form.SelectedIndex][1]);
 
-        if (TypeSubstitutionOn.Text == "t")
+        if (TypeSubstitutionOn.Text == "◄t►")
         {
-            SelectTable(comboBox.Form.SelectedIndex);
+            richTextBoxSubstitution.Visibility = Visibility.Collapsed;
+            panelTable.Visibility = Visibility.Visible;
+            HidePictureBox();
+            tablesData.SelectTable(comboBox.Form.SelectedIndex);
+            countRows.Text = tablesData.CurrentData.Rows.ToString();
+            countColumns.Text = tablesData.CurrentData.Columns.ToString();
+            UpdateTable();
+        }
+        else
+        {
+            if (TypeSubstitutionOn.Text == "◄h1►")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (TypeSubstitutionOn.Text == "◄h2►")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (TypeSubstitutionOn.Text == "◄l►")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (TypeSubstitutionOn.Text == "◄p►")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Visible;
+            }
+            else if (TypeSubstitutionOn.Text == "◄c►")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Visible;
+            }
+            panelTable.Visibility = Visibility.Collapsed;
+            richTextBoxSubstitution.Visibility = Visibility.Visible;
+            ShowPictureBox();
         }
     }
 
@@ -763,19 +815,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            string type = Config.AddSpecialBoth(data.ComboBox.FirstOrDefault(x => x.Value == data.SearchComboBox(comboBox)).Key);
-            if (type == "◄t►")
-            {
-                UnselectedTable();
-            }
-            clearSubstitution = true;
-            Displayed((string)FindResource("Something"));
-            TypeSubstitution.Visibility = Visibility.Visible;
-            TypeSubstitutionOn.Visibility = Visibility.Collapsed;
-            TypeSubstitution.SelectedIndex = -1;
-            HeaderSubstitution.Text = string.Empty;
-            richTextBoxSubstitution.Document.Blocks.Clear();
-            clearSubstitution = false;
+            UnselectAll();
         }
     }
 
@@ -810,7 +850,7 @@ public partial class MainWindow : Window
                     //перемещение выбранного элемента ComboBox вверх
                     if (comboBox.Name == "tComboBox")
                     {
-                        SwapTable(comboBox.SelectedIndex - 1, comboBox.SelectedIndex);
+                        tablesData.SwapTable(comboBox.SelectedIndex - 1, comboBox.SelectedIndex);
                     }
                     (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex])
                       = (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex - 1]);
@@ -828,7 +868,7 @@ public partial class MainWindow : Window
                     //перемещение выбранного элемента ComboBox вниз
                     if (comboBox.Name == "tComboBox")
                     {
-                        SwapTable(comboBox.SelectedIndex, comboBox.SelectedIndex + 1);
+                        tablesData.SwapTable(comboBox.SelectedIndex, comboBox.SelectedIndex + 1);
                     }
                     (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex]) = (data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex], data.SearchComboBox(comboBox).Data[comboBox.SelectedIndex + 1]);
                     string saveName = comboBox.Items[comboBox.SelectedIndex].ToString();
@@ -844,7 +884,7 @@ public partial class MainWindow : Window
                 int removeIDX = comboBox.SelectedIndex;
                 if (comboBox.Name == "tComboBox")
                 {
-                    DeleteTable(removeIDX);
+                    tablesData.DeleteTable(removeIDX);
                 }
                 comboBox.Items.RemoveAt(comboBox.SelectedIndex);
                 ComboBox_SelectionChanged(comboBox);
@@ -926,7 +966,6 @@ public partial class MainWindow : Window
             }
             else if (SaveComboBoxMainText(data.ComboBox["t"]))
             {
-                UpdatingColumnsTable(RTBox.GetText(richTextBoxSubstitution));
             }
             else if (SaveComboBoxMainText(data.ComboBox["c"]))
             {
@@ -1131,7 +1170,7 @@ public partial class MainWindow : Window
         int index = Regex.Matches(new TextRange(richTextBox.Document.ContentStart, richTextBox.CaretPosition).Text, Config.AddSpecialLeft(name)).Count;
         if (pb.Visibility == Visibility.Visible && index < data.ComboBox[name].Form.Items.Count && pb.IsMouseOver)
         {
-            string str = (string)FindResource("Paste") + " " + data.ComboBox[name].Form.Items[index] + " "+ (string)FindResource("In") +" " + cursorLocationTB.Text;
+            string str = (string)FindResource("Paste") + " " + data.ComboBox[name].Form.Items[index] + " " + (string)FindResource("In") + " " + cursorLocationTB.Text;
             if (Regex.Matches(new TextRange(richTextBox.CaretPosition, richTextBox.CaretPosition.DocumentEnd).Text, Config.AddSpecialLeft(name)).Count > 0)
             {
                 str += (string)FindResource("OffsetFollowing");
@@ -1257,10 +1296,6 @@ public partial class MainWindow : Window
         singlePB.Visibility = Visibility.Visible;
         if (str == "h1")
         {
-            tableBox.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h1"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1280,10 +1315,6 @@ public partial class MainWindow : Window
         }
         else if (str == "h2")
         {
-            tableBox.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["h2"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1303,10 +1334,6 @@ public partial class MainWindow : Window
         }
         else if (str == "l")
         {
-            tableBox.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Collapsed;
             int index = data.ComboBox["l"].Form.SelectedIndex;
             if (index != -1)
             {
@@ -1402,18 +1429,11 @@ public partial class MainWindow : Window
         }
         else if (str == "t")
         {
-            tableBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Collapsed;
+
         }
         else if (str == "p")
         {
-            tableBox.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Visible;
-            string path = string.Empty;
+            string path;
             if (pComboBox.SelectedIndex == -1)
             {
                 path = RTBox.GetText(richTextBoxSubstitution);
@@ -1422,11 +1442,11 @@ public partial class MainWindow : Window
             {
                 path = data.ComboBox["p"].Data[pComboBox.SelectedIndex][1];
             }
-            if(string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 ShowIconPicture((string)FindResource("Unidentified"));
             }
-            else if(File.Exists(path))
+            else if (File.Exists(path))
             {
                 ShowImage(path);
             }
@@ -1437,11 +1457,7 @@ public partial class MainWindow : Window
         }
         else if (str == "c")
         {
-            tableBox.Visibility = Visibility.Collapsed;
-            pictureBox.Visibility = Visibility.Visible;
-            dragDropImage.Visibility = Visibility.Collapsed;
-            mainImage.Visibility = Visibility.Visible;
-            string path = string.Empty;
+            string path;
             if (cComboBox.SelectedIndex == -1)
             {
                 path = RTBox.GetText(richTextBoxSubstitution);
@@ -1467,7 +1483,6 @@ public partial class MainWindow : Window
         else
         {
             pictureBox.Visibility = Visibility.Visible;
-            tableBox.Visibility = Visibility.Collapsed;
             ShowDragDrop();
         }
     }
@@ -1481,6 +1496,7 @@ public partial class MainWindow : Window
 
     void ShowIconPicture(string text)
     {
+        mainText.Visibility = Visibility.Visible;
         mainImage.Visibility = Visibility.Visible;
         dragDropImage.Visibility = Visibility.Collapsed;
         mainImage.Width = 220;
@@ -1494,6 +1510,7 @@ public partial class MainWindow : Window
 
     void ShowCode(string text)
     {
+        mainText.Visibility = Visibility.Visible;
         mainImage.Visibility = Visibility.Visible;
         dragDropImage.Visibility = Visibility.Collapsed;
         mainImage.Width = 115;
@@ -1507,6 +1524,7 @@ public partial class MainWindow : Window
 
     void ShowImage(string path)
     {
+        mainText.Visibility = Visibility.Collapsed;
         mainImage.Visibility = Visibility.Visible;
         dragDropImage.Visibility = Visibility.Collapsed;
         mainImage.Width = Double.NaN;
@@ -1526,6 +1544,7 @@ public partial class MainWindow : Window
 
     void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize = 20)
     {
+        mainText.Visibility = Visibility.Visible;
         mainText.Text = text;
         mainText.TextAlignment = textAlignment;
         //mainText.FontSize = fontSize;
@@ -1681,10 +1700,28 @@ public partial class MainWindow : Window
 
     void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-        clearSubstitution = true;
-        TypeSubstitution.SelectedIndex = -1;
-        clearSubstitution = false;
+        UnselectAll();
         UnselectComboBoxes();
+    }
+
+    void UnselectAll()
+    {
+        string type = TypeRichBox();
+        clearSubstitution = true;
+        Displayed((string)FindResource("Something"));
+        TypeSubstitution.Visibility = Visibility.Visible;
+        TypeSubstitutionOn.Visibility = Visibility.Collapsed;
+        if (type == "t")
+        {
+            tablesData.UnselectedTable();
+            panelTable.Visibility = Visibility.Collapsed;
+            richTextBoxSubstitution.Visibility = Visibility.Visible;
+            ShowPictureBox();
+        }
+        TypeSubstitution.SelectedIndex = -1;
+        HeaderSubstitution.Text = string.Empty;
+        richTextBoxSubstitution.Document.Blocks.Clear();
+        clearSubstitution = false;
     }
 
     void CapsLockFix_LostFocus(object sender, RoutedEventArgs e)
@@ -1904,10 +1941,6 @@ public partial class MainWindow : Window
         Profile.Visibility = Visibility.Collapsed;
         Personalization.Visibility = Visibility.Visible;
         GeneralisSetiings.Visibility = Visibility.Collapsed;
-        mainColor.Text = Properties.Settings.Default.MainColor;
-        additionalColor.Text = Properties.Settings.Default.AdditionalColor;
-        alternativeColor.Text = Properties.Settings.Default.AlternativeColor;
-        hoverColor.Text = Properties.Settings.Default.HoverColor;
         fontSize.Value = int.Parse(Properties.Settings.Default.FontSize);
         language.SelectedIndex = Properties.Settings.Default.Language;
     }
@@ -2141,6 +2174,23 @@ public partial class MainWindow : Window
         OpenGeneralisSetiings();
     }
 
+    void OpenDrawing()
+    {
+        if (viewModel.TitleOpen)
+        {
+            prevSettings = TitlePageMI;
+        }
+        else
+        {
+            prevSettings = DownPanelMI;
+        }
+        HideElements(prevSettings);
+        Drawing.Visibility = Visibility.Visible;
+        MenuPanel.Visibility = Visibility.Collapsed;
+        ParentPanel.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
+        ParentPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
+    }
+
     void ExitSettings(object sender, RoutedEventArgs e)
     {
         ShowElements(prevSettings);
@@ -2161,64 +2211,6 @@ public partial class MainWindow : Window
         {
             ShowElements(TitlePageMI);
             HideElements(DownPanelMI);
-        }
-    }
-
-    void InitTable()
-    {
-        collection ??= new();
-        AddTable();
-    }
-
-    void AddTable()
-    {
-        int idx = data.ComboBox["t"].Data.Count;
-        collection.Add(new List<TableData>());
-        tableBox.ItemsSource = collection[idx];
-    }
-
-    void SelectTable(int idx)
-    {
-        tableBox.ItemsSource = collection[idx];
-    }
-
-    void UnselectedTable()
-    {
-        tableBox.ItemsSource = collection[^1];
-    }
-
-    void DeleteTable(int idx)
-    {
-        collection.RemoveAt(idx);
-    }
-
-    void SwapTable(int i, int f)
-    {
-        (collection[f], collection[i]) = (collection[i], collection[f]);
-    }
-
-    void UpdatingColumnsTable(string str)
-    {
-        tableBox.Columns.Clear();
-        int i = 1;
-        string[] columns = str.Split(" ");
-        foreach (string column in columns)
-        {
-            DataColumn dataColumn = new(column);
-            DataGridTextColumn textColumn = new()
-            {
-                Header = dataColumn.ColumnName,
-                Width = new DataGridLength(100 / columns.Length, DataGridLengthUnitType.Star)
-            };
-
-            Binding bind = new("Col" + i);
-            textColumn.Binding = bind;
-            tableBox.Columns.Add(textColumn);
-            i++;
-            if (i == 11)
-            {
-                return;
-            }
         }
     }
 
@@ -2267,10 +2259,57 @@ public partial class MainWindow : Window
             if (!clearSubstitution)
             {
                 ComboBoxItem item = (ComboBoxItem)TypeSubstitution.SelectedItem;
-                HeaderSubstitution.Text = item.Content.ToString() + " " + (data.ComboBox[TypeRichBox()].Data.Count + 1);
+                HeaderSubstitution.Text = item.Content.ToString() + " " + data.ComboBox[TypeRichBox()].Data.GetHashCode();
             }
         }
-        ImageUpdate();
+        string type = TypeRichBox();
+
+        if (type == "t")
+        {
+            richTextBoxSubstitution.Visibility = Visibility.Collapsed;
+            panelTable.Visibility = Visibility.Visible;
+            HidePictureBox();
+            countRows.Text = tablesData.CurrentData.Rows.ToString();
+            countColumns.Text = tablesData.CurrentData.Columns.ToString();
+            UpdateTable();
+        }
+        else
+        {
+            if (type == "h1")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (type == "h2")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (type == "l")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Collapsed;
+            }
+            else if (type == "p")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Visible;
+            }
+            else if (type == "c")
+            {
+                pictureBox.Visibility = Visibility.Visible;
+                dragDropImage.Visibility = Visibility.Collapsed;
+                mainImage.Visibility = Visibility.Visible;
+            }
+            panelTable.Visibility = Visibility.Collapsed;
+            richTextBoxSubstitution.Visibility = Visibility.Visible;
+            ShowPictureBox();
+            ImageUpdate();
+        }
         if (ValidAddInput())
         {
             add.Visibility = Visibility.Visible;
@@ -2292,7 +2331,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void AssociationWKR_Click(object sender, RoutedEventArgs e)
+    void AssociationWKR_Click(object sender, RoutedEventArgs e)
     {
         bool association = AssociationWKR.IsChecked ?? true;
         if (association)
@@ -2350,41 +2389,42 @@ public partial class MainWindow : Window
         }
     }
 
-    void MainColor_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        viewModel.MainColor = "#" + mainColor.Text;
-        Properties.Settings.Default.MainColor = mainColor.Text;
-        Properties.Settings.Default.Save();
-    }
-
     void ByDefault(object sender, RoutedEventArgs e)
     {
-        mainColor.Text = "8daacc";
-        additionalColor.Text = "4a76a8";
-        alternativeColor.Text = "335e8f";
-        hoverColor.Text = "b8860b";
+        mainColor.SelectedColor = (Color)ColorConverter.ConvertFromString("#8daacc");
+        additionalColor.SelectedColor = (Color)ColorConverter.ConvertFromString("#4a76a8");
+        alternativeColor.SelectedColor = (Color)ColorConverter.ConvertFromString("#335e8f");
+        hoverColor.SelectedColor = (Color)ColorConverter.ConvertFromString("#b8860b");
+        Properties.Settings.Default.MainColor = mainColor.SelectedColor.ToString();
+        Properties.Settings.Default.AdditionalColor = additionalColor.SelectedColor.ToString();
+        Properties.Settings.Default.AlternativeColor = alternativeColor.SelectedColor.ToString();
+        Properties.Settings.Default.HoverColor = hoverColor.SelectedColor.ToString();
+        Properties.Settings.Default.Save();
         fontSize.Value = 6;
         language.SelectedIndex = 0;
     }
 
-    void AdditionalColor_TextChanged(object sender, TextChangedEventArgs e)
+    void MainColor_ContextMenuClosing(object sender, RoutedEventArgs e)
     {
-        viewModel.AdditionalColor = "#" + additionalColor.Text;
-        Properties.Settings.Default.AdditionalColor = additionalColor.Text;
+        Properties.Settings.Default.MainColor = mainColor.SelectedColor.ToString();
         Properties.Settings.Default.Save();
     }
 
-    void AlternativeColor_TextChanged(object sender, TextChangedEventArgs e)
+    void AdditionalColor_ContextMenuClosing(object sender, RoutedEventArgs e)
     {
-        viewModel.AlternativeColor = "#" + alternativeColor.Text;
-        Properties.Settings.Default.AlternativeColor = alternativeColor.Text;
+        Properties.Settings.Default.AdditionalColor = additionalColor.SelectedColor.ToString();
         Properties.Settings.Default.Save();
     }
 
-    void HoverColor_TextChanged(object sender, TextChangedEventArgs e)
+    void AlternativeColor_ContextMenuClosing(object sender, RoutedEventArgs e)
     {
-        viewModel.HoverColor = "#" + hoverColor.Text;
-        Properties.Settings.Default.HoverColor = hoverColor.Text;
+        Properties.Settings.Default.AlternativeColor = alternativeColor.SelectedColor.ToString();
+        Properties.Settings.Default.Save();
+    }
+
+    void HoverColor_ContextMenuClosing(object sender, RoutedEventArgs e)
+    {
+        Properties.Settings.Default.HoverColor = hoverColor.SelectedColor.ToString();
         Properties.Settings.Default.Save();
     }
 
@@ -2406,27 +2446,152 @@ public partial class MainWindow : Window
         Properties.Settings.Default.Language = language.SelectedIndex;
         Properties.Settings.Default.Save();
     }
-}
+    bool isDrawing = false;
 
-class TableData
-{
-    public string? Col1 { get; set; }
+    PathFigure currentFigure;
+    void DrawingMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        Mouse.Capture(DrawingTarget);
+        isDrawing = true;
+        StartFigure(e.GetPosition(DrawingTarget));
+    }
 
-    public string? Col2 { get; set; }
+    void AddFigurePoint(Point point)
+    {
+        currentFigure.Segments.Add(new LineSegment(point, isStroked: true));
+    }
 
-    public string? Col3 { get; set; }
+    void EndFigure()
+    {
+        currentFigure = null;
+    }
 
-    public string? Col4 { get; set; }
+    void StartFigure(Point start)
+    {
+        currentFigure = new PathFigure() { StartPoint = start };
 
-    public string? Col5 { get; set; }
 
-    public string? Col6 { get; set; }
+        System.Windows.Shapes.Path currentPath =
+            new System.Windows.Shapes.Path()
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 3,
+                Data = new PathGeometry() { Figures = { currentFigure } }
+            };
+        DrawingTarget.Children.Add(currentPath);
+    }
 
-    public string? Col7 { get; set; }
+    void DrawingMouseUp(object sender, MouseButtonEventArgs e)
+    {
+        AddFigurePoint(e.GetPosition(DrawingTarget));
+        EndFigure();
+        isDrawing = false;
+        Mouse.Capture(null);
+    }
 
-    public string? Col8 { get; set; }
+    void DrawingMouseMove(object sender, MouseEventArgs e)
+    {
+        if (!isDrawing)
+            return;
+        AddFigurePoint(e.GetPosition(DrawingTarget));
+    }
 
-    public string? Col9 { get; set; }
+    void CountRows_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        int rows = tablesData.CurrentData.Rows;
+        CountRowOrColumn(countRows, ref rows);
+        gridTable.RowDefinitions.Clear();
+        for (int i = 0; i < rows; i++)
+        {
+            gridTable.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100 / rows, type: GridUnitType.Star) });
+        }
+        tablesData.CurrentData.Rows = rows;
+        UpdateTable();
+    }
 
-    public string? Col10 { get; set; }
+    void CountColumns_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        int columns = tablesData.CurrentData.Columns;
+        CountRowOrColumn(countColumns, ref columns);
+        gridTable.ColumnDefinitions.Clear();
+        for (int i = 0; i < columns; i++)
+        {
+            gridTable.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / columns, type: GridUnitType.Star) });
+        }
+        tablesData.CurrentData.Columns = columns;
+        UpdateTable();
+    }
+
+    void CountRowOrColumn(TextBox textBox, ref int count)
+    {
+        int beginningNumber = 0;
+        foreach (char number in textBox.Text)
+        {
+            if (number == '0')
+            {
+                beginningNumber++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        textBox.Text = textBox.Text.Substring(beginningNumber);
+        if (!string.IsNullOrEmpty(textBox.Text))
+        {
+            count = int.Parse(textBox.Text);
+            if (count > Properties.Settings.Default.MaxRowAndColumn)
+            {
+                count = Properties.Settings.Default.MaxRowAndColumn;
+                textBox.Text = count.ToString();
+            }
+        }
+        else
+        {
+            count = 0;
+        }
+        textBox.SelectionStart = textBox.Text.Length;
+    }
+
+    void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+    {
+        Regex regex = new Regex("[^0-9]+");
+        e.Handled = regex.IsMatch(e.Text);
+    }
+
+    void UpdateTable()
+    {
+        /*string[,] oldDataTable = dataTable;
+        dataTable = new string[rows, columns];
+
+        for (int i = 0; i < oldDataTable.GetLength(0) && i < rows; i++)
+        {
+            for (int f = 0; f < oldDataTable.GetLength(1) && f < columns; f++)
+            {
+                dataTable[i, f] = oldDataTable[i, f];
+            }
+        }*/
+
+        gridTable.Children.Clear();
+        for (int i = 0; i < tablesData.CurrentData.Rows; i++)
+        {
+            for (int f = 0; f < tablesData.CurrentData.Columns; f++)
+            {
+                TextBox textBox = new TextBox();
+                textBox.Text = tablesData.CurrentData.DataTable[i, f];
+                textBox.TextChanged += Cell_TextChanged;
+                gridTable.Children.Add(textBox);
+                Grid.SetColumn(textBox, f);
+                Grid.SetRow(textBox, i);
+            }
+        }
+    }
+
+    void Cell_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TextBox textBox = (TextBox)sender;
+        int row = Grid.GetRow(textBox);
+        int column = Grid.GetColumn(textBox);
+        tablesData.CurrentData.DataTable[row, column] = textBox.Text;
+    }
 }

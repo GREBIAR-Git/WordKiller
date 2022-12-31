@@ -82,10 +82,18 @@
     <system:String x:Key="Error">Памылка</system:String>
     <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
     <system:String x:Key="Error2">Мы не можам зрабіць гэта на вашым прыладзе, абнавіць АС</system:String>
+    <system:String x:Key="Error3">Памылка пры фарміраванні тытульнай старонкі</system:String>
+    <system:String x:Key="Error4">Памылка пры фарміраванні зместу</system:String>
+    <system:String x:Key="Error5">Памылка пры фарміраванні асноўнага тэксту дакумента</system:String>
+    <system:String x:Key="Error6">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
+    <system:String x:Key="Error7">Памылка адкрыцця файла: файл пашкоджаны</system:String>
 
+    <system:String x:Key="Question1">Трэба захаваць?</system:String>
+    
     <system:String x:Key="GeneralSettings">Генерал</system:String>
     <system:String x:Key="PersonalizationSettings">Персаналізацыя</system:String>
     <system:String x:Key="ProfileSettings">Профіль</system:String>
+    <system:String x:Key="Styles">Стыль</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
     <system:String x:Key="IsAssociate">Асацыяваны пашырэнне (WKR) з праграмай?</system:String>

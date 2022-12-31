@@ -82,10 +82,18 @@
     <system:String x:Key="Error">錯誤</system:String>
     <system:String x:Key="Error1">文件打開錯誤：找不到文件或不支持格式</system:String>
     <system:String x:Key="Error2">我們無法在您的設備上執行此操作，更新操作系統</system:String>
+    <system:String x:Key="Error3">标题页形成错误</system:String>
+    <system:String x:Key="Error4">内容形成的错误</system:String>
+    <system:String x:Key="Error5">形成文档主文本时出错</system:String>
+    <system:String x:Key="Error6">生成报告时出错：要替换的文件已打开</system:String>
+    <system:String x:Key="Error7">文件打开错误：文件已损坏</system:String>
 
+    <system:String x:Key="Question1">我需要保存它吗？</system:String>
+    
     <system:String x:Key="GeneralSettings">一般的</system:String>
     <system:String x:Key="PersonalizationSettings">個性化</system:String>
     <system:String x:Key="ProfileSettings">輪廓</system:String>
+    <system:String x:Key="Styles">款式</system:String>
     <system:String x:Key="BackSettings">後退</system:String>
 
     <system:String x:Key="IsAssociate">與該計劃的關聯擴展（wkr)？</system:String>

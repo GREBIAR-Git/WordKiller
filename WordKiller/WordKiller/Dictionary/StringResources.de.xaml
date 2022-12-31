@@ -82,10 +82,18 @@
     <system:String x:Key="Error">Fehler</system:String>
     <system:String x:Key="Error1">Eröffnungsfehler der Datei: Die Datei wird nicht gefunden oder das Format wird nicht unterstützt</system:String>
     <system:String x:Key="Error2">Wir können dies nicht auf Ihrem Gerät tun, das Betriebssystem aktualisieren</system:String>
+    <system:String x:Key="Error3">Fehler bei der Generierung des Deckblatts</system:String>
+    <system:String x:Key="Error4">Fehler bei der Gestaltung des Inhalts</system:String>
+    <system:String x:Key="Error5">Fehler bei der Generierung des Textes</system:String>
+    <system:String x:Key="Error6">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
+    <system:String x:Key="Error7">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
+
+    <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
 
     <system:String x:Key="GeneralSettings">Allgemein</system:String>
     <system:String x:Key="PersonalizationSettings">Personalisierung</system:String>
     <system:String x:Key="ProfileSettings">Profil</system:String>
+    <system:String x:Key="Styles">Stile</system:String>
     <system:String x:Key="BackSettings">Zurück</system:String>
 
     <system:String x:Key="IsAssociate">Associate Expansion (WKR) mit dem Programm?</system:String>

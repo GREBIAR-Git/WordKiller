@@ -22,7 +22,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public static bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML, List<List<TableData>> collection)
+    public static bool Create(DataComboBox mainPart, bool numbering, bool tableOfContents, bool numberHeading, TypeDocument typeDocument, string[] dataTitle, bool exportPDF, bool exportHTML, List<TableData> collection)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -33,79 +33,86 @@ class Report
         if (saveFileDialog.ShowDialog() == true)
         {
             string pathSave = saveFileDialog.FileName;
-            using (WordprocessingDocument doc =
-            WordprocessingDocument.Create(pathSave,
-            WordprocessingDocumentType.Document, true))
+            try
             {
-                MainDocumentPart main = doc.AddMainDocumentPart();
-                main.Document = new Document();
-                Body body = main.Document.AppendChild(new Body());
-
-                InitStyles(doc);
-
-                try
+                using (WordprocessingDocument doc =
+                WordprocessingDocument.Create(pathSave,
+                WordprocessingDocumentType.Document, true))
                 {
-                    if (typeDocument != TypeDocument.DefaultDocument)
+                    MainDocumentPart main = doc.AddMainDocumentPart();
+                    main.Document = new Document();
+                    Body body = main.Document.AppendChild(new Body());
+
+                    InitStyles(doc);
+
+                    try
                     {
-                        PageSetup(body, title: true);
-                        dataTitle[^1] = SpaceForYear(dataTitle[^1], '_');
-                        TitlePart(doc, typeDocument, dataTitle, tableOfContents);
-                    }
-                    else
-                    {
-                        if (tableOfContents)
+                        if (typeDocument != TypeDocument.DefaultDocument)
                         {
                             PageSetup(body, title: true);
+                            dataTitle[^1] = SpaceForYear(dataTitle[^1], '_');
+                            TitlePart(doc, typeDocument, dataTitle, tableOfContents);
                         }
                         else
                         {
-                            PageSetup(body, title: false);
+                            if (tableOfContents)
+                            {
+                                PageSetup(body, title: true);
+                            }
+                            else
+                            {
+                                PageSetup(body, title: false);
+                            }
                         }
                     }
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка при формировании титульной страницы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-                    return false;
-                }
+                    catch
+                    {
+                        MessageBox.Show(MainWindow.FindResourse("Error3"), MainWindow.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        return false;
+                    }
 
-                try
-                {
+                    try
+                    {
 
-                    TableOfContents(doc, tableOfContents);
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка при формировании содержания", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-                    return false;
-                }
+                        TableOfContents(doc, tableOfContents);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(MainWindow.FindResourse("Error4"), MainWindow.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        return false;
+                    }
 
-                try
-                {
-                    ProcessSpecials(mainPart);
-                    MainPart(doc, mainPart, numberHeading, collection);
-                }
-                catch
-                {
-                    MessageBox.Show("Ошибка при формировании основного текста документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-                    return false;
-                }
+                    try
+                    {
+                        ProcessSpecials(mainPart);
+                        MainPart(doc, mainPart, numberHeading, collection);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(MainWindow.FindResourse("Error5"), MainWindow.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        return false;
+                    }
 
-                if (numbering)
-                {
-                    PageNumber(doc);
+                    if (numbering)
+                    {
+                        PageNumber(doc);
+                    }
+                    //   SimpleField f = new();
                 }
-             //   SimpleField f = new();
+                if (exportHTML)
+                {
+                    DocxExport.ToHTML(pathSave);
+                }
+                if (exportPDF)
+                {
+                    DocxExport.ToPDF(pathSave);
+                }
+                return true;
             }
-            if (exportHTML)
+            catch (IOException)
             {
-                DocxExport.ToHTML(pathSave);
+                MessageBox.Show(MainWindow.FindResourse("Error6"), MainWindow.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
             }
-            if (exportPDF)
-            {
-                DocxExport.ToPDF(pathSave);
-            }
-            return true;
         }
         return false;
     }
@@ -628,7 +635,7 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
     }
 
-    static void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading, List<List<TableData>> collection)
+    static void MainPart(WordprocessingDocument doc, DataComboBox content, bool numberHeading, List<TableData> collection)
     {
         if (content.Text != null)
         {
@@ -636,7 +643,7 @@ class Report
         }
     }
 
-    static void ProcessContent(WordprocessingDocument doc, DataComboBox content, List<List<TableData>> collection, bool number = true)
+    static void ProcessContent(WordprocessingDocument doc, DataComboBox content, List<TableData> collection, bool number = true)
     {
         int h1 = 1;
         int h2 = 1;
@@ -661,13 +668,18 @@ class Report
                     {
                         i += 2;
                         string text = string.Empty;
-                        if (number)
+                        text += ProcessSpecial(h1, "h1", content)[0].ToUpper();
+                        if (text != "ВВЕДЕНИЕ")
                         {
-                            text += h1.ToString() + " ";
+                            SectionBreak(doc);
+                            if (number && text != "ЗАКЛЮЧЕНИЕ")
+                            {
+                                text = h1.ToString() + " " + text;
+                                h1++;
+                            }
                         }
-                        text += ProcessSpecial(h1, "h1", content)[0];
+
                         Text(doc, text, "H1");
-                        h1++;
                         h2 = 1;
                     }
                     else if (content.Text[i + 2] == '2')
@@ -681,7 +693,7 @@ class Report
                         }
 
                         text += ProcessSpecial(h2all, "h2", content)[0];
-                        Text(doc, text, "H2");
+                        Text(doc, "\n" + text, "H2");
                         h2all++;
                         h2++;
                     }
@@ -706,7 +718,7 @@ class Report
                     i += 1;
                     string[] text = ProcessSpecial(t, "t", content);
                     Text(doc, "Таблица " + t + " – " + text[1], "TableText");
-                    Table(doc, text[0], collection[t - 1]);
+                    Table(doc, collection[t - 1]);
                     t++;
                 }
                 else if (content.Text[i + 1] == 'c')
@@ -732,42 +744,19 @@ class Report
         }
     }
 
-    public static void Table(WordprocessingDocument doc, string headingColumns, List<TableData> collection)
+    public static void Table(WordprocessingDocument doc, TableData dataTable)
     {
         Table dTable = new();
         TableProperties props = new();
         dTable.AppendChild<TableProperties>(props);
 
-        TableRow trHeading = new();
-        string[] columns = headingColumns.Split(" ");
-        foreach (string column in columns)
-        {
-            TableCell tc = new();
-            tc.Append(new Paragraph(new Run(new Text(column)))
-            {
-                ParagraphProperties = new ParagraphProperties()
-                {
-                    ParagraphStyleId = new ParagraphStyleId() { Val = "Table" }
-                }
-            });
-            tc.Append(new TableCellProperties());
-            trHeading.Append(tc);
-        }
-        dTable.Append(trHeading);
-
-        foreach (TableData tableData in collection)
+        for (int i = 0; i < dataTable.Rows; i++)
         {
             TableRow tr = new();
-            DataCell(tr, columns.Length, 0, tableData.Col1);
-            DataCell(tr, columns.Length, 1, tableData.Col2);
-            DataCell(tr, columns.Length, 2, tableData.Col3);
-            DataCell(tr, columns.Length, 3, tableData.Col4);
-            DataCell(tr, columns.Length, 4, tableData.Col5);
-            DataCell(tr, columns.Length, 5, tableData.Col6);
-            DataCell(tr, columns.Length, 6, tableData.Col7);
-            DataCell(tr, columns.Length, 7, tableData.Col8);
-            DataCell(tr, columns.Length, 8, tableData.Col9);
-            DataCell(tr, columns.Length, 9, tableData.Col10);
+            for (int f = 0; f < dataTable.Columns; f++)
+            {
+                DataCell(tr, dataTable.Columns, 0, dataTable.DataTable[i, f]);
+            }
             dTable.Append(tr);
         }
 

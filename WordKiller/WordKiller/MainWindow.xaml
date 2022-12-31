@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WordKiller"
         mc:Ignorable="d"
         Name="win"
@@ -249,7 +250,23 @@
                     <Button Grid.Column="3" Margin="0,0,5,0" x:Name="add" Content="{DynamicResource Add}" Visibility="Collapsed" Style="{StaticResource Button}" Click="Add_Click"/>
                     <Button Grid.Column="4" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click"/>
                 </Grid>
-                <Grid Grid.Row="2" Grid.Column="0" x:Name="panelRichTextBox" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                <Grid Grid.Row="2" Grid.Column="0" x:Name="TextPanelRTB" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                    <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" FontFamily="Calibri">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+                    <RichTextBox Grid.Row="0" Grid.Column="0" Visibility="Collapsed" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" AllowDrop="True" FontFamily="Calibri" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="0" x:Name="SubstitutionPanelRTB" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60*"/>
                         <ColumnDefinition Width="40*"/>
@@ -282,22 +299,32 @@
                                 </Style>
                             </RichTextBox.Resources>
                         </RichTextBox>
+                        <Grid Grid.Row="3" Visibility="Collapsed" x:Name="panelTable" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10*"/>
+                                <RowDefinition Height="90*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="25*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Количество строк" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="countRows" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Количество столбцов" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" x:Name="countColumns" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
+                        </Grid>
                     </Grid>
-                    <RichTextBox Grid.Row="0" Grid.Column="0" Visibility="Collapsed" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" SelectionChanged="RichTextBox_SelectionChanged" AllowDrop="True" FontFamily="Calibri">
-                        <RichTextBox.Resources>
-                            <Style TargetType="{x:Type Paragraph}">
-                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
-                            </Style>
-                        </RichTextBox.Resources>
-                    </RichTextBox>
-                    <RichTextBox Grid.Row="0" Grid.Column="0" x:Name="richTextBox2" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" AllowDrop="True" FontFamily="Calibri" Visibility="Collapsed" TextChanged="RichTextBox2_TextChanged" PreviewKeyDown="RichTextBox2_PreviewKeyDown">
-                        <RichTextBox.Resources>
-                            <Style TargetType="{x:Type Paragraph}">
-                                <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
-                            </Style>
-                        </RichTextBox.Resources>
-                    </RichTextBox>
-                    <DataGrid Grid.Row="0" Grid.Column="1" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" x:Name="tableBox" Visibility="Collapsed" ItemsSource="{Binding Path=TableData}"  Style="{StaticResource DataGrid1}" AutoGenerateColumns="False"/>
                     <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50*"/>
@@ -351,7 +378,7 @@
             <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource GeneralSettings}" Style="{StaticResource Button}" Click="OpenGeneralisSetiings"/>
             <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource PersonalizationSettings}" Style="{StaticResource Button}" Click="OpenPersonalization"/>
             <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource ProfileSettings}" Style="{StaticResource Button}" Click="OpenProfile" />
-            <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="Что-то" Style="{StaticResource Button}"/>
+            <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Styles}" Style="{StaticResource Button}"/>
             <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource BackSettings}" Style="{StaticResource Button}" Click="ExitSettings"/>
             <ScrollViewer x:Name="GeneralisSetiings" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" VerticalScrollBarVisibility="Hidden">
                 <Grid>
@@ -507,7 +534,7 @@
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MainColor}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="mainColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="MainColor_TextChanged"/>
+                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="mainColor" SelectedColor="{Binding MainColor}" Closed="MainColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -520,7 +547,7 @@
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource ComplementaryСolor}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="additionalColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="AdditionalColor_TextChanged"/>
+                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="2" x:Name="additionalColor" SelectedColor="{Binding AdditionalColor}" Closed="AdditionalColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -533,7 +560,7 @@
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource AlternativeСolor}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="alternativeColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="AlternativeColor_TextChanged"/>
+                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="alternativeColor" SelectedColor="{Binding AlternativeColor}" Closed="AlternativeColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="4" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -546,7 +573,7 @@
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource HoverColor}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="hoverColor" HorizontalAlignment="Left" MinWidth="250" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="HoverColor_TextChanged"/>
+                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="hoverColor" SelectedColor="{Binding HoverColor}" Closed="HoverColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="5" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
@@ -572,13 +599,13 @@
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Language}" Style="{StaticResource TextBlock}"/>
-                                <ComboBox x:Name="language" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" MinWidth="160" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Language_SelectionChanged">
+                                <ComboBox x:Name="language" MinWidth="250" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Style="{StaticResource ComboBox}" SelectionChanged="Language_SelectionChanged">
                                     <ComboBoxItem>Русский</ComboBoxItem>
-                                    <ComboBoxItem>Английский</ComboBoxItem>
-                                    <ComboBoxItem>Белорусский</ComboBoxItem>
-                                    <ComboBoxItem>Французский</ComboBoxItem>
-                                    <ComboBoxItem>Немецкий</ComboBoxItem>
-                                    <ComboBoxItem>Китайский</ComboBoxItem>
+                                    <ComboBoxItem>English</ComboBoxItem>
+                                    <ComboBoxItem>Беларускі</ComboBoxItem>
+                                    <ComboBoxItem>Français</ComboBoxItem>
+                                    <ComboBoxItem>Deutsch</ComboBoxItem>
+                                    <ComboBoxItem>中文</ComboBoxItem>
                                 </ComboBox>
                             </Grid>
                         </Border>
@@ -640,7 +667,7 @@
                         <Grid HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="100*"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -659,6 +686,27 @@
                         </Grid>
                     </ScrollViewer>
                 </GroupBox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0" x:Name="Drawing" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="95*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="Yellow">
+                
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="90*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Background="Yellow">
+                    
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Canvas Name="DrawingTarget" Background="Transparent" MouseLeftButtonDown="DrawingMouseDown" MouseLeftButtonUp="DrawingMouseUp" MouseMove="DrawingMouseMove"/>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

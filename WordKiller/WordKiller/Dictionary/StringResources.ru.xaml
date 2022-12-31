@@ -81,10 +81,18 @@
     <system:String x:Key="Error">Ошибка</system:String>
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
     <system:String x:Key="Error2">Мы не можем это сделать на вашем устройстве, обновите ОС</system:String>
+    <system:String x:Key="Error3">Ошибка при формировании титульной страницы</system:String>
+    <system:String x:Key="Error4">Ошибка при формировании содержания</system:String>
+    <system:String x:Key="Error5">Ошибка при формировании основного текста документа</system:String>
+    <system:String x:Key="Error6">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
+    <system:String x:Key="Error7">Ошибка открытия файла: файл повреждён</system:String>
 
+    <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
+    
     <system:String x:Key="GeneralSettings">Общее</system:String>
     <system:String x:Key="PersonalizationSettings">Персонализация</system:String>
     <system:String x:Key="ProfileSettings">Профиль</system:String>
+    <system:String x:Key="Styles">Стили</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
     <system:String x:Key="IsAssociate">Aссоциировать расширение(wkr) с программой?</system:String>

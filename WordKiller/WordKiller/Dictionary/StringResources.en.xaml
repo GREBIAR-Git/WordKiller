@@ -82,10 +82,18 @@
     <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
     <system:String x:Key="Error2">We can't do this on your device, update the OS</system:String>
+    <system:String x:Key="Error3">Error generating the front page</system:String>
+    <system:String x:Key="Error4">Error generating content</system:String>
+    <system:String x:Key="Error5">Error in generating the body text of the document</system:String>
+    <system:String x:Key="Error6">Error when generating the report: The file you want to replace is open</system:String>
+    <system:String x:Key="Error7">Error opening the file: The file is corrupted</system:String>
+
+    <system:String x:Key="Question1">Do you need to save it?</system:String>
 
     <system:String x:Key="GeneralSettings">General</system:String>
     <system:String x:Key="PersonalizationSettings">Personalization</system:String>
     <system:String x:Key="ProfileSettings">Profile</system:String>
+    <system:String x:Key="Styles">Styles</system:String>
     <system:String x:Key="BackSettings">Back</system:String>
 
     <system:String x:Key="IsAssociate">Associate an extension (wkr) with a program?</system:String>
