@@ -71,7 +71,7 @@ namespace WordKiller
         {
             FileStream fileStream = File.Open(nameFile, FileMode.Create);
             StreamWriter output = new(fileStream);
-            StringBuilder save = new StringBuilder();
+            StringBuilder save = new();
 
             foreach (Control item in typeDocument)
             {
@@ -104,17 +104,17 @@ namespace WordKiller
             }
             save.AppendLine(Config.AddSpecialBoth("TextEnd"));
             save.AppendLine(Config.AddSpecialBoth("TableStart"));
-            for (int j = 0; j < tableData.collection.Count - 1; j++)
+            for (int j = 0; j < tableData.Collection.Count - 1; j++)
             {
-                save.Append(tableData.collection[j].Rows + " " + tableData.collection[j].Columns + " ");
-                for (int i = 0; i < tableData.collection[j].Rows; i++)
+                save.Append(tableData.Collection[j].Rows + " " + tableData.Collection[j].Columns + " ");
+                for (int i = 0; i < tableData.Collection[j].Rows; i++)
                 {
-                    for (int f = 0; f < tableData.collection[j].Columns; f++)
+                    for (int f = 0; f < tableData.Collection[j].Columns; f++)
                     {
-                        save.Append(tableData.collection[j].DataTable[i, f] + " ");
+                        save.Append(tableData.Collection[j].DataTable[i, f] + " ");
                     }
                 }
-                save[save.Length - 1] = '\r';
+                save[^1] = '\r';
                 save.Append('\n');
 
             }
@@ -160,7 +160,7 @@ namespace WordKiller
             dataComboBox.Text = string.Empty;
             savePath = fileName;
             ClearGlobal(ref dataComboBox, ref tablesData);
-            tablesData.InitTable();
+            tablesData = new();
             FileStream file = new(fileName, FileMode.Open);
             StreamReader reader = new(file);
             try
@@ -360,7 +360,7 @@ namespace WordKiller
 
         void ClearGlobal(ref DataComboBox data, ref TablesData tablesData)
         {
-            tablesData.collection.Clear();
+            tablesData.Collection.Clear();
             data.AllClear();
             for (int i = elementPanel.ColumnDefinitions.Count - 1; i < elementPanel.Children.Count - 1; i++)
             {

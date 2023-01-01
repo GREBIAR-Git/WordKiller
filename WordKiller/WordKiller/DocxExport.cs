@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Controls;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace WordKiller;

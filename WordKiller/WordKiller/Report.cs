@@ -97,7 +97,6 @@ class Report
                     {
                         PageNumber(doc);
                     }
-                    //   SimpleField f = new();
                 }
                 if (exportHTML)
                 {
@@ -208,53 +207,34 @@ class Report
         {
             section.RemoveAllChildren<HeaderReference>();
             section.PrependChild<HeaderReference>(new HeaderReference() { Id = headerPartId, Type = HeaderFooterValues.Default });
+            section.PrependChild<PageNumberType>(new PageNumberType { Start = 4 });
         }
     }
 
     static void GeneratePageNumber(HeaderPart part)
     {
-        Header header = new();
-        header.AddNamespaceDeclaration("wpc", "http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas");
-        header.AddNamespaceDeclaration("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006");
-        header.AddNamespaceDeclaration("o", "urn:schemas-microsoft-com:office:office");
-        header.AddNamespaceDeclaration("r", "http://schemas.openxmlformats.org/officeDocument/2006/relationships");
-        header.AddNamespaceDeclaration("m", "http://schemas.openxmlformats.org/officeDocument/2006/math");
-        header.AddNamespaceDeclaration("v", "urn:schemas-microsoft-com:vml");
-        header.AddNamespaceDeclaration("wp14", "http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing");
-        header.AddNamespaceDeclaration("wp", "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing");
-        header.AddNamespaceDeclaration("w10", "urn:schemas-microsoft-com:office:word");
-        header.AddNamespaceDeclaration("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
-        header.AddNamespaceDeclaration("w14", "http://schemas.microsoft.com/office/word/2010/wordml");
-        header.AddNamespaceDeclaration("wpg", "http://schemas.microsoft.com/office/word/2010/wordprocessingGroup");
-        header.AddNamespaceDeclaration("wpi", "http://schemas.microsoft.com/office/word/2010/wordprocessingInk");
-        header.AddNamespaceDeclaration("wne", "http://schemas.microsoft.com/office/word/2006/wordml");
-        header.AddNamespaceDeclaration("wps", "http://schemas.microsoft.com/office/word/2010/wordprocessingShape");
-
-        Paragraph paragraph = new()
-        {
-            ParagraphProperties = new ParagraphProperties(
-                new ParagraphStyleId()
-                {
-                    Val = "Header"
-                },
-                new Justification()
-                {
-                    Val = JustificationValues.Center
-                },
-                new SpacingBetweenLines()
-                {
-                    After = (0).ToString(),
-                    Before = (0).ToString(),
-                    Line = (240).ToString(),
-                    LineRule = LineSpacingRuleValues.Auto
-                })
-        };
-
-        Run run = paragraph.AppendChild(new Run());
-        run.Append(new PageNumber());
-
-        header.Append(paragraph);
-
+        Header header =
+            new(
+                new Paragraph(
+                    new ParagraphProperties(
+                        new ParagraphStyleId()
+                        {
+                            Val = "Header"
+                        },
+                        new Justification()
+                        {
+                            Val = JustificationValues.Center
+                        },
+                        new SpacingBetweenLines()
+                        {
+                            After = (0).ToString(),
+                            Before = (0).ToString(),
+                            Line = (240).ToString(),
+                            LineRule = LineSpacingRuleValues.Auto
+                        }
+                    ),
+                    new Run(new SimpleField() { Instruction = "Page" })
+            ));
         part.Header = header;
     }
 
@@ -671,7 +651,7 @@ class Report
                         text += ProcessSpecial(h1, "h1", content)[0].ToUpper();
                         if (text != "ВВЕДЕНИЕ")
                         {
-                            SectionBreak(doc);
+                            PageBreak(doc);
                             if (number && text != "ЗАКЛЮЧЕНИЕ")
                             {
                                 text = h1.ToString() + " " + text;
@@ -1040,13 +1020,14 @@ class Report
         {
             props.PrependChild<TitlePage>(new TitlePage());
         }
-
     }
 
-    /*static void PageBreak(Run run)
+    static void PageBreak(WordprocessingDocument doc)
     {
-        run.AppendChild(new Break() { Type = BreakValues.Page });
-    }*/
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+        body.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+    }
 
     static void EmptyLines(WordprocessingDocument doc, int number)
     {

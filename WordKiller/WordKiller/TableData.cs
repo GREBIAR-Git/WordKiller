@@ -5,47 +5,47 @@ namespace WordKiller
 {
     internal class TablesData
     {
-        public List<TableData> collection { get; private set; }
+        public List<TableData> Collection { get; private set; }
 
         int current;
 
         public TableData CurrentData
         {
-            get => collection.ElementAt(current);
+            get => Collection.ElementAt(current);
         }
 
-        public void InitTable()
+        public TablesData()
         {
-            collection = new List<TableData>();
-            collection.Add(new TableData());
+            Collection = new List<TableData>();
+            Collection.Add(new TableData());
         }
 
         public void AddTable()
         {
-            current = collection.Count - 1;
-            collection.Add(new TableData());
+            current = Collection.Count - 1;
+            Collection.Add(new TableData());
         }
 
         public void SelectTable(int index)
         {
             current = index;
-            collection.ElementAt(index);
+            Collection.ElementAt(index);
         }
 
         public void UnselectedTable()
         {
-            current = collection.Count - 1;
+            current = Collection.Count - 1;
         }
 
         public void DeleteTable(int index)
         {
-            current = collection.Count;
-            collection.RemoveAt(index);
+            current = Collection.Count;
+            Collection.RemoveAt(index);
         }
 
         public void SwapTable(int i, int f)
         {
-            (collection[f], collection[i]) = (collection[i], collection[f]);
+            (Collection[f], Collection[i]) = (Collection[i], Collection[f]);
         }
     }
 
@@ -59,8 +59,8 @@ namespace WordKiller
 
         public TableData(int row = 1, int column = 1)
         {
-            Rows = 1;
-            Columns = 1;
+            Rows = row;
+            Columns = column;
             DataTable = new string[Properties.Settings.Default.MaxRowAndColumn, Properties.Settings.Default.MaxRowAndColumn];
         }
     }

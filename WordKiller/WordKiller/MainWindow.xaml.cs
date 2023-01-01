@@ -31,7 +31,7 @@ public partial class MainWindow : Window
 
     bool clearSubstitution = false;
 
-    TablesData tablesData = new TablesData();
+    TablesData tablesData;
 
     public MainWindow(string[] args)
     {
@@ -72,7 +72,7 @@ public partial class MainWindow : Window
         menuNames = ComboBoxSetup();
         data = new DataComboBox(h1ComboBox, h2ComboBox, lComboBox, pComboBox, tComboBox, cComboBox);
         UpdateCheckSyntax();
-        tablesData.InitTable();
+        tablesData = new();
         if (args.Length > 0)
         {
             if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
@@ -412,7 +412,7 @@ public partial class MainWindow : Window
 
         Report report = new();
         await Task.Run(() =>
-            Report.Create(data, viewModel.PageNumbers, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, tablesData.collection));
+            Report.Create(data, viewModel.PageNumbers, viewModel.TableOfContents, viewModel.NumberHeading, typeDocument, titleData.ToArray(), exportPDFOn, exportHTMLOn, tablesData.Collection));
 
         if (Properties.Settings.Default.CloseWindow)
         {
@@ -2469,10 +2469,8 @@ public partial class MainWindow : Window
     void StartFigure(Point start)
     {
         currentFigure = new PathFigure() { StartPoint = start };
-
-
         System.Windows.Shapes.Path currentPath =
-            new System.Windows.Shapes.Path()
+            new()
             {
                 Stroke = Brushes.Black,
                 StrokeThickness = 3,
@@ -2536,7 +2534,7 @@ public partial class MainWindow : Window
                 break;
             }
         }
-        textBox.Text = textBox.Text.Substring(beginningNumber);
+        textBox.Text = textBox.Text[beginningNumber..];
         if (!string.IsNullOrEmpty(textBox.Text))
         {
             count = int.Parse(textBox.Text);
@@ -2555,7 +2553,7 @@ public partial class MainWindow : Window
 
     void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new Regex("[^0-9]+");
+        Regex regex = new("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
 
@@ -2577,8 +2575,10 @@ public partial class MainWindow : Window
         {
             for (int f = 0; f < tablesData.CurrentData.Columns; f++)
             {
-                TextBox textBox = new TextBox();
-                textBox.Text = tablesData.CurrentData.DataTable[i, f];
+                TextBox textBox = new()
+                {
+                    Text = tablesData.CurrentData.DataTable[i, f]
+                };
                 textBox.TextChanged += Cell_TextChanged;
                 gridTable.Children.Add(textBox);
                 Grid.SetColumn(textBox, f);
