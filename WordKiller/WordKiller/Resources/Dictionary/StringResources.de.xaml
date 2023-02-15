@@ -101,9 +101,8 @@
     <system:String x:Key="Encoding">Welche Codierung zum Speichern einer Datei zu verwenden?</system:String>
     <system:String x:Key="Encoding0">Nein</system:String>
     <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Muss ich die Bewerbung nach der Berichterstattung über den Bericht jedes Mal schließen?</system:String>
+    <system:String x:Key="AfterExportingClose">Die Anwendung schließen, nachdem der Bericht erstellt wurde?</system:String>
     <system:String x:Key="IsAutoHeader">Automatischer Titel für das Objekt</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">Zeigen Sie das Feld der Titeleingabe an</system:String>
 
     <system:String x:Key="ByDefault">Default</system:String>
     <system:String x:Key="MainColor">Die Hauptfarbe des Programms</system:String>
@@ -111,6 +110,7 @@
     <system:String x:Key="AlternativeСolor">Alternative Farbe</system:String>
     <system:String x:Key="HoverColor">Farbe beim Schweben</system:String>
     <system:String x:Key="FontSize">Schriftgröße</system:String>
+    <system:String x:Key="FontSizeRTB">Schriftgröße für RichTextBox</system:String>
     <system:String x:Key="Language">Sprache</system:String>
 
     <system:String x:Key="You">Du</system:String>

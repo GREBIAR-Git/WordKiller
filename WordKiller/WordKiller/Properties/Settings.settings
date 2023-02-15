@@ -68,9 +68,6 @@
     <Setting Name="AutoHeader" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="AutoHeaderVisibility" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="MainColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#8daacc</Value>
     </Setting>
@@ -84,7 +81,7 @@
       <Value Profile="(Default)">#b8860b</Value>
     </Setting>
     <Setting Name="FontSize" Type="System.String" Scope="User">
-      <Value Profile="(Default)">16</Value>
+      <Value Profile="(Default)">6</Value>
     </Setting>
     <Setting Name="Language" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -92,11 +89,8 @@
     <Setting Name="MaxRowAndColumn" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="SpecialBefore" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">◄</Value>
-    </Setting>
-    <Setting Name="SpecialAfter" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">►</Value>
+    <Setting Name="FontSizeRTB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8</Value>
     </Setting>
   </Settings>
 </SettingsFile>

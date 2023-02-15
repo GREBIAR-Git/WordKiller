@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace WordKiller.DataTypes.ParagraphData;
 
@@ -22,5 +23,10 @@ public class ParagraphH2 : IParagraphData
     public ParagraphH2()
     {
         data = string.Empty;
+    }
+
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Collapsed;
     }
 }

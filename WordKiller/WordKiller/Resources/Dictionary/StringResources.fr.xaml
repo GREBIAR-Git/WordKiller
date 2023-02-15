@@ -101,9 +101,8 @@
     <system:String x:Key="Encoding">Quel codage utiliser lors de l'enregistrement d'un fichier?</system:String>
     <system:String x:Key="Encoding0">Non</system:String>
     <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Dois-je clôturer la demande à chaque fois après le rapport du rapport?</system:String>
+    <system:String x:Key="AfterExportingClose">Fermer l'application après que le rapport ait été généré ?</system:String>
     <system:String x:Key="IsAutoHeader">Titre automatique pour l'objet</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">Afficher le champ d'entrée de titre</system:String>
 
     <system:String x:Key="ByDefault">Défaut</system:String>
     <system:String x:Key="MainColor">La couleur principale du programme</system:String>
@@ -111,6 +110,7 @@
     <system:String x:Key="AlternativeСolor">Couleur de couleur alternative</system:String>
     <system:String x:Key="HoverColor">Couleur lorsqu'il oscille</system:String>
     <system:String x:Key="FontSize">Taille de police</system:String>
+    <system:String x:Key="FontSizeRTB">Taille de police pour RichTextBox</system:String>
     <system:String x:Key="Language">Langue</system:String>
 
     <system:String x:Key="You">Tu</system:String>

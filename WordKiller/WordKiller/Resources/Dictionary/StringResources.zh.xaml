@@ -96,14 +96,13 @@
     <system:String x:Key="Styles">款式</system:String>
     <system:String x:Key="BackSettings">後退</system:String>
 
-    <system:String x:Key="IsAssociate">與該計劃的關聯擴展（wkr)？</system:String>
+    <system:String x:Key="IsAssociate">與該計劃的關聯擴展（wkr）？</system:String>
     <system:String x:Key="IsSyntaxChecking">語法檢查（基本）嗎？</system:String>
     <system:String x:Key="Encoding">保存文件時要使用什麼編碼？</system:String>
     <system:String x:Key="Encoding0">不</system:String>
     <system:String x:Key="Encoding1">標準</system:String>
-    <system:String x:Key="AfterExportingClose">報告報告後每次都需要關閉應用程序嗎？</system:String>
+    <system:String x:Key="AfterExportingClose">在报告生成后关闭应用程序？</system:String>
     <system:String x:Key="IsAutoHeader">對象的自動標題</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">顯示標題條目字段</system:String>
 
     <system:String x:Key="ByDefault">默認</system:String>
     <system:String x:Key="MainColor">程序的主要顏色</system:String>
@@ -111,6 +110,7 @@
     <system:String x:Key="AlternativeСolor">替代顏色</system:String>
     <system:String x:Key="HoverColor">懸停時顏色</system:String>
     <system:String x:Key="FontSize">字體大小</system:String>
+    <system:String x:Key="FontSizeRTB">RichTextBox 的字體大小</system:String>
     <system:String x:Key="Language">語</system:String>
 
     <system:String x:Key="You">你</system:String>

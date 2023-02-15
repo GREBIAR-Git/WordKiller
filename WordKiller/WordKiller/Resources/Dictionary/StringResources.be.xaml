@@ -101,9 +101,8 @@
     <system:String x:Key="Encoding">Якое кадаванне выкарыстоўваць пры захаванні файла?</system:String>
     <system:String x:Key="Encoding0">Не</system:String>
     <system:String x:Key="Encoding1">Стандарт</system:String>
-    <system:String x:Key="AfterExportingClose">Ці трэба мне закрываць заяўку кожны раз пасля справаздачы справаздачы?</system:String>
+    <system:String x:Key="AfterExportingClose">Закрываць прыкладанне пасля фарміравання адліку?</system:String>
     <system:String x:Key="IsAutoHeader">Аўтаматычны загаловак для аб'екта</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">Адлюстраваць поле ўводу загалоўкаў</system:String>
 
     <system:String x:Key="ByDefault">Па змаўчанні</system:String>
     <system:String x:Key="MainColor">Асноўны колер праграмы</system:String>
@@ -111,6 +110,7 @@
     <system:String x:Key="AlternativeСolor">Альтэрнатыўны колер колеру</system:String>
     <system:String x:Key="HoverColor">Колер пры навядзенні</system:String>
     <system:String x:Key="FontSize">Памер шрыфта</system:String>
+    <system:String x:Key="FontSizeRTB">Памер шрыфта для RichTextBox</system:String>
     <system:String x:Key="Language">Мова</system:String>
 
     <system:String x:Key="You">Ты</system:String>

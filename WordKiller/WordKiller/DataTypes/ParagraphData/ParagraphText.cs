@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace WordKiller.DataTypes.ParagraphData;
 
@@ -16,5 +17,10 @@ internal class ParagraphText : IParagraphData
     public ParagraphText(string data)
     {
         this.data = data;
+    }
+
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Collapsed;
     }
 }

@@ -101,9 +101,8 @@
     <system:String x:Key="Encoding">What encoding should be used when saving the file?</system:String>
     <system:String x:Key="Encoding0">None</system:String>
     <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Do I need to close the application every time after generating a report?</system:String>
+    <system:String x:Key="AfterExportingClose">Close the application after the report has been generated?</system:String>
     <system:String x:Key="IsAutoHeader">Automatic title for an object</system:String>
-    <system:String x:Key="IsDisplayHeaderInput">Show header input field</system:String>
 
     <system:String x:Key="ByDefault">By default</system:String>
     <system:String x:Key="MainColor">Primary colour</system:String>
@@ -111,6 +110,7 @@
     <system:String x:Key="AlternativeСolor">Alternative colour</system:String>
     <system:String x:Key="HoverColor">Selection colour</system:String>
     <system:String x:Key="FontSize">Font size</system:String>
+    <system:String x:Key="FontSizeRTB">Font size for RichTextBox</system:String>
     <system:String x:Key="Language">Language</system:String>
 
     <system:String x:Key="You">You</system:String>

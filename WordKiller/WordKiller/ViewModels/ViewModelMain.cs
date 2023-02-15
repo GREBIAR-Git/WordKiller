@@ -69,4 +69,8 @@ public class ViewModelMain : ViewModelBase
     string fontSize;
 
     public string FontSize { get => fontSize; set => SetProperty(ref fontSize, value); }
+
+    string fontSizeRTB;
+
+    public string FontSizeRTB { get => fontSizeRTB; set => SetProperty(ref fontSizeRTB, value); }
 }

@@ -48,6 +48,7 @@ public partial class MainWindow : Window
         {
             Displayed = (string)FindResource("Something"),
             FontSize = Properties.Settings.Default.FontSize,
+            FontSizeRTB = Properties.Settings.Default.FontSizeRTB,
             MainColor = Properties.Settings.Default.MainColor,
             AdditionalColor = Properties.Settings.Default.AdditionalColor,
             AlternativeColor = Properties.Settings.Default.AlternativeColor,
@@ -94,8 +95,6 @@ public partial class MainWindow : Window
             }
         }
         InitSetting();
-        UpdateHeadersSubstitution();
-        //OpenDrawing();
         lstTest.ItemsSource = data.Paragraphs;
         InitListBox();
     }
@@ -388,14 +387,6 @@ public partial class MainWindow : Window
 
     void TypeSubstitution_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        /*if (Properties.Settings.Default.AutoHeader)
-        {
-            if (!clearSubstitution)
-            {
-                ComboBoxItem item = (ComboBoxItem)TypeSubstitution.SelectedItem;
-                HeaderSubstitution.Text = item.Content.ToString() + " "+ (data.ComboBox[TypeRichBox()].Data.Count + 1); ;
-            }
-        }*/
         if (TypeSubstitution.SelectedIndex != -1)
         {
             if (!IsComboBoxSelected())
@@ -425,6 +416,11 @@ public partial class MainWindow : Window
                     current = new ParagraphCode();
                 }
             }
+            if (Properties.Settings.Default.AutoHeader)
+            {
+                HeaderSubstitution.Text = (string)FindResource(current.Type);
+            }
+            HeaderSubstitution.Visibility = current.DescriptionVisibility();
             TypeUpdate(current);
         }
         else
@@ -1119,14 +1115,13 @@ public partial class MainWindow : Window
     void NumberHeading_MI_Click(object sender, RoutedEventArgs e)
     {
         viewModel.Properties.NumberHeading = !viewModel.Properties.NumberHeading;
-        //data.Properties.NumberHeading = !data.Properties.NumberHeading;
         ImageUpdate();
     }
 
     void ChangeUser_MI_Click(object sender, RoutedEventArgs e)
     {
-        //ChangeUser.Start(data.ComboBox["p"]);
-        //ChangeUser.Start(data.ComboBox["c"]);
+        new ChangeUser<ParagraphPicture>().Start(viewModel.PP);
+        new ChangeUser<ParagraphCode>().Start(viewModel.CP);
     }
 
     void CreateNetwork(object sender, RoutedEventArgs e)
@@ -1859,11 +1854,6 @@ public partial class MainWindow : Window
         SyntaxChecking.IsChecked = Properties.Settings.Default.SyntaxChecking;
         AutoHeader.IsChecked = Properties.Settings.Default.AutoHeader;
         AssociationWKR.IsChecked = FileAssociation.IsAssociated;
-        if (Properties.Settings.Default.AutoHeader)
-        {
-            AutoHeaderVisibilityText.Visibility = Visibility.Visible;
-            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
-        }
     }
 
     void OpenPersonalization(object sender, RoutedEventArgs e)
@@ -1872,6 +1862,7 @@ public partial class MainWindow : Window
         Personalization.Visibility = Visibility.Visible;
         GeneralisSetiings.Visibility = Visibility.Collapsed;
         fontSize.Value = int.Parse(Properties.Settings.Default.FontSize);
+        fontSizeRTB.Value = int.Parse(Properties.Settings.Default.FontSizeRTB);
         language.SelectedIndex = Properties.Settings.Default.Language;
     }
 
@@ -2129,37 +2120,8 @@ public partial class MainWindow : Window
     void AutoHeader_Checked(object sender, RoutedEventArgs e)
     {
         Properties.Settings.Default.AutoHeader = AutoHeader.IsChecked ?? true;
-        if (Properties.Settings.Default.AutoHeader)
-        {
-            AutoHeaderVisibilityText.Visibility = Visibility.Visible;
-            AutoHeaderVisibility.IsChecked = Properties.Settings.Default.AutoHeaderVisibility;
-        }
-        else
-        {
-            AutoHeaderVisibilityText.Visibility = Visibility.Collapsed;
-            Properties.Settings.Default.AutoHeaderVisibility = true;
-            UpdateHeadersSubstitution();
-        }
-        Properties.Settings.Default.Save();
-    }
 
-    void AutoHeaderVisibility_Checked(object sender, RoutedEventArgs e)
-    {
-        Properties.Settings.Default.AutoHeaderVisibility = AutoHeaderVisibility.IsChecked ?? true;
         Properties.Settings.Default.Save();
-        UpdateHeadersSubstitution();
-    }
-
-    void UpdateHeadersSubstitution()
-    {
-        if (Properties.Settings.Default.AutoHeaderVisibility)
-        {
-            Substitution.RowDefinitions[1].Height = GridLength.Auto;
-        }
-        else
-        {
-            Substitution.RowDefinitions[1].Height = new GridLength(0);
-        }
     }
 
     void AssociationWKR_Click(object sender, RoutedEventArgs e)
@@ -2232,6 +2194,7 @@ public partial class MainWindow : Window
         Properties.Settings.Default.HoverColor = hoverColor.SelectedColor.ToString();
         Properties.Settings.Default.Save();
         fontSize.Value = 6;
+        fontSizeRTB.Value = 8;
         language.SelectedIndex = 0;
     }
 
@@ -2268,6 +2231,18 @@ public partial class MainWindow : Window
         }
         viewModel.FontSize = size;
         Properties.Settings.Default.FontSize = size;
+        Properties.Settings.Default.Save();
+    }
+
+    void FontSizeRTB_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        string size = "1";
+        if (fontSizeRTB.Value >= 1)
+        {
+            size = ((int)fontSizeRTB.Value).ToString();
+        }
+        viewModel.FontSizeRTB = size;
+        Properties.Settings.Default.FontSizeRTB = size;
         Properties.Settings.Default.Save();
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace WordKiller.DataTypes.ParagraphData;
 
@@ -27,5 +28,9 @@ public class ParagraphCode : IParagraphData
     {
         description = string.Empty;
         data = string.Empty;
+    }
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Visible;
     }
 }

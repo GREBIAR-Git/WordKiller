@@ -286,18 +286,6 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoHeaderVisibility {
-            get {
-                return ((bool)(this["AutoHeaderVisibility"]));
-            }
-            set {
-                this["AutoHeaderVisibility"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#8daacc")]
         public string MainColor {
             get {
@@ -346,7 +334,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("16")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
         public string FontSize {
             get {
                 return ((string)(this["FontSize"]));
@@ -382,25 +370,13 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("◄")]
-        public char SpecialBefore {
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public string FontSizeRTB {
             get {
-                return ((char)(this["SpecialBefore"]));
+                return ((string)(this["FontSizeRTB"]));
             }
             set {
-                this["SpecialBefore"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("►")]
-        public char SpecialAfter {
-            get {
-                return ((char)(this["SpecialAfter"]));
-            }
-            set {
-                this["SpecialAfter"] = value;
+                this["FontSizeRTB"] = value;
             }
         }
     }

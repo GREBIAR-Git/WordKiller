@@ -1,15 +1,19 @@
-﻿namespace WordKiller.Scripts;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using WordKiller.DataTypes.ParagraphData;
 
-internal class ChangeUser
+namespace WordKiller.Scripts;
+
+public class ChangeUser<T>
 {
-    public static void Start()//ElementComboBox elementComboBox)
+    public void Start(ObservableCollection<T> paragraph)
     {
-        /*
-        for (int i = 0; i < elementComboBox.Data.Count; i++)
+        foreach(IParagraphData item in paragraph)
         {
-            if (elementComboBox.Data[i].Data.Contains(":\\Users\\"))
+            if (item.Data.Contains(":\\Users\\"))
             {
-                string[] directory = elementComboBox.Data[i].Data.Split('\\');
+                string[] directory = item.Data.Split('\\');
                 for (int f = 0; f < directory.Length; f++)
                 {
                     if (directory[f] == "Users")
@@ -18,8 +22,8 @@ internal class ChangeUser
                         break;
                     }
                 }
-                elementComboBox.Data[i].Data = String.Join("\\", directory);
+                item.Data = String.Join("\\", directory);
             }
-        }*/
+        }
     }
 }

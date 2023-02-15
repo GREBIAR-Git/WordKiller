@@ -257,7 +257,7 @@
                         <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Style="{StaticResource TextBlock}"/>
                         <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
                         <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
                             <typeXaml:RTBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
                                     <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
@@ -367,7 +367,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <Button Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" x:Name="NewText" Content="Добавить" Style="{StaticResource Button1}" Click="NewText_Click"/>
-                    <typeXaml:RTBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="True" FontFamily="Calibri">
+                    <typeXaml:RTBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="True" FontFamily="Calibri">
                         <typeXaml:RTBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
@@ -399,7 +399,6 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
@@ -491,23 +490,6 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="6" Grid.Column="0" x:Name="AutoHeaderVisibilityText" Visibility="Collapsed" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70*"/>
-                                <ColumnDefinition Width="40*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsDisplayHeaderInput}" Style="{StaticResource TextBlock}"/>
-                            <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AutoHeaderVisibility" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource CheckBox}" Click="AutoHeaderVisibility_Checked" >
-                                <CheckBox.LayoutTransform>
-                                    <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
-                                </CheckBox.LayoutTransform>
-                            </CheckBox>
-                        </Grid>
-                    </Border>
                 </Grid>
             </ScrollViewer>
             <Grid Grid.Row="1" Grid.Column="0" x:Name="Personalization" Visibility="Collapsed" Grid.ColumnSpan="5">
@@ -531,6 +513,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10"/>
+                            <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
@@ -605,6 +588,19 @@
                             </Grid>
                         </Border>
                         <Border Grid.Row="6" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FontSizeRTB}" Style="{StaticResource TextBlock}"/>
+                                <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="54" MinWidth="250" VerticalAlignment="Center" x:Name="fontSizeRTB" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" ValueChanged="FontSizeRTB_ValueChanged"/>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="7" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50*"/>
