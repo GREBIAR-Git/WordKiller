@@ -5,8 +5,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>512x512.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon\512x512.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Icon\512x512.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Word">
@@ -22,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="512x512.ico" />
+    <Content Include="Resources\Icon\512x512.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +38,11 @@
 
 
   <ItemGroup>
-    <Resource Include="Resources\512x512.png" />
-    <Resource Include="Resources\Code.png" />
-    <Resource Include="Resources\Picture.png" />
-    <Resource Include="Resources\Settings.png" />
+    <Resource Include="Resources\Icon\512x512.ico" />
+    <Resource Include="Resources\Pictures\512x512.png" />
+    <Resource Include="Resources\Pictures\Code.png" />
+    <Resource Include="Resources\Pictures\Picture.png" />
+    <Resource Include="Resources\Pictures\Settings.png" />
   </ItemGroup>
 
 

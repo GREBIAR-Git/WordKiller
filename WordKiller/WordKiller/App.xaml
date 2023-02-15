@@ -1,20 +1,20 @@
 ﻿<Application x:Class="WordKiller.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:WordKiller"
+    xmlns:fConverter="clr-namespace:WordKiller.Scripts.ForUI"
     Startup="App_Startup">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Dictionary/StringResources.en.xaml" />
-                <ResourceDictionary Source="Dictionary/StringResources.be.xaml" />
-                <ResourceDictionary Source="Dictionary/StringResources.fr.xaml" />
-                <ResourceDictionary Source="Dictionary/StringResources.de.xaml" />
-                <ResourceDictionary Source="Dictionary/StringResources.zh.xaml" />
-                <ResourceDictionary Source="Dictionary/StringResources.ru.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.en.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.be.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.fr.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.de.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.zh.xaml" />
+                <ResourceDictionary Source="Resources/Dictionary/StringResources.ru.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <local:FontConverter x:Key="fontConverter"/>
-            <local:AdaptiveFontSizeConverter x:Key="fontConverter1"/>
+            <fConverter:FontConverter x:Key="fontConverter"/>
+            <fConverter:AdaptiveFontSizeConverter x:Key="fontConverter1"/>
             <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
                 <Setter Property="Template">
                     <Setter.Value>

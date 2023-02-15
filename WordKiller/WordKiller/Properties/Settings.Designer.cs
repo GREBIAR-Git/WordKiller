@@ -379,5 +379,29 @@ namespace WordKiller.Properties {
                 this["MaxRowAndColumn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("◄")]
+        public char SpecialBefore {
+            get {
+                return ((char)(this["SpecialBefore"]));
+            }
+            set {
+                this["SpecialBefore"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("►")]
+        public char SpecialAfter {
+            get {
+                return ((char)(this["SpecialAfter"]));
+            }
+            set {
+                this["SpecialAfter"] = value;
+            }
+        }
     }
 }
