@@ -5,8 +5,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>512x512.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon\512x512.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Icon\512x512.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Word">
@@ -22,21 +26,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="512x512.ico" />
+    <Content Include="Resources\Icon\512x512.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
-    <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+    <PackageReference Include="OrelUniverAPI" Version="1.0.4.1" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Resource Include="Resources\512x512.png" />
-    <Resource Include="Resources\Code.png" />
-    <Resource Include="Resources\DragNDrop.png" />
-    <Resource Include="Resources\Picture.png" />
+    <Resource Include="Resources\Icon\512x512.ico" />
+    <Resource Include="Resources\Pictures\512x512.png" />
+    <Resource Include="Resources\Pictures\Code.png" />
+    <Resource Include="Resources\Pictures\Picture.png" />
+    <Resource Include="Resources\Pictures\Settings.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,128 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+
+    <system:String x:Key="File">Datei</system:String>
+
+    <system:String x:Key="Export">Export</system:String>
+    <system:String x:Key="PDF">Im PDF -Format</system:String>
+    <system:String x:Key="HTML">Im HTML -Format</system:String>
+    <system:String x:Key="Create">Schaffen</system:String>
+    <system:String x:Key="Open">Offen</system:String>
+    <system:String x:Key="Save">Speichern</system:String>
+    <system:String x:Key="SaveAs">Speichern als...</system:String>
+    <system:String x:Key="Exit">Ausgang</system:String>
+
+
+    <system:String x:Key="View">Aussicht</system:String>
+
+    <system:String x:Key="Title">Titel</system:String>
+    <system:String x:Key="Substitution">Auswechslung</system:String>
+    <system:String x:Key="Text">Text</system:String>
+
+
+    <system:String x:Key="Document">Dokumentieren</system:String>
+
+    <system:String x:Key="Type">Art der</system:String>
+    <system:String x:Key="DefaultDocument">Gewöhnliches Dokument</system:String>
+    <system:String x:Key="Coursework">Kursarbeit</system:String>
+    <system:String x:Key="LaboratoryWork">Labor arbeit</system:String>
+    <system:String x:Key="PracticeWork">Praktische Arbeit</system:String>
+    <system:String x:Key="ControlWork">Prüfung</system:String>
+    <system:String x:Key="Referat">Abstrakt</system:String>
+    <system:String x:Key="DiplomaWork">Diplomarbeit</system:String>
+    <system:String x:Key="VKR">VKR</system:String>
+
+    <system:String x:Key="PageNumbers">Nummerierung</system:String>
+    <system:String x:Key="TOC">Inhalt</system:String>
+    <system:String x:Key="NumbersToHeaders">Zahlen für Schlagzeilen</system:String>
+
+
+    <system:String x:Key="Network">Netz</system:String>
+
+
+    <system:String x:Key="Help">Bezug</system:String>
+
+    <system:String x:Key="Documentation">Bezug</system:String>
+    <system:String x:Key="AboutProgram">Über das Programm</system:String>
+
+
+    <system:String x:Key="Header">Kapitel</system:String>
+    <system:String x:Key="SubHeader">Unterabschnitt</system:String>
+    <system:String x:Key="List">Aufführen</system:String>
+    <system:String x:Key="Picture">Bild</system:String>
+    <system:String x:Key="Table">Tisch</system:String>
+    <system:String x:Key="Code">Der Code</system:String>
+
+    <system:String x:Key="ToTitle">Zum Titel</system:String>
+    <system:String x:Key="ToText">Zum Text</system:String>
+    <system:String x:Key="ToSubstitutions">Aussagen</system:String>
+    <system:String x:Key="Add">Hinzufügen</system:String>
+
+    <system:String x:Key="Content">Inhalt</system:String>
+
+    <system:String x:Key="Displayed">Anzeigen</system:String>
+    <system:String x:Key="Something">etwas</system:String>
+
+    <system:String x:Key="Unidentified">Unbestimmt</system:String>
+    <system:String x:Key="NotFound">Nicht gefunden</system:String>
+    <system:String x:Key="ForPicture">Für das Bild</system:String>
+    <system:String x:Key="ForСode">Für Code</system:String>
+
+    <system:String x:Key="AllText">Der gesamte Text</system:String>
+    <system:String x:Key="BeforeHeaders">Zu den Abschnitten</system:String>
+    <system:String x:Key="Before">Vor</system:String>
+    <system:String x:Key="Paste">Einfügung</system:String>
+    <system:String x:Key="In">in</system:String>
+    <system:String x:Key="Start">Anfang</system:String>
+
+    <system:String x:Key="OffsetFollowing">Nach der Verschiebung</system:String>
+
+    <system:String x:Key="Error">Fehler</system:String>
+    <system:String x:Key="Error1">Eröffnungsfehler der Datei: Die Datei wird nicht gefunden oder das Format wird nicht unterstützt</system:String>
+    <system:String x:Key="Error2">Wir können dies nicht auf Ihrem Gerät tun, das Betriebssystem aktualisieren</system:String>
+    <system:String x:Key="Error3">Fehler bei der Generierung des Deckblatts</system:String>
+    <system:String x:Key="Error4">Fehler bei der Gestaltung des Inhalts</system:String>
+    <system:String x:Key="Error5">Fehler bei der Generierung des Textes</system:String>
+    <system:String x:Key="Error6">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
+    <system:String x:Key="Error7">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
+
+    <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
+
+    <system:String x:Key="GeneralSettings">Allgemein</system:String>
+    <system:String x:Key="PersonalizationSettings">Personalisierung</system:String>
+    <system:String x:Key="ProfileSettings">Profil</system:String>
+    <system:String x:Key="Styles">Stile</system:String>
+    <system:String x:Key="BackSettings">Zurück</system:String>
+
+    <system:String x:Key="IsAssociate">Associate Expansion (WKR) mit dem Programm?</system:String>
+    <system:String x:Key="IsSyntaxChecking">Ist die Syntaxprüfung (Basic)?</system:String>
+    <system:String x:Key="Encoding">Welche Codierung zum Speichern einer Datei zu verwenden?</system:String>
+    <system:String x:Key="Encoding0">Nein</system:String>
+    <system:String x:Key="Encoding1">Standard</system:String>
+    <system:String x:Key="AfterExportingClose">Muss ich die Bewerbung nach der Berichterstattung über den Bericht jedes Mal schließen?</system:String>
+    <system:String x:Key="IsAutoHeader">Automatischer Titel für das Objekt</system:String>
+    <system:String x:Key="IsDisplayHeaderInput">Zeigen Sie das Feld der Titeleingabe an</system:String>
+
+    <system:String x:Key="ByDefault">Default</system:String>
+    <system:String x:Key="MainColor">Die Hauptfarbe des Programms</system:String>
+    <system:String x:Key="ComplementaryСolor">Zusätzliche Farbe des Programms</system:String>
+    <system:String x:Key="AlternativeСolor">Alternative Farbe</system:String>
+    <system:String x:Key="HoverColor">Farbe beim Schweben</system:String>
+    <system:String x:Key="FontSize">Schriftgröße</system:String>
+    <system:String x:Key="Language">Sprache</system:String>
+
+    <system:String x:Key="You">Du</system:String>
+    <system:String x:Key="FirstName">Name:</system:String>
+    <system:String x:Key="LastName">Familien-oder Nachname:</system:String>
+    <system:String x:Key="MiddleName">Zweiter Vorname:</system:String>
+    <system:String x:Key="Universitet">Institut:</system:String>
+    <system:String x:Key="Faculty">Fakultät:</system:String>
+    <system:String x:Key="Cours">Brunnen:</system:String>
+    <system:String x:Key="Group">Gruppe:</system:String>
+    <system:String x:Key="Shifr">Chiffre:</system:String>
+    <system:String x:Key="Companion">Partner</system:String>
+    
+    
+</ResourceDictionary>
