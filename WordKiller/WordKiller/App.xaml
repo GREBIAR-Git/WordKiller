@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="Resources/Dictionary/StringResources.ru.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <vConverter:FontConverter x:Key="fontConverter"/>
+            <vConverter:FontConverterMax x:Key="fontConverterMax"/>
             <mConverter:AdaptiveFontSizeControl x:Key="multiConverter"/>
             <mConverter:AdaptiveFontSizeTextBlock x:Key="multiTBConverter"/>
             <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
@@ -139,7 +140,7 @@
             <Style x:Key="ComboBox" TargetType="{x:Type ComboBox}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=29}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="Black"/>
                 <Setter Property="MinWidth" Value="300"/>
@@ -186,7 +187,7 @@
             </Style>
             <Style x:Key="ComboBox1" TargetType="{x:Type ComboBox}">
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=29}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Template">
@@ -239,7 +240,7 @@
             <Style x:Key="MenuItem" TargetType="{x:Type MenuItem}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontSize" Value="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=30}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
             <Style x:Key="Button" TargetType="{x:Type Button}">

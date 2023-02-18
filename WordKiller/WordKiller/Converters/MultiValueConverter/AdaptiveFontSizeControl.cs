@@ -41,9 +41,9 @@ class AdaptiveFontSizeControl : IMultiValueConverter
             return 0;
         }
 
-        double fontSize = control.FontSize * control.ActualWidth / formattedText.Width;
+        double fontSize = (control.FontSize) * control.ActualWidth / formattedText.Width;
 
-        double fontSize1 = control.FontSize* control.ActualHeight / formattedText.Height;
+        double fontSize1 = (control.FontSize)* control.ActualHeight / formattedText.Height;
 
         fontSize = Math.Min(fontSize, fontSize1);
 

@@ -610,19 +610,23 @@ public partial class MainWindow : Window
     void UpdateTable()
     {
         ParagraphTable paragraphTable = current as ParagraphTable;
-        gridTable.Children.Clear();
-        for (int i = 0; i < paragraphTable.TableData.Rows; i++)
+        if(paragraphTable is not null)
         {
-            for (int f = 0; f < paragraphTable.TableData.Columns; f++)
+            gridTable.Children.Clear();
+            for (int i = 0; i < paragraphTable.TableData.Rows; i++)
             {
-                TextBox textBox = new()
+                for (int f = 0; f < paragraphTable.TableData.Columns; f++)
                 {
-                    Text = paragraphTable.TableData.DataTable[i, f]
-                };
-                textBox.TextChanged += Cell_TextChanged;
-                gridTable.Children.Add(textBox);
-                Grid.SetColumn(textBox, f);
-                Grid.SetRow(textBox, i);
+                    TextBox textBox = new()
+                    {
+                        Text = paragraphTable.TableData.DataTable[i, f],
+                        FontSize = double.Parse(viewModel.FontSizeRTB),
+                    };
+                    textBox.TextChanged += Cell_TextChanged;
+                    gridTable.Children.Add(textBox);
+                    Grid.SetColumn(textBox, f);
+                    Grid.SetRow(textBox, i);
+                }
             }
         }
     }
@@ -1677,6 +1681,7 @@ public partial class MainWindow : Window
         mainImage.Margin = new Thickness(0, 0, 0, 30);
         mainImage.Source = UIHelper.GetImage("pack://application:,,,/Resources/Pictures/Code.png");
         mainText.Margin = new Thickness(0, 165, 0, 0);
+        mainText.VerticalAlignment = VerticalAlignment.Bottom;
         mainText.Text = text;
     }
 
@@ -1699,9 +1704,10 @@ public partial class MainWindow : Window
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
-    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize = 20)
+    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize = 20, VerticalAlignment verticalAlignment = VerticalAlignment.Center)
     {
         mainText.Visibility = Visibility.Visible;
+        mainText.VerticalAlignment = verticalAlignment;
         mainText.Text = text;
         mainText.TextAlignment = textAlignment;
         //mainText.FontSize = fontSize;
@@ -2197,8 +2203,8 @@ public partial class MainWindow : Window
         Properties.Settings.Default.AlternativeColor = alternativeColor.SelectedColor.ToString();
         Properties.Settings.Default.HoverColor = hoverColor.SelectedColor.ToString();
         Properties.Settings.Default.Save();
-        fontSize.Value = 6;
-        fontSizeRTB.Value = 8;
+        fontSize.Value = 28;
+        fontSizeRTB.Value = 20;
         language.SelectedIndex = 0;
     }
 
@@ -2248,6 +2254,7 @@ public partial class MainWindow : Window
         viewModel.FontSizeRTB = size;
         Properties.Settings.Default.FontSizeRTB = size;
         Properties.Settings.Default.Save();
+        UpdateTable();
     }
 
     void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)

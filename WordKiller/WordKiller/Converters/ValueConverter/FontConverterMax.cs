@@ -1,18 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace WordKiller.Converters.ValueConverter
 {
-    [ValueConversion(typeof(double), typeof(string))]
-    public class FontConverter : IValueConverter
+    internal class FontConverterMax : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter,
             CultureInfo culture)
         {
             if (value != null)
             {
-                return ScalingFontSize.Scale(parameter.ToString(), double.Parse(value.ToString()));
+                double scale = ScalingFontSize.Scale("14", double.Parse(value.ToString()));
+                double max = double.Parse(parameter.ToString());
+                if (scale > max)
+                {
+                    return max;
+                }
+                else
+                {
+                    return scale;
+                }
             }
             return value;
         }
