@@ -47,12 +47,12 @@ public partial class MainWindow : Window
         viewModel = new()
         {
             Displayed = (string)FindResource("Something"),
-            FontSize = Properties.Settings.Default.FontSize,
             FontSizeRTB = Properties.Settings.Default.FontSizeRTB,
             MainColor = Properties.Settings.Default.MainColor,
             AdditionalColor = Properties.Settings.Default.AdditionalColor,
             AlternativeColor = Properties.Settings.Default.AlternativeColor,
             HoverColor = Properties.Settings.Default.HoverColor,
+            FontSize = Properties.Settings.Default.FontSize,
             WinTitle = "WordKiller",
             TitleOpen = true,
             Title = new(),
@@ -1452,7 +1452,7 @@ public partial class MainWindow : Window
         if (current != null)
         {
             singlePB.Visibility = Visibility.Visible;
-            if (current.Type == "Header")
+            if (current is ParagraphH1)
             {
                 int index = h1ComboBox.SelectedIndex;
                 if (index != -1)
@@ -1471,7 +1471,7 @@ public partial class MainWindow : Window
                     DrawText(FindResource("Header").ToString().ToUpperInvariant());
                 }
             }
-            else if (current.Type == "SubHeader")
+            else if (current is ParagraphH2)
             {
                 int index = h2ComboBox.SelectedIndex;
                 if (index != -1)
@@ -1490,7 +1490,7 @@ public partial class MainWindow : Window
                     DrawText((string)FindResource("SubHeader"));
                 }
             }
-            else if (current.Type == "List")
+            else if (current is ParagraphList)
             {
                 int index = lComboBox.SelectedIndex;
                 if (index != -1)
@@ -1585,7 +1585,7 @@ public partial class MainWindow : Window
                     DrawText((string)FindResource("List"));
                 }
             }
-            else if (current.Type == "Picture")
+            else if (current is ParagraphPicture)
             {
                 string path;
                 if (pComboBox.SelectedIndex == -1)
@@ -1609,7 +1609,7 @@ public partial class MainWindow : Window
                     ShowIconPicture((string)FindResource("NotFound"));
                 }
             }
-            else if (current.Type == "Code")
+            else if (current is ParagraphCode)
             {
                 string path;
                 if (cComboBox.SelectedIndex == -1)
@@ -1760,9 +1760,10 @@ public partial class MainWindow : Window
     }
 
     // Рисование
-
+    /*
     void OpenDrawing()
     {
+        
         if (viewModel.TitleOpen)
         {
             prevSettings = TitlePageMI;
@@ -1780,27 +1781,28 @@ public partial class MainWindow : Window
 
     bool isDrawing = false;
 
-    PathFigure currentFigure;
+    PathFigure currentFigure;*/
     void DrawingMouseDown(object sender, MouseButtonEventArgs e)
     {
+        /*
         Mouse.Capture(DrawingTarget);
         isDrawing = true;
-        StartFigure(e.GetPosition(DrawingTarget));
+        StartFigure(e.GetPosition(DrawingTarget));*/
     }
 
     void AddFigurePoint(Point point)
     {
-        currentFigure.Segments.Add(new LineSegment(point, isStroked: true));
+        //   currentFigure.Segments.Add(new LineSegment(point, isStroked: true));
     }
 
     void EndFigure()
     {
-        currentFigure = null;
+        //currentFigure = null;
     }
 
     void StartFigure(Point start)
     {
-        currentFigure = new PathFigure() { StartPoint = start };
+        /*currentFigure = new PathFigure() { StartPoint = start };
         System.Windows.Shapes.Path currentPath =
             new()
             {
@@ -1808,22 +1810,24 @@ public partial class MainWindow : Window
                 StrokeThickness = 3,
                 Data = new PathGeometry() { Figures = { currentFigure } }
             };
-        DrawingTarget.Children.Add(currentPath);
+        DrawingTarget.Children.Add(currentPath);*/
     }
 
     void DrawingMouseUp(object sender, MouseButtonEventArgs e)
     {
+        /*
         AddFigurePoint(e.GetPosition(DrawingTarget));
         EndFigure();
         isDrawing = false;
-        Mouse.Capture(null);
+        Mouse.Capture(null);*/
     }
 
     void DrawingMouseMove(object sender, MouseEventArgs e)
     {
+        /*
         if (!isDrawing)
             return;
-        AddFigurePoint(e.GetPosition(DrawingTarget));
+        AddFigurePoint(e.GetPosition(DrawingTarget));*/
     }
 
     // Настройки

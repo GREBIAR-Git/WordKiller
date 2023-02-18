@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using WordKiller.Scripts.File.Encryption;
 
 namespace WordKiller.Scripts.ImportExport.Encryption;
 
-class Encryption
+class Encryption : IEncryption
 {
-    public static string MegaConvertE(string str)
+    public string Encrypt(string text)
     {
-        StringToBinaryString(ref str);
-        str = RepeatEncodingBinary(str);
-        DigitsToAbc(ref str);
-        return str;
+        StringToBinaryString(ref text);
+        text = RepeatEncodingBinary(text);
+        DigitsToAbc(ref text);
+        return text;
     }
 
     static void StringToBinaryString(ref string str)
@@ -45,12 +46,12 @@ class Encryption
         digits = new string(digits.Select(x => dictionary[x - 48]).ToArray());
     }
 
-    public static string MegaConvertD(string str)
+    public string Decrypt(string text)
     {
-        AbcToDigits(ref str);
-        str = RepeatDecodingBinary(str);
-        str = BinaryStringToString(str);
-        return str;
+        AbcToDigits(ref text);
+        text = RepeatDecodingBinary(text);
+        text = BinaryStringToString(text);
+        return text;
     }
 
     static void AbcToDigits(ref string abc)

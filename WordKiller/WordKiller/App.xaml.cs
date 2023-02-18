@@ -31,35 +31,41 @@ public partial class App : Application
 
     public static void SelectCulture(int culture)
     {
+        string name = string.Empty;
         if (culture == 0)
         {
-            SelectCulture("ru");
+            name = "ru";
         }
         else if (culture == 1)
         {
-            SelectCulture("en");
+            name = "en";
         }
         else if (culture == 2)
         {
-            SelectCulture("be");
+            name = "be";
         }
         else if (culture == 3)
         {
-            SelectCulture("fr");
+            name = "fr";
         }
         else if (culture == 4)
         {
-            SelectCulture("de");
+            name = "de";
         }
         else if (culture == 5)
         {
-            SelectCulture("zh");
+            name = "zh";
+        }
+        if(Thread.CurrentThread.CurrentCulture.Name != name)
+        {
+            SelectCulture(name);
         }
     }
 
 
     static void SelectCulture(string culture)
     {
+        
         if (String.IsNullOrEmpty(culture))
             return;
 

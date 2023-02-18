@@ -4,6 +4,7 @@ using WordKiller.DataTypes.ParagraphData;
 namespace WordKiller.ViewModels;
 public class ViewModelMain : ViewModelBase
 {
+
     public ViewModelProperties properties;
     public ViewModelProperties Properties { get=>properties; set => SetProperty(ref properties, value); }
 
@@ -71,6 +72,5 @@ public class ViewModelMain : ViewModelBase
     public string FontSize { get => fontSize; set => SetProperty(ref fontSize, value); }
 
     string fontSizeRTB;
-
     public string FontSizeRTB { get => fontSizeRTB; set => SetProperty(ref fontSizeRTB, value); }
 }

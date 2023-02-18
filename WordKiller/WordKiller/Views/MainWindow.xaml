@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:typeXaml="clr-namespace:WordKiller.DataTypes.TypeXAML"
-        xmlns:vm="clr-namespace:WordKiller.ViewModels"
+        xmlns:vm="clr-namespace:WordKiller.ViewModels" xmlns:s="http://schemas.microsoft.com/winfx/2009/xaml"
         mc:Ignorable="d"
         Name="win"
         Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="447" Width="695" MinHeight="310" MinWidth="710" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter" Icon="/Resources/Pictures/512x512.png">
@@ -191,12 +191,72 @@
                             <Polygon Fill="White" Points="1, 57, 9, 50, 9, 64" />
                         </Grid>
                     </Button>
-                    <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Header}" MinHeight="50" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource SubHeader}" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource List}" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Picture}" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Table}" Style="{StaticResource Button}"/>
-                    <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Code}" Style="{StaticResource Button}"/>
+                    <Button Grid.Row="0" Grid.Column="1" x:Name="test1" Margin="5,0,5,5" Content="{DynamicResource Header}" MinHeight="50" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" Content="{DynamicResource SubHeader}" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" Content="{DynamicResource List}" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" Content="{DynamicResource Picture}" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" Content="{DynamicResource Table}" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" Content="{DynamicResource Code}" Style="{StaticResource Button}">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
                     <ComboBox Grid.Row="1" Grid.Column="1" MinWidth="10" x:Name="h1ComboBox" ItemsSource="{Binding Path=H1P,Mode=TwoWay}" DisplayMemberPath="Description"  Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                     <ComboBox Grid.Row="1" Grid.Column="2" MinWidth="10" x:Name="h2ComboBox" ItemsSource="{Binding Path=H2P,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
                     <ComboBox Grid.Row="1" Grid.Column="3" MinWidth="10" x:Name="lComboBox" ItemsSource="{Binding Path=LP,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" Style="{StaticResource ComboBox}"/>
@@ -226,10 +286,30 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="elementTBl" TextAlignment="Left" Text="{Binding Path=Displayed,Mode=TwoWay}" Style="{StaticResource TextBlock}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" TextAlignment="Left" Text="{Binding Path=Displayed,Mode=TwoWay}" Style="{StaticResource TextBlock}"/>
                     </Grid>
-                    <Button Grid.Column="3" Margin="0,0,5,0" x:Name="add" Content="{DynamicResource Add}" Visibility="Collapsed" Style="{StaticResource Button}" Click="Add_Click"/>
-                    <Button Grid.Column="4" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click"/>
+                    <Button Grid.Column="3" Margin="0,0,5,0" x:Name="add" Content="{DynamicResource Add}" Visibility="Collapsed" Style="{StaticResource Button}" Click="Add_Click">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
+                    <Button Grid.Column="4" x:Name="toText" Content="К тексту" Style="{StaticResource Button}" Click="ToText_Click">
+                        <Button.FontSize>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Button.FontSize>
+                    </Button>
                 </Grid>
                 <Grid Grid.Row="2" Grid.Column="0" x:Name="SubstitutionPanelRTB" Background="{Binding Path=MainColor,Mode=TwoWay}">
                     <Grid.ColumnDefinitions>
@@ -255,7 +335,7 @@
                             <ComboBoxItem Content="{DynamicResource Code}"/>
                         </ComboBox>
                         <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Style="{StaticResource TextBlock}"/>
-                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter"/>
+                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" xmlns:s="clr-namespace:System;assembly=mscorlib"/>
                         <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
                         <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
                             <typeXaml:RTBox.Resources>
@@ -390,11 +470,61 @@
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource GeneralSettings}" Style="{StaticResource Button}" Click="OpenGeneralisSetiings"/>
-            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource PersonalizationSettings}" Style="{StaticResource Button}" Click="OpenPersonalization"/>
-            <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource ProfileSettings}" Style="{StaticResource Button}" Click="OpenProfile" />
-            <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource Styles}" Style="{StaticResource Button}"/>
-            <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Content="{DynamicResource BackSettings}" Style="{StaticResource Button}" Click="ExitSettings"/>
+            <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" Content="{DynamicResource GeneralSettings}" Style="{StaticResource Button}" Click="OpenGeneralisSetiings">
+                <Button.FontSize>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Button.FontSize>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" Content="{DynamicResource PersonalizationSettings}" Style="{StaticResource Button}" Click="OpenPersonalization">
+                <Button.FontSize>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Button.FontSize>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" Content="{DynamicResource ProfileSettings}" Style="{StaticResource Button}" Click="OpenProfile">
+                <Button.FontSize>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Button.FontSize>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" Content="{DynamicResource Styles}" Style="{StaticResource Button}">
+                <Button.FontSize>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Button.FontSize>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" Content="{DynamicResource BackSettings}" Style="{StaticResource Button}" Click="ExitSettings">
+                <Button.FontSize>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Button.FontSize>
+            </Button>
             <ScrollViewer x:Name="GeneralisSetiings" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" VerticalScrollBarVisibility="Hidden">
                 <Grid>
                     <Grid.RowDefinitions>
