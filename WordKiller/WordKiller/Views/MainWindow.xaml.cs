@@ -896,7 +896,7 @@ public partial class MainWindow : Window
         HeaderUpdate();
         viewModel.Properties = data.Properties;
         viewModel.Title = data.Title;
-
+        lstTest.ItemsSource = data.Paragraphs;
         if (viewModel.TextOpen)
         {
             if (lstTest.Items.Count > 0)
@@ -910,11 +910,13 @@ public partial class MainWindow : Window
 
     void WindowBinding_Save(object sender, ExecutedRoutedEventArgs e)
     {
-        file.Save(ref data, ref viewModel);
+        file.Save(ref data);
+        HeaderUpdateMI();
     }
     void WindowBinding_SaveAs(object sender, ExecutedRoutedEventArgs e)
     {
-        file.SaveAs(ref data, ref viewModel);
+        file.SaveAs(ref data);
+        HeaderUpdateMI();
     }
 
     void WindowBinding_Quit(object sender, ExecutedRoutedEventArgs e)
@@ -1053,64 +1055,16 @@ public partial class MainWindow : Window
                 break;
         }
 
-        if (DefaultDocumentMI.IsChecked)
-        {
-            SwitchPanel.Visibility = Visibility.Collapsed;
-            TextHeader((string)FindResource("DefaultDocument"));
-            data.Type = TypeDocument.DefaultDocument;
-        }
-        else
-        {
-            SwitchPanel.Visibility = Visibility.Visible;
-            if (LaboratoryWorkMI.IsChecked)
-            {
-                data.Type = TypeDocument.LaboratoryWork;
-                TextHeader((string)FindResource("LaboratoryWork"));
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (PracticeWorkMI.IsChecked)
-            {
-                data.Type = TypeDocument.PracticeWork;
-                TextHeader((string)FindResource("PracticeWork"));
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (CourseworkMI.IsChecked)
-            {
-                data.Type = TypeDocument.Coursework;
-                TextHeader((string)FindResource("Coursework"));
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (ControlWorkMI.IsChecked)
-            {
-                data.Type = TypeDocument.ControlWork;
-                TextHeader((string)FindResource("ControlWork"));
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (ReferatMI.IsChecked)
-            {
-                data.Type = TypeDocument.Referat;
-                TextHeader((string)FindResource("Referat"));
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (DiplomaMI.IsChecked)
-            {
-                data.Type = TypeDocument.Diploma;
-                TextHeader((string)FindResource("DiplomaWork"));
-                TitleElements.ShowTitleElems(titlePanel, "");
-            }
-            else if (VKRMI.IsChecked)
-            {
-                data.Type = TypeDocument.VKR;
-                TextHeader((string)FindResource("VKR"));
-                TitleElements.ShowTitleElems(titlePanel, "");
-            }
-        }
-        HideTitlePanel();
+        HeaderUpdateMI();
     }
 
     void TextHeader(string type)
     {
         if (file.SavePathExists())
+        {
+            win.Title = file.SavePath + " — " + type;
+        }
+        else
         {
             win.Title = "WordKiller — " + type;
         }
@@ -1693,14 +1647,16 @@ public partial class MainWindow : Window
         mainImage.Width = Double.NaN;
         mainImage.Height = Double.NaN;
         mainImage.Margin = new Thickness(0, 0, 0, 0);
-        var uriSource = new Uri(path, UriKind.Absolute);
-        try
+        var bi = new BitmapImage();
+        using (var fs = new FileStream(path, FileMode.Open))
         {
-            mainImage.Source = new BitmapImage(uriSource);
+            bi.BeginInit();
+            bi.StreamSource = fs;
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.EndInit();
         }
-        catch
-        {
-        }
+        mainImage.Source = bi;
+        bi.Freeze();
         mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 

@@ -16,6 +16,8 @@ public class WordKillerFile
 {
     string? savePath;
 
+    public string? SavePath { get => savePath;}
+
     readonly SaveLogo saveLogo;
 
     public WordKillerFile(Image logo)
@@ -28,19 +30,19 @@ public class WordKillerFile
         return !string.IsNullOrEmpty(savePath);
     }
 
-    public void Save(ref DocumentData data, ref ViewModelMain viewModel)
+    public void Save(ref DocumentData data)
     {
         if (!string.IsNullOrEmpty(savePath))
         {
-            SaveFile(savePath, ref data, ref viewModel);
+            SaveFile(savePath, ref data);
         }
         else
         {
-            SaveAs(ref data, ref viewModel);
+            SaveAs(ref data);
         }
     }
 
-    public bool SaveAs(ref DocumentData data, ref ViewModelMain viewModel)
+    public bool SaveAs(ref DocumentData data)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -51,13 +53,13 @@ public class WordKillerFile
         if (saveFileDialog.ShowDialog() == true)
         {
             savePath = saveFileDialog.FileName;
-            SaveFile(savePath, ref data, ref viewModel);
+            SaveFile(savePath, ref data);
             return true;
         }
         return false;
     }
 
-    void SaveFile(string nameFile, ref DocumentData data, ref ViewModelMain viewModel)
+    void SaveFile(string nameFile, ref DocumentData data)
     {
         using (FileStream stream = System.IO.File.Open(nameFile, false ? FileMode.Append : FileMode.Create))
         {
@@ -66,7 +68,6 @@ public class WordKillerFile
             stream.Read(buffer, 0, buffer.Length);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             binaryFormatter.Serialize(stream, data);
-            viewModel.WinTitle = Path.GetFileName(nameFile);
             saveLogo.Show();
         }
 
@@ -92,7 +93,6 @@ public class WordKillerFile
                 data = (DocumentData)binaryFormatter.Deserialize(stream);
             }
             ReferenceComboBox(data, ref viewModel);
-            viewModel.WinTitle = Path.GetFileName(fileName);
             savePath = fileName;
         }
         catch
@@ -152,12 +152,12 @@ public class WordKillerFile
         savePath = string.Empty;
     }
 
-    public bool NeedSave(ref DocumentData data, ref ViewModelMain viewModel)
+    bool NeedSave(ref DocumentData data, ref ViewModelMain viewModel)
     {
         MessageBoxResult result = MessageBox.Show(UIHelper.FindResourse("Question1"), UIHelper.FindResourse("Question1"), MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         if (result == MessageBoxResult.Yes)
         {
-            Save(ref data, ref viewModel);
+            Save(ref data);
             return true;
         }
         return false;
