@@ -37,6 +37,7 @@
     <system:String x:Key="PageNumbers">編號</system:String>
     <system:String x:Key="TOC">內容</system:String>
     <system:String x:Key="NumbersToHeaders">頭條新聞</system:String>
+    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
 
 
     <system:String x:Key="Network">網</system:String>

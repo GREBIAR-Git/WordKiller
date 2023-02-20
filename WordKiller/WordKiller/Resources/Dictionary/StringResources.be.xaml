@@ -37,6 +37,7 @@
     <system:String x:Key="PageNumbers">Нумараванне</system:String>
     <system:String x:Key="TOC">Задаволены</system:String>
     <system:String x:Key="NumbersToHeaders">Лічбы для загалоўкаў</system:String>
+    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
 
 
     <system:String x:Key="Network">Сетка</system:String>

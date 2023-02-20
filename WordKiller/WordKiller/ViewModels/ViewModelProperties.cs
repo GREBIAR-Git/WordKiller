@@ -16,5 +16,8 @@ namespace WordKiller.ViewModels
         bool numberHeading;
         public bool NumberHeading { get => numberHeading; set => SetProperty(ref numberHeading, value); }
 
+        bool listOfReferences;
+        public bool ListOfReferences { get => listOfReferences; set => SetProperty(ref listOfReferences, value); }
+
     }
 }

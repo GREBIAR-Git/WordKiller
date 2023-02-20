@@ -37,6 +37,7 @@
     <system:String x:Key="PageNumbers">Nummerierung</system:String>
     <system:String x:Key="TOC">Inhalt</system:String>
     <system:String x:Key="NumbersToHeaders">Zahlen für Schlagzeilen</system:String>
+    <system:String x:Key="ListOfReferences">Спіс літаратуры</system:String>
 
 
     <system:String x:Key="Network">Netz</system:String>

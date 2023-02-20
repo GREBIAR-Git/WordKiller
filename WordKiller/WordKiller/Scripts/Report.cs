@@ -44,6 +44,7 @@ class Report
                 WordprocessingDocumentType.Document, true))
                 {
                     MainDocumentPart main = doc.AddMainDocumentPart();
+
                     main.Document = new Document();
                     Body body = main.Document.AppendChild(new Body());
 

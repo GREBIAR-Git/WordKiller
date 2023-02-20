@@ -36,7 +36,7 @@
     <system:String x:Key="PageNumbers">Нумерация</system:String>
     <system:String x:Key="TOC">Содержание</system:String>
     <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
-    
+    <system:String x:Key="ListOfReferences">Список литературы</system:String>
     
     <system:String x:Key="Network">Сеть</system:String>
     

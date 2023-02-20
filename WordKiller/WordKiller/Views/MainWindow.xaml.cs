@@ -1062,11 +1062,11 @@ public partial class MainWindow : Window
     {
         if (file.SavePathExists())
         {
-            win.Title = file.SavePath + " — " + type;
+            viewModel.WinTitle = file.SavePath + " — " + type;
         }
         else
         {
-            win.Title = "WordKiller — " + type;
+            viewModel.WinTitle = "WordKiller — " + type;
         }
     }
 

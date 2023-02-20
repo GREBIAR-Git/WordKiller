@@ -37,6 +37,7 @@
     <system:String x:Key="PageNumbers">Page numbers</system:String>
     <system:String x:Key="TOC">Table of Columns</system:String>
     <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
+    <system:String x:Key="ListOfReferences">List of references</system:String>
 
 
     <system:String x:Key="Network">Network</system:String>

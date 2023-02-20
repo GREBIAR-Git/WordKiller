@@ -37,7 +37,7 @@
     <system:String x:Key="PageNumbers">Numérotage</system:String>
     <system:String x:Key="TOC">Contenu</system:String>
     <system:String x:Key="NumbersToHeaders">Chiffres pour les gros titres</system:String>
-
+    <system:String x:Key="ListOfReferences">Liste des références</system:String>
 
     <system:String x:Key="Network">Rapporter</system:String>
 
