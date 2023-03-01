@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Windows;
+using WordKiller.DataTypes.ParagraphData.Sections;
 
-namespace WordKiller.DataTypes.ParagraphData;
+namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphH2 : IParagraphData
+public class ParagraphH2 : SectionH2, IParagraphData
 {
     public string Type { get => "SubHeader"; }
 
@@ -14,6 +15,10 @@ public class ParagraphH2 : IParagraphData
 
     public string Description { get => data; set => data = value; }
 
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Collapsed;
+    }
 
     public ParagraphH2(string data)
     {
@@ -23,10 +28,5 @@ public class ParagraphH2 : IParagraphData
     public ParagraphH2()
     {
         data = string.Empty;
-    }
-
-    public Visibility DescriptionVisibility()
-    {
-        return Visibility.Collapsed;
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows;
 
-namespace WordKiller.DataTypes.ParagraphData;
+namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphPicture : IParagraphData
+public class ParagraphList : IParagraphData
 {
-    public string Type { get => "Picture"; }
+    public string Type { get => "List"; }
 
     string data;
 
@@ -16,20 +16,19 @@ public class ParagraphPicture : IParagraphData
 
     public string Description { get => description; set => description = value; }
 
-    public ParagraphPicture(string description, string data)
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Visible;
+    }
+    public ParagraphList(string description, string data)
     {
         this.description = description;
         this.data = data;
     }
 
-    public ParagraphPicture()
+    public ParagraphList()
     {
         description = string.Empty;
         data = string.Empty;
-    }
-
-    public Visibility DescriptionVisibility()
-    {
-        return Visibility.Visible;
     }
 }

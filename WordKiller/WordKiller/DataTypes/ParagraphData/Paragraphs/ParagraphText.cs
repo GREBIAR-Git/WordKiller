@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace WordKiller.DataTypes.ParagraphData;
+namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
 internal class ParagraphText : IParagraphData
@@ -14,13 +14,18 @@ internal class ParagraphText : IParagraphData
 
     public string Description { get => data; set => data = value; }
 
-    public ParagraphText(string data)
-    {
-        this.data = data;
-    }
-
     public Visibility DescriptionVisibility()
     {
         return Visibility.Collapsed;
+    }
+
+    public ParagraphText()
+    {
+        data = string.Empty;
+    }
+
+    public ParagraphText(string data)
+    {
+        this.data = data;
     }
 }

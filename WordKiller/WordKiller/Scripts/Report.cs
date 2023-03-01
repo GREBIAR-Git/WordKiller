@@ -11,11 +11,14 @@ using System.Windows;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts.ForUI;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Style = DocumentFormat.OpenXml.Wordprocessing.Style;
+
 
 namespace WordKiller.Scripts;
 class Report
@@ -608,16 +611,17 @@ class Report
         int p = 1;
         int t = 1;
         int c = 1;
+        Section(data);
 
-        foreach (IParagraphData dataType in data.Paragraphs)
+        void Paragraph(IParagraphData paragraph)
         {
-            if (dataType is ParagraphText)
+            if (paragraph is ParagraphText)
             {
-                Text(doc, dataType.Data, "Simple");
+                Text(doc, paragraph.Data, "Simple");
             }
-            else if (dataType is ParagraphH1)
+            else if (paragraph is ParagraphH1)
             {
-                string text = dataType.Data.ToUpper();
+                string text = paragraph.Data.ToUpper();
                 if (h1 != 1)
                 {
                     PageBreak(doc);
@@ -634,7 +638,7 @@ class Report
                 Text(doc, text, "H1");
                 h2 = 1;
             }
-            else if (dataType is ParagraphH2)
+            else if (paragraph is ParagraphH2)
             {
                 string text = string.Empty;
                 if (number)
@@ -642,37 +646,53 @@ class Report
                     text += (h1 - 1).ToString() + "." + h2.ToString() + " ";
                 }
 
-                text += dataType.Data;
+                text += paragraph.Data;
                 Text(doc, "\n" + text, "H2");
                 h2all++;
                 h2++;
             }
-            else if (dataType is ParagraphList)
+            else if (paragraph is ParagraphList)
             {
-                List(doc, dataType.Data);
+                List(doc, paragraph.Data);
                 l++;
             }
-            else if (dataType is ParagraphPicture)
+            else if (paragraph is ParagraphPicture)
             {
-                Picture(doc, dataType.Data);
-                Text(doc, "Рисунок " + p + " – " + dataType.Description, "Picture");
+                Picture(doc, paragraph.Data);
+                Text(doc, "Рисунок " + p + " – " + paragraph.Description, "Picture");
                 p++;
             }
-            else if (dataType is ParagraphTable)
+            else if (paragraph is ParagraphTable)
             {
-                ParagraphTable paragraphTable = dataType as ParagraphTable;
+                ParagraphTable paragraphTable = paragraph as ParagraphTable;
                 Text(doc, "Таблица " + t + " – " + paragraphTable.Description, "TableText");
                 Table(doc, paragraphTable.TableData);
                 t++;
             }
-            else if (dataType is ParagraphCode)
+            else if (paragraph is ParagraphCode)
             {
-                Text(doc, dataType.Description, "H1");
-                FileStream file = new(dataType.Data, FileMode.Open);
+                Text(doc, paragraph.Description, "H1");
+                FileStream file = new(paragraph.Data, FileMode.Open);
                 StreamReader reader = new(file);
                 string data1 = reader.ReadToEnd();
                 Text(doc, data1, "Code");
                 c++;
+            }
+        }
+
+        void Section(SectionParagraphs sectionParagraphs)
+        {
+            foreach (IParagraphData paragraph in sectionParagraphs.Paragraphs)
+            {
+                if (paragraph is SectionParagraphs)
+                {
+                    Paragraph(paragraph);
+                    Section(paragraph as SectionParagraphs);
+                }
+                else
+                {
+                    Paragraph(paragraph);
+                }
             }
         }
     }

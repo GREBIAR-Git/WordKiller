@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.TypeXAML;
 using WordKiller.Scripts.File;
 using WordKiller.Scripts.ForUI;

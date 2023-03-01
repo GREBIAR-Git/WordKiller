@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 using WordKiller.Scripts.ImportExport;
@@ -96,7 +98,6 @@ public partial class MainWindow : Window
         }
         InitSetting();
         lstTest.ItemsSource = data.Paragraphs;
-        InitListBox();
     }
 
     //Комбобоксы 
@@ -256,7 +257,7 @@ public partial class MainWindow : Window
             }
             ComboBox comboBox = UIHelper.FindChild<ComboBox>(Application.Current.MainWindow, nameComboBox + "ComboBox");
             comboBox.SelectedItem = dataParagraph;
-            data.Paragraphs.Add(dataParagraph);
+            data.AddParagraph(dataParagraph);
             lstTest.Items.Refresh();
         }
     }
@@ -355,9 +356,55 @@ public partial class MainWindow : Window
         }
     }
 
+    void RemoveSection1(SectionParagraphs section)
+    {
+        foreach (IParagraphData paragraphData in section.Paragraphs)
+        {
+            if (paragraphData is SectionParagraphs section1)
+            {
+                if (paragraphData is ParagraphH1)
+                {
+                    RemoveSection1(section1);
+                    RemoveParagraphO(paragraphData);
+                }
+                else if (paragraphData is ParagraphH2)
+                {
+                    RemoveSection1(section1);
+                    RemoveParagraphO(paragraphData);
+                }
+            }
+            else
+            {
+                RemoveParagraphO(paragraphData);
+            }
+        }
+    }
+
     void RemoveParagraph(IParagraphData removable)
     {
-        data.Paragraphs.Remove(removable);
+        data.RemoveParagraph(removable);
+        if (removable is SectionParagraphs section)
+        {
+            if (removable is ParagraphH1)
+            {
+                RemoveSection1(section);
+                RemoveParagraphO(removable);
+            }
+            else if (removable is ParagraphH2)
+            {
+                RemoveSection1(section);
+                RemoveParagraphO(removable);
+            }
+
+        }
+        else
+        {
+            RemoveParagraphO(removable);
+        }
+    }
+
+    void RemoveParagraphO(IParagraphData removable)
+    {
         if (removable is ParagraphH1)
         {
             viewModel.H1P.Remove(removable as ParagraphH1);
@@ -610,7 +657,7 @@ public partial class MainWindow : Window
     void UpdateTable()
     {
         ParagraphTable paragraphTable = current as ParagraphTable;
-        if(paragraphTable is not null)
+        if (paragraphTable is not null)
         {
             gridTable.Children.Clear();
             for (int i = 0; i < paragraphTable.TableData.Rows; i++)
@@ -901,7 +948,7 @@ public partial class MainWindow : Window
         {
             if (lstTest.Items.Count > 0)
             {
-                lstTest.SelectedIndex = 0;
+                //lstTest.SelectedIndex = 0;
             }
         }
 
@@ -1186,10 +1233,6 @@ public partial class MainWindow : Window
                 TextPanelRTB.Visibility = Visibility.Visible;
                 richTextBox.Focus();
                 lstTest.Items.Refresh();
-                if (lstTest.Items.Count > 0)
-                {
-                    lstTest.SelectedIndex = 0;
-                }
 
                 richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
             }
@@ -1220,8 +1263,6 @@ public partial class MainWindow : Window
                     ComboBox cmbBox = (ComboBox)elementPanel.Children[i];
                     cmbBox.Items.Refresh();
                 }
-                lstTest.SelectedIndex = -1;
-                richTextBox.Document.Blocks.Clear();
                 richTextBox.Visibility = Visibility.Collapsed;
                 cursorLocationTB.Visibility = Visibility.Collapsed;
                 TextPanelRTB.Visibility = Visibility.Collapsed;
@@ -1289,10 +1330,19 @@ public partial class MainWindow : Window
 
     void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (lstTest.SelectedIndex != -1)
+        if (lstTest.SelectedItem != null)
         {
-            data.Paragraphs.ElementAt(lstTest.SelectedIndex).Data = richTextBox.GetText();
-            lstTest.Items.Refresh();
+            IParagraphData item = lstTest.SelectedItem as IParagraphData;
+            item.Data = richTextBox.GetText();
+        }
+    }
+
+    void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+        if (lstTest.SelectedItem != null && e.OldValue != e.NewValue)
+        {
+            IParagraphData item = lstTest.SelectedItem as IParagraphData;
+            richTextBox.SetText(item.Data);
         }
     }
 
@@ -1301,94 +1351,161 @@ public partial class MainWindow : Window
         richTextBox.KeyProcessing(e);
     }
 
-    void InitListBox()
-    {
-        Style itemContainerStyle = new(typeof(ListBoxItem));
-        itemContainerStyle.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
-        itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(LstTest_PreviewMouseLeftButtonDown)));
-        itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, new DragEventHandler(LstTest_Drop)));
-        lstTest.ItemContainerStyle = itemContainerStyle;
-    }
+    Point _lastMouseDown;
+    IParagraphData draggedItem, _target;
 
-    void LstTest_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
     {
-        //if (sender is ListBoxItem)
+        //добавить чтобы главный копировать
+        if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
         {
-            ListBoxItem draggedItem = sender as ListBoxItem;
-            DragDrop.DoDragDrop(draggedItem, draggedItem.DataContext, DragDropEffects.Move);
-            draggedItem.IsSelected = true;
-        }
-    }
-
-    void LstTest_Drop(object sender, DragEventArgs e)
-    {
-        IParagraphData droppedData = e.Data.GetData(e.Data.GetFormats()[0]) as IParagraphData;
-        IParagraphData target = ((ListBoxItem)(sender)).DataContext as IParagraphData;
-        int removedIdx = lstTest.Items.IndexOf(droppedData);
-        int targetIdx = lstTest.Items.IndexOf(target);
-
-        if (removedIdx < targetIdx)
-        {
-            data.Paragraphs.Insert(targetIdx + 1, droppedData);
-            data.Paragraphs.RemoveAt(removedIdx);
-        }
-        else
-        {
-            int remIdx = removedIdx + 1;
-            if (data.Paragraphs.Count + 1 > remIdx)
+            if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                data.Paragraphs.Insert(targetIdx, droppedData);
-                data.Paragraphs.RemoveAt(remIdx);
+                int i = data.Paragraphs.IndexOf(_targetItem);
+                int f = data.Paragraphs.IndexOf(_sourceItem);
+                (data.Paragraphs[i], data.Paragraphs[f]) = (data.Paragraphs[f], data.Paragraphs[i]);
+            }
+            return;
+        }
+        else if (_targetItem is ParagraphH2)
+        {
+            if (_sourceItem is ParagraphH2)
+            {
+                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    data.SwapParagraphs(_targetItem, _sourceItem);
+                }
+                return;
+            }
+            else if (_sourceItem is ParagraphH1)
+            {
+                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+                return;
             }
         }
-        lstTest.Items.Refresh();
+        if (_targetItem is not SectionParagraphs)
+        {
+            if (_sourceItem is not ParagraphH2 && _sourceItem is not ParagraphH1)
+            {
+                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    data.SwapParagraphs(_targetItem, _sourceItem);
+                }
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+                return;
+            }
+        }
+        if (MessageBox.Show("Вставить «" + _sourceItem.Description.ToString() + "» в «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        {
+            data.RemoveParagraph(_sourceItem);
+            SectionParagraphs section = _targetItem as SectionParagraphs;
+            section.AddParagraph(_sourceItem);
+        }
+
     }
 
-    void LstTest_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private TreeViewItem GetNearestContainer(UIElement element)
     {
-        if (lstTest.SelectedIndex != -1)
+        TreeViewItem container = element as TreeViewItem;
+        while ((container == null) && (element != null))
         {
-            int targetIdx = lstTest.SelectedIndex;
-            richTextBox.SetText(data.Paragraphs.ElementAt(targetIdx).Data);
+            element = VisualTreeHelper.GetParent(element) as UIElement;
+            container = element as TreeViewItem;
+        }
+        return container;
+    }
+
+    private void TreeView_MouseMove(object sender, MouseEventArgs e)
+    {
+        try
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point currentPosition = e.GetPosition(lstTest);
+
+                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
+                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
+                {
+                    draggedItem = (IParagraphData)lstTest.SelectedItem;
+                    if (draggedItem != null)
+                    {
+                        DragDropEffects finalDropEffect = DragDrop.DoDragDrop(lstTest, lstTest.SelectedValue, DragDropEffects.Move);
+                        if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
+                        {
+                            CopyItem(draggedItem, _target);
+                            _target = null;
+                            draggedItem = null;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception) { }
+    }
+
+    private void TreeView_DragOver(object sender, DragEventArgs e)
+    {
+        try
+        {
+            Point currentPosition = e.GetPosition(lstTest);
+            if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
+               (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
+            {
+                e.Effects = DragDropEffects.Move;
+            }
+            e.Handled = true;
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    private void TreeView_Drop(object sender, DragEventArgs e)
+    {
+        try
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            TreeViewItem TargetItem = GetNearestContainer
+                (e.OriginalSource as UIElement);
+            if (TargetItem != null && draggedItem != null)
+            {
+                _target = (IParagraphData)TargetItem.Header;
+                e.Effects = DragDropEffects.Move;
+            }
+        }
+        catch (Exception)
+        {
         }
     }
 
     void NewText_Click(object sender, RoutedEventArgs e)
     {
-        data.Paragraphs.Add(new ParagraphText(""));
-        lstTest.Items.Refresh();
-    }
-
-    void LstTest_DragOver(object sender, DragEventArgs e)
-    {
-        e.Effects = DragDropEffects.All;
-        e.Handled = true;
-    }
-    void LstTest_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        lstTest.UnselectAll();
+        data.AddParagraph(new ParagraphText());
     }
 
     void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedIndex == -1) return;
+        if (lstTest.SelectedItem == null) return;
         RemoveParagraph(lstTest.SelectedItem as IParagraphData);
-        lstTest.Items.Refresh();
     }
 
 
     void ContextMenuInsertAfter_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedIndex == -1) return;
-        data.Paragraphs.Insert(lstTest.SelectedIndex + 1, new ParagraphText(""));
-        lstTest.Items.Refresh();
+        if (lstTest.SelectedItem == null) return;
+        data.InsertAfter(lstTest.SelectedItem as IParagraphData, new ParagraphText());
     }
 
     void ContextMenuInsertBefore_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedIndex == -1) return;
-        data.Paragraphs.Insert(lstTest.SelectedIndex, new ParagraphText(""));
-        lstTest.Items.Refresh();
+        if (lstTest.SelectedItem == null) return;
+        data.InsertBefore(lstTest.SelectedItem as IParagraphData, new ParagraphText());
     }
 
     // PictureBox
@@ -2219,4 +2336,6 @@ public partial class MainWindow : Window
         Properties.Settings.Default.Language = language.SelectedIndex;
         Properties.Settings.Default.Save();
     }
+
+
 }

@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using WordKiller.DataTypes.Enums;
-using WordKiller.DataTypes.ParagraphData;
+using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes;
 
 [Serializable]
-public class DocumentData
+public class DocumentData : MainSection
 {
     public TypeDocument Type { get; set; }
 
     public ViewModelTitle Title { get; set; }
 
-    public List<IParagraphData> Paragraphs { get; set; }
-
     public ViewModelProperties Properties { get; set; }
 
-
-    public DocumentData()
+    public DocumentData() : base()
     {
         Properties = new ViewModelProperties();
         Title = new();
-        Paragraphs = new List<IParagraphData>();
     }
 }

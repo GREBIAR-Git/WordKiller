@@ -116,7 +116,7 @@
                     <MenuItem Header="{DynamicResource AboutProgram}" Style="{StaticResource MenuItem}" Click="AboutProgramShow"/>
                 </MenuItem>
             </Menu>
-            <Button Margin="0,0,53,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" Visibility="Collapsed" Style="{StaticResource Button1}" Click="SwitchPanel_Click"/>
+            <Button Margin="0,0,53,0" x:Name="SwitchPanel" HorizontalAlignment="Right" Content="К титульнику" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=30}" Visibility="Collapsed" Style="{StaticResource Button1}" Click="SwitchPanel_Click"/>
             <Button Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource Button1}" Click="OpenSettings_Click">
                 <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
             </Button>
@@ -336,9 +336,9 @@
                             <ComboBoxItem Content="{DynamicResource Code}"/>
                         </ComboBox>
                         <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Style="{StaticResource TextBlock}"/>
-                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Calibri" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" xmlns:s="clr-namespace:System;assembly=mscorlib"/>
+                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Serif" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" xmlns:s="clr-namespace:System;assembly=mscorlib"/>
                         <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Calibri">
+                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Serif">
                             <typeXaml:RTBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
                                     <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
@@ -418,16 +418,23 @@
                         <RowDefinition Height="5*"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <ListBox Grid.Row="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="lstTest" Grid.Column="0" SelectionChanged="LstTest_SelectionChanged" DragOver="LstTest_DragOver" MouseDown="LstTest_MouseDown">
-                        <ListBox.ContextMenu>
+                    <TreeView Grid.Row="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="lstTest" Grid.Column="0" SelectedItemChanged="TreeView_SelectedItemChanged">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
+                                <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
+                                <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Вставить(До)" Click="ContextMenuInsertBefore_Click"/>
                                 <MenuItem Header="Вставить(После)" Click="ContextMenuInsertAfter_Click"/>
                                 <MenuItem Header="Удалить" Click="ContextMenuDelete_Click"/>
                             </ContextMenu>
-                        </ListBox.ContextMenu>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
+                        </TreeView.ContextMenu>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=OneWay}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="50*" />
@@ -446,9 +453,9 @@
                                     </Grid>
                                     <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description}" />
                                 </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
                     <Button Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" x:Name="NewText" Content="Добавить" Style="{StaticResource Button1}" Click="NewText_Click">
                         <Button.FontSize>
                             <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
@@ -460,7 +467,7 @@
                             </MultiBinding>
                         </Button.FontSize>
                     </Button>
-                    <typeXaml:RTBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="True" FontFamily="Calibri">
+                    <typeXaml:RTBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="True" FontFamily="Serif">
                         <typeXaml:RTBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>

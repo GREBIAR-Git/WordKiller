@@ -4,12 +4,12 @@ namespace WordKiller.DataTypes.ParagraphData
 {
     public interface IParagraphData
     {
-        public string Type { get; }
+        string Type { get; }
 
-        public string Data { get; set; }
+        string Data { get; set; }
 
-        public string Description { get; set; }
+        string Description { get; set; }
 
-        public Visibility DescriptionVisibility();
+        Visibility DescriptionVisibility();
     }
 }

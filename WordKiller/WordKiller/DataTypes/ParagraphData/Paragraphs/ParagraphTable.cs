@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace WordKiller.DataTypes.ParagraphData;
+namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
 public class ParagraphTable : IParagraphData
@@ -16,6 +16,11 @@ public class ParagraphTable : IParagraphData
 
     public string Description { get => description; set => description = value; }
 
+    public Visibility DescriptionVisibility()
+    {
+        return Visibility.Visible;
+    }
+
     public ParagraphTable(string description)
     {
         TableData = new();
@@ -26,10 +31,5 @@ public class ParagraphTable : IParagraphData
     {
         TableData = new();
         description = string.Empty;
-    }
-
-    public Visibility DescriptionVisibility()
-    {
-        return Visibility.Visible;
     }
 }

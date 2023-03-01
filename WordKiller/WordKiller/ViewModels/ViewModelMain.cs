@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using WordKiller.DataTypes.ParagraphData;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 namespace WordKiller.ViewModels;
 public class ViewModelMain : ViewModelBase
