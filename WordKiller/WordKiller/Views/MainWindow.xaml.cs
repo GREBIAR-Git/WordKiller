@@ -97,7 +97,7 @@ public partial class MainWindow : Window
             }
         }
         InitSetting();
-        lstTest.ItemsSource = data.Paragraphs;
+        paragraphTree.ItemsSource = data.Paragraphs;
     }
 
     //Комбобоксы 
@@ -258,7 +258,6 @@ public partial class MainWindow : Window
             ComboBox comboBox = UIHelper.FindChild<ComboBox>(Application.Current.MainWindow, nameComboBox + "ComboBox");
             comboBox.SelectedItem = dataParagraph;
             data.AddParagraph(dataParagraph);
-            lstTest.Items.Refresh();
         }
     }
 
@@ -943,16 +942,14 @@ public partial class MainWindow : Window
         HeaderUpdate();
         viewModel.Properties = data.Properties;
         viewModel.Title = data.Title;
-        lstTest.ItemsSource = data.Paragraphs;
+        paragraphTree.ItemsSource = data.Paragraphs;
         if (viewModel.TextOpen)
         {
-            if (lstTest.Items.Count > 0)
+            if (paragraphTree.Items.Count > 0)
             {
-                //lstTest.SelectedIndex = 0;
+                //paragraphTree.SelectedIndex = 0;
             }
         }
-
-        lstTest.Items.Refresh();
     }
 
     void WindowBinding_Save(object sender, ExecutedRoutedEventArgs e)
@@ -1232,8 +1229,6 @@ public partial class MainWindow : Window
                 elementTBl.Visibility = Visibility.Collapsed;
                 TextPanelRTB.Visibility = Visibility.Visible;
                 richTextBox.Focus();
-                lstTest.Items.Refresh();
-
                 richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
             }
         }
@@ -1330,18 +1325,18 @@ public partial class MainWindow : Window
 
     void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (lstTest.SelectedItem != null)
+        if (paragraphTree.SelectedItem != null)
         {
-            IParagraphData item = lstTest.SelectedItem as IParagraphData;
+            IParagraphData item = paragraphTree.SelectedItem as IParagraphData;
             item.Data = richTextBox.GetText();
         }
     }
 
     void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        if (lstTest.SelectedItem != null && e.OldValue != e.NewValue)
+        if (paragraphTree.SelectedItem != null && e.OldValue != e.NewValue)
         {
-            IParagraphData item = lstTest.SelectedItem as IParagraphData;
+            IParagraphData item = paragraphTree.SelectedItem as IParagraphData;
             richTextBox.SetText(item.Data);
         }
     }
@@ -1354,7 +1349,7 @@ public partial class MainWindow : Window
     Point _lastMouseDown;
     IParagraphData draggedItem, _target;
 
-    private void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
+    void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
     {
         //добавить чтобы главный копировать
         if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
@@ -1408,7 +1403,7 @@ public partial class MainWindow : Window
 
     }
 
-    private TreeViewItem GetNearestContainer(UIElement element)
+    TreeViewItem GetNearestContainer(UIElement element)
     {
         TreeViewItem container = element as TreeViewItem;
         while ((container == null) && (element != null))
@@ -1419,21 +1414,21 @@ public partial class MainWindow : Window
         return container;
     }
 
-    private void TreeView_MouseMove(object sender, MouseEventArgs e)
+    void TreeView_MouseMove(object sender, MouseEventArgs e)
     {
         try
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Point currentPosition = e.GetPosition(lstTest);
+                Point currentPosition = e.GetPosition(paragraphTree);
 
                 if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
                     (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
                 {
-                    draggedItem = (IParagraphData)lstTest.SelectedItem;
+                    draggedItem = (IParagraphData)paragraphTree.SelectedItem;
                     if (draggedItem != null)
                     {
-                        DragDropEffects finalDropEffect = DragDrop.DoDragDrop(lstTest, lstTest.SelectedValue, DragDropEffects.Move);
+                        DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, paragraphTree.SelectedValue, DragDropEffects.Move);
                         if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
                         {
                             CopyItem(draggedItem, _target);
@@ -1447,11 +1442,11 @@ public partial class MainWindow : Window
         catch (Exception) { }
     }
 
-    private void TreeView_DragOver(object sender, DragEventArgs e)
+    void TreeView_DragOver(object sender, DragEventArgs e)
     {
         try
         {
-            Point currentPosition = e.GetPosition(lstTest);
+            Point currentPosition = e.GetPosition(paragraphTree);
             if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
                (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
             {
@@ -1464,7 +1459,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void TreeView_Drop(object sender, DragEventArgs e)
+    void TreeView_Drop(object sender, DragEventArgs e)
     {
         try
         {
@@ -1491,21 +1486,21 @@ public partial class MainWindow : Window
 
     void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedItem == null) return;
-        RemoveParagraph(lstTest.SelectedItem as IParagraphData);
+        if (paragraphTree.SelectedItem == null) return;
+        RemoveParagraph(paragraphTree.SelectedItem as IParagraphData);
     }
 
 
     void ContextMenuInsertAfter_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedItem == null) return;
-        data.InsertAfter(lstTest.SelectedItem as IParagraphData, new ParagraphText());
+        if (paragraphTree.SelectedItem == null) return;
+        data.InsertAfter(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
     }
 
     void ContextMenuInsertBefore_Click(object sender, RoutedEventArgs e)
     {
-        if (lstTest.SelectedItem == null) return;
-        data.InsertBefore(lstTest.SelectedItem as IParagraphData, new ParagraphText());
+        if (paragraphTree.SelectedItem == null) return;
+        data.InsertBefore(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
     }
 
     // PictureBox

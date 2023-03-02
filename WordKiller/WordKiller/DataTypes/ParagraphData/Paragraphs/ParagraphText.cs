@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Windows;
+using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-internal class ParagraphText : IParagraphData
+internal class ParagraphText : ViewModelBase, IParagraphData
 {
     public string Type { get => "Text"; }
 
     string data;
 
-    public string Data { get => data; set => data = value; }
+    public string Data { get => data; set => SetProperty(ref data, value, "Description"); }
 
-    public string Description { get => data; set => data = value; }
+    public string Description { get => data; set => SetProperty(ref data, value, "Data"); }
 
     public Visibility DescriptionVisibility()
     {

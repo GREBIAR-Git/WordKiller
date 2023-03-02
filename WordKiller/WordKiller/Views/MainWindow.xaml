@@ -418,7 +418,7 @@
                         <RowDefinition Height="5*"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <TreeView Grid.Row="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="lstTest" Grid.Column="0" SelectedItemChanged="TreeView_SelectedItemChanged">
+                    <TreeView Grid.Row="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" Grid.Column="0" SelectedItemChanged="TreeView_SelectedItemChanged">
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
                                 <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
@@ -434,7 +434,7 @@
                             </ContextMenu>
                         </TreeView.ContextMenu>
                         <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=OneWay}">
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="50*" />
@@ -451,7 +451,7 @@
                                         <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
                                         <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
                                     </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description}" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
                             </HierarchicalDataTemplate>
                         </TreeView.ItemTemplate>

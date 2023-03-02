@@ -11,9 +11,9 @@ public class ParagraphH1 : SectionH1, IParagraphData
 
     string data;
 
-    public string Data { get => data; set => data = value; }
+    public string Data { get => data; set => SetProperty(ref data, value, "Description"); }
 
-    public string Description { get => data; set => data = value; }
+    public string Description { get => data; set => SetProperty(ref data, value, "Data"); }
 
     public Visibility DescriptionVisibility()
     {
