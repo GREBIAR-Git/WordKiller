@@ -26,21 +26,14 @@ namespace WordKiller;
 
 public partial class MainWindow : Window
 {
-    int menuLeftIndex;
-    readonly string[] menuNames;
-    MenuItem DownPanelMI;
-
-    MenuItem prevSettings;
-
     ViewModelMain viewModel;
-
+    DocumentData data;
+    IParagraphData? current;
     readonly WordKillerFile file;
 
-    DocumentData data;
-
+    int menuLeftIndex;
+    readonly string[] menuNames;
     bool clearSubstitution = false;
-
-    IParagraphData? current;
 
     public MainWindow(string[] args)
     {
@@ -77,14 +70,14 @@ public partial class MainWindow : Window
         }
         file = new(saveLogo);
         TitleElements.SaveTitleUIElements(titlePanel);
-        DownPanelMI = SubstitutionMI;
-        prevSettings = DownPanelMI;
         HeaderUpdateMI();
         RefreshMenu(1);
         menuNames = ComboBoxSetup();
         UpdateCheckSyntax();
         data.Properties = viewModel.Properties;
         data.Title = viewModel.Title;
+        paragraphTree.ItemsSource = data.Paragraphs;
+        Displayed((string)FindResource("Something"));
         if (args.Length > 0)
         {
             if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
@@ -97,7 +90,6 @@ public partial class MainWindow : Window
             }
         }
         InitSetting();
-        paragraphTree.ItemsSource = data.Paragraphs;
     }
 
     //Комбобоксы 
@@ -968,26 +960,6 @@ public partial class MainWindow : Window
         UIHelper.WindowClose();
     }
 
-    void View_MI_Click(object sender, RoutedEventArgs e)
-    {
-        MenuItem ClickMenuItem = (MenuItem)sender;
-        if (TitlePageMI.IsChecked)
-        {
-            HideElements(TitlePageMI);
-            ShowElements(ClickMenuItem);
-        }
-        else if (SubstitutionMI.IsChecked)
-        {
-            HideElements(SubstitutionMI);
-            ShowElements(ClickMenuItem);
-        }
-        else if (TextMI.IsChecked)
-        {
-            HideElements(TextMI);
-            ShowElements(ClickMenuItem);
-        }
-    }
-
     void DocumentType_MI_Click(object sender, RoutedEventArgs e)
     {
         MenuItem menuItem = (MenuItem)sender;
@@ -1016,13 +988,23 @@ public partial class MainWindow : Window
     {
         if (DefaultDocumentMI.IsChecked)
         {
-            SwitchPanel.Visibility = Visibility.Collapsed;
+            if (data.Paragraphs.Count > 0 && data.Paragraphs[0] is ParagraphTitle)
+            {
+                data.Paragraphs.RemoveAt(0);
+            }
             TextHeader((string)FindResource("DefaultDocument"));
             data.Type = TypeDocument.DefaultDocument;
         }
         else
         {
-            SwitchPanel.Visibility = Visibility.Visible;
+            if (data.Paragraphs.Count > 0 && data.Paragraphs[0] is not ParagraphTitle)
+            {
+                data.InsertBefore(data.Paragraphs[0], new ParagraphTitle());
+            }
+            else
+            {
+                data.AddParagraph(new ParagraphTitle());
+            }
             if (LaboratoryWorkMI.IsChecked)
             {
                 data.Type = TypeDocument.LaboratoryWork;
@@ -1066,7 +1048,6 @@ public partial class MainWindow : Window
                 TitleElements.ShowTitleElems(titlePanel, "");
             }
         }
-        HideTitlePanel();
     }
 
     void HeaderUpdate()
@@ -1174,125 +1155,53 @@ public partial class MainWindow : Window
 
     //для отображения чего либо
 
-    void ShowElements(MenuItem MenuItem)
+    void ShowElements(Grid panel)
     {
-        if (MenuItem != null)
+        if (panel == SubstitutionPanelRTB)
         {
-            MenuItem.IsChecked = true;
+            elementPanel.Visibility = Visibility.Visible;
+            if (IsValidDataEntry())
+            {
+                add.Visibility = Visibility.Visible;
+            }
+            toText.Content = (string)FindResource("ToText");
+            additionalPanel.Margin = new Thickness(5, 0, 5, 5);
+            elementTBl.Visibility = Visibility.Visible;
+            richTextBox.Focus();
+            Displayed((string)FindResource("Something"));
+            SubstitutionPanelRTB.Visibility = Visibility.Visible;
+            ImageUpdate();
         }
-        UpdateSize(MenuItem);
-        if (MenuItem == TitlePageMI)
+        else if (panel == TextPanelRTB)
         {
-            titlePanel.Visibility = Visibility.Visible;
-            if (DownPanelMI == SubstitutionMI)
-            {
-                SwitchPanel.Content = (string)FindResource("ToSubstitutions");
-            }
-            else
-            {
-                SwitchPanel.Content = (string)FindResource("ToText");
-            }
-        }
-        else
-        {
-            SwitchPanel.Content = (string)FindResource("ToTitle");
-            DownPanelMI = MenuItem;
-            downPanel.Visibility = Visibility.Visible;
-            if (MenuItem == SubstitutionMI)
-            {
-                if (IsValidDataEntry())
-                {
-                    add.Visibility = Visibility.Visible;
-                }
-                additionalPanel.ColumnDefinitions[1].Width = new GridLength(38, GridUnitType.Star);
-                additionalPanel.ColumnDefinitions[2].Width = new GridLength(0, GridUnitType.Star);
-                additionalPanel.ColumnDefinitions[3].Width = new GridLength(20, GridUnitType.Star);
-                elementPanel.Visibility = Visibility.Visible;
-                toText.Content = (string)FindResource("ToText");
-                additionalPanel.Margin = new Thickness(5, 0, 5, 5);
-                elementTBl.Visibility = Visibility.Visible;
-                Substitution.Visibility = Visibility.Visible;
-                richTextBox.Focus();
-                Displayed((string)FindResource("Something"));
-                SubstitutionPanelRTB.Visibility = Visibility.Visible;
-                ImageUpdate();
-            }
-            else if (MenuItem == TextMI)
-            {
-                additionalPanel.Margin = new Thickness(5, 2.5, 5, 2.5);
-                additionalPanel.ColumnDefinitions[1].Width = new GridLength(22, GridUnitType.Star);
-                additionalPanel.ColumnDefinitions[2].Width = new GridLength(36, GridUnitType.Star);
-                additionalPanel.ColumnDefinitions[3].Width = new GridLength(0, GridUnitType.Star);
-                richTextBox.Visibility = Visibility.Visible;
-                cursorLocationTB.Visibility = Visibility.Visible;
-                toText.Content = (string)FindResource("ToSubstitutions");
-                elementTBl.Visibility = Visibility.Collapsed;
-                TextPanelRTB.Visibility = Visibility.Visible;
-                richTextBox.Focus();
-                richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
-            }
+            additionalPanel.Margin = new Thickness(5, 2.5, 5, 2.5);
+            treeviewСontent.Visibility = Visibility.Visible;
+            cursorLocationTB.Visibility = Visibility.Visible;
+            toText.Content = (string)FindResource("ToSubstitutions");
+            elementTBl.Visibility = Visibility.Collapsed;
+            TextPanelRTB.Visibility = Visibility.Visible;
+            richTextBox.Focus();
+            richTextBox.CaretPosition = richTextBox.CaretPosition.DocumentEnd;
         }
     }
 
-    void HideElements(MenuItem MenuItem)
+    void HideElements(Grid panel)
     {
-        if (MenuItem == TitlePageMI)
+        if (panel == SubstitutionPanelRTB)
         {
-            titlePanel.Visibility = Visibility.Collapsed;
+            UnselectComboBoxes();
+            add.Visibility = Visibility.Collapsed;
+            elementPanel.Visibility = Visibility.Collapsed;
+            SubstitutionPanelRTB.Visibility = Visibility.Collapsed;
         }
-        else
+        else if (panel == TextPanelRTB)
         {
-            downPanel.Visibility = Visibility.Collapsed;
-            if (MenuItem == SubstitutionMI)
+            for (int i = elementPanel.ColumnDefinitions.Count - 1; i < elementPanel.Children.Count - 1; i++)
             {
-                UnselectComboBoxes();
-                Substitution.Visibility = Visibility.Visible;
-                add.Visibility = Visibility.Collapsed;
-                elementPanel.Visibility = Visibility.Collapsed;
-                SubstitutionPanelRTB.Visibility = Visibility.Collapsed;
+                ComboBox cmbBox = (ComboBox)elementPanel.Children[i];
+                cmbBox.Items.Refresh();
             }
-            else if (MenuItem == TextMI)
-            {
-                for (int i = elementPanel.ColumnDefinitions.Count - 1; i < elementPanel.Children.Count - 1; i++)
-                {
-                    ComboBox cmbBox = (ComboBox)elementPanel.Children[i];
-                    cmbBox.Items.Refresh();
-                }
-                richTextBox.Visibility = Visibility.Collapsed;
-                cursorLocationTB.Visibility = Visibility.Collapsed;
-                TextPanelRTB.Visibility = Visibility.Collapsed;
-            }
-        }
-        MenuItem.IsChecked = false;
-    }
-
-    void HideTitlePanel()
-    {
-        if (TitlePageMI.IsChecked && DefaultDocumentMI.IsChecked)
-        {
-            HideElements(TitlePageMI);
-            ShowElements(DownPanelMI);
-        }
-        TitlePageMI.Visibility = DefaultDocumentMI.IsChecked == true ? Visibility.Collapsed : Visibility.Visible;
-    }
-
-    void UpdateSize(MenuItem MenuItem)
-    {
-        if (MenuItem == TitlePageMI)
-        {
-            MainPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
-            MainPanel.RowDefinitions[2].Height = new GridLength(0, GridUnitType.Pixel);
-            win.MinWidth = 710;
-            win.MinHeight = 340;
-            win.Height = win.MinHeight;
-            win.Width = win.MinWidth;
-        }
-        else
-        {
-            MainPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Pixel);
-            MainPanel.RowDefinitions[2].Height = new GridLength(100, GridUnitType.Star);
-            win.MinWidth = 710;
-            win.MinHeight = 430;
+            TextPanelRTB.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -1309,15 +1218,15 @@ public partial class MainWindow : Window
 
     void ToText_Click(object sender, RoutedEventArgs e)
     {
-        if (DownPanelMI == SubstitutionMI)
+        if (SubstitutionPanelRTB.Visibility == Visibility.Visible)
         {
-            HideElements(SubstitutionMI);
-            ShowElements(TextMI);
+            HideElements(SubstitutionPanelRTB);
+            ShowElements(TextPanelRTB);
         }
-        else
+        else if (TextPanelRTB.Visibility == Visibility.Visible)
         {
-            HideElements(TextMI);
-            ShowElements(SubstitutionMI);
+            HideElements(TextPanelRTB);
+            ShowElements(SubstitutionPanelRTB);
         }
     }
 
@@ -1332,10 +1241,19 @@ public partial class MainWindow : Window
         }
     }
 
+
+
     void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        if (paragraphTree.SelectedItem != null && e.OldValue != e.NewValue)
+        if (paragraphTree.SelectedItem is ParagraphTitle)
         {
+            richTextBox.Visibility = Visibility.Collapsed;
+            titlePanel.Visibility = Visibility.Visible;
+        }
+        else if (paragraphTree.SelectedItem != null && e.OldValue != e.NewValue && paragraphTree.SelectedItem is not ParagraphTitle)
+        {
+            richTextBox.Visibility = Visibility.Visible;
+            titlePanel.Visibility = Visibility.Collapsed;
             IParagraphData item = paragraphTree.SelectedItem as IParagraphData;
             richTextBox.SetText(item.Data);
         }
@@ -1351,6 +1269,11 @@ public partial class MainWindow : Window
 
     void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
     {
+        if(_sourceItem is ParagraphTitle || _targetItem is ParagraphTitle)
+        {
+            MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+            return;
+        }
         //добавить чтобы главный копировать
         if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
         {
@@ -1848,7 +1771,7 @@ public partial class MainWindow : Window
         }
         HideElements(prevSettings);
         DrawingPanel.Visibility = Visibility.Visible;
-        MenuPanel.Visibility = Visibility.Collapsed;
+        menuPanel.Visibility = Visibility.Collapsed;
         ParentPanel.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
         ParentPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
     }
@@ -1863,7 +1786,7 @@ public partial class MainWindow : Window
         isDrawing = true;
         StartFigure(e.GetPosition(DrawingTarget));*/
     }
-
+    /*
     void AddFigurePoint(Point point)
     {
         //   currentFigure.Segments.Add(new LineSegment(point, isStroked: true));
@@ -1885,7 +1808,7 @@ public partial class MainWindow : Window
                 Data = new PathGeometry() { Figures = { currentFigure } }
             };
         DrawingTarget.Children.Add(currentPath);*/
-    }
+    //}
 
     void DrawingMouseUp(object sender, MouseButtonEventArgs e)
     {
@@ -1896,6 +1819,7 @@ public partial class MainWindow : Window
         Mouse.Capture(null);*/
     }
 
+    
     void DrawingMouseMove(object sender, MouseEventArgs e)
     {
         /*
@@ -2156,43 +2080,15 @@ public partial class MainWindow : Window
 
     void OpenSettings_Click(object sender, RoutedEventArgs e)
     {
-        if (viewModel.TitleOpen)
-        {
-            prevSettings = TitlePageMI;
-        }
-        else
-        {
-            prevSettings = DownPanelMI;
-        }
-        HideElements(prevSettings);
+        mainPanel.Visibility = Visibility.Collapsed;
         SettingsPanel.Visibility = Visibility.Visible;
-        MenuPanel.Visibility = Visibility.Collapsed;
-        ParentPanel.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Star);
-        ParentPanel.RowDefinitions[1].Height = new GridLength(100, GridUnitType.Star);
         OpenGeneralisSetiings();
     }
 
     void ExitSettings(object sender, RoutedEventArgs e)
     {
-        ShowElements(prevSettings);
         SettingsPanel.Visibility = Visibility.Collapsed;
-        MenuPanel.Visibility = Visibility.Visible;
-        ParentPanel.RowDefinitions[0].Height = new GridLength(100, GridUnitType.Star);
-        ParentPanel.RowDefinitions[1].Height = new GridLength(0, GridUnitType.Star);
-    }
-
-    void SwitchPanel_Click(object sender, RoutedEventArgs e)
-    {
-        if (TitlePageMI.IsChecked)
-        {
-            ShowElements(DownPanelMI);
-            HideElements(TitlePageMI);
-        }
-        else
-        {
-            ShowElements(TitlePageMI);
-            HideElements(DownPanelMI);
-        }
+        mainPanel.Visibility = Visibility.Visible;
     }
 
     void AutoHeader_Checked(object sender, RoutedEventArgs e)

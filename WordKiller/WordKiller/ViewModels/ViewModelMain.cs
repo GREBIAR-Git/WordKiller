@@ -6,7 +6,7 @@ public class ViewModelMain : ViewModelBase
 {
 
     public ViewModelProperties properties;
-    public ViewModelProperties Properties { get=>properties; set => SetProperty(ref properties, value); }
+    public ViewModelProperties Properties { get => properties; set => SetProperty(ref properties, value); }
 
     public ViewModelTitle title;
     public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }

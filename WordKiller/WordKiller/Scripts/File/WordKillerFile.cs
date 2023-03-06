@@ -17,7 +17,7 @@ public class WordKillerFile
 {
     string? savePath;
 
-    public string? SavePath { get => savePath;}
+    public string? SavePath { get => savePath; }
 
     readonly SaveLogo saveLogo;
 
@@ -67,7 +67,7 @@ public class WordKillerFile
             byte[] buffer = new byte[stream.Length];
 
             stream.Read(buffer, 0, buffer.Length);
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            BinaryFormatter binaryFormatter = new();
             binaryFormatter.Serialize(stream, data);
             saveLogo.Show();
         }
@@ -146,14 +146,14 @@ public class WordKillerFile
 
     public void NewFile(ref DocumentData data, RTBox richTextBox, ref ViewModelMain viewModel)
     {
-        NeedSave(ref data, ref viewModel);
+        NeedSave(ref data);
         viewModel.WinTitle = "WordKiller";
         ClearGlobal(ref data, ref viewModel);
         richTextBox.Document.Blocks.Clear();
         savePath = string.Empty;
     }
 
-    bool NeedSave(ref DocumentData data, ref ViewModelMain viewModel)
+    bool NeedSave(ref DocumentData data)
     {
         MessageBoxResult result = MessageBox.Show(UIHelper.FindResourse("Question1"), UIHelper.FindResourse("Question1"), MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         if (result == MessageBoxResult.Yes)

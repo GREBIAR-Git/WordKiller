@@ -19,7 +19,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
                 if ((oldValue as byte[]).Count() == (newValue as byte[]).Count())
                     if ((newValue as byte[]).SequenceEqual((oldValue as byte[])))
                         return false;
-        if (!(oldValue is byte[]) || !(newValue is byte[]))
+        if (oldValue is not byte[] || newValue is not byte[])
             if (Equals(oldValue, newValue))
                 return false;
         oldValue = newValue;

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using WordKiller.DataTypes.ParagraphData;
 
 namespace WordKiller.Scripts;
@@ -9,7 +9,7 @@ public class ChangeUser<T>
 {
     public void Start(ObservableCollection<T> paragraph)
     {
-        foreach(IParagraphData item in paragraph)
+        foreach (IParagraphData item in paragraph.Select(v => (IParagraphData)v))
         {
             if (item.Data.Contains(":\\Users\\"))
             {
