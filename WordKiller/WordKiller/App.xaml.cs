@@ -24,8 +24,8 @@ public partial class App : Application
                 System.Environment.Exit(0);
             }
         }
-        MainWindow mainWindow = new(e.Args);
         SelectCulture(WordKiller.Properties.Settings.Default.Language);
+        MainWindow mainWindow = new(e.Args);
         mainWindow.Show();
     }
 

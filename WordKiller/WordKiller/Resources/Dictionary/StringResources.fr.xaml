@@ -17,7 +17,6 @@
 
     <system:String x:Key="View">Voir</system:String>
 
-    <system:String x:Key="Title">Titre</system:String>
     <system:String x:Key="Substitution">Substitution</system:String>
     <system:String x:Key="Text">Texte</system:String>
 
@@ -34,10 +33,12 @@
     <system:String x:Key="DiplomaWork">Études supérieures</system:String>
     <system:String x:Key="VKR">VR</system:String>
 
+    <system:String x:Key="Title">Titre</system:String>
+    <system:String x:Key="TaskSheet">Feuille de travail</system:String>
+    <system:String x:Key="ListOfReferences">Liste des références</system:String>
     <system:String x:Key="PageNumbers">Numérotage</system:String>
     <system:String x:Key="TOC">Contenu</system:String>
     <system:String x:Key="NumbersToHeaders">Chiffres pour les gros titres</system:String>
-    <system:String x:Key="ListOfReferences">Liste des références</system:String>
 
     <system:String x:Key="Network">Rapporter</system:String>
 
@@ -83,10 +84,11 @@
     <system:String x:Key="Error1">Erreur d'ouverture du fichier: le fichier n'est pas trouvé ou le format n'est pas pris en charge</system:String>
     <system:String x:Key="Error2">Nous ne pouvons pas faire cela sur votre appareil, mettre à jour le système d'exploitation</system:String>
     <system:String x:Key="Error3">Erreur de génération de la page de couverture</system:String>
-    <system:String x:Key="Error4">Erreur de mise en forme du contenu</system:String>
-    <system:String x:Key="Error5">Erreur de génération du corps du texte</system:String>
-    <system:String x:Key="Error6">Erreur lors de la génération du rapport : le fichier que vous voulez remplacer est ouvert</system:String>
-    <system:String x:Key="Error7">Erreur d'ouverture du fichier : le fichier est corrompu</system:String>
+    <system:String x:Key="Error4">Erreur lors de la validation de la feuille de travail</system:String>
+    <system:String x:Key="Error5">Erreur de mise en forme du contenu</system:String>
+    <system:String x:Key="Error6">Erreur de génération du corps du texte</system:String>
+    <system:String x:Key="Error7">Erreur lors de la génération du rapport : le fichier que vous voulez remplacer est ouvert</system:String>
+    <system:String x:Key="Error8">Erreur d'ouverture du fichier : le fichier est corrompu</system:String>
 
     <system:String x:Key="Question1">Avez-vous besoin d'économiser ?</system:String>
     

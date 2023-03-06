@@ -14,6 +14,7 @@ using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts.ForUI;
+using WordKiller.ViewModels;
 using A = DocumentFormat.OpenXml.Drawing;
 using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
@@ -29,7 +30,7 @@ class Report
 
     const short pixel_to_EMU = 9525;
 
-    public static bool Create(DocumentData data, bool numbering, bool tableOfContents, bool numberHeading, string[] dataTitle, bool exportPDF, bool exportHTML)
+    public static bool Create(DocumentData data, bool exportPDF, bool exportHTML)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -55,22 +56,14 @@ class Report
 
                     try
                     {
-                        if (data.Type != TypeDocument.DefaultDocument)
+                        if (data.Type != TypeDocument.DefaultDocument && data.Properties.Title)
                         {
                             PageSetup(body, title: true);
-                            dataTitle[^1] = SpaceForYear(dataTitle[^1], '_');
-                            TitlePart(doc, data.Type, dataTitle, tableOfContents);
+                            TitlePart(doc, data.Type, data.Title);
                         }
                         else
                         {
-                            if (tableOfContents)
-                            {
-                                PageSetup(body, title: true);
-                            }
-                            else
-                            {
-                                PageSetup(body, title: false);
-                            }
+                            PageSetup(body);
                         }
                     }
                     catch
@@ -81,8 +74,7 @@ class Report
 
                     try
                     {
-
-                        TableOfContents(doc, tableOfContents);
+                        TaskSheet(doc, data.Properties.TaskSheet);
                     }
                     catch
                     {
@@ -92,7 +84,8 @@ class Report
 
                     try
                     {
-                        MainPart(doc, data, numberHeading);
+
+                        TableOfContents(doc, data.Properties.TableOfContents);
                     }
                     catch
                     {
@@ -100,7 +93,17 @@ class Report
                         return false;
                     }
 
-                    if (numbering)
+                    try
+                    {
+                        MainPart(doc, data, data.Properties.NumberHeading);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(UIHelper.FindResourse("Error6"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        return false;
+                    }
+
+                    if (data.Properties.PageNumbers)
                     {
                         PageNumber(doc);
                     }
@@ -117,13 +120,13 @@ class Report
             }
             catch (IOException)
             {
-                MessageBox.Show(UIHelper.FindResourse("Error6"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show(UIHelper.FindResourse("Error7"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
         return false;
     }
 
-    private static string GetTOC(string title, int titleFontSize)
+    static string GetTOC(string title, int titleFontSize)
     {
         return $@"
     <w:sdt>
@@ -254,7 +257,7 @@ class Report
         PageSetup(body, title: title);
     }
 
-    static string SpaceForYear(string year, char spaceCharacter)
+    static string SpaceForYear(string year, char spaceCharacter = '_')
     {
         for (int i = 0; i < 4 - year.Length; i++)
         {
@@ -389,6 +392,7 @@ class Report
     {
         if (on)
         {
+            PageSetup(doc.MainDocumentPart.Document.Body, title: true);
             var sdtBlock = new SdtBlock
             {
                 InnerXml = GetTOC("Содержание", 14)
@@ -404,145 +408,44 @@ class Report
         }
     }
 
-    static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, string[] dataTitle, bool TableOfContents)
+    static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, ViewModelTitle title)
     {
-        Ministry(doc, dataTitle[0]);
+        Ministry(doc, title.Faculty);
         switch (typeDocument)
         {
             case TypeDocument.LaboratoryWork:
-                LabPra(doc, "лабораторной", dataTitle);
+                LabPra(doc, "лабораторной", title);
                 break;
             case TypeDocument.PracticeWork:
-                LabPra(doc, "практической", dataTitle);
+                LabPra(doc, "практической", title);
                 break;
             case TypeDocument.Coursework:
-                Coursework(doc, dataTitle);
+                Coursework(doc, title);
                 break;
             case TypeDocument.ControlWork:
-                ControlWork(doc, dataTitle);
+                ControlWork(doc, title);
                 break;
             case TypeDocument.Referat:
-                Referat(doc, dataTitle);
+                Referat(doc, title);
                 break;
             case TypeDocument.Diploma:
                 break;
             case TypeDocument.VKR:
                 break;
         }
-        Orel(doc, dataTitle[^1]);
-        SectionBreak(doc, TableOfContents);
+        Orel(doc, title.Year);
+        SectionBreak(doc);
     }
 
-    static void Referat(WordprocessingDocument doc, string[] dataTitle)
-    {
-        EmptyLines(doc, 1);
-
-        string text = "Реферат по дисциплине: «" + dataTitle[3] + "»";
-        Text(doc, text, justify: JustificationValues.Center);
-        text = "Тема: «" + dataTitle[2] + "»";
-        Text(doc, text, justify: JustificationValues.Center);
-        EmptyLines(doc, 16);
-
-        text = "Выполнил: студент группы " + Properties.Settings.Default.GroupString;
-        Text(doc, text, justify: JustificationValues.Right);
-        text = dataTitle[1];
-        Text(doc, text, justify: JustificationValues.Right);
-        text = "Проверил: ст. преподаватель кафедры физического воспитания";
-        Text(doc, text, justify: JustificationValues.Right);
-        text = dataTitle[4];
-        Text(doc, text, justify: JustificationValues.Right);
-
-        EmptyLines(doc, 6);
-    }
-
-    static void ControlWork(WordprocessingDocument doc, string[] dataTitle)
-    {
-        string text = "Контрольная работа";
-        Text(doc, text, 16, JustificationValues.Center, true);
-
-        text = "по дисциплине: «" + dataTitle[2] + "»";
-        Text(doc, text, justify: JustificationValues.Center);
-
-        EmptyLines(doc, 10);
-
-        text = "Выполнил: " + dataTitle[1];
-        Text(doc, text);
-        text = Properties.Settings.Default.FacultyString;
-        Text(doc, text);
-        text = "Направление: 09.03.04 «Программная инженерия»";
-        Text(doc, text);
-        text = "Группа: " + Properties.Settings.Default.Group;
-        Text(doc, text);
-
-        text = "Проверил: " + dataTitle[3];
-        Text(doc, text, after: 10);
-
-        EmptyLines(doc, 1);
-
-        text = "Отметка о зачёте: ";
-        Text(doc, text);
-
-        text = "Дата: «____» __________ " + dataTitle[4] + "г.";
-        Text(doc, text, justify: JustificationValues.Right);
-
-        EmptyLines(doc, 9);
-    }
-
-
-
-    static void Coursework(WordprocessingDocument doc, string[] dataTitle)
-    {
-        string text = "Работа допущена к защите";
-        Text(doc, text, multiplier: 1.5f, left: 9.5f);
-        text = "______________Руководитель";
-        Text(doc, text, multiplier: 1.5f, left: 9.5f);
-        text = "«____»_____________" + dataTitle[^1] + "г.";
-        Text(doc, text, multiplier: 1.5f, left: 9.5f);
-
-        EmptyLines(doc, 3);
-
-        text = "КУРСОВАЯ РАБОТА";
-        Text(doc, text, justify: JustificationValues.Center, bold: true);
-
-        EmptyLines(doc, 1);
-
-        text = "по дисциплине: «" + dataTitle[4] + "»";
-        Text(doc, text, multiplier: 2);
-
-        text = "на тему: «" + dataTitle[3] + "»";
-        Text(doc, text, multiplier: 1.5f);
-
-        EmptyLines(doc, 2);
-
-        text = "Студент _________________" + dataTitle[1];
-        Text(doc, text, multiplier: 1.5f);
-        text = "Шифр " + dataTitle[2];
-        Text(doc, text, multiplier: 1.5f);
-        text = Properties.Settings.Default.FacultyString;
-        Text(doc, text, multiplier: 1.5f);
-        text = "Направление: 09.03.04 «Программная инженерия»";
-        Text(doc, text, multiplier: 1.5f);
-        text = "Группа: " + Properties.Settings.Default.GroupString;
-        Text(doc, text, multiplier: 1.5f);
-
-        text = "Руководитель __________________" + dataTitle[5];
-        Text(doc, text, multiplier: 1.5f, after: 12);
-
-        text = "Оценка: «________________»               Дата ______________";
-        Text(doc, text);
-
-        EmptyLines(doc, 2);
-    }
-
-    static void LabPra(WordprocessingDocument doc, string type, string[] dataTitle)
+    static void LabPra(WordprocessingDocument doc, string type, ViewModelTitle title)
     {
         string text = "ОТЧЁТ";
         Text(doc, text, 16, JustificationValues.Center, true);
-        text = "По " + type + " работе №" + dataTitle[1];
+        text = "По " + type + " работе №" + title.Number;
         Text(doc, text, 16, JustificationValues.Center, after: 10);
-        text = "на тему: «" + dataTitle[2] + "»";
+        text = "на тему: «" + title.Theme + "»";
         Text(doc, text, justify: JustificationValues.Center);
-        text = "по дисциплине: «" + dataTitle[3] + "»";
+        text = "по дисциплине: «" + title.Discipline + "»";
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 8);
         text = "Выполнили: Музалевский Н.С., Аллянов М.Д.";
@@ -554,17 +457,115 @@ class Report
         text = "Группа: " + Properties.Settings.Default.GroupString;
         Text(doc, text);
 
-        text = "Проверил: " + dataTitle[4];
+        text = "Проверил: " + title.Professor;
         Text(doc, text, after: 10);
         EmptyLines(doc, 1);
 
         text = "Отметка о зачёте: ";
         Text(doc, text);
 
-        text = "Дата: «____» __________ " + dataTitle[5] + "г.";
+        text = "Дата: «____» __________ " + SpaceForYear(title.Year) + "г.";
         Text(doc, text, justify: JustificationValues.Right);
 
         EmptyLines(doc, 8);
+    }
+    static void Coursework(WordprocessingDocument doc, ViewModelTitle title)
+    {
+        string text = "Работа допущена к защите";
+        Text(doc, text, multiplier: 1.5f, left: 9.5f);
+        text = "______________Руководитель";
+        Text(doc, text, multiplier: 1.5f, left: 9.5f);
+        text = "«____»_____________" + SpaceForYear(title.Year) + "г.";
+        Text(doc, text, multiplier: 1.5f, left: 9.5f);
+
+        EmptyLines(doc, 3);
+
+        text = "КУРСОВАЯ РАБОТА";
+        Text(doc, text, justify: JustificationValues.Center, bold: true);
+
+        EmptyLines(doc, 1);
+
+        text = "по дисциплине: «" + title.Discipline + "»";
+        Text(doc, text, multiplier: 2);
+
+        text = "на тему: «" + title.Theme + "»";
+        Text(doc, text, multiplier: 1.5f);
+
+        EmptyLines(doc, 2);
+
+        text = "Студент _________________" + title.Students;
+        Text(doc, text, multiplier: 1.5f);
+        text = "Шифр " + title.Shifr;
+        Text(doc, text, multiplier: 1.5f);
+        text = Properties.Settings.Default.FacultyString;
+        Text(doc, text, multiplier: 1.5f);
+        text = "Направление: 09.03.04 «Программная инженерия»";
+        Text(doc, text, multiplier: 1.5f);
+        text = "Группа: " + Properties.Settings.Default.GroupString;
+        Text(doc, text, multiplier: 1.5f);
+
+        text = "Руководитель __________________" + title.Professor;
+        Text(doc, text, multiplier: 1.5f, after: 12);
+
+        text = "Оценка: «________________»               Дата ______________";
+        Text(doc, text);
+
+        EmptyLines(doc, 5);
+    }
+
+    static void ControlWork(WordprocessingDocument doc, ViewModelTitle title)
+    {
+        string text = "Контрольная работа";
+        Text(doc, text, 16, JustificationValues.Center, true);
+
+        text = "по дисциплине: «" + title.Discipline + "»";
+        Text(doc, text, justify: JustificationValues.Center);
+
+        EmptyLines(doc, 10);
+
+        text = "Выполнил: " + title.Students;
+        Text(doc, text);
+        text = Properties.Settings.Default.FacultyString;
+        Text(doc, text);
+        text = "Направление: 09.03.04 «Программная инженерия»";
+        Text(doc, text);
+        text = "Группа: " + Properties.Settings.Default.Group;
+        Text(doc, text);
+
+        text = "Проверил: " + title.Professor;
+        Text(doc, text, after: 10);
+
+        EmptyLines(doc, 1);
+
+        text = "Отметка о зачёте: ";
+        Text(doc, text);
+
+        text = "Дата: «____» __________ " + SpaceForYear(title.Year) + "г.";
+        Text(doc, text, justify: JustificationValues.Right);
+
+        EmptyLines(doc, 9);
+    }
+
+    static void Referat(WordprocessingDocument doc, ViewModelTitle title)
+    {
+        EmptyLines(doc, 1);
+
+        string text = "Реферат по дисциплине: «" + title.Discipline + "»";
+        Text(doc, text, justify: JustificationValues.Center);
+        text = "Тема: «" + title.Theme + "»";
+        Text(doc, text, justify: JustificationValues.Center);
+        EmptyLines(doc, 16);
+
+        text = "Выполнил: студент группы " + Properties.Settings.Default.GroupString;
+        Text(doc, text, justify: JustificationValues.Right);
+        text = title.Students;
+        Text(doc, text, justify: JustificationValues.Right);
+        text = "Проверил: ст. преподаватель кафедры физического воспитания";
+        Text(doc, text, justify: JustificationValues.Right);
+        text = title.Professor;
+        Text(doc, text, justify: JustificationValues.Right);
+
+        EmptyLines(doc, 6);
     }
 
     static void Ministry(WordprocessingDocument doc, string faculty)
@@ -590,8 +591,87 @@ class Report
 
     static void Orel(WordprocessingDocument doc, string year)
     {
-        string text = "Орел, " + year;
+        string text = "Орел, " + SpaceForYear(year);
         Text(doc, text, justify: JustificationValues.Center);
+    }
+
+    static void TaskSheet(WordprocessingDocument doc, bool on)
+    {
+        if (on)
+        {
+            PageSetup(doc.MainDocumentPart.Document.Body, title: true);
+            Ministry(doc, "1");
+
+            string text = "УТВЕРЖДАЮ:";
+            Text(doc, text, left: 9.5f);
+            text = "____________и.о. зав. кафедрой";
+            Text(doc, text, left: 9.5f);
+            text = "«___»_____________2г.";
+            Text(doc, text, left: 9.5f);
+            EmptyLines(doc, 2);
+            text = "ЗАДАНИЕ";
+            Text(doc, text, 16, JustificationValues.Center, true);
+            text = "на курсов 3";//тут проект или работу
+            Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
+            text = "по дисциплине «4»";
+            Text(doc, text, multiplier: 2);
+            EmptyLines(doc, 1);
+            text = "Студент    5                Шифр 6";
+            Text(doc, text, multiplier: 1.5f);
+            text = "Институт приборостроения, автоматизации и информационных технологий";
+            Text(doc, text, multiplier: 1.5f);
+            text = "Направление подготовки 09.03.04 «Программная инженерия»";
+            Text(doc, text, multiplier: 1.5f);
+            text = "Группа 7";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+            text = "1 Тема курсового проекта";
+            Text(doc, text, multiplier: 1.5f);
+            text = "8";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+            text = "2 Срок сдачи студентом законченной работы «9» 10 11";
+            Text(doc, text, multiplier: 1.5f);
+
+            SectionBreak(doc);
+
+            PageSetup(doc.MainDocumentPart.Document.Body, 0.74f, 1.31f, 0.49f, 1.31f, true);
+            text = "3 Исходные данные";
+            Text(doc, text, multiplier: 1.5f);
+
+            text = "12";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "4 Содержание курсового проекта";
+            Text(doc, text, multiplier: 1.5f);
+
+            text = "13";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "5 Отчетный материал курсового проекта";
+            Text(doc, text, multiplier: 1.5f);
+
+            text = "16";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "Руководитель ________________________ 17";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "Задание принял к исполнению: «18» 19 20";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "Подпись студента__________________ ";
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+            SectionBreak(doc);
+
+            PageSetup(doc.MainDocumentPart.Document.Body);
+        }
     }
 
     static void MainPart(WordprocessingDocument doc, DocumentData data, bool numberHeading)
@@ -1050,7 +1130,7 @@ class Report
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
 
-        string[] str = text.Split('\n');
+        string[] str = text.Split("\n");
 
         for (int i = 0; i < str.Length - 1; i++)
         {

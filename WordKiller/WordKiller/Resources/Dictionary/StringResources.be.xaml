@@ -17,7 +17,6 @@
 
     <system:String x:Key="View">Від</system:String>
 
-    <system:String x:Key="Title">Загаловак</system:String>
     <system:String x:Key="Substitution">Замена</system:String>
     <system:String x:Key="Text">Тэкст</system:String>
 
@@ -34,10 +33,12 @@
     <system:String x:Key="DiplomaWork">Дыпломная праца</system:String>
     <system:String x:Key="VKR">ВКР</system:String>
 
+    <system:String x:Key="Title">Загаловак</system:String>
+    <system:String x:Key="TaskSheet">Ліст заданні</system:String>
+    <system:String x:Key="ListOfReferences">Спіс выкарыстанай літаратуры</system:String>
     <system:String x:Key="PageNumbers">Нумараванне</system:String>
     <system:String x:Key="TOC">Задаволены</system:String>
     <system:String x:Key="NumbersToHeaders">Лічбы для загалоўкаў</system:String>
-    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
 
 
     <system:String x:Key="Network">Сетка</system:String>
@@ -84,10 +85,11 @@
     <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
     <system:String x:Key="Error2">Мы не можам зрабіць гэта на вашым прыладзе, абнавіць АС</system:String>
     <system:String x:Key="Error3">Памылка пры фарміраванні тытульнай старонкі</system:String>
-    <system:String x:Key="Error4">Памылка пры фарміраванні зместу</system:String>
-    <system:String x:Key="Error5">Памылка пры фарміраванні асноўнага тэксту дакумента</system:String>
-    <system:String x:Key="Error6">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
-    <system:String x:Key="Error7">Памылка адкрыцця файла: файл пашкоджаны</system:String>
+    <system:String x:Key="Error4">Памылка пры праверцы ліста задання</system:String>
+    <system:String x:Key="Error5">Памылка пры фарміраванні зместу</system:String>
+    <system:String x:Key="Error6">Памылка пры фарміраванні асноўнага тэксту дакумента</system:String>
+    <system:String x:Key="Error7">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
+    <system:String x:Key="Error8">Памылка адкрыцця файла: файл пашкоджаны</system:String>
 
     <system:String x:Key="Question1">Трэба захаваць?</system:String>
     

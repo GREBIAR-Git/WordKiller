@@ -17,7 +17,6 @@
 
     <system:String x:Key="View">View</system:String>
 
-    <system:String x:Key="Title">Title menu</system:String>
     <system:String x:Key="Substitution">Substitution menu</system:String>
     <system:String x:Key="Text">Text menu</system:String>
 
@@ -34,10 +33,12 @@
     <system:String x:Key="DiplomaWork">Diploma work</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
+    <system:String x:Key="Title">Title menu</system:String>
+    <system:String x:Key="TaskSheet">Task sheet</system:String>
+    <system:String x:Key="ListOfReferences">List of references</system:String>
     <system:String x:Key="PageNumbers">Page numbers</system:String>
     <system:String x:Key="TOC">Table of Columns</system:String>
     <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
-    <system:String x:Key="ListOfReferences">List of references</system:String>
 
 
     <system:String x:Key="Network">Network</system:String>
@@ -84,10 +85,11 @@
     <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
     <system:String x:Key="Error2">We can't do this on your device, update the OS</system:String>
     <system:String x:Key="Error3">Error generating the front page</system:String>
-    <system:String x:Key="Error4">Error generating content</system:String>
-    <system:String x:Key="Error5">Error in generating the body text of the document</system:String>
-    <system:String x:Key="Error6">Error when generating the report: The file you want to replace is open</system:String>
-    <system:String x:Key="Error7">Error opening the file: The file is corrupted</system:String>
+    <system:String x:Key="Error4">Error validating task sheet</system:String>
+    <system:String x:Key="Error5">Error generating content</system:String>
+    <system:String x:Key="Error6">Error in generating the body text of the document</system:String>
+    <system:String x:Key="Error7">Error when generating the report: The file you want to replace is open</system:String>
+    <system:String x:Key="Error8">Error opening the file: The file is corrupted</system:String>
 
     <system:String x:Key="Question1">Do you need to save it?</system:String>
 

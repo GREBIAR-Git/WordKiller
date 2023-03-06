@@ -16,7 +16,6 @@
     
     <system:String x:Key="View">Вид</system:String>
 
-    <system:String x:Key="Title">Титульник</system:String>
     <system:String x:Key="Substitution">Подстановка</system:String>
     <system:String x:Key="Text">Текст</system:String>
 
@@ -32,7 +31,9 @@
     <system:String x:Key="Referat">Реферат</system:String>
     <system:String x:Key="DiplomaWork">Дипломная работа</system:String>
     <system:String x:Key="VKR">ВКР</system:String>
-    
+
+    <system:String x:Key="Title">Титульник</system:String>
+    <system:String x:Key="TaskSheet">Лист задания</system:String>
     <system:String x:Key="PageNumbers">Нумерация</system:String>
     <system:String x:Key="TOC">Содержание</system:String>
     <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
@@ -82,10 +83,11 @@
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
     <system:String x:Key="Error2">Мы не можем это сделать на вашем устройстве, обновите ОС</system:String>
     <system:String x:Key="Error3">Ошибка при формировании титульной страницы</system:String>
-    <system:String x:Key="Error4">Ошибка при формировании содержания</system:String>
-    <system:String x:Key="Error5">Ошибка при формировании основного текста документа</system:String>
-    <system:String x:Key="Error6">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
-    <system:String x:Key="Error7">Ошибка открытия файла: файл повреждён</system:String>
+    <system:String x:Key="Error4">Ошибка при формировании листа задания</system:String>
+    <system:String x:Key="Error5">Ошибка при формировании содержания</system:String>
+    <system:String x:Key="Error6">Ошибка при формировании основного текста документа</system:String>
+    <system:String x:Key="Error7">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
+    <system:String x:Key="Error8">Ошибка открытия файла: файл повреждён</system:String>
 
     <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
     

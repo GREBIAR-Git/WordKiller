@@ -17,7 +17,6 @@
 
     <system:String x:Key="View">看法</system:String>
 
-    <system:String x:Key="Title">標題</system:String>
     <system:String x:Key="Substitution">替代</system:String>
     <system:String x:Key="Text">文本</system:String>
 
@@ -34,10 +33,13 @@
     <system:String x:Key="DiplomaWork">研究生工作</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
+    
+    <system:String x:Key="Title">標題</system:String>
+    <system:String x:Key="TaskSheet">任务表</system:String>
+    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
     <system:String x:Key="PageNumbers">編號</system:String>
     <system:String x:Key="TOC">內容</system:String>
     <system:String x:Key="NumbersToHeaders">頭條新聞</system:String>
-    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
 
 
     <system:String x:Key="Network">網</system:String>
@@ -84,10 +86,11 @@
     <system:String x:Key="Error1">文件打開錯誤：找不到文件或不支持格式</system:String>
     <system:String x:Key="Error2">我們無法在您的設備上執行此操作，更新操作系統</system:String>
     <system:String x:Key="Error3">标题页形成错误</system:String>
-    <system:String x:Key="Error4">内容形成的错误</system:String>
-    <system:String x:Key="Error5">形成文档主文本时出错</system:String>
-    <system:String x:Key="Error6">生成报告时出错：要替换的文件已打开</system:String>
-    <system:String x:Key="Error7">文件打开错误：文件已损坏</system:String>
+    <system:String x:Key="Error4">驗證工作表時出錯</system:String>
+    <system:String x:Key="Error5">内容形成的错误</system:String>
+    <system:String x:Key="Error6">形成文档主文本时出错</system:String>
+    <system:String x:Key="Error7">生成报告时出错：要替换的文件已打开</system:String>
+    <system:String x:Key="Error8">文件打开错误：文件已损坏</system:String>
 
     <system:String x:Key="Question1">我需要保存它吗？</system:String>
     

@@ -17,7 +17,6 @@
 
     <system:String x:Key="View">Aussicht</system:String>
 
-    <system:String x:Key="Title">Titel</system:String>
     <system:String x:Key="Substitution">Auswechslung</system:String>
     <system:String x:Key="Text">Text</system:String>
 
@@ -34,10 +33,12 @@
     <system:String x:Key="DiplomaWork">Diplomarbeit</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
+    <system:String x:Key="Title">Titel</system:String>
+    <system:String x:Key="TaskSheet">Aufgabenblatt</system:String>
+    <system:String x:Key="ListOfReferences">Liste der Referenzen</system:String>
     <system:String x:Key="PageNumbers">Nummerierung</system:String>
     <system:String x:Key="TOC">Inhalt</system:String>
     <system:String x:Key="NumbersToHeaders">Zahlen für Schlagzeilen</system:String>
-    <system:String x:Key="ListOfReferences">Спіс літаратуры</system:String>
 
 
     <system:String x:Key="Network">Netz</system:String>
@@ -84,10 +85,11 @@
     <system:String x:Key="Error1">Eröffnungsfehler der Datei: Die Datei wird nicht gefunden oder das Format wird nicht unterstützt</system:String>
     <system:String x:Key="Error2">Wir können dies nicht auf Ihrem Gerät tun, das Betriebssystem aktualisieren</system:String>
     <system:String x:Key="Error3">Fehler bei der Generierung des Deckblatts</system:String>
-    <system:String x:Key="Error4">Fehler bei der Gestaltung des Inhalts</system:String>
-    <system:String x:Key="Error5">Fehler bei der Generierung des Textes</system:String>
-    <system:String x:Key="Error6">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
-    <system:String x:Key="Error7">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
+    <system:String x:Key="Error4">Fehler beim Validieren des Auftragsblatts</system:String>
+    <system:String x:Key="Error5">Fehler bei der Gestaltung des Inhalts</system:String>
+    <system:String x:Key="Error6">Fehler bei der Generierung des Textes</system:String>
+    <system:String x:Key="Error7">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
+    <system:String x:Key="Error8">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
 
     <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
 

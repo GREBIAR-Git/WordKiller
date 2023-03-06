@@ -39,9 +39,9 @@ public partial class MainWindow : Window
     {
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         data = new();
+        InitializeComponent();
         viewModel = new()
         {
-            Displayed = (string)FindResource("Something"),
             FontSizeRTB = Properties.Settings.Default.FontSizeRTB,
             MainColor = Properties.Settings.Default.MainColor,
             AdditionalColor = Properties.Settings.Default.AdditionalColor,
@@ -53,7 +53,6 @@ public partial class MainWindow : Window
             Title = new(),
             Properties = new()
         };
-        InitializeComponent();
         DataContext = viewModel;
 
         if (!WkrExport.IsWordInstall())
@@ -861,39 +860,16 @@ public partial class MainWindow : Window
 
     async void Export_MI_Click(object sender, RoutedEventArgs e)
     {
-        List<string> titleData = new();
-        AddTitleData(ref titleData);
         bool exportPDFOn = ExportPDF.IsChecked;
         bool exportHTMLOn = ExportHTML.IsChecked;
 
         Report report = new();
         await Task.Run(() =>
-            Report.Create(data, data.Properties.PageNumbers, data.Properties.TableOfContents, data.Properties.NumberHeading, titleData.ToArray(), exportPDFOn, exportHTMLOn));
+            Report.Create(data, exportPDFOn, exportHTMLOn));
 
         if (Properties.Settings.Default.CloseWindow)
         {
             UIHelper.WindowClose();
-        }
-    }
-
-    void AddTitleData(ref List<string> titleData)
-    {
-        titleData = new List<string>();
-        foreach (UIElement control in titlePanel.Children)
-        {
-            if (control.GetType().ToString() != "System.Windows.Controls.TextBlock")
-            {
-                if (control.GetType().ToString() == "System.Windows.Controls.TextBox")
-                {
-                    TextBox f = (TextBox)control;
-                    titleData.Add(f.Text);
-                }
-                else if (control.GetType().ToString() == "System.Windows.Controls.ComboBox")
-                {
-                    ComboBox c = (ComboBox)control;
-                    titleData.Add(c.Text);
-                }
-            }
         }
     }
 
@@ -966,6 +942,33 @@ public partial class MainWindow : Window
         DocumentTypeChange(menuItem);
     }
 
+
+    void title_Click(object sender, RoutedEventArgs e)
+    {
+        if(data.Properties.Title)
+        {
+            if (data.Paragraphs.Count > 0)
+            {
+                if (data.Paragraphs[0] is not ParagraphTitle)
+                {
+                    data.InsertBefore(data.Paragraphs[0], new ParagraphTitle());
+                }
+            }
+            else
+            {
+                data.AddParagraph(new ParagraphTitle());
+            }
+        }
+        else
+        {
+            if (data.Paragraphs.Count > 0 && data.Paragraphs[0] is ParagraphTitle)
+            {
+                data.Paragraphs.RemoveAt(0);
+            }
+            richTextBox.Visibility = Visibility.Visible;
+        }
+    }
+
     void DocumentTypeChange(MenuItem menuItem)
     {
         if (menuItem.IsChecked)
@@ -992,14 +995,26 @@ public partial class MainWindow : Window
             {
                 data.Paragraphs.RemoveAt(0);
             }
+            data.Properties.Title = false;
+            title.Visibility = Visibility.Collapsed;
+            taskSheet.Visibility = Visibility.Collapsed;
+            richTextBox.Visibility = Visibility.Visible;
+            data.Properties.TaskSheet = false;
             TextHeader((string)FindResource("DefaultDocument"));
             data.Type = TypeDocument.DefaultDocument;
         }
         else
         {
-            if (data.Paragraphs.Count > 0 && data.Paragraphs[0] is not ParagraphTitle)
+            title.Visibility = Visibility.Visible;
+            data.Properties.Title = true;
+            data.Properties.TaskSheet = false;
+            taskSheet.Visibility = Visibility.Collapsed;
+            if (data.Paragraphs.Count > 0)
             {
-                data.InsertBefore(data.Paragraphs[0], new ParagraphTitle());
+                if(data.Paragraphs[0] is not ParagraphTitle)
+                {
+                    data.InsertBefore(data.Paragraphs[0], new ParagraphTitle());
+                }
             }
             else
             {
@@ -1019,6 +1034,8 @@ public partial class MainWindow : Window
             }
             else if (CourseworkMI.IsChecked)
             {
+                taskSheet.Visibility = Visibility.Visible;
+                data.Properties.TaskSheet = true;
                 data.Type = TypeDocument.Coursework;
                 TextHeader((string)FindResource("Coursework"));
                 TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
@@ -1269,7 +1286,7 @@ public partial class MainWindow : Window
 
     void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
     {
-        if(_sourceItem is ParagraphTitle || _targetItem is ParagraphTitle)
+        if (_sourceItem is ParagraphTitle || _targetItem is ParagraphTitle)
         {
             MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
             return;
@@ -1571,7 +1588,7 @@ public partial class MainWindow : Window
                         }
                         level = current;
                     }
-                    DrawText(text, TextAlignment.Left, 14);
+                    DrawText(text, TextAlignment.Left);
                 }
                 else
                 {
@@ -1642,43 +1659,38 @@ public partial class MainWindow : Window
 
     void ShowDragDrop()
     {
-        mainImage.Visibility = Visibility.Collapsed;
         dragDropImage.Visibility = Visibility.Visible;
+        mainImage.Visibility = Visibility.Collapsed;
         mainImage.Margin = new Thickness(0, 0, 0, 0);
     }
 
     void ShowIconPicture(string text)
     {
-        mainText.Visibility = Visibility.Visible;
-        mainImage.Visibility = Visibility.Visible;
         dragDropImage.Visibility = Visibility.Collapsed;
+        mainImage.Visibility = Visibility.Visible;
         mainImage.Width = 220;
         mainImage.Height = 100;
         mainImage.Margin = new Thickness(0, 0, 0, 30);
         mainImage.Source = UIHelper.GetImage("pack://application:,,,/Resources/Pictures/Picture.png");
-        mainText.Margin = new Thickness(0, 110, 0, 0);
-        mainText.Text = text;
+        DrawText(text, verticalAlignment: VerticalAlignment.Bottom);
     }
 
     void ShowCode(string text)
     {
-        mainText.Visibility = Visibility.Visible;
-        mainImage.Visibility = Visibility.Visible;
         dragDropImage.Visibility = Visibility.Collapsed;
+        mainImage.Visibility = Visibility.Visible;
         mainImage.Width = 115;
         mainImage.Height = 160;
         mainImage.Margin = new Thickness(0, 0, 0, 30);
         mainImage.Source = UIHelper.GetImage("pack://application:,,,/Resources/Pictures/Code.png");
-        mainText.Margin = new Thickness(0, 165, 0, 0);
-        mainText.VerticalAlignment = VerticalAlignment.Bottom;
-        mainText.Text = text;
+        DrawText(text, verticalAlignment: VerticalAlignment.Bottom);
     }
 
     void ShowImage(string path)
     {
+        dragDropImage.Visibility = Visibility.Collapsed;
         mainText.Visibility = Visibility.Collapsed;
         mainImage.Visibility = Visibility.Visible;
-        dragDropImage.Visibility = Visibility.Collapsed;
         mainImage.Width = Double.NaN;
         mainImage.Height = Double.NaN;
         mainImage.Margin = new Thickness(0, 0, 0, 0);
@@ -1692,17 +1704,14 @@ public partial class MainWindow : Window
         }
         mainImage.Source = bi;
         bi.Freeze();
-        mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
-    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, double fontSize = 20, VerticalAlignment verticalAlignment = VerticalAlignment.Center)
+    void DrawText(string text, TextAlignment textAlignment = TextAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center)
     {
         mainText.Visibility = Visibility.Visible;
         mainText.VerticalAlignment = verticalAlignment;
         mainText.Text = text;
         mainText.TextAlignment = textAlignment;
-        //mainText.FontSize = fontSize;
-        mainText.Margin = new Thickness(0, 0, 0, 0);
     }
 
     public static int Level(string str)
@@ -1819,7 +1828,7 @@ public partial class MainWindow : Window
         Mouse.Capture(null);*/
     }
 
-    
+
     void DrawingMouseMove(object sender, MouseEventArgs e)
     {
         /*
