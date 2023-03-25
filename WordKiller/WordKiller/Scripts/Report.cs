@@ -4,10 +4,10 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Windows;
+using System.Windows.Media.Imaging;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
@@ -68,7 +68,7 @@ class Report
                     }
                     catch
                     {
-                        MessageBox.Show(UIHelper.FindResourse("Error3"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        UIHelper.ShowError("3");
                         return false;
                     }
 
@@ -78,7 +78,7 @@ class Report
                     }
                     catch
                     {
-                        MessageBox.Show(UIHelper.FindResourse("Error4"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        UIHelper.ShowError("4");
                         return false;
                     }
 
@@ -89,7 +89,7 @@ class Report
                     }
                     catch
                     {
-                        MessageBox.Show(UIHelper.FindResourse("Error5"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        UIHelper.ShowError("5");
                         return false;
                     }
 
@@ -99,7 +99,7 @@ class Report
                     }
                     catch
                     {
-                        MessageBox.Show(UIHelper.FindResourse("Error6"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                        UIHelper.ShowError("6");
                         return false;
                     }
 
@@ -120,7 +120,7 @@ class Report
             }
             catch (IOException)
             {
-                MessageBox.Show(UIHelper.FindResourse("Error7"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+                UIHelper.ShowError("7");
             }
         }
         return false;
@@ -289,7 +289,7 @@ class Report
             InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, outlineLevel: 2));
 
         styles.Append(
-            InitStyle("List", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
+            InitStyle("ListM", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
 
         styles.Append(
             InitStyle("Picture", justify: JustificationValues.Center, after: 8, multiplier: 1.5f));
@@ -736,9 +736,9 @@ class Report
                 List(doc, paragraph.Data);
                 l++;
             }
-            else if (paragraph is ParagraphPicture)
+            else if (paragraph is ParagraphPicture picture)
             {
-                Picture(doc, paragraph.Data);
+                Picture(doc, picture);
                 Text(doc, "Рисунок " + p + " – " + paragraph.Description, "Picture");
                 p++;
             }
@@ -752,10 +752,8 @@ class Report
             else if (paragraph is ParagraphCode)
             {
                 Text(doc, paragraph.Description, "H1");
-                FileStream file = new(paragraph.Data, FileMode.Open);
-                StreamReader reader = new(file);
-                string data1 = reader.ReadToEnd();
-                Text(doc, data1, "Code");
+
+                Text(doc, paragraph.Data, "Code");
                 c++;
             }
         }
@@ -819,7 +817,7 @@ class Report
         if (numberOfСolumns > idx)
         {
             TableCell tc = new();
-            tc.Append(new Paragraph(new Run(new Text(text)))
+            tc.Append(new Paragraph(new Run(new Text() { Text = text, Space = SpaceProcessingModeValues.Preserve }))
             {
                 ParagraphProperties = new ParagraphProperties()
                 {
@@ -844,7 +842,30 @@ class Report
         int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
         Level[] levels = new Level[9];
         string levelText = string.Empty;
-        for (int i = 0; i < 9; i++)
+
+        levelText += "%" + (1);
+        levels[0] = new()
+        {
+            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
+            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            LevelText = new LevelText() { Val = levelText + ")" },
+            LevelIndex = 0,
+            LevelSuffix = new LevelSuffix()
+            {
+                Val = LevelSuffixValues.Space
+            },
+            PreviousParagraphProperties = new PreviousParagraphProperties()
+            {
+                Indentation = new Indentation()
+                {
+                    Start = ((int)(0.63f * 1 * cm_to_pt)).ToString(),
+                    Hanging = (-(int)(0.63f * 1 * cm_to_pt)).ToString(),
+                }
+            }
+        };
+        levelText += ".";
+
+        for (int i = 1; i < 9; i++)
         {
             levelText += "%" + (i + 1);
             levels[i] = new()
@@ -861,8 +882,8 @@ class Report
                 {
                     Indentation = new Indentation()
                     {
-                        Start = ((int)(0.63f * i * 2 * cm_to_pt)).ToString(),
-                        Hanging = ((int)(0.63f * i * cm_to_pt)).ToString(),
+                        Start = ((int)(0.63f * (i) * 2 * cm_to_pt)).ToString(),
+                        Hanging = (-(int)(0.63f * 1 * cm_to_pt)).ToString(),
                     }
                 }
             };
@@ -905,42 +926,71 @@ class Report
 
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
-                        new NumberingLevelReference() { Val = MainWindow.Level(item) },
+                        new NumberingLevelReference() { Val = Level(item) },
                         new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "List" }
+                    new ParagraphStyleId() { Val = "ListM" }
                     );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text(item[MainWindow.StartLine(item, MainWindow.Level(item))..]));
+                run.AppendChild(new Text() { Text = item[StartLine(item, Level(item))..], Space = SpaceProcessingModeValues.Preserve });
             }
         }
     }
 
-    static void Picture(WordprocessingDocument doc, string fileName)
+    static int Level(string str)
+    {
+        int level = 0;
+        for (int i = 0; i < str.Length; i++)
+        {
+            if (str[i] == '!')
+            {
+                level++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return level;
+    }
+
+    static int StartLine(string line, int current)
+    {
+        int start = 1;
+        if (line.Length < current)
+        {
+            start += current;
+        }
+        else
+        {
+            start = current;
+        }
+        return start;
+    }
+
+    static void Picture(WordprocessingDocument doc, ParagraphPicture picture)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
-        ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Jpeg);
+        ImagePart imagePart = mainPart.AddImagePart(ImagePartType.Png);
 
-        using (FileStream stream = new(fileName, FileMode.Open))
+        using (MemoryStream stream = new())
         {
+            picture.Bitmap.Save(stream, ImageFormat.Png);
+            stream.Position = 0;
             imagePart.FeedData(stream);
         }
 
-        AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), fileName);
+        AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), picture.BitmapImage);
     }
-    static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, string fileName)
+
+    static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, BitmapImage bitmap)
     {
         int emusPerCm = 360000;
         float maxWidthCm = 16.51f;
         int maxWidthEmus = (int)(maxWidthCm * emusPerCm);
 
-        int iWidth = 0;
-        int iHeight = 0;
-        using (Bitmap bmp = new(fileName))
-        {
-            iWidth = bmp.Width;
-            iHeight = bmp.Height;
-        }
+        int iWidth = bitmap.PixelWidth;
+        int iHeight = bitmap.PixelHeight;
         iWidth = (int)Math.Round((decimal)iWidth * pixel_to_EMU);
         iHeight = (int)Math.Round((decimal)iHeight * pixel_to_EMU);
         float ratio = iHeight / (float)iWidth;
@@ -1099,7 +1149,7 @@ class Report
 
         Run run = paragraph.AppendChild(new Run());
 
-        run.AppendChild(new Text(text));
+        run.AppendChild(new Text() { Text = text, Space = SpaceProcessingModeValues.Preserve });
         run.PrependChild(new RunProperties());
 
         if (bold)
@@ -1140,7 +1190,7 @@ class Report
                 new ParagraphStyleId() { Val = style });
 
             Run run = paragraph.AppendChild(new Run());
-            run.AppendChild(new Text(str[i]));
+            run.AppendChild(new Text() { Text = str[i], Space = SpaceProcessingModeValues.Preserve });
         }
 
         if (str.Length - 1 >= 0)
@@ -1151,7 +1201,7 @@ class Report
                 new ParagraphStyleId() { Val = style });
 
             Run run = paragraph.AppendChild(new Run());
-            run.AppendChild(new Text(str[^1]));
+            run.AppendChild(new Text() { Text = str[^1], Space = SpaceProcessingModeValues.Preserve });
         }
     }
 }

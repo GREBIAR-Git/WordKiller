@@ -15,42 +15,59 @@ public class RTBox : RichTextBox
         string text = new TextRange(Document.ContentStart, Document.ContentEnd).Text;
         if (text != string.Empty)
         {
-            text = text.Replace("\r", "");
-            text = text.Remove(text.Length - 1, 1);
+            if (text.Length > 1)
+            {
+                text = text.Remove(text.Length - 2, 2);
+            }
         }
         return text;
     }
 
-    public void SetText(string text)
+    public void SetText(string text, bool language = true)
     {
         Document.Blocks.Clear();
         Paragraph paragraph = new();
-        string[] lines = text.Split(' ');
-        for (int i = 0; i < lines.Length; i++)
+        if (language)
         {
-            if (lines[i].Any(wordByte => wordByte > 127))
+            SpellCheck.IsEnabled = true;
+            string[] lines = text.Split(' ');
+            for (int i = 0; i < lines.Length; i++)
             {
-                paragraph.Inlines.Add(new Run(lines[i])
+                if (lines[i].Any(wordByte => wordByte > 127))
                 {
-                    Language = XmlLanguage.GetLanguage("ru-ru")
-                });
+                    paragraph.Inlines.Add(new Run(lines[i])
+                    {
+                        Language = XmlLanguage.GetLanguage("ru-ru")
+                    });
+                }
+                else
+                {
+                    paragraph.Inlines.Add(new Run(lines[i])
+                    {
+                        Language = XmlLanguage.GetLanguage("en-us")
+                    });
+                }
+                if (lines.Length - 1 != i)
+                {
+                    paragraph.Inlines.Add(new Run(" ")
+                    {
+                        Language = XmlLanguage.GetLanguage("en-us")
+                    });
+                }
             }
-            else
+            Document.Blocks.Add(paragraph);
+        }
+        else
+        {
+            SpellCheck.IsEnabled = false;
+            foreach (string line in text.Split("\r\n"))
             {
-                paragraph.Inlines.Add(new Run(lines[i])
-                {
-                    Language = XmlLanguage.GetLanguage("en-us")
-                });
-            }
-            if (lines.Length - 1 != i)
-            {
-                paragraph.Inlines.Add(new Run(" ")
-                {
-                    Language = XmlLanguage.GetLanguage("en-us")
-                });
+                paragraph = new();
+                paragraph.Inlines.Add(line);
+                Document.Blocks.Add(paragraph);
             }
         }
-        Document.Blocks.Add(paragraph);
+
     }
 
     public int GetCaretIndex()
@@ -97,7 +114,7 @@ public class RTBox : RichTextBox
             {
                 int idxDelLine = GetLineOfCursor();
 
-                List<string> lines = GetText().Split('\n').ToList();
+                List<string> lines = GetText().Split("\r\n").ToList();
 
                 Clipboard.SetText(lines.ElementAt(idxDelLine - 1));
 

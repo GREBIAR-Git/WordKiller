@@ -18,7 +18,6 @@
     <system:String x:Key="View">Від</system:String>
 
     <system:String x:Key="Substitution">Замена</system:String>
-    <system:String x:Key="Text">Тэкст</system:String>
 
 
     <system:String x:Key="Document">Дакумент</system:String>
@@ -56,6 +55,8 @@
     <system:String x:Key="Picture">Карціна</system:String>
     <system:String x:Key="Table">Стол</system:String>
     <system:String x:Key="Code">Код</system:String>
+    <system:String x:Key="Text">Тэкст</system:String>
+
 
     <system:String x:Key="ToTitle">Да загалоўка</system:String>
     <system:String x:Key="ToText">Да тэксту</system:String>
@@ -81,6 +82,9 @@
 
     <system:String x:Key="OffsetFollowing">пасля змены</system:String>
 
+    <system:String x:Key="Сolumns">Стоўбцы</system:String>
+    <system:String x:Key="Rows">Шэрагі</system:String>
+    
     <system:String x:Key="Error">Памылка</system:String>
     <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
     <system:String x:Key="Error2">Мы не можам зрабіць гэта на вашым прыладзе, абнавіць АС</system:String>
@@ -126,4 +130,5 @@
     <system:String x:Key="Group">Група:</system:String>
     <system:String x:Key="Shifr">Cipher:</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>
+    <system:String x:Key="Year">Год</system:String>
 </ResourceDictionary>

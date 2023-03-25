@@ -9,7 +9,7 @@
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="310" MinWidth="700" DragOver="Win_DragOver" DragLeave="Win_DragLeave" AllowDrop="True" DragEnter="Win_DragEnter" Icon="/Resources/Pictures/512x512.png">
+        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="310" MinWidth="700" AllowDrop="True" Icon="/Resources/Pictures/512x512.png" DragOver="Win_DragOver" DragLeave="Win_DragLeave" DragEnter="Win_DragEnter" >
     <Window.DataContext>
         <vm:ViewModelMain/>
     </Window.DataContext>
@@ -24,7 +24,6 @@
         <CommandBinding Command="Save" Executed="WindowBinding_Save" />
         <CommandBinding Command="SaveAs" Executed="WindowBinding_SaveAs"/>
         <CommandBinding Command="Close" Executed="WindowBinding_Quit" />
-        <CommandBinding Command="Undo" Executed="CommandBinding_Executed"/>
     </Window.CommandBindings>
     <Grid Background="{Binding Path=MainColor,Mode=TwoWay}">
         <Grid Grid.Row="0" Grid.Column="0" x:Name="mainPanel">
@@ -69,8 +68,8 @@
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Document}" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=30}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="{DynamicResource Title}" x:Name="title" IsCheckable="True" IsChecked="{Binding Path=Properties.Title, Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="title_Click"/>
-                    <MenuItem Header="{DynamicResource TaskSheet}" x:Name="taskSheet" IsCheckable="True" IsChecked="{Binding Path=Properties.TaskSheetes, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Title}" x:Name="title" IsCheckable="True" IsChecked="{Binding Path=Properties.Title, Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="Title_Click"/>
+                    <MenuItem Header="{DynamicResource TaskSheet}" x:Name="taskSheet" IsCheckable="True" IsChecked="{Binding Path=Properties.TaskSheet, Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="TaskSheet_Click"/>
                     <MenuItem Header="{DynamicResource ListOfReferences}" x:Name="listOfReferences" IsCheckable="True" IsChecked="{Binding Path=Properties.ListOfReferences, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" IsChecked="{Binding Path=Properties.TableOfContents, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
@@ -88,12 +87,6 @@
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
-                        <TextBlock Text="Разное" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=30}" Style="{StaticResource TextBlockMI}"/>
-                    </MenuItem.Header>
-                    <MenuItem Header="Поменять пользователя"  Click="ChangeUser_MI_Click" Style="{StaticResource MenuItem}"/>
-                </MenuItem>
-                <MenuItem>
-                    <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Help}" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=30}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
                     <MenuItem Header="{DynamicResource Documentation}" Click="DocumentationShow" Style="{StaticResource MenuItem}"/>
@@ -107,98 +100,238 @@
                 </Button>
                 <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=MainColor,Mode=TwoWay}">
+            <Grid Grid.Row="1" Grid.Column="0" x:Name="textPanel"  Background="{Binding Path=MainColor,Mode=TwoWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="75"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="100*" MinWidth="75"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto" MinHeight="27.5"/>
-                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="90*"/>
+                    <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Grid.Column="0" Margin="10 10 10 5" x:Name="elementPanel" Background="{Binding Path=MainColor,Mode=TwoWay}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="23.5*"/>
-                        <ColumnDefinition Width="23.5*"/>
-                        <ColumnDefinition Width="23.5*"/>
-                        <ColumnDefinition Width="23.5*"/>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Grid.Column="0" Margin="0,0,5,0" x:Name="buttonBack" Grid.RowSpan="2" Click="ButtonBack_Click">
-                        <Grid VerticalAlignment="Center">
-                            <Polygon Fill="White" Points="1, 7, 9, 0, 9, 14" />
-                            <Polygon Fill="White" Points="1, 32, 9, 25, 9, 39" />
-                            <Polygon Fill="White" Points="1, 57, 9, 50, 9, 64" />
-                        </Grid>
-                    </Button>
-                    <Button Grid.Row="0" Grid.Column="1" Margin="5,0,5,5" Content="{DynamicResource Header}" MinHeight="50"/>
-                    <Button Grid.Row="0" Grid.Column="2" Margin="5,0,5,5" Content="{DynamicResource SubHeader}"/>
-                    <Button Grid.Row="0" Grid.Column="3" Margin="5,0,5,5" Content="{DynamicResource List}"/>
-                    <Button Grid.Row="0" Grid.Column="4" Margin="5,0,5,5" Content="{DynamicResource Picture}"/>
-                    <Button Grid.Row="0" Grid.Column="5" Margin="5,0,5,5" Content="{DynamicResource Table}"/>
-                    <Button Grid.Row="0" Grid.Column="6" Margin="5,0,5,5" Content="{DynamicResource Code}"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" MinWidth="10" x:Name="h1ComboBox" ItemsSource="{Binding Path=H1P,Mode=TwoWay}" DisplayMemberPath="Description"  Margin="5,0,5,0" />
-                    <ComboBox Grid.Row="1" Grid.Column="2" MinWidth="10" x:Name="h2ComboBox" ItemsSource="{Binding Path=H2P,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" />
-                    <ComboBox Grid.Row="1" Grid.Column="3" MinWidth="10" x:Name="lComboBox" ItemsSource="{Binding Path=LP,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" />
-                    <ComboBox Grid.Row="1" Grid.Column="4" MinWidth="10" x:Name="pComboBox" ItemsSource="{Binding Path=PP,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" />
-                    <ComboBox Grid.Row="1" Grid.Column="5" MinWidth="10" x:Name="tComboBox" ItemsSource="{Binding Path=TP,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" />
-                    <ComboBox Grid.Row="1" Grid.Column="6" MinWidth="10" x:Name="cComboBox" ItemsSource="{Binding Path=CP,Mode=TwoWay}" DisplayMemberPath="Description" Margin="5,0,5,0" />
-                    <Button Grid.Row="0" Grid.Column="7" Margin="5,0,0,0" x:Name="buttonForward" Grid.RowSpan="2" Click="ButtonForward_Click">
-                        <Grid VerticalAlignment="Center">
-                            <Polygon Fill="White" Points="9, 7, 1, 0, 1, 14" />
-                            <Polygon Fill="White" Points="9, 32, 1, 25, 1, 39" />
-                            <Polygon Fill="White" Points="9, 57, 1, 50, 1, 64" />
-                        </Grid>
-                    </Button>
-                </Grid>
-                <Grid Grid.Row="1" Grid.Column="0" x:Name="additionalPanel" Margin="5,0,5,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60*"/>
-                        <ColumnDefinition Width="20*"/>
-                        <ColumnDefinition Width="20*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" x:Name="elementTBl" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=29}" Style="{StaticResource TextBlock}" TextAlignment="Left" Text="{Binding Path=Displayed,Mode=TwoWay}" Background="{Binding Path=MainColor,Mode=TwoWay}"/>
-                    <Button Grid.Column="1" Margin="0,0,5,0" x:Name="add" Content="{DynamicResource Add}" Visibility="Collapsed"  Click="Add_Click"/>
-                    <Button Grid.Column="2" x:Name="toText" Content="{DynamicResource ToText}"  Click="ToText_Click"/>
-                </Grid>
-                <Grid Grid.Row="2" Grid.Column="0" x:Name="SubstitutionPanelRTB" Background="{Binding Path=MainColor,Mode=TwoWay}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="60*"/>
-                        <ColumnDefinition Width="40*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100*"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" x:Name="Substitution">
+                <TreeView Grid.Row="0" Grid.Column="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
+                            <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
+                            <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Вставить(До)" Click="ContextMenuInsertBefore_Click"/>
+                            <MenuItem Header="Вставить(После)" Click="ContextMenuInsertAfter_Click"/>
+                            <MenuItem Header="Удалить" Click="ContextMenuDelete_Click"/>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH1}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Header}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH2}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource SubHeader}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphList}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource List}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphPicture}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Picture}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTable}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Table}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphCode}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Code}" />
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphText}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Text}"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTitle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Title}" />
+                                </Grid>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTaskSheet}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*" />
+                                    <RowDefinition Height="50*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource TaskSheet}" />
+                                </Grid>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=MainColor,Mode=TwoWay}" DragCompleted="TreeView_DragCompleted"/>
+                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style>
+                            <EventSetter Event="ComboBox.PreviewMouseUp" Handler="NewNotComplexObjects"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBoxItem Content="Текст"/>
+                    <ComboBoxItem Content="Заголовок"/>
+                    <ComboBoxItem Content="Подзаголовок"/>
+                    <ComboBoxItem Content="Список"/>
+                    <ComboBoxItem Content="Картинка"/>
+                    <ComboBoxItem Content="Таблица"/>
+                    <ComboBoxItem Content="Фрагмент кода"/>
+                </ComboBox>
+                <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+                    <Grid x:Name="notComplexObjects" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
-                        <ComboBox Grid.Row="0" x:Name="TypeSubstitution" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource ComboBox}" SelectionChanged="TypeSubstitution_SelectionChanged">
-                            <ComboBoxItem Content="{DynamicResource Header}"/>
-                            <ComboBoxItem Content="{DynamicResource SubHeader}"/>
-                            <ComboBoxItem Content="{DynamicResource List}"/>
-                            <ComboBoxItem Content="{DynamicResource Picture}"/>
-                            <ComboBoxItem Content="{DynamicResource Table}"/>
-                            <ComboBoxItem Content="{DynamicResource Code}"/>
-                        </ComboBox>
-                        <TextBlock Grid.Row="0" x:Name="TypeSubstitutionOn" Visibility="Collapsed" Style="{StaticResource TextBlock}"/>
-                        <TextBox Grid.Row="1" x:Name="HeaderSubstitution" FontFamily="Serif" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="HeaderSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" xmlns:s="clr-namespace:System;assembly=mscorlib" Style="{StaticResource TextBox}"/>
+                        <TextBox Grid.Row="1" x:Name="descriptionObject" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" AllowDrop="True" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged"/>
                         <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBoxSubstitution" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBoxSubstitution_TextChanged" AllowDrop="True" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" PreviewDragEnter="Win_DragEnter" FontFamily="Serif">
-                            <typeXaml:RTBox.Resources>
-                                <Style TargetType="{x:Type Paragraph}">
-                                    <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
-                                </Style>
-                            </typeXaml:RTBox.Resources>
-                        </typeXaml:RTBox>
-                        <Grid Grid.Row="3" Visibility="Collapsed" x:Name="panelTable" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                        <Grid Grid.Row="3" Visibility="Collapsed" x:Name="tablePanel" Background="{Binding Path=MainColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100*"/>
                             </Grid.ColumnDefinitions>
@@ -223,285 +356,258 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
                         </Grid>
-                    </Grid>
-                    <Grid AllowDrop="True" Grid.Row="0" Grid.Column="1" x:Name="pictureBox" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="50*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="doubleOnePB" BorderThickness="3 3 0 3" BorderBrush="White">
-                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4 4 2 4" BorderBrush="Black">
-                                <Grid>
-                                    <Rectangle x:Name="pictureLeft"/>
-                                    <Image Grid.Row="0" Grid.Column="1" Width="auto" Margin="10,0,10,20" Height="70" Source="/Resources/Pictures/Picture.png" Stretch="Fill" />
-                                    <TextBlock x:Name="textLeft" TextWrapping="Wrap"  Margin="0,110,0,0" Text="{DynamicResource ForPicture}" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Bottom" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                        </Border>
-                        <Border Grid.Row="0" Grid.Column="1" x:Name="doubleTwoPB" BorderThickness="0 3 3 3" BorderBrush="White">
-                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="2 4 4 4" BorderBrush="Black">
-                                <Grid>
-                                    <Rectangle x:Name="codeRight"/>
-                                    <Image Grid.Row="0" Grid.Column="1" Width="100" Height="145" Source="/Resources/Pictures/Code.png" Stretch="Fill" />
-                                    <TextBlock x:Name="textRight" TextWrapping="Wrap" Margin="0,180,0,0" Text="{DynamicResource ForСode}" HorizontalAlignment="Center"  FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" VerticalAlignment="Bottom" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                        </Border>
-                        <Border Grid.Row="0" Grid.Column="0" x:Name="singlePB" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
-                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
-                                <Grid>
-                                    <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                                        <TextBlock x:Name="mainText" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=20}" VerticalAlignment="Center" Foreground="Black" Style="{StaticResource TextBlock}"/>
-                                    </ScrollViewer>
-                                    <Image Grid.Row="0" Grid.Column="1" Visibility="Hidden" x:Name="mainImage" Stretch="Fill" />
-                                    <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
-                                </Grid>
-                            </Border>
-                        </Border>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="2" Grid.Column="0" x:Name="TextPanelRTB" Visibility="Collapsed" Background="{Binding Path=MainColor,Mode=TwoWay}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40*"/>
-                        <ColumnDefinition Width="60*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="90*"/>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="20"/>
-                    </Grid.RowDefinitions>
-                    <TreeView Grid.Row="0" Grid.Column="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">
-                                <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
-                                <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
-                                <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Вставить(До)" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Вставить(После)" Click="ContextMenuInsertAfter_Click"/>
-                                <MenuItem Header="Удалить" Click="ContextMenuDelete_Click"/>
-                            </ContextMenu>
-                        </TreeView.ContextMenu>
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH1}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH2}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphList}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphPicture}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTable}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphCode}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphText}" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTitle}">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50*" />
-                                        <RowDefinition Height="50*" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" Text="Тип: " HorizontalAlignment="Right" />
-                                        <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{Binding Type}" />
-                                    </Grid>
-                                </Grid>
-                            </HierarchicalDataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
-                    <Button Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" x:Name="NewText" Content="Добавить" Click="NewText_Click"/>
-                    <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" x:Name="treeviewСontent">
-                        <Grid x:Name="titlePanel" Margin="10,10,10,10" Background="{Binding Path=MainColor,Mode=TwoWay}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="16*"/>
-                                <ColumnDefinition Width="16*"/>
-                                <ColumnDefinition Width="16*"/>
-                                <ColumnDefinition Width="16*"/>
-                                <ColumnDefinition Width="16*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="10*"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="10*"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,10,10,5" Text="Кафедра:" Style="{StaticResource TextBlockTitle}"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=Title.Faculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий"  SelectionChanged="FacultyComboBox_SelectionChanged">
-                                <ComboBoxItem IsSelected="True">информационных систем и цифровых технологий</ComboBoxItem>
-                                <ComboBoxItem>приборостроения, метрологии и сертификации</ComboBoxItem>
-                                <ComboBoxItem>информационной безопасности</ComboBoxItem>
-                                <ComboBoxItem>технической физики и математики</ComboBoxItem>
-                                <ComboBoxItem>электроники, радиотехники и систем связи</ComboBoxItem>
-                                <ComboBoxItem>электрооборудования и энергосбережения</ComboBoxItem>
-                            </ComboBox>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,10,10" Text="Выполнил(и):" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=Title.Students,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=Title.Number,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=Title.Shifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=Title.Theme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=Title.Discipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
-                            <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=Title.Professor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3"/>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=Title.Year,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
-                        </Grid>
-                        <typeXaml:RTBox x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="True" FontFamily="Serif">
+                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" PreviewDragOver="PictureBox_DragOver" PreviewDrop="PictureBox_Drop">
                             <typeXaml:RTBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
-                                    <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,5"/>
+                                    <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,10"/>
                                 </Style>
                             </typeXaml:RTBox.Resources>
                         </typeXaml:RTBox>
+                        <Border Grid.Row="3" x:Name="picture" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
+                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
+                                <Grid>
+                                    <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                    <Image Grid.Row="0" Grid.Column="1" x:Name="pictureI" Stretch="Fill" />
+                                </Grid>
+                            </Border>
+                        </Border>
                     </Grid>
-                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="cursorLocationTB" Visibility="Collapsed" HorizontalAlignment="Center" Style="{StaticResource TextBlockTitle}"/>
+                    <Grid x:Name="titlePanel" Visibility="Collapsed" Margin="10,10,10,10" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="16*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,10,10,5" Text="Кафедра:" Style="{StaticResource TextBlockTitle}"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=Title.Faculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий"  SelectionChanged="FacultyComboBox_SelectionChanged">
+                            <ComboBoxItem IsSelected="True">информационных систем и цифровых технологий</ComboBoxItem>
+                            <ComboBoxItem>приборостроения, метрологии и сертификации</ComboBoxItem>
+                            <ComboBoxItem>информационной безопасности</ComboBoxItem>
+                            <ComboBoxItem>технической физики и математики</ComboBoxItem>
+                            <ComboBoxItem>электроники, радиотехники и систем связи</ComboBoxItem>
+                            <ComboBoxItem>электрооборудования и энергосбережения</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,10,10" Text="Выполнил(и):" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=Title.Students,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=Title.Number,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=Title.Shifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=Title.Theme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=Title.Discipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
+                        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=Title.Professor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3"/>
+                        <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=Title.Year,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                    </Grid>
+                    <ScrollViewer x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=MainColor,Mode=TwoWay}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="auto" MinHeight="100"/>
+                                <RowDefinition Height="10"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Факультет" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Год" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="типа расположить курсовой слва проект а всправ работу" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Дисциплина" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Студент" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Шифр" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="7" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="8" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Тема курсового проекта" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="9" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Срок сдачи" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="10" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходные данные" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="11" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Содержание курсвой" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="12" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Отчетный материал курсового" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="13" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Руководитель" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="14" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                                <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="40*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="25*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Задание принято к исполнению" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
                 </Grid>
             </Grid>
         </Grid>
@@ -531,6 +637,7 @@
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
+                        <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -547,9 +654,9 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource IsAssociate}" Style="{StaticResource TextBlock}"/>
                             <CheckBox Grid.Row="0" Grid.Column="1" x:Name="AssociationWKR" Margin="10 0 0 0" HorizontalAlignment="Left" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Click="AssociationWKR_Click">
-                            <CheckBox.LayoutTransform>
-                                <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
-                            </CheckBox.LayoutTransform>
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
+                                </CheckBox.LayoutTransform>
                             </CheckBox>
                         </Grid>
                     </Border>
@@ -620,6 +727,23 @@
                             </CheckBox>
                         </Grid>
                     </Border>
+                    <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=AdditionalColor,Mode=TwoWay}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="33*"/>
+                                <ColumnDefinition Width="34*"/>
+                                <ColumnDefinition Width="33*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                                <RowDefinition Height="75*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Файл с настройками приложения" TextWrapping="NoWrap" HorizontalAlignment="Center" TextAlignment="Center" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
+                            <Button Grid.Row="1" Grid.Column="0" Content="Открыть" Margin="0 5 5 0" Click="Button_Click"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Удалить" Margin="0 5 5 0" Click="Button_Click_1"/>
+                            <Button Grid.Row="1" Grid.Column="2" Content="Удалить все файлы" Margin="0 5 0 0" Click="Button_Click_2"/>
+                        </Grid>
+                    </Border>
                 </Grid>
             </ScrollViewer>
             <Grid Grid.Row="1" Grid.Column="0" x:Name="Personalization" Visibility="Collapsed" Grid.ColumnSpan="5">
@@ -661,8 +785,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource MainColor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="mainColor" SelectedColor="{Binding MainColor}" Closed="MainColor_ContextMenuClosing"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource MainColor}" Style="{StaticResource TextBlock1}"/>
+                                <xctk:ColorPicker Grid.Row="0" Grid.Column="1" Width="250" MaxHeight="30" HorizontalAlignment="Left" x:Name="mainColor" SelectedColor="{Binding MainColor}" Closed="MainColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
@@ -674,8 +798,8 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource ComplementaryСolor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="2" x:Name="additionalColor" SelectedColor="{Binding AdditionalColor}" Closed="AdditionalColor_ContextMenuClosing"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource ComplementaryСolor}" Style="{StaticResource TextBlock1}"/>
+                                <xctk:ColorPicker Grid.Row="0" Grid.Column="1" Width="250" MaxHeight="30" HorizontalAlignment="Left" x:Name="additionalColor" SelectedColor="{Binding AdditionalColor}" Closed="AdditionalColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
@@ -687,7 +811,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource AlternativeСolor}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource AlternativeСolor}" Style="{StaticResource TextBlock1}"/>
                                 <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="alternativeColor" SelectedColor="{Binding AlternativeColor}" Closed="AlternativeColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
@@ -700,7 +824,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource HoverColor}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource HoverColor}" Style="{StaticResource TextBlock1}"/>
                                 <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" x:Name="hoverColor" SelectedColor="{Binding HoverColor}" Closed="HoverColor_ContextMenuClosing"/>
                             </Grid>
                         </Border>
@@ -713,7 +837,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FontSize}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource FontSize}" Style="{StaticResource TextBlock1}"/>
                                 <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center" x:Name="fontSize" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" ValueChanged="FontSize_ValueChanged"/>
                             </Grid>
                         </Border>
@@ -726,20 +850,20 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource FontSizeRTB}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource FontSizeRTB}" Style="{StaticResource TextBlock1}"/>
                                 <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center" x:Name="fontSizeRTB" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" ValueChanged="FontSizeRTB_ValueChanged"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="7" Grid.Column="0" Background="{Binding Path=AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                            <Grid>
+                            <Grid HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Language}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="{DynamicResource Language}" Style="{StaticResource TextBlock}"/>
                                 <ComboBox x:Name="language" MinWidth="250" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center"  SelectionChanged="Language_SelectionChanged">
                                     <ComboBoxItem>Русский</ComboBoxItem>
                                     <ComboBoxItem>English</ComboBoxItem>
@@ -835,7 +959,7 @@
                 <ColumnDefinition Width="95*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="Yellow">
-                
+
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -843,7 +967,7 @@
                     <RowDefinition Height="90*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Background="Yellow">
-                    
+
                 </Grid>
                 <Grid Grid.Row="1">
                     <Canvas Name="DrawingTarget" Background="Transparent" MouseLeftButtonDown="DrawingMouseDown" MouseLeftButtonUp="DrawingMouseUp" MouseMove="DrawingMouseMove"/>

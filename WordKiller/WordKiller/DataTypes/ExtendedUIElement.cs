@@ -2,7 +2,7 @@
 
 namespace WordKiller.DataTypes;
 
-internal class ExtendedUIElement
+class ExtendedUIElement
 {
     public UIElement Element { get; set; }
     public int Row { get; set; }

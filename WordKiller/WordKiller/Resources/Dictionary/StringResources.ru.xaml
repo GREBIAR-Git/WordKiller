@@ -13,12 +13,8 @@
     <system:String x:Key="SaveAs">Сохранить как...</system:String>
     <system:String x:Key="Exit">Выход</system:String>
     
-    
     <system:String x:Key="View">Вид</system:String>
-
     <system:String x:Key="Substitution">Подстановка</system:String>
-    <system:String x:Key="Text">Текст</system:String>
-
 
     <system:String x:Key="Document">Документ</system:String>
     
@@ -54,6 +50,7 @@
     <system:String x:Key="Picture">Картинка</system:String>
     <system:String x:Key="Table">Таблица</system:String>
     <system:String x:Key="Code">Код</system:String>
+    <system:String x:Key="Text">Текст</system:String>
 
     <system:String x:Key="ToTitle">К титульнику</system:String>
     <system:String x:Key="ToText">К тексту</system:String>
@@ -78,7 +75,10 @@
     <system:String x:Key="Start">Начало</system:String>
 
     <system:String x:Key="OffsetFollowing">, последующие сместить</system:String>
-    
+
+    <system:String x:Key="Сolumns">Строки</system:String>
+    <system:String x:Key="Rows">Столбцы</system:String>
+
     <system:String x:Key="Error">Ошибка</system:String>
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
     <system:String x:Key="Error2">Мы не можем это сделать на вашем устройстве, обновите ОС</system:String>
@@ -124,4 +124,5 @@
     <system:String x:Key="Group">Группа:</system:String>
     <system:String x:Key="Shifr">Шифр:</system:String>
     <system:String x:Key="Companion">Напарник</system:String>
+    <system:String x:Key="Year">Год</system:String>
 </ResourceDictionary>

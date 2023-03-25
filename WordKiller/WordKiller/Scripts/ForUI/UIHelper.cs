@@ -7,6 +7,10 @@ namespace WordKiller.Scripts.ForUI
 {
     public class UIHelper
     {
+        public static void ShowError(string number)
+        {
+            MessageBox.Show(FindResourse("Error" + number), FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+        }
 
         public static string FindResourse(string key)
         {

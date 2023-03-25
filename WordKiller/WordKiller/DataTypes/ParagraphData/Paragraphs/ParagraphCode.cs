@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
@@ -16,9 +15,6 @@ public class ParagraphCode : IParagraphData
     string description;
 
     public string Description { get => description; set => description = value; }
-
-
-    public List<IParagraphData>? Paragraphs { get => null; }
 
     public Visibility DescriptionVisibility()
     {

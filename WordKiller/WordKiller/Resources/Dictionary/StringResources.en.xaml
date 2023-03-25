@@ -17,8 +17,7 @@
 
     <system:String x:Key="View">View</system:String>
 
-    <system:String x:Key="Substitution">Substitution menu</system:String>
-    <system:String x:Key="Text">Text menu</system:String>
+    <system:String x:Key="Substitution">Substitution</system:String>
 
 
     <system:String x:Key="Document">Document</system:String>
@@ -56,6 +55,7 @@
     <system:String x:Key="Picture">Image</system:String>
     <system:String x:Key="Table">Table</system:String>
     <system:String x:Key="Code">Code</system:String>
+    <system:String x:Key="Text">Text</system:String>
 
     <system:String x:Key="ToTitle">To title</system:String>
     <system:String x:Key="ToText">To text</system:String>
@@ -81,6 +81,9 @@
 
     <system:String x:Key="OffsetFollowing">offset the following</system:String>
 
+    <system:String x:Key="Сolumns">Сolumns</system:String>
+    <system:String x:Key="Rows">Rows</system:String>
+    
     <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
     <system:String x:Key="Error2">We can't do this on your device, update the OS</system:String>
@@ -126,5 +129,5 @@
     <system:String x:Key="Group">Group:</system:String>
     <system:String x:Key="Shifr">Shifr:</system:String>
     <system:String x:Key="Companion">Mate</system:String>
-
+    <system:String x:Key="Year">Year</system:String>
 </ResourceDictionary>

@@ -1,15 +1,12 @@
 ﻿using Microsoft.Win32;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using WordKiller.DataTypes;
-using WordKiller.DataTypes.ParagraphData;
-using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.TypeXAML;
-using WordKiller.Scripts.File;
 using WordKiller.Scripts.ForUI;
-using WordKiller.ViewModels;
 
 namespace WordKiller.Scripts.ImportExport;
 
@@ -19,11 +16,11 @@ public class WordKillerFile
 
     public string? SavePath { get => savePath; }
 
-    readonly SaveLogo saveLogo;
+    readonly Image logoSave;
 
     public WordKillerFile(Image logo)
     {
-        saveLogo = new(logo);
+        logoSave = logo;
     }
 
     public bool SavePathExists()
@@ -31,19 +28,19 @@ public class WordKillerFile
         return !string.IsNullOrEmpty(savePath);
     }
 
-    public void Save(ref DocumentData data)
+    public void Save(DocumentData data)
     {
         if (!string.IsNullOrEmpty(savePath))
         {
-            SaveFile(savePath, ref data);
+            SaveFile(savePath, data);
         }
         else
         {
-            SaveAs(ref data);
+            SaveAs(data);
         }
     }
 
-    public bool SaveAs(ref DocumentData data)
+    public bool SaveAs(DocumentData data)
     {
         SaveFileDialog saveFileDialog = new()
         {
@@ -54,101 +51,58 @@ public class WordKillerFile
         if (saveFileDialog.ShowDialog() == true)
         {
             savePath = saveFileDialog.FileName;
-            SaveFile(savePath, ref data);
+            SaveFile(savePath, data);
             return true;
         }
         return false;
     }
 
-    void SaveFile(string nameFile, ref DocumentData data)
+    async void SaveFile(string nameFile, DocumentData data)
     {
-        using (FileStream stream = System.IO.File.Open(nameFile, false ? FileMode.Append : FileMode.Create))
+        logoSave.Visibility = Visibility.Visible;
+        await Task.Run(() =>
         {
-            byte[] buffer = new byte[stream.Length];
+            using (FileStream stream = System.IO.File.Open(nameFile, false ? FileMode.Append : FileMode.Create))
+            {
+                byte[] buffer = new byte[stream.Length];
 
-            stream.Read(buffer, 0, buffer.Length);
-            BinaryFormatter binaryFormatter = new();
-            binaryFormatter.Serialize(stream, data);
-            saveLogo.Show();
-        }
-
-        /*
-        if (Properties.Settings.Default.NumberEncoding == 0)
-        {
-            output.Write("0\r\n" + save);
-        }
-        else if (Properties.Settings.Default.NumberEncoding == 1)
-        {
-            output.Write("1\r\n" + Encryption.MegaConvertE(save.ToString()));
-        }*/
+                stream.ReadAsync(buffer, 0, buffer.Length);
+                BinaryFormatter binaryFormatter = new();
+                binaryFormatter.Serialize(stream, data);
+            }
+        });
+        logoSave.Visibility = Visibility.Collapsed;
     }
 
-    public void OpenFile(string fileName, ref DocumentData data, ref ViewModelMain viewModel)
+    public void OpenFile(string fileName, ref DocumentData data)
     {
         try
         {
-            ClearGlobal(ref data, ref viewModel);
+            data.Clear();
             using (FileStream stream = System.IO.File.Open(fileName, FileMode.Open))
             {
-                var binaryFormatter = new BinaryFormatter();
-                data = (DocumentData)binaryFormatter.Deserialize(stream);
+                if (stream.Length == 0)
+                {
+
+                }
+                else
+                {
+                    var binaryFormatter = new BinaryFormatter();
+                    data = (DocumentData)binaryFormatter.Deserialize(stream);
+                }
             }
-            ReferenceComboBox(data, ref viewModel);
             savePath = fileName;
         }
         catch
         {
             MessageBox.Show(UIHelper.FindResourse("Error8"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         }
-
-        /*
-        if (text[0] == '1' && text[1] == '\r' && text[2] == '\n')
-        {
-            text = Encryption.MegaConvertD(text[3..]);
-        }
-        else if (text[0] == '0' && text[1] == '\r' && text[2] == '\n')
-        {
-            text = text[3..];
-        }*/
     }
 
-    void ReferenceComboBox(DocumentData data, ref ViewModelMain viewModel)
-    {
-        foreach (IParagraphData paragraph in data.Paragraphs)
-        {
-            if (paragraph is ParagraphH1)
-            {
-                viewModel.H1P.Add(paragraph as ParagraphH1);
-            }
-            else if (paragraph is ParagraphH2)
-            {
-                viewModel.H2P.Add(paragraph as ParagraphH2);
-            }
-            else if (paragraph is ParagraphList)
-            {
-                viewModel.LP.Add(paragraph as ParagraphList);
-            }
-            else if (paragraph is ParagraphPicture)
-            {
-                viewModel.PP.Add(paragraph as ParagraphPicture);
-            }
-            else if (paragraph is ParagraphTable)
-            {
-                viewModel.TP.Add(paragraph as ParagraphTable);
-            }
-            else if (paragraph is ParagraphCode)
-            {
-                viewModel.CP.Add(paragraph as ParagraphCode);
-            }
-        }
-    }
-
-
-    public void NewFile(ref DocumentData data, RTBox richTextBox, ref ViewModelMain viewModel)
+    public void NewFile(ref DocumentData data, RTBox richTextBox)
     {
         NeedSave(ref data);
-        viewModel.WinTitle = "WordKiller";
-        ClearGlobal(ref data, ref viewModel);
+        data.Clear();
         richTextBox.Document.Blocks.Clear();
         savePath = string.Empty;
     }
@@ -158,23 +112,9 @@ public class WordKillerFile
         MessageBoxResult result = MessageBox.Show(UIHelper.FindResourse("Question1"), UIHelper.FindResourse("Question1"), MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         if (result == MessageBoxResult.Yes)
         {
-            Save(ref data);
+            Save(data);
             return true;
         }
         return false;
-    }
-
-    void ClearGlobal(ref DocumentData data, ref ViewModelMain viewModel)
-    {
-        data.Paragraphs.Clear();
-        data.Title = new();
-        data.Properties = new();
-
-        viewModel.H1P.Clear();
-        viewModel.H2P.Clear();
-        viewModel.LP.Clear();
-        viewModel.PP.Clear();
-        viewModel.TP.Clear();
-        viewModel.CP.Clear();
     }
 }

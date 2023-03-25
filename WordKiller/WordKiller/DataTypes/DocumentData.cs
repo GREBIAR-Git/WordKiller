@@ -8,11 +8,19 @@ namespace WordKiller.DataTypes;
 [Serializable]
 public class DocumentData : MainSection
 {
+
     public TypeDocument Type { get; set; }
 
     public ViewModelTitle Title { get; set; }
 
     public ViewModelProperties Properties { get; set; }
+
+    public void Clear()
+    {
+        Paragraphs.Clear();
+        Title = new();
+        Properties = new();
+    }
 
     public DocumentData() : base()
     {

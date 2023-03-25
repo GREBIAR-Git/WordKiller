@@ -1,7 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using WordKiller.DataTypes.ParagraphData.Paragraphs;
-
-namespace WordKiller.ViewModels;
+﻿namespace WordKiller.ViewModels;
 public class ViewModelMain : ViewModelBase
 {
 
@@ -11,39 +8,11 @@ public class ViewModelMain : ViewModelBase
     public ViewModelTitle title;
     public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }
 
-    ObservableCollection<ParagraphH1>? h1p = new();
-
-    public ObservableCollection<ParagraphH1>? H1P { get => h1p; set => SetProperty(ref h1p, value); }
-
-    ObservableCollection<ParagraphH2>? h2p = new();
-
-    public ObservableCollection<ParagraphH2>? H2P { get => h2p; set => SetProperty(ref h2p, value); }
-
-    ObservableCollection<ParagraphList>? lp = new();
-
-    public ObservableCollection<ParagraphList>? LP { get => lp; set => SetProperty(ref lp, value); }
-
-    ObservableCollection<ParagraphPicture>? pp = new();
-
-    public ObservableCollection<ParagraphPicture>? PP { get => pp; set => SetProperty(ref pp, value); }
-
-    ObservableCollection<ParagraphTable>? tp = new();
-
-    public ObservableCollection<ParagraphTable>? TP { get => tp; set => SetProperty(ref tp, value); }
-
-    ObservableCollection<ParagraphCode>? cp = new();
-
-    public ObservableCollection<ParagraphCode>? CP { get => cp; set => SetProperty(ref cp, value); }
-
     string? winTitle;
     public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
     bool titleOpen;
     public bool TitleOpen { get => titleOpen; set => SetProperty(ref titleOpen, value); }
-
-    string displayed;
-
-    public string Displayed { get => displayed; set => SetProperty(ref displayed, value); }
 
     bool substitutionOpen;
     public bool SubstitutionOpen { get => substitutionOpen; set => SetProperty(ref substitutionOpen, value); }

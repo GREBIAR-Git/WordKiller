@@ -18,7 +18,6 @@
     <system:String x:Key="View">看法</system:String>
 
     <system:String x:Key="Substitution">替代</system:String>
-    <system:String x:Key="Text">文本</system:String>
 
 
     <system:String x:Key="Document">文檔</system:String>
@@ -57,6 +56,7 @@
     <system:String x:Key="Picture">圖片</system:String>
     <system:String x:Key="Table">桌子</system:String>
     <system:String x:Key="Code">編碼</system:String>
+    <system:String x:Key="Text">文本</system:String>
 
     <system:String x:Key="ToTitle">標題</system:String>
     <system:String x:Key="ToText">到文字</system:String>
@@ -82,6 +82,9 @@
 
     <system:String x:Key="OffsetFollowing">隨後移動</system:String>
 
+    <system:String x:Key="Сolumns">专栏</system:String>
+    <system:String x:Key="Rows">行数</system:String>
+    
     <system:String x:Key="Error">錯誤</system:String>
     <system:String x:Key="Error1">文件打開錯誤：找不到文件或不支持格式</system:String>
     <system:String x:Key="Error2">我們無法在您的設備上執行此操作，更新操作系統</system:String>
@@ -127,5 +130,6 @@
     <system:String x:Key="Group">團體：</system:String>
     <system:String x:Key="Shifr">密碼：</system:String>
     <system:String x:Key="Companion">夥伴</system:String>
+    <system:String x:Key="Year">年</system:String>
 
 </ResourceDictionary>

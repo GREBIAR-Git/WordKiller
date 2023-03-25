@@ -18,7 +18,6 @@
     <system:String x:Key="View">Voir</system:String>
 
     <system:String x:Key="Substitution">Substitution</system:String>
-    <system:String x:Key="Text">Texte</system:String>
 
 
     <system:String x:Key="Document">Document</system:String>
@@ -55,6 +54,7 @@
     <system:String x:Key="Picture">Image</system:String>
     <system:String x:Key="Table">Table</system:String>
     <system:String x:Key="Code">Le code</system:String>
+    <system:String x:Key="Text">Texte</system:String>
 
     <system:String x:Key="ToTitle">Au titre</system:String>
     <system:String x:Key="ToText">Au texte</system:String>
@@ -80,6 +80,9 @@
 
     <system:String x:Key="OffsetFollowing">ultérieur pour changer</system:String>
 
+    <system:String x:Key="Сolumns">Colonnes</system:String>
+    <system:String x:Key="Rows">Rangs</system:String>
+    
     <system:String x:Key="Error">Erreur</system:String>
     <system:String x:Key="Error1">Erreur d'ouverture du fichier: le fichier n'est pas trouvé ou le format n'est pas pris en charge</system:String>
     <system:String x:Key="Error2">Nous ne pouvons pas faire cela sur votre appareil, mettre à jour le système d'exploitation</system:String>
@@ -125,4 +128,5 @@
     <system:String x:Key="Group">Groupe:</system:String>
     <system:String x:Key="Shifr">Chiffrer:</system:String>
     <system:String x:Key="Companion">Partenaire</system:String>
+    <system:String x:Key="Year">Année</system:String>
 </ResourceDictionary>

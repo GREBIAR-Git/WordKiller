@@ -12,10 +12,10 @@ namespace WordKiller.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
@@ -334,7 +334,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("28")]
         public string FontSize {
             get {
                 return ((string)(this["FontSize"]));
@@ -370,13 +370,25 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public string FontSizeRTB {
             get {
                 return ((string)(this["FontSizeRTB"]));
             }
             set {
                 this["FontSizeRTB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public double TreeViewSize {
+            get {
+                return ((double)(this["TreeViewSize"]));
+            }
+            set {
+                this["TreeViewSize"] = value;
             }
         }
     }
