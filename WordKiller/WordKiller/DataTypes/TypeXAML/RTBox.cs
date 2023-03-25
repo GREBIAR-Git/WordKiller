@@ -67,6 +67,12 @@ public class RTBox : RichTextBox
                 Document.Blocks.Add(paragraph);
             }
         }
+        UndoLimit = 0;
+        UndoLimit = -1;
+    }
+
+    void PerformSpellCheck()
+    {
 
     }
 

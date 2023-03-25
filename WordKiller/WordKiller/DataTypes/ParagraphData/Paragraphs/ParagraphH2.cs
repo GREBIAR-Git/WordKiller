@@ -13,7 +13,7 @@ public class ParagraphH2 : SectionH2, IParagraphData
 
     public string Data { get => data; set => SetProperty(ref data, value, "Description"); }
 
-    public string Description { get => data.Replace("\n", " "); set => SetProperty(ref data, value, "Data"); }
+    public string Description { get => data.Replace("\r\n", " "); set => SetProperty(ref data, value, "Data"); }
 
     public Visibility DescriptionVisibility()
     {

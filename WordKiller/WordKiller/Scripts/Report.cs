@@ -829,7 +829,7 @@ class Report
         }
     }
 
-    static void List(WordprocessingDocument doc, string items)
+    static void List(WordprocessingDocument doc, string list)
     {
         NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
         if (numberingPart == null)
@@ -915,24 +915,56 @@ class Report
             var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
             numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
         }
-
         Body body = doc.MainDocumentPart.Document.Body;
 
-        foreach (string item in items.Split('\n'))
+        string[] items = list.Split('\n').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+        int level = 0;
+        if (items.Length > 0)
         {
-            if (!string.IsNullOrWhiteSpace(item))
+            level = Level(items[0]);
+        }
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(items[i]))
             {
+                string itemText = items[i][StartLine(items[i], Level(items[i]))..];
+                string item = itemText.Substring(0, 1).ToLower();
+                if (itemText.Length > 1)
+                {
+                    if (itemText.Substring(1, 2) == itemText.Substring(1, 2).ToUpper())
+                    {
+                        item = itemText.Substring(0, 1);
+                    }
+                    item += itemText.Substring(1).Trim();
+                }
+                string end;
+                if (i + 1 < items.Length)
+                {
+                    if (Level(items[i]) < Level(items[i + 1]))
+                    {
+                        end = ":";
+                    }
+                    else
+                    {
+                        end = ";";
+                    }
+                }
+                else
+                {
+                    end = ".";
+                }
+                level = Level(items[i]);
                 Paragraph paragraph = body.AppendChild(new Paragraph());
 
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
-                        new NumberingLevelReference() { Val = Level(item) },
+                        new NumberingLevelReference() { Val = Level(items[i]) },
                         new NumberingId() { Val = numberId }),
                     new ParagraphStyleId() { Val = "ListM" }
                     );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text() { Text = item[StartLine(item, Level(item))..], Space = SpaceProcessingModeValues.Preserve });
+                run.AppendChild(new Text() { Text = item + end, Space = SpaceProcessingModeValues.Preserve });
             }
         }
     }
