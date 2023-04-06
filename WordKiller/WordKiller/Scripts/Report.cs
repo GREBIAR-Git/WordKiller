@@ -927,7 +927,7 @@ class Report
         {
             if (!string.IsNullOrWhiteSpace(items[i]))
             {
-                string itemText = items[i][StartLine(items[i], Level(items[i]))..];
+                string itemText = items[i][StartLine(items[i], Level(items[i]))..].Trim();
                 string item = itemText.Substring(0, 1).ToLower();
                 if (itemText.Length > 1)
                 {
@@ -935,7 +935,7 @@ class Report
                     {
                         item = itemText.Substring(0, 1);
                     }
-                    item += itemText.Substring(1).Trim();
+                    item += itemText.Substring(1);
                 }
                 string end;
                 if (i + 1 < items.Length)

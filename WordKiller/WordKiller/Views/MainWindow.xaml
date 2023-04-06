@@ -9,7 +9,7 @@
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="310" MinWidth="700" AllowDrop="True" Icon="/Resources/Pictures/512x512.png" DragOver="Win_DragOver" DragLeave="Win_DragLeave" DragEnter="Win_DragEnter" >
+        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="310" MinWidth="700" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
     <Window.DataContext>
         <vm:ViewModelMain/>
     </Window.DataContext>
@@ -110,13 +110,14 @@
                     <RowDefinition Height="90*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <TreeView Grid.Row="0" Grid.Column="0" AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView Grid.Row="0" Grid.Column="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
                             <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
                             <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
                             <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="AllowDrop" Value="True"/>
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.ContextMenu>
@@ -159,7 +160,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="100*" />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
                                     <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource SubHeader}" />
@@ -308,7 +309,7 @@
                     </TreeView.Resources>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=MainColor,Mode=TwoWay}" DragCompleted="TreeView_DragCompleted"/>
-                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}">
+                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}" AllowDrop="True" Drop="NewNotComplexObjects_Drop" DragOver="NewNotComplexObjects_DragOver">
                     <ComboBox.ItemContainerStyle>
                         <Style>
                             <EventSetter Event="ComboBox.PreviewMouseUp" Handler="NewNotComplexObjects"/>
@@ -330,7 +331,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
-                        <TextBox Grid.Row="1" x:Name="descriptionObject" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" AllowDrop="True" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged"/>
+                        <TextBox Grid.Row="1" x:Name="descriptionObject"  FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged" AllowDrop="True" PreviewDragEnter="Win_DragEnter" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave"/>
                         <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
                         <Grid Grid.Row="3" Visibility="Collapsed" x:Name="tablePanel" Background="{Binding Path=MainColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
@@ -357,21 +358,30 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
                         </Grid>
-                        <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" PreviewDragOver="PictureBox_DragOver" PreviewDrop="PictureBox_Drop">
-                            <typeXaml:RTBox.Resources>
-                                <Style TargetType="{x:Type Paragraph}">
-                                    <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,10"/>
-                                </Style>
-                            </typeXaml:RTBox.Resources>
-                        </typeXaml:RTBox>
-                        <Border Grid.Row="3" x:Name="picture" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
-                            <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
-                                <Grid>
-                                    <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
-                                    <Image Grid.Row="0" Grid.Column="1" x:Name="pictureI" Stretch="Fill" />
-                                </Grid>
+                        <Grid Grid.Row="3">
+                            <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Visibility="Collapsed" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="False" FontSize="{Binding Path=FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
+                                <typeXaml:RTBox.Resources>
+                                    <Style TargetType="{x:Type Paragraph}">
+                                        <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,10"/>
+                                    </Style>
+                                </typeXaml:RTBox.Resources>
+                            </typeXaml:RTBox>
+                            <Border Grid.Row="3" x:Name="picture" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
+                                <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
+                                    <Grid>
+                                        <Rectangle Fill="{Binding Path=AdditionalColor,Mode=TwoWay}"/>
+                                        <Image x:Name="pictureI" Stretch="Fill" />
+                                    </Grid>
+                                </Border>
                             </Border>
-                        </Border>
+                            <Border Grid.Row="3" x:Name="dragDrop" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
+                                <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=AlternativeColor,Mode=TwoWay}">
+                                    <Grid>
+                                        <ContentControl Background="White" x:Name="dragDropImage" Style="{StaticResource TheAwesomeXAMLimage}" />
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </Grid>
                     </Grid>
                     <Grid x:Name="titlePanel" Visibility="Collapsed" Margin="10,10,10,10" Background="{Binding Path=MainColor,Mode=TwoWay}">
                         <Grid.ColumnDefinitions>

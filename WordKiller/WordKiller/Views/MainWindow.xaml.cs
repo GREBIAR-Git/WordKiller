@@ -28,8 +28,7 @@ public partial class MainWindow : Window
     DocumentData data;
     readonly WordKillerFile file;
 
-    Point _lastMouseDown;
-    IParagraphData? draggedItem, _target;
+    IParagraphData? target;
 
     public MainWindow(string[] args)
     {
@@ -90,33 +89,39 @@ public partial class MainWindow : Window
     // Таблица
     void CountRows_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+        if (sender is TextBox textBox)
         {
-            int rows = paragraphTable.TableData.Rows;
-            CountRowOrColumn(countRows, ref rows);
-            gridTable.RowDefinitions.Clear();
-            for (int i = 0; i < rows; i++)
+            if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
             {
-                gridTable.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100 / rows, type: GridUnitType.Star) });
+                int rows = paragraphTable.TableData.Rows;
+                CountRowOrColumn(textBox, ref rows);
+                gridTable.RowDefinitions.Clear();
+                for (int i = 0; i < rows; i++)
+                {
+                    gridTable.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100 / rows, type: GridUnitType.Star) });
+                }
+                paragraphTable.TableData.Rows = rows;
+                UpdateTable();
             }
-            paragraphTable.TableData.Rows = rows;
-            UpdateTable();
         }
     }
 
     void CountColumns_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+        if (sender is TextBox textBox)
         {
-            int columns = paragraphTable.TableData.Columns;
-            CountRowOrColumn(countColumns, ref columns);
-            gridTable.ColumnDefinitions.Clear();
-            for (int i = 0; i < columns; i++)
+            if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
             {
-                gridTable.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / columns, type: GridUnitType.Star) });
+                int columns = paragraphTable.TableData.Columns;
+                CountRowOrColumn(textBox, ref columns);
+                gridTable.ColumnDefinitions.Clear();
+                for (int i = 0; i < columns; i++)
+                {
+                    gridTable.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / columns, type: GridUnitType.Star) });
+                }
+                paragraphTable.TableData.Columns = columns;
+                UpdateTable();
             }
-            paragraphTable.TableData.Columns = columns;
-            UpdateTable();
         }
     }
 
@@ -193,9 +198,10 @@ public partial class MainWindow : Window
 
     //Drag Drop
 
-    bool EnableDragDrop()
+    bool EnableDragDrop(DragEventArgs e)
     {
-        if (paragraphTree.SelectedItem is ParagraphPicture || paragraphTree.SelectedItem is ParagraphCode)
+        DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
+        if (dragDropInfo == null && (paragraphTree.SelectedItem is ParagraphPicture || paragraphTree.SelectedItem is ParagraphCode))
         {
             return true;
         }
@@ -204,65 +210,67 @@ public partial class MainWindow : Window
 
     void Win_DragEnter(object sender, DragEventArgs e)
     {
-        e.Effects = DragDropEffects.None;
         e.Handled = true;
-
-        if (EnableDragDrop())
+        e.Effects = DragDropEffects.None;
+        if (EnableDragDrop(e))
         {
-
+            dragDrop.Visibility = Visibility.Visible;
         }
     }
 
     void Win_DragOver(object sender, DragEventArgs e)
     {
-
-        e.Effects = DragDropEffects.None;
         e.Handled = true;
-        if (EnableDragDrop())
+        e.Effects = DragDropEffects.None;
+        if (EnableDragDrop(e))
         {
-
+            dragDrop.Visibility = Visibility.Visible;
         }
     }
 
     void Win_DragLeave(object sender, DragEventArgs e)
     {
-        e.Effects = DragDropEffects.None;
         e.Handled = true;
-        if (EnableDragDrop())
+        e.Effects = DragDropEffects.None;
+        if (EnableDragDrop(e))
         {
+            dragDrop.Visibility = Visibility.Collapsed;
         }
     }
 
     void PictureBox_DragEnter(object sender, DragEventArgs e)
     {
-        if (EnableDragDrop())
+        if (EnableDragDrop(e))
         {
-            e.Effects = DragDropEffects.All;
+            e.Effects = DragDropEffects.Copy;
             e.Handled = true;
+            dragDrop.Visibility = Visibility.Visible;
         }
     }
 
     void PictureBox_DragOver(object sender, DragEventArgs e)
     {
-        if (EnableDragDrop())
+        if (EnableDragDrop(e))
         {
-            e.Effects = DragDropEffects.All;
+            e.Effects = DragDropEffects.Copy;
             e.Handled = true;
+            dragDrop.Visibility = Visibility.Visible;
         }
     }
 
     void PictureBox_DragLeave(object sender, DragEventArgs e)
     {
-        if (EnableDragDrop())
+        if (EnableDragDrop(e))
         {
-            e.Effects = DragDropEffects.All;
+            e.Effects = DragDropEffects.Copy;
             e.Handled = true;
+            dragDrop.Visibility = Visibility.Collapsed;
         }
     }
 
     void PictureBox_Drop(object sender, DragEventArgs e)
     {
-        if (EnableDragDrop())
+        if (EnableDragDrop(e))
         {
             var data = e.Data.GetData(DataFormats.FileDrop);
             if (data != null)
@@ -298,9 +306,178 @@ public partial class MainWindow : Window
                     }
                 }
             }
+            dragDrop.Visibility = Visibility.Collapsed;
         }
     }
 
+    void TreeView_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            if ((IParagraphData)paragraphTree.SelectedItem != null)
+            {
+                DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
+                if ((finalDropEffect == DragDropEffects.Move) && (target != null))
+                {
+                    CopyItem((IParagraphData)paragraphTree.SelectedValue, target);
+                    target = null;
+                }
+            }
+        }
+    }
+
+    void TreeView_DragOver(object sender, DragEventArgs e)
+    {
+        TreeViewItem TargetItem = GetNearestContainer
+                (e.OriginalSource as UIElement);
+
+        DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
+        if (dragDropInfo != null && TargetItem.Header != dragDropInfo.paragraphData)
+        {
+            e.Effects = DragDropEffects.Move;
+            e.Handled = true;
+        }
+        else
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+        }
+    }
+
+    void TreeView_Drop(object sender, DragEventArgs e)
+    {
+        try
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+
+            TreeViewItem TargetItem = GetNearestContainer
+                (e.OriginalSource as UIElement);
+            DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
+            if (TargetItem != null && dragDropInfo != null)
+            {
+                target = (IParagraphData)TargetItem.Header;
+                e.Effects = DragDropEffects.Move;
+            }
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
+    {
+        if (_sourceItem is ParagraphTitle || _targetItem is ParagraphTitle)
+        {
+            MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+            return;
+        }
+        //добавить чтобы главный копировать
+        if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
+        {
+            if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                int i = data.Paragraphs.IndexOf(_targetItem);
+                int f = data.Paragraphs.IndexOf(_sourceItem);
+                (data.Paragraphs[i], data.Paragraphs[f]) = (data.Paragraphs[f], data.Paragraphs[i]);
+            }
+            return;
+        }
+        else if (_targetItem is ParagraphH2)
+        {
+            if (_sourceItem is ParagraphH2)
+            {
+                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    data.SwapParagraphs(_targetItem, _sourceItem);
+                }
+                return;
+            }
+            else if (_sourceItem is ParagraphH1)
+            {
+                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+                return;
+            }
+        }
+        if (_targetItem is not SectionParagraphs)
+        {
+            if (_sourceItem is not ParagraphH2 && _sourceItem is not ParagraphH1)
+            {
+                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    data.SwapParagraphs(_targetItem, _sourceItem);
+                }
+                return;
+            }
+            else
+            {
+                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
+                return;
+            }
+        }
+        if (MessageBox.Show("Вставить «" + _sourceItem.Description.ToString() + "» в «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        {
+            data.RemoveParagraph(_sourceItem);
+            SectionParagraphs section = _targetItem as SectionParagraphs;
+            section.AddParagraph(_sourceItem);
+        }
+
+    }
+
+    TreeViewItem GetNearestContainer(UIElement element)
+    {
+        TreeViewItem? container = element as TreeViewItem;
+        while ((container == null) && (element != null))
+        {
+            element = VisualTreeHelper.GetParent(element) as UIElement;
+            container = element as TreeViewItem;
+        }
+        return container;
+    }
+
+    void NewNotComplexObjects_Drop(object sender, DragEventArgs e)
+    {
+        var data = e.Data.GetData(DataFormats.FileDrop);
+        if (data != null)
+        {
+            foreach (string path in data as string[])
+            {
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    System.Drawing.Bitmap bitmap;
+                    try
+                    {
+                        bitmap = new(path);
+                        this.data.AddParagraph(new ParagraphPicture(nameFile, bitmap));
+                    }
+                    catch
+                    {
+                        FileStream file = new(path, FileMode.Open);
+                        StreamReader reader = new(file);
+                        string data1 = reader.ReadToEnd();
+                        this.data.AddParagraph(new ParagraphCode(nameFile, data1));
+                    }
+                }
+            }
+        }
+        dragDrop.Visibility = Visibility.Collapsed;
+    }
+
+    void NewNotComplexObjects_DragOver(object sender, DragEventArgs e)
+    {
+        DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
+        if (dragDropInfo != null)
+        {
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+        }
+        else
+        {
+            e.Effects = DragDropEffects.All;
+            e.Handled = true;
+        }
+    }
 
     // Верхнее меню
 
@@ -699,8 +876,10 @@ public partial class MainWindow : Window
     {
         if (paragraphTree.SelectedItem != null)
         {
-            IParagraphData item = paragraphTree.SelectedItem as IParagraphData;
-            item.Description = descriptionObject.Text;
+            if (paragraphTree.SelectedItem is IParagraphData item)
+            {
+                item.Description = descriptionObject.Text;
+            }
         }
     }
 
@@ -769,141 +948,6 @@ public partial class MainWindow : Window
     void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         richTextBox.KeyProcessing(e);
-    }
-
-    void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
-    {
-        if (_sourceItem is ParagraphTitle || _targetItem is ParagraphTitle)
-        {
-            MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
-            return;
-        }
-        //добавить чтобы главный копировать
-        if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
-        {
-            if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                int i = data.Paragraphs.IndexOf(_targetItem);
-                int f = data.Paragraphs.IndexOf(_sourceItem);
-                (data.Paragraphs[i], data.Paragraphs[f]) = (data.Paragraphs[f], data.Paragraphs[i]);
-            }
-            return;
-        }
-        else if (_targetItem is ParagraphH2)
-        {
-            if (_sourceItem is ParagraphH2)
-            {
-                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    data.SwapParagraphs(_targetItem, _sourceItem);
-                }
-                return;
-            }
-            else if (_sourceItem is ParagraphH1)
-            {
-                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
-                return;
-            }
-        }
-        if (_targetItem is not SectionParagraphs)
-        {
-            if (_sourceItem is not ParagraphH2 && _sourceItem is not ParagraphH1)
-            {
-                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    data.SwapParagraphs(_targetItem, _sourceItem);
-                }
-                return;
-            }
-            else
-            {
-                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
-                return;
-            }
-        }
-        if (MessageBox.Show("Вставить «" + _sourceItem.Description.ToString() + "» в «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-        {
-            data.RemoveParagraph(_sourceItem);
-            SectionParagraphs section = _targetItem as SectionParagraphs;
-            section.AddParagraph(_sourceItem);
-        }
-
-    }
-
-    TreeViewItem GetNearestContainer(UIElement element)
-    {
-        TreeViewItem container = element as TreeViewItem;
-        while ((container == null) && (element != null))
-        {
-            element = VisualTreeHelper.GetParent(element) as UIElement;
-            container = element as TreeViewItem;
-        }
-        return container;
-    }
-
-    void TreeView_MouseMove(object sender, MouseEventArgs e)
-    {
-        try
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                Point currentPosition = e.GetPosition(paragraphTree);
-
-                if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
-                    (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
-                {
-                    draggedItem = (IParagraphData)paragraphTree.SelectedItem;
-                    if (draggedItem != null)
-                    {
-                        DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, paragraphTree.SelectedValue, DragDropEffects.Move);
-                        if ((finalDropEffect == DragDropEffects.Move) && (_target != null))
-                        {
-                            CopyItem(draggedItem, _target);
-                            _target = null;
-                            draggedItem = null;
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception) { }
-    }
-
-    void TreeView_DragOver(object sender, DragEventArgs e)
-    {
-        try
-        {
-            Point currentPosition = e.GetPosition(paragraphTree);
-            if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0) ||
-               (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0))
-            {
-                e.Effects = DragDropEffects.Move;
-            }
-            e.Handled = true;
-        }
-        catch (Exception)
-        {
-        }
-    }
-
-    void TreeView_Drop(object sender, DragEventArgs e)
-    {
-        try
-        {
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
-
-            TreeViewItem TargetItem = GetNearestContainer
-                (e.OriginalSource as UIElement);
-            if (TargetItem != null && draggedItem != null)
-            {
-                _target = (IParagraphData)TargetItem.Header;
-                e.Effects = DragDropEffects.Move;
-            }
-        }
-        catch (Exception)
-        {
-        }
     }
 
     void NewNotComplexObjects(object sender, MouseButtonEventArgs e)
