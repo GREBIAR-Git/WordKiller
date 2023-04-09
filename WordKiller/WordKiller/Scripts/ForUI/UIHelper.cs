@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -25,6 +26,18 @@ namespace WordKiller.Scripts.ForUI
             bitmapImage.EndInit();
             return bitmapImage;
         }
+
+        public static TreeViewItem GetNearestContainer(UIElement element)
+        {
+            TreeViewItem? container = element as TreeViewItem;
+            while ((container == null) && (element != null))
+            {
+                element = VisualTreeHelper.GetParent(element) as UIElement;
+                container = element as TreeViewItem;
+            }
+            return container;
+        }
+
 
         public static T FindChild<T>(DependencyObject parent, string childName)
     where T : DependencyObject

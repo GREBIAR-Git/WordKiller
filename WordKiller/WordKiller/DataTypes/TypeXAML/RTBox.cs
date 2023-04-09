@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -171,12 +170,6 @@ public class RTBox : RichTextBox
         {
             CaretPosition = currentPosition;
         }
-    }
-
-    void InsertText(String text)
-    {
-        CaretPosition = CaretPosition.GetPositionAtOffset(0, LogicalDirection.Forward);
-        CaretPosition.InsertTextInRun(text);
     }
 
     public void KeyProcessing(KeyEventArgs e)

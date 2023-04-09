@@ -54,7 +54,7 @@ class Report
 
                     InitStyles(doc);
 
-                    try
+                    //try
                     {
                         if (data.Type != TypeDocument.DefaultDocument && data.Properties.Title)
                         {
@@ -66,42 +66,42 @@ class Report
                             PageSetup(body);
                         }
                     }
-                    catch
+                    /*catch
                     {
                         UIHelper.ShowError("3");
                         return false;
-                    }
+                    }*/
 
-                    try
+                    //try
                     {
                         TaskSheet(doc, data.Properties.TaskSheet);
                     }
-                    catch
+                    /*catch
                     {
                         UIHelper.ShowError("4");
                         return false;
-                    }
+                    }*/
 
-                    try
+                    //try
                     {
 
                         TableOfContents(doc, data.Properties.TableOfContents);
                     }
-                    catch
+                    /*catch
                     {
                         UIHelper.ShowError("5");
                         return false;
-                    }
+                    }*/
 
-                    try
+                    //try
                     {
                         MainPart(doc, data, data.Properties.NumberHeading);
                     }
-                    catch
+                    /*catch
                     {
                         UIHelper.ShowError("6");
                         return false;
-                    }
+                    }*/
 
                     if (data.Properties.PageNumbers)
                     {
@@ -928,14 +928,14 @@ class Report
             if (!string.IsNullOrWhiteSpace(items[i]))
             {
                 string itemText = items[i][StartLine(items[i], Level(items[i]))..].Trim();
-                string item = itemText.Substring(0, 1).ToLower();
+                string item = itemText[..1].ToLower();
                 if (itemText.Length > 1)
                 {
-                    if (itemText.Substring(1, 2) == itemText.Substring(1, 2).ToUpper())
+                    if (itemText[1] == char.ToUpper(itemText[1]))
                     {
-                        item = itemText.Substring(0, 1);
+                        item = itemText[..1];
                     }
-                    item += itemText.Substring(1);
+                    item += itemText[1..];
                 }
                 string end;
                 if (i + 1 < items.Length)

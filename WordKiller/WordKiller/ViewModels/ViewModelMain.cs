@@ -1,45 +1,75 @@
-﻿namespace WordKiller.ViewModels;
+﻿using System.Windows;
+using System.Windows.Input;
+using WordKiller.Commands;
+using WordKiller.DataTypes;
+using WordKiller.ViewModels.Settings;
+
+namespace WordKiller.ViewModels;
 public class ViewModelMain : ViewModelBase
 {
+    DocumentData data;
+    public DocumentData Data { get => data; set => SetProperty(ref data, value); }
 
-    public ViewModelProperties properties;
-    public ViewModelProperties Properties { get => properties; set => SetProperty(ref properties, value); }
+    ViewModelSettings settings;
+    public ViewModelSettings Settings { get => settings; set => SetProperty(ref settings, value); }
 
-    public ViewModelTitle title;
-    public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }
+    ViewModelExport export;
+    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
+
+    public NetworkCommans NetworkCommans { get; set; }
+
+    public HelpCommands HelpCommands { get; set; }
 
     string? winTitle;
     public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
-    bool titleOpen;
-    public bool TitleOpen { get => titleOpen; set => SetProperty(ref titleOpen, value); }
+    Visibility visibilityMainPanel;
 
-    bool substitutionOpen;
-    public bool SubstitutionOpen { get => substitutionOpen; set => SetProperty(ref substitutionOpen, value); }
+    public Visibility VisibilityMainPanel { get => visibilityMainPanel; set => SetProperty(ref visibilityMainPanel, value); }
 
-    bool textOpen;
-    public bool TextOpen { get => textOpen; set => SetProperty(ref textOpen, value); }
+    Visibility visibilitySettingsPanel;
 
-    string mainColor;
+    public Visibility VisibilitySettingsPanel { get => visibilitySettingsPanel; set => SetProperty(ref visibilitySettingsPanel, value); }
 
-    public string MainColor { get => mainColor; set => SetProperty(ref mainColor, value); }
+    ICommand? openSettings;
 
-    string additionalColor;
+    public ICommand OpenSettings
+    {
+        get
+        {
+            return openSettings ??= new RelayCommand(
+            obj =>
+            {
+                VisibilityMainPanel = Visibility.Collapsed;
+                VisibilitySettingsPanel = Visibility.Visible;
+                settings.OpenGeneralSettings();
+            });
+        }
+    }
 
-    public string AdditionalColor { get => additionalColor; set => SetProperty(ref additionalColor, value); }
+    ICommand? exitSettings;
 
-    string alternativeColor;
+    public ICommand ExitSettings
+    {
+        get
+        {
+            return exitSettings ??= new RelayCommand(obj =>
+            {
+                VisibilitySettingsPanel = Visibility.Collapsed;
+                VisibilityMainPanel = Visibility.Visible;
+            });
+        }
+    }
 
-    public string AlternativeColor { get => alternativeColor; set => SetProperty(ref alternativeColor, value); }
-
-    string hoverColor;
-
-    public string HoverColor { get => hoverColor; set => SetProperty(ref hoverColor, value); }
-
-    string fontSize;
-
-    public string FontSize { get => fontSize; set => SetProperty(ref fontSize, value); }
-
-    string fontSizeRTB;
-    public string FontSizeRTB { get => fontSizeRTB; set => SetProperty(ref fontSizeRTB, value); }
+    public ViewModelMain()
+    {
+        Data = new();
+        winTitle = "WordKiller";
+        HelpCommands = new();
+        NetworkCommans = new();
+        settings = new();
+        export = new();
+        VisibilitySettingsPanel = Visibility.Collapsed;
+        VisibilityMainPanel = Visibility.Visible;
+    }
 }

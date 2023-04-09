@@ -41,7 +41,11 @@ namespace WordKiller.Converters.MultiValueConverter
                 return 0;
             }
 
-            double fontSize = control.FontSize * control.ActualWidth / formattedText.Width;
+            double fontSize = (control.ActualWidth - 3) / formattedText.Width;
+
+            double fontSize1 = (control.ActualHeight - 3) / formattedText.Height;
+
+            fontSize = (control.FontSize) * Math.Min(fontSize, fontSize1);
 
             if (values[2] == null) return ScalingFontSize.Scale(parameter.ToString(), fontSize);
             var maxSize = double.Parse(values[2].ToString());

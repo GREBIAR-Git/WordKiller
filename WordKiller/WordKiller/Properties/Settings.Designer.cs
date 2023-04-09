@@ -15,7 +15,7 @@ namespace WordKiller.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
-        static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
@@ -335,9 +335,9 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("28")]
-        public string FontSize {
+        public double FontSize {
             get {
-                return ((string)(this["FontSize"]));
+                return ((double)(this["FontSize"]));
             }
             set {
                 this["FontSize"] = value;
@@ -371,9 +371,9 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public string FontSizeRTB {
+        public double FontSizeRTB {
             get {
-                return ((string)(this["FontSizeRTB"]));
+                return ((double)(this["FontSizeRTB"]));
             }
             set {
                 this["FontSizeRTB"] = value;

@@ -74,11 +74,11 @@ public class WordKillerFile
         logoSave.Visibility = Visibility.Collapsed;
     }
 
-    public void OpenFile(string fileName, ref DocumentData data)
+    public DocumentData OpenFile(string fileName)
     {
+        DocumentData data = new();
         try
         {
-            data.Clear();
             using (FileStream stream = System.IO.File.Open(fileName, FileMode.Open))
             {
                 if (stream.Length == 0)
@@ -97,17 +97,20 @@ public class WordKillerFile
         {
             MessageBox.Show(UIHelper.FindResourse("Error8"), UIHelper.FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         }
+        return data;
     }
 
-    public void NewFile(ref DocumentData data, RTBox richTextBox)
+    public DocumentData NewFile(RTBox richTextBox)
     {
-        NeedSave(ref data);
+        DocumentData data = new();
+        NeedSave(data);
         data.Clear();
         richTextBox.Document.Blocks.Clear();
         savePath = string.Empty;
+        return data;
     }
 
-    bool NeedSave(ref DocumentData data)
+    bool NeedSave(DocumentData data)
     {
         MessageBoxResult result = MessageBox.Show(UIHelper.FindResourse("Question1"), UIHelper.FindResourse("Question1"), MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
         if (result == MessageBoxResult.Yes)

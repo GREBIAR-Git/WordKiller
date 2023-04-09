@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -47,7 +48,12 @@ class AdaptiveFontSizeControl : IMultiValueConverter
 
         fontSize = (control.FontSize) * Math.Min(fontSize, fontSize1);
 
-        if (values[2] == null) return ScalingFontSize.Scale(parameter.ToString(), fontSize);
+        if (fontSize < 0)
+        {
+            fontSize = 0;
+        }
+
+        if (values[2] == null || values[2] == DependencyProperty.UnsetValue) return ScalingFontSize.Scale(parameter.ToString(), fontSize);
         var maxSize = double.Parse(values[2].ToString());
         return ScalingFontSize.Scale(parameter.ToString(), Math.Min(fontSize, maxSize));
     }

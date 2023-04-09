@@ -8,12 +8,13 @@ namespace WordKiller.DataTypes;
 [Serializable]
 public class DocumentData : MainSection
 {
-
     public TypeDocument Type { get; set; }
 
-    public ViewModelTitle Title { get; set; }
+    ViewModelProperties properties;
+    public ViewModelProperties Properties { get => properties; set => SetProperty(ref properties, value); }
 
-    public ViewModelProperties Properties { get; set; }
+    ViewModelTitle title;
+    public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }
 
     public void Clear()
     {
@@ -24,7 +25,7 @@ public class DocumentData : MainSection
 
     public DocumentData() : base()
     {
-        Properties = new ViewModelProperties();
-        Title = new();
+        properties = new ViewModelProperties();
+        title = new();
     }
 }

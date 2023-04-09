@@ -25,6 +25,5 @@ namespace WordKiller.ViewModels
 
         bool taskSheet;
         public bool TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
-
     }
 }

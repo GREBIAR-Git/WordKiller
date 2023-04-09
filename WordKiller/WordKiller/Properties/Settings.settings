@@ -80,7 +80,7 @@
     <Setting Name="HoverColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#b8860b</Value>
     </Setting>
-    <Setting Name="FontSize" Type="System.String" Scope="User">
+    <Setting Name="FontSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">28</Value>
     </Setting>
     <Setting Name="Language" Type="System.Int32" Scope="User">
@@ -89,7 +89,7 @@
     <Setting Name="MaxRowAndColumn" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
     </Setting>
-    <Setting Name="FontSizeRTB" Type="System.String" Scope="User">
+    <Setting Name="FontSizeRTB" Type="System.Double" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="TreeViewSize" Type="System.Double" Scope="User">
