@@ -10,21 +10,19 @@
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="310" MinWidth="700" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
+        Title="{Binding Path=Document.WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="300" MinWidth="700" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
     <Window.DataContext>
         <vm:ViewModelMain/>
     </Window.DataContext>
     <Window.InputBindings>
-        <KeyBinding Command="SaveAs" Key="S" Modifiers="Control+Alt"/>
-        <KeyBinding Command="Close" Key="Q" Modifiers="Control"/>
+        <KeyBinding Command="{Binding Document.NewFile}" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="{Binding Document.OpenFile}" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="{Binding Document.SaveFile}" Key="S" Modifiers="Control"/>
+        <KeyBinding Command="{Binding Document.SaveAsFile}" Key="S" Modifiers="Control+Alt"/>
+        <KeyBinding Command="{Binding Quit}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="Undo" Key="Esc"/>
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Command="New" Executed="WindowBinding_New" />
-        <CommandBinding Command="Open" Executed="WindowBinding_Open" />
-        <CommandBinding Command="Save" Executed="WindowBinding_Save" />
-        <CommandBinding Command="SaveAs" Executed="WindowBinding_SaveAs"/>
-        <CommandBinding Command="Close" Executed="WindowBinding_Quit" />
         <CommandBinding Command="Undo" Executed="WindowBinding_Unselect"/>
     </Window.CommandBindings>
     <Grid Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
@@ -34,73 +32,73 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Menu Grid.Row="0" Grid.Column="0" Style="{StaticResource Menu}">
-                <MenuItem>
+                <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="{DynamicResource Export}" Style="{StaticResource MenuItem}" Click="Export_MI_Click"/>
-                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportPDF,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportPDF, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportHTML,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportHTML, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Export}" Command="{Binding Document.ExportFile}"/>
+                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportPDF,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportPDF, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportHTML,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportHTML, Mode=TwoWay}"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource Create}" Command="New" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource Open}" Command="Open" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource Save}" Command="Save" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource SaveAs}" Command="SaveAs" InputGestureText="Ctrl+Alt+S" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Create}" Command="{Binding Document.NewFile}" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="{DynamicResource Open}" Command="{Binding Document.OpenFile}" InputGestureText="Ctrl+O"/>
+                    <MenuItem Header="{DynamicResource Save}" Command="{Binding Document.SaveFile}" InputGestureText="Ctrl+S"/>
+                    <MenuItem Header="{DynamicResource SaveAs}" Command="{Binding Document.SaveAsFile}" InputGestureText="Ctrl+Alt+S"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource Exit}" Command="Close" InputGestureText="Ctrl+Q" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Exit}" Command="{Binding Quit}" InputGestureText="Ctrl+Q"/>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Type}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem x:Name="DefaultDocumentMI" Header="{DynamicResource DefaultDocument}" IsChecked="True" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource DefaultDocument}" IsChecked="{Binding Path=Document.DefaultDocument, Mode=TwoWay}" Command="{Binding Document.DefaultDocument_Click}"/>
                     <Separator/>
-                    <MenuItem x:Name="CourseworkMI" Header="{DynamicResource Coursework}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Coursework}" IsChecked="{Binding Path=Document.Coursework, Mode=TwoWay}" Command="{Binding Document.Coursework_Click}"/>
                     <Separator/>
-                    <MenuItem x:Name="LaboratoryWorkMI" Header="{DynamicResource LaboratoryWork}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
-                    <MenuItem x:Name="PracticeWorkMI" Header="{DynamicResource PracticeWork}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource LaboratoryWork}" IsChecked="{Binding Path=Document.LaboratoryWork, Mode=TwoWay}" Command="{Binding Document.LaboratoryWork_Click}"/>
+                    <MenuItem Header="{DynamicResource PracticeWork}" IsChecked="{Binding Path=Document.PracticeWork, Mode=TwoWay}" Command="{Binding Document.PracticeWork_Click}"/>
                     <Separator/>
-                    <MenuItem x:Name="ControlWorkMI" Header="{DynamicResource ControlWork}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
-                    <MenuItem x:Name="ReferatMI" Header="{DynamicResource Referat}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource ControlWork}" IsChecked="{Binding Path=Document.ControlWork, Mode=TwoWay}" Command="{Binding Document.ControlWork_Click}"/>
+                    <MenuItem Header="{DynamicResource Referat}" IsChecked="{Binding Path=Document.Referat, Mode=TwoWay}" Command="{Binding Document.Referat_Click}"/>
                     <Separator/>
-                    <MenuItem x:Name="DiplomaMI" Header="{DynamicResource DiplomaWork}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
-                    <MenuItem x:Name="VKRMI" Header="{DynamicResource VKR}" Click="DocumentType_MI_Click" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource DiplomaWork}" IsChecked="{Binding Path=Document.Diploma, Mode=TwoWay}" Command="{Binding Document.Diploma_Click}"/>
+                    <MenuItem Header="{DynamicResource VKR}" IsChecked="{Binding Path=Document.VKR, Mode=TwoWay}" Command="{Binding Document.VKR_Click}"/>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Document}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="{DynamicResource Title}" x:Name="title" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.Title, Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="Title_Click"/>
-                    <MenuItem Header="{DynamicResource TaskSheet}" x:Name="taskSheet" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.TaskSheet, Mode=TwoWay}" Style="{StaticResource MenuItem}" Click="TaskSheet_Click"/>
-                    <MenuItem Header="{DynamicResource ListOfReferences}" x:Name="listOfReferences" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.ListOfReferences, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Title}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Title, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTitleMI,Mode=TwoWay}" Command="{Binding Document.TitleMI}"/>
+                    <MenuItem Header="{DynamicResource TaskSheet}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TaskSheet, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTaskSheetMI,Mode=TwoWay}" Command="{Binding Document.TaskSheetMI}"/>
+                    <MenuItem Header="{DynamicResource ListOfReferences}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.ListOfReferences, Mode=TwoWay}"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.TableOfContents, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource PageNumbers}" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.PageNumbers, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="{DynamicResource NumbersToHeaders}" IsCheckable="True" IsChecked="{Binding Path=Data.Properties.NumberHeading, Mode=TwoWay}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TableOfContents, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource PageNumbers}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.PageNumbers, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource NumbersToHeaders}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.NumberHeading, Mode=TwoWay}"/>
                 </MenuItem>
-                <MenuItem Visibility="Collapsed">
+                <MenuItem Visibility="Collapsed" ItemContainerStyle="{StaticResource MenuItem}">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Network}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="Создать" Command="{Binding NetworkCommans.CreateNetwork}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="Создать" Command="{Binding NetworkCommans.CreateNetwork}"/>
                     <Separator/>
-                    <MenuItem Header="Подключиться" Command="{Binding NetworkCommans.JoinNetwork}" Style="{StaticResource MenuItem}"/>
-                    <MenuItem Header="Отключиться" Command="{Binding NetworkCommans.LeaveNetwork}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="Подключиться" Command="{Binding NetworkCommans.JoinNetwork}"/>
+                    <MenuItem Header="Отключиться" Command="{Binding NetworkCommans.LeaveNetwork}"/>
                 </MenuItem>
-                <MenuItem>
+                <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Help}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="{DynamicResource Documentation}" Command="{Binding HelpCommands.Documentation}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource Documentation}" Command="{Binding HelpCommands.Documentation}"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource AboutProgram}" Command="{Binding HelpCommands.AboutProgram}" Style="{StaticResource MenuItem}"/>
+                    <MenuItem Header="{DynamicResource AboutProgram}" Command="{Binding HelpCommands.AboutProgram}"/>
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="0" Grid.Column="0">
                 <Button Grid.Column="0" Grid.Row="0" Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
                     <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
-                <Image x:Name="saveLogo" Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                <Image Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" x:Name="textPanel"  Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
@@ -112,7 +110,7 @@
                     <RowDefinition Height="90*"/>
                     <RowDefinition Height="10*" MaxHeight="50" MinHeight="30"/>
                 </Grid.RowDefinitions>
-                <TreeView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Path=Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Path=Document.Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
@@ -342,10 +340,10 @@
                     <ComboBoxItem Content="Фрагмент кода"/>
                 </ComboBox>
                 <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
-                    <Grid x:Name="unselectInfo">
+                    <Grid Visibility="{Binding Path=Document.VisibilityUnselectInfo,Mode=TwoWay}">
                         <TextBlock Text="Выберите объект или нажмите на кнопку добавить, чтобы начать работу" TextWrapping="Wrap" Style="{StaticResource TextBlock}"></TextBlock>
                     </Grid>
-                    <Grid x:Name="notComplexObjects" Visibility="Collapsed">
+                    <Grid Visibility="{Binding Path=Document.VisibilityNotComplexObjects,Mode=TwoWay}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -380,7 +378,7 @@
                             <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
                         </Grid>
                         <Grid Grid.Row="3">
-                            <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Visibility="Collapsed" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
+                            <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
                                 <typeXaml:RTBox.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
                                         <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,10"/>
@@ -424,7 +422,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,10,10,5" Text="Кафедра:" Style="{StaticResource TextBlockTitle}"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=Data.Title.Faculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий"  SelectionChanged="FacultyComboBox_SelectionChanged">
+                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий"  SelectionChanged="FacultyComboBox_SelectionChanged">
                             <ComboBoxItem IsSelected="True">информационных систем и цифровых технологий</ComboBoxItem>
                             <ComboBoxItem>приборостроения, метрологии и сертификации</ComboBoxItem>
                             <ComboBoxItem>информационной безопасности</ComboBoxItem>
@@ -433,19 +431,19 @@
                             <ComboBoxItem>электрооборудования и энергосбережения</ComboBoxItem>
                         </ComboBox>
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,10,10" Text="Выполнил(и):" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=Data.Title.Students,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=Document.Data.Title.Students,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
                         <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=Data.Title.Number,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=Document.Data.Title.Number,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
                         <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=Data.Title.Shifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=Document.Data.Title.Shifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=Data.Title.Theme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=Document.Data.Title.Theme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
                         <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=Data.Title.Discipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=Document.Data.Title.Discipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
                         <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
-                        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=Data.Title.Professor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3"/>
+                        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3"/>
                         <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=Data.Title.Year,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=Document.Data.Title.Year,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
                     </Grid>
                     <ScrollViewer x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid>

@@ -1,20 +1,15 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using WordKiller.DataTypes;
-using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
-using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
-using WordKiller.Scripts.ImportExport;
 using WordKiller.ViewModels;
 
 namespace WordKiller;
@@ -23,25 +18,21 @@ public partial class MainWindow : Window
 {
     readonly ViewModelMain viewModel;
 
-    readonly WordKillerFile file;
-
     IParagraphData? target;
 
     public MainWindow(string[] args)
     {
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
         InitializeComponent();
+        TitleElements.SaveTitleUIElements(titlePanel);
         viewModel = new();
         DataContext = viewModel;
-        file = new(saveLogo);
-        TitleElements.SaveTitleUIElements(titlePanel);
-        HeaderUpdateMI();
 
         if (args.Length > 0)
         {
             if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
             {
-                OpenFile(args[0]);
+                viewModel.Document.Open(args[0]);
             }
             else
             {
@@ -339,9 +330,9 @@ public partial class MainWindow : Window
         {
             if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                int i = viewModel.Data.Paragraphs.IndexOf(_targetItem);
-                int f = viewModel.Data.Paragraphs.IndexOf(_sourceItem);
-                (viewModel.Data.Paragraphs[i], viewModel.Data.Paragraphs[f]) = (viewModel.Data.Paragraphs[f], viewModel.Data.Paragraphs[i]);
+                int i = viewModel.Document.Data.Paragraphs.IndexOf(_targetItem);
+                int f = viewModel.Document.Data.Paragraphs.IndexOf(_sourceItem);
+                (viewModel.Document.Data.Paragraphs[i], viewModel.Document.Data.Paragraphs[f]) = (viewModel.Document.Data.Paragraphs[f], viewModel.Document.Data.Paragraphs[i]);
             }
             return;
         }
@@ -351,7 +342,7 @@ public partial class MainWindow : Window
             {
                 if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    viewModel.Data.SwapParagraphs(_targetItem, _sourceItem);
+                    viewModel.Document.Data.SwapParagraphs(_targetItem, _sourceItem);
                 }
                 return;
             }
@@ -362,7 +353,7 @@ public partial class MainWindow : Window
             {
                 if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    viewModel.Data.SwapParagraphs(_targetItem, _sourceItem);
+                    viewModel.Document.Data.SwapParagraphs(_targetItem, _sourceItem);
                 }
                 return;
             }
@@ -374,7 +365,7 @@ public partial class MainWindow : Window
         }
         if (MessageBox.Show("Вставить «" + _sourceItem.Description.ToString() + "» в «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
         {
-            viewModel.Data.RemoveParagraph(_sourceItem);
+            viewModel.Document.Data.RemoveParagraph(_sourceItem);
             SectionParagraphs section = _targetItem as SectionParagraphs;
             section.AddParagraph(_sourceItem);
         }
@@ -395,14 +386,14 @@ public partial class MainWindow : Window
                     try
                     {
                         bitmap = new(path);
-                        this.viewModel.Data.AddParagraph(new ParagraphPicture(nameFile, bitmap));
+                        this.viewModel.Document.Data.AddParagraph(new ParagraphPicture(nameFile, bitmap));
                     }
                     catch
                     {
                         FileStream file = new(path, FileMode.Open);
                         StreamReader reader = new(file);
                         string data1 = reader.ReadToEnd();
-                        this.viewModel.Data.AddParagraph(new ParagraphCode(nameFile, data1));
+                        this.viewModel.Document.Data.AddParagraph(new ParagraphCode(nameFile, data1));
                     }
                 }
             }
@@ -429,315 +420,6 @@ public partial class MainWindow : Window
     {
         Properties.Settings.Default.TreeViewSize = textPanel.ColumnDefinitions[0].Width.Value * 100 / textPanel.ActualWidth;
         Properties.Settings.Default.Save();
-    }
-
-    // Верхнее меню
-
-    async void Export_MI_Click(object sender, RoutedEventArgs e)
-    {
-        Report report = new();
-        await Task.Run(() =>
-            Report.Create(viewModel.Data, viewModel.Export.ExportPDF, viewModel.Export.ExportHTML));
-        if (Properties.Settings.Default.CloseWindow)
-        {
-            UIHelper.WindowClose();
-        }
-    }
-
-    void WindowBinding_New(object sender, ExecutedRoutedEventArgs e)
-    {
-        viewModel.Data = file.NewFile(richTextBox);
-    }
-
-    void WindowBinding_Open(object sender, ExecutedRoutedEventArgs e)
-    {
-        OpenFileDialog openFileDialog = new()
-        {
-            Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" + Properties.Settings.Default.Extension + "|All files (*.*)|*.*"
-        };
-        if (openFileDialog.ShowDialog() == true)
-        {
-            OpenFile(openFileDialog.FileName);
-        }
-    }
-
-    void OpenFile(string fileName)
-    {
-        viewModel.Data = file.OpenFile(fileName);
-        HeaderUpdate();
-        paragraphTree.ItemsSource = viewModel.Data.Paragraphs;
-        if (paragraphTree.Items.Count > 0)
-        {
-            //paragraphTree.SelectedIndex = 0;
-        }
-    }
-
-    void WindowBinding_Save(object sender, ExecutedRoutedEventArgs e)
-    {
-        file.Save(viewModel.Data);
-        HeaderUpdateMI();
-    }
-
-    void WindowBinding_SaveAs(object sender, ExecutedRoutedEventArgs e)
-    {
-        file.SaveAs(viewModel.Data);
-        HeaderUpdateMI();
-    }
-
-    void WindowBinding_Quit(object sender, ExecutedRoutedEventArgs e)
-    {
-        UIHelper.WindowClose();
-    }
-
-    void DocumentType_MI_Click(object sender, RoutedEventArgs e)
-    {
-        MenuItem menuItem = (MenuItem)sender;
-        DocumentTypeChange(menuItem);
-    }
-
-    void Title_Click(object sender, RoutedEventArgs e)
-    {
-        if (viewModel.Data.Properties.Title)
-        {
-            if (viewModel.Data.Paragraphs.Count > 0)
-            {
-                if (viewModel.Data.Paragraphs[0] is not ParagraphTitle)
-                {
-                    viewModel.Data.InsertBefore(viewModel.Data.Paragraphs[0], new ParagraphTitle());
-                }
-            }
-            else
-            {
-                viewModel.Data.AddParagraph(new ParagraphTitle());
-            }
-        }
-        else
-        {
-            if (viewModel.Data.Paragraphs.Count > 0 && viewModel.Data.Paragraphs[0] is ParagraphTitle)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(0);
-            }
-            if (viewModel.Data.Paragraphs.Count > 0)
-            {
-                if (viewModel.Data.Paragraphs[0] is ParagraphTaskSheet)
-                {
-                    return;
-                }
-            }
-            richTextBox.Visibility = Visibility.Visible;
-        }
-    }
-
-    void TaskSheet_Click(object sender, RoutedEventArgs e)
-    {
-        if (viewModel.Data.Properties.TaskSheet)
-        {
-            if (viewModel.Data.Paragraphs.Count > 0)
-            {
-                if (viewModel.Data.Paragraphs[0] is not ParagraphTitle)
-                {
-                    viewModel.Data.InsertBefore(viewModel.Data.Paragraphs[0], new ParagraphTaskSheet());
-                }
-                else
-                {
-                    viewModel.Data.InsertAfter(viewModel.Data.Paragraphs[0], new ParagraphTaskSheet());
-                }
-            }
-            else
-            {
-                viewModel.Data.AddParagraph(new ParagraphTaskSheet());
-            }
-        }
-        else
-        {
-            if (viewModel.Data.Paragraphs.Count > 1 && viewModel.Data.Paragraphs[0] is ParagraphTitle && viewModel.Data.Paragraphs[1] is ParagraphTaskSheet)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(1);
-            }
-            else if (viewModel.Data.Paragraphs.Count > 0 && viewModel.Data.Paragraphs[0] is ParagraphTaskSheet)
-            {
-                richTextBox.Visibility = Visibility.Visible;
-                viewModel.Data.Paragraphs.RemoveAt(0);
-            }
-        }
-
-    }
-
-    void DocumentTypeChange(MenuItem menuItem)
-    {
-        if (menuItem.IsChecked)
-        {
-            return;
-        }
-        DefaultDocumentMI.IsChecked = false;
-        LaboratoryWorkMI.IsChecked = false;
-        PracticeWorkMI.IsChecked = false;
-        CourseworkMI.IsChecked = false;
-        ControlWorkMI.IsChecked = false;
-        ReferatMI.IsChecked = false;
-        DiplomaMI.IsChecked = false;
-        VKRMI.IsChecked = false;
-        menuItem.IsChecked = true;
-        HeaderUpdateMI();
-    }
-
-    void HeaderUpdateMI()
-    {
-        if (DefaultDocumentMI.IsChecked)
-        {
-            if (viewModel.Data.Paragraphs.Count > 0 && viewModel.Data.Paragraphs[0] is ParagraphTitle)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(0);
-            }
-            if (viewModel.Data.Paragraphs.Count > 1 && viewModel.Data.Paragraphs[0] is ParagraphTitle && viewModel.Data.Paragraphs[1] is ParagraphTaskSheet)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(1);
-            }
-            else if (viewModel.Data.Paragraphs.Count > 0 && viewModel.Data.Paragraphs[0] is ParagraphTaskSheet)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(0);
-            }
-            viewModel.Data.Properties.Title = false;
-            title.Visibility = Visibility.Collapsed;
-            taskSheet.Visibility = Visibility.Collapsed;
-            richTextBox.Visibility = Visibility.Visible;
-            viewModel.Data.Properties.TaskSheet = false;
-            TextHeader("DefaultDocument");
-            viewModel.Data.Type = TypeDocument.DefaultDocument;
-        }
-        else
-        {
-            title.Visibility = Visibility.Visible;
-            viewModel.Data.Properties.Title = true;
-            viewModel.Data.Properties.TaskSheet = false;
-            taskSheet.Visibility = Visibility.Collapsed;
-            if (viewModel.Data.Paragraphs.Count > 0)
-            {
-                if (viewModel.Data.Paragraphs[0] is not ParagraphTitle)
-                {
-                    viewModel.Data.InsertBefore(viewModel.Data.Paragraphs[0], new ParagraphTitle());
-                }
-            }
-            else
-            {
-                viewModel.Data.AddParagraph(new ParagraphTitle());
-            }
-
-            if (viewModel.Data.Paragraphs.Count > 1 && viewModel.Data.Paragraphs[0] is ParagraphTitle && viewModel.Data.Paragraphs[1] is ParagraphTaskSheet)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(1);
-            }
-            else if (viewModel.Data.Paragraphs.Count > 0 && viewModel.Data.Paragraphs[0] is ParagraphTaskSheet)
-            {
-                viewModel.Data.Paragraphs.RemoveAt(0);
-            }
-
-            if (LaboratoryWorkMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.LaboratoryWork;
-                TextHeader("LaboratoryWork");
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (PracticeWorkMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.PracticeWork;
-                TextHeader("PracticeWork");
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 2.1 3.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (CourseworkMI.IsChecked)
-            {
-                taskSheet.Visibility = Visibility.Visible;
-                viewModel.Data.Properties.TaskSheet = true;
-                viewModel.Data.Type = TypeDocument.Coursework;
-                if (viewModel.Data.Paragraphs.Count > 0)
-                {
-                    if (viewModel.Data.Paragraphs[0] is not ParagraphTitle)
-                    {
-                        viewModel.Data.InsertBefore(viewModel.Data.Paragraphs[0], new ParagraphTaskSheet());
-                    }
-                    else
-                    {
-                        viewModel.Data.InsertAfter(viewModel.Data.Paragraphs[0], new ParagraphTaskSheet());
-                    }
-                }
-                else
-                {
-                    viewModel.Data.AddParagraph(new ParagraphTaskSheet());
-                }
-                TextHeader("Coursework");
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 4.1 5.1 0.3 1.3 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (ControlWorkMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.ControlWork;
-                TextHeader("ControlWork");
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (ReferatMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.Referat;
-                TextHeader("Referat");
-                TitleElements.ShowTitleElems(titlePanel, "0.0 1.0 0.1 0.3 1.3 1.1 0.4 1.4 0.6 1.6 0.7 1.7");
-            }
-            else if (DiplomaMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.Diploma;
-                TextHeader("DiplomaWork");
-                TitleElements.ShowTitleElems(titlePanel, "");
-            }
-            else if (VKRMI.IsChecked)
-            {
-                viewModel.Data.Type = TypeDocument.VKR;
-                TextHeader("VKR");
-                TitleElements.ShowTitleElems(titlePanel, "");
-            }
-        }
-    }
-
-    void HeaderUpdate()
-    {
-        switch (viewModel.Data.Type)
-        {
-            case TypeDocument.DefaultDocument:
-                DocumentTypeChange(DefaultDocumentMI);
-                break;
-            case TypeDocument.LaboratoryWork:
-                DocumentTypeChange(LaboratoryWorkMI);
-                break;
-            case TypeDocument.PracticeWork:
-                DocumentTypeChange(PracticeWorkMI);
-                break;
-            case TypeDocument.Coursework:
-                DocumentTypeChange(CourseworkMI);
-                break;
-            case TypeDocument.ControlWork:
-                DocumentTypeChange(ControlWorkMI);
-                break;
-            case TypeDocument.Referat:
-                DocumentTypeChange(ReferatMI);
-                break;
-            case TypeDocument.Diploma:
-                DocumentTypeChange(DiplomaMI);
-                break;
-            case TypeDocument.VKR:
-                DocumentTypeChange(VKRMI);
-                break;
-        }
-
-        HeaderUpdateMI();
-    }
-
-    void TextHeader(string type)
-    {
-        string text = (string)FindResource(type);
-        if (file.SavePathExists())
-        {
-            viewModel.WinTitle = file.SavePath + " — " + text;
-        }
-        else
-        {
-            viewModel.WinTitle = "WordKiller — " + text;
-        }
     }
 
     //титульник
@@ -789,12 +471,13 @@ public partial class MainWindow : Window
         {
             if (paragraphTree.ItemContainerGenerator.ContainerFromItem(paragraphTree.SelectedItem) is TreeViewItem item)
             {
+                item.IsSelected = false;
                 if (!item.IsSelected)
                 {
-                    notComplexObjects.Visibility = Visibility.Collapsed;
+                    viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
                     taskSheetPanel.Visibility = Visibility.Collapsed;
                     titlePanel.Visibility = Visibility.Collapsed;
-                    unselectInfo.Visibility = Visibility.Visible;
+                    viewModel.Document.VisibilityUnselectInfo = Visibility.Visible;
                 }
             }
         }
@@ -803,22 +486,22 @@ public partial class MainWindow : Window
     void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
         richTextBox.AllowDrop = false;
-        unselectInfo.Visibility = Visibility.Collapsed;
+        viewModel.Document.VisibilityUnselectInfo = Visibility.Collapsed;
         if (paragraphTree.SelectedItem is ParagraphTitle)
         {
-            notComplexObjects.Visibility = Visibility.Collapsed;
+            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
             taskSheetPanel.Visibility = Visibility.Collapsed;
             titlePanel.Visibility = Visibility.Visible;
         }
         else if (paragraphTree.SelectedItem is ParagraphTaskSheet)
         {
-            notComplexObjects.Visibility = Visibility.Collapsed;
+            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
             taskSheetPanel.Visibility = Visibility.Visible;
             titlePanel.Visibility = Visibility.Collapsed;
         }
         else
         {
-            notComplexObjects.Visibility = Visibility.Visible;
+            viewModel.Document.VisibilityNotComplexObjects = Visibility.Visible;
             taskSheetPanel.Visibility = Visibility.Collapsed;
             titlePanel.Visibility = Visibility.Collapsed;
             if (paragraphTree.SelectedItem is IParagraphData data)
@@ -874,31 +557,31 @@ public partial class MainWindow : Window
 
         if (typeItem.Content.ToString() == "Текст")
         {
-            viewModel.Data.AddParagraph(new ParagraphText());
+            viewModel.Document.Data.AddParagraph(new ParagraphText());
         }
         else if (typeItem.Content.ToString() == "Заголовок")
         {
-            viewModel.Data.AddParagraph(new ParagraphH1());
+            viewModel.Document.Data.AddParagraph(new ParagraphH1());
         }
         else if (typeItem.Content.ToString() == "Подзаголовок")
         {
-            viewModel.Data.AddParagraph(new ParagraphH2());
+            viewModel.Document.Data.AddParagraph(new ParagraphH2());
         }
         else if (typeItem.Content.ToString() == "Список")
         {
-            viewModel.Data.AddParagraph(new ParagraphList());
+            viewModel.Document.Data.AddParagraph(new ParagraphList());
         }
         else if (typeItem.Content.ToString() == "Картинка")
         {
-            viewModel.Data.AddParagraph(new ParagraphPicture());
+            viewModel.Document.Data.AddParagraph(new ParagraphPicture());
         }
         else if (typeItem.Content.ToString() == "Таблица")
         {
-            viewModel.Data.AddParagraph(new ParagraphTable());
+            viewModel.Document.Data.AddParagraph(new ParagraphTable());
         }
         else if (typeItem.Content.ToString() == "Фрагмент кода")
         {
-            viewModel.Data.AddParagraph(new ParagraphCode());
+            viewModel.Document.Data.AddParagraph(new ParagraphCode());
         }
     }
 
@@ -908,13 +591,13 @@ public partial class MainWindow : Window
         {
             if (paragraphTree.SelectedItem is IParagraphData item)
             {
-                viewModel.Data.RemoveParagraph(item);
+                viewModel.Document.Data.RemoveParagraph(item);
                 if (paragraphTree.SelectedItem == null)
                 {
-                    notComplexObjects.Visibility = Visibility.Collapsed;
+                    viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
                     taskSheetPanel.Visibility = Visibility.Collapsed;
                     titlePanel.Visibility = Visibility.Collapsed;
-                    unselectInfo.Visibility = Visibility.Visible;
+                    viewModel.Document.VisibilityUnselectInfo = Visibility.Visible;
                 }
             }
         }
@@ -923,12 +606,12 @@ public partial class MainWindow : Window
     void ContextMenuInsertAfter_Click(object sender, RoutedEventArgs e)
     {
         if (paragraphTree.SelectedItem == null) return;
-        viewModel.Data.InsertAfter(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
+        viewModel.Document.Data.InsertAfter(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
     }
 
     void ContextMenuInsertBefore_Click(object sender, RoutedEventArgs e)
     {
         if (paragraphTree.SelectedItem == null) return;
-        viewModel.Data.InsertBefore(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
+        viewModel.Document.Data.InsertBefore(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
     }
 }

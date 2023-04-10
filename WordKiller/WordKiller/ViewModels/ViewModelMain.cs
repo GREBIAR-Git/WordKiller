@@ -1,27 +1,21 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
-using WordKiller.DataTypes;
+using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels.Settings;
 
 namespace WordKiller.ViewModels;
 public class ViewModelMain : ViewModelBase
 {
-    DocumentData data;
-    public DocumentData Data { get => data; set => SetProperty(ref data, value); }
+    ViewModelDocument document;
+    public ViewModelDocument Document { get => document; set => SetProperty(ref document, value); }
 
     ViewModelSettings settings;
     public ViewModelSettings Settings { get => settings; set => SetProperty(ref settings, value); }
 
-    ViewModelExport export;
-    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
-
     public NetworkCommans NetworkCommans { get; set; }
 
     public HelpCommands HelpCommands { get; set; }
-
-    string? winTitle;
-    public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
     Visibility visibilityMainPanel;
 
@@ -61,14 +55,25 @@ public class ViewModelMain : ViewModelBase
         }
     }
 
+    ICommand? quit;
+
+    public ICommand Quit
+    {
+        get
+        {
+            return quit ??= new RelayCommand(obj =>
+            {
+                UIHelper.WindowClose();
+            });
+        }
+    }
+
     public ViewModelMain()
     {
-        Data = new();
-        winTitle = "WordKiller";
+        document = new();
         HelpCommands = new();
         NetworkCommans = new();
         settings = new();
-        export = new();
         VisibilitySettingsPanel = Visibility.Collapsed;
         VisibilityMainPanel = Visibility.Visible;
     }

@@ -7,6 +7,8 @@ namespace WordKiller.Scripts.ForUI;
 static class TitleElements
 {
     static ExtendedUIElement[] defaultElements;
+
+    static Grid titlePanel;
     public static void SaveTitleUIElements(Grid panel)
     {
         defaultElements = new ExtendedUIElement[panel.Children.Count];
@@ -20,17 +22,18 @@ static class TitleElements
             defaultElements[i].Row = Grid.GetRow(panel.Children[i]);
             defaultElements[i].Column = Grid.GetColumn(panel.Children[i]);
         }
+        titlePanel = panel;
     }
 
-    public static void ShowTitleElems(Grid panel, string str)
+    public static void ShowTitleElems(string str)
     {
-        panel.Children.Clear();
-        PushbackControls(panel);
-        ShowAllChildControls(panel);
-        ResetAllChildColumnSpans(panel);
+        titlePanel.Children.Clear();
+        PushbackControls(titlePanel);
+        ShowAllChildControls(titlePanel);
+        ResetAllChildColumnSpans(titlePanel);
         SplitCell(str, out int[] rows, out int[] columns);
-        UIElement[] titleSave = CopyControls(panel, rows, columns);
-        panel.Children.Clear();
+        UIElement[] titleSave = CopyControls(titlePanel, rows, columns);
+        titlePanel.Children.Clear();
         for (int i = 0; i < titleSave.Length; i++)
         {
             if (columns[i] >= 4 && RowElemCounter(rows, rows[i]) <= 4)
@@ -42,16 +45,16 @@ static class TitleElements
                 columns[i] -= 2;
             }
         }
-        PushbackControls(titleSave, panel, rows, columns);
-        for (int i = 0; i < panel.Children.Count; i++)
+        PushbackControls(titleSave, titlePanel, rows, columns);
+        for (int i = 0; i < titlePanel.Children.Count; i++)
         {
             if (columns[i] == 3 && RowElemCounter(rows, rows[i]) <= 4)
             {
-                Grid.SetColumnSpan(panel.Children[i], 3);
+                Grid.SetColumnSpan(titlePanel.Children[i], 3);
             }
             else if (columns[i] == 1 && RowElemCounter(rows, rows[i]) <= 2)
             {
-                Grid.SetColumnSpan(panel.Children[i], 5);
+                Grid.SetColumnSpan(titlePanel.Children[i], 5);
             }
         }
     }

@@ -3,25 +3,20 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.TypeXAML;
 using WordKiller.Scripts.ForUI;
+using WordKiller.ViewModels;
 
 namespace WordKiller.Scripts.ImportExport;
 
-public class WordKillerFile
+public class WordKillerFile : ViewModelBase
 {
     string? savePath;
-
     public string? SavePath { get => savePath; }
 
-    readonly Image logoSave;
-
-    public WordKillerFile(Image logo)
-    {
-        logoSave = logo;
-    }
+    Visibility visibilitySaveLogo;
+    public Visibility VisibilitySaveLogo { get => visibilitySaveLogo; set => SetProperty(ref visibilitySaveLogo, value); }
 
     public bool SavePathExists()
     {
@@ -59,7 +54,7 @@ public class WordKillerFile
 
     async void SaveFile(string nameFile, DocumentData data)
     {
-        logoSave.Visibility = Visibility.Visible;
+        VisibilitySaveLogo = Visibility.Visible;
         await Task.Run(() =>
         {
             using (FileStream stream = System.IO.File.Open(nameFile, false ? FileMode.Append : FileMode.Create))
@@ -71,7 +66,7 @@ public class WordKillerFile
                 binaryFormatter.Serialize(stream, data);
             }
         });
-        logoSave.Visibility = Visibility.Collapsed;
+        VisibilitySaveLogo = Visibility.Collapsed;
     }
 
     public DocumentData OpenFile(string fileName)
@@ -100,12 +95,11 @@ public class WordKillerFile
         return data;
     }
 
-    public DocumentData NewFile(RTBox richTextBox)
+    public DocumentData NewFile()
     {
         DocumentData data = new();
         NeedSave(data);
         data.Clear();
-        richTextBox.Document.Blocks.Clear();
         savePath = string.Empty;
         return data;
     }
