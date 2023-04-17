@@ -1,15 +1,14 @@
 ﻿using System.Windows;
 
-namespace WordKiller.DataTypes.ParagraphData
+namespace WordKiller.DataTypes.ParagraphData;
+
+public interface IParagraphData
 {
-    public interface IParagraphData
-    {
-        string Type { get; }
+    string Type { get; }
 
-        string Data { get; set; }
+    string Data { get; set; }
 
-        string Description { get; set; }
+    string Description { get; set; }
 
-        Visibility DescriptionVisibility();
-    }
+    Visibility DescriptionVisibility();
 }

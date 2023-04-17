@@ -34,15 +34,16 @@
     <system:String x:Key="TOC">Содержание</system:String>
     <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
     <system:String x:Key="ListOfReferences">Список литературы</system:String>
-    
+
     <system:String x:Key="Network">Сеть</system:String>
-    
-    
+
     <system:String x:Key="Help">Справка</system:String>
 
     <system:String x:Key="Documentation">Документация</system:String>
     <system:String x:Key="AboutProgram">О программе</system:String>
 
+    <system:String x:Key="MainClue">Выберите объект или нажмите на кнопку добавить, чтобы начать работу</system:String>
+    <system:String x:Key="PictureClue">Перетащите сюда фотографию титульного листа</system:String>
 
     <system:String x:Key="Header">Раздел</system:String>
     <system:String x:Key="SubHeader">Подраздел</system:String>
@@ -56,6 +57,13 @@
     <system:String x:Key="ToText">К тексту</system:String>
     <system:String x:Key="ToSubstitutions">К подстановкам</system:String>
     <system:String x:Key="Add">Добавить</system:String>
+
+    <system:String x:Key="Cathedra">Кафедра</system:String>
+    <system:String x:Key="Completed">Выполнили</system:String>
+    <system:String x:Key="Theme">Тема</system:String>
+    <system:String x:Key="Discipline">Дисциплина</system:String>
+    <system:String x:Key="Lecturer">Преподаватель</system:String>
+    <system:String x:Key="FacultyPosition">Позиция на кафедре</system:String>
 
     <system:String x:Key="Content">Содержание</system:String>
 
@@ -76,8 +84,8 @@
 
     <system:String x:Key="OffsetFollowing">, последующие сместить</system:String>
 
-    <system:String x:Key="Сolumns">Строки</system:String>
-    <system:String x:Key="Rows">Столбцы</system:String>
+    <system:String x:Key="Columns">Строки: </system:String>
+    <system:String x:Key="Rows">Столбцы: </system:String>
 
     <system:String x:Key="Error">Ошибка</system:String>
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
@@ -97,13 +105,16 @@
     <system:String x:Key="Styles">Стили</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
-    <system:String x:Key="IsAssociate">Aссоциировать расширение(wkr) с программой?</system:String>
-    <system:String x:Key="IsSyntaxChecking">Производить ли проверку синтаксиса(Базовая)?</system:String>
-    <system:String x:Key="Encoding">Какую кодировку использовать при сохранении файла?</system:String>
-    <system:String x:Key="Encoding0">Никакую</system:String>
-    <system:String x:Key="Encoding1">Стандартную</system:String>
-    <system:String x:Key="AfterExportingClose">Закрывать приложение после формирования отчёта?</system:String>
+    <system:String x:Key="IsAssociate">Расширение(wkr) ассоциировано с программой</system:String>
+    <system:String x:Key="IsSyntaxChecking">Проверка синтаксиса(Базовая)</system:String>
+    <system:String x:Key="Encoding">Шифрование при сохранении и открытии файла</system:String>
+    <system:String x:Key="Encoding0">Никакое</system:String>
+    <system:String x:Key="Encoding1">Стандартное</system:String>
+    <system:String x:Key="AfterExportingClose">Закрытие приложения после формирования отчёта</system:String>
     <system:String x:Key="IsAutoHeader">Автоматический заголовок для объекта</system:String>
+    <system:String x:Key="FileSettings">Файл с настройками приложения</system:String>
+    <system:String x:Key="Delete">Удалить</system:String>
+    <system:String x:Key="DeleteAll">Удалить все файлы</system:String>
 
     <system:String x:Key="ByDefault">По умолчанию</system:String>
     <system:String x:Key="MainColor">Основной цвет программы</system:String>
@@ -118,11 +129,11 @@
     <system:String x:Key="FirstName">Имя:</system:String>
     <system:String x:Key="LastName">Фамилия:</system:String>
     <system:String x:Key="MiddleName">Отчество:</system:String>
-    <system:String x:Key="Universitet">Институт:</system:String>
-    <system:String x:Key="Faculty">Факультет:</system:String>
-    <system:String x:Key="Cours">Курс:</system:String>
-    <system:String x:Key="Group">Группа:</system:String>
+    <system:String x:Key="Universitet">Институт</system:String>
+    <system:String x:Key="Faculty">Факультет</system:String>
+    <system:String x:Key="Cours">Курс</system:String>
+    <system:String x:Key="Group">Группа</system:String>
     <system:String x:Key="Shifr">Шифр:</system:String>
     <system:String x:Key="Companion">Напарник</system:String>
-    <system:String x:Key="Year">Год</system:String>
+    <system:String x:Key="Year">Год:</system:String>
 </ResourceDictionary>

@@ -11,6 +11,8 @@
   <ItemGroup>
     <None Remove="Resources\Icon\512x512.ico" />
     <None Remove="Resources\Icon\75x75.png" />
+    <None Remove="Resources\Pictures\Photo.png" />
+    <None Remove="Resources\Pictures\Update.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,8 +45,10 @@
     <Resource Include="Resources\Icon\512x512.ico" />
     <Resource Include="Resources\Pictures\512x512.png" />
     <Resource Include="Resources\Pictures\Code.png" />
+    <Resource Include="Resources\Pictures\Photo.png" />
     <Resource Include="Resources\Pictures\Picture.png" />
     <Resource Include="Resources\Pictures\Settings.png" />
+    <Resource Include="Resources\Pictures\Update.png" />
   </ItemGroup>
 
 

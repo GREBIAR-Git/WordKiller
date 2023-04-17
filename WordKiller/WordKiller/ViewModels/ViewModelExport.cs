@@ -1,54 +1,53 @@
 ﻿using System.Windows;
 using WordKiller.Scripts;
 
-namespace WordKiller.ViewModels
+namespace WordKiller.ViewModels;
+
+public class ViewModelExport : ViewModelBase
 {
-    public class ViewModelExport : ViewModelBase
+    Visibility visibilityExportPDF;
+    public Visibility VisibilityExportPDF { get => visibilityExportPDF; set => SetProperty(ref visibilityExportPDF, value); }
+
+    Visibility visibilityExportHTML;
+    public Visibility VisibilityExportHTML { get => visibilityExportHTML; set => SetProperty(ref visibilityExportHTML, value); }
+
+    bool exportPDF;
+    public bool ExportPDF
     {
-        Visibility visibilityExportPDF;
-        public Visibility VisibilityExportPDF { get => visibilityExportPDF; set => SetProperty(ref visibilityExportPDF, value); }
-
-        Visibility visibilityExportHTML;
-        public Visibility VisibilityExportHTML { get => visibilityExportHTML; set => SetProperty(ref visibilityExportHTML, value); }
-
-        bool exportPDF;
-        public bool ExportPDF
+        get => exportPDF;
+        set
         {
-            get => exportPDF;
-            set
-            {
-                SetProperty(ref exportPDF, value);
-                Properties.Settings.Default.ExportPDF = exportPDF;
-                Properties.Settings.Default.Save();
-            }
+            SetProperty(ref exportPDF, value);
+            Properties.Settings.Default.ExportPDF = exportPDF;
+            Properties.Settings.Default.Save();
         }
+    }
 
-        bool exportHTML;
-        public bool ExportHTML
+    bool exportHTML;
+    public bool ExportHTML
+    {
+        get => exportHTML;
+        set
         {
-            get => exportHTML;
-            set
-            {
-                SetProperty(ref exportHTML, value);
-                Properties.Settings.Default.ExportHTML = exportHTML;
-                Properties.Settings.Default.Save();
-            }
+            SetProperty(ref exportHTML, value);
+            Properties.Settings.Default.ExportHTML = exportHTML;
+            Properties.Settings.Default.Save();
         }
+    }
 
-        public ViewModelExport()
+    public ViewModelExport()
+    {
+        if (WkrExport.IsWordInstall())
         {
-            if (WkrExport.IsWordInstall())
-            {
-                ExportPDF = Properties.Settings.Default.ExportPDF;
-                ExportHTML = Properties.Settings.Default.ExportHTML;
-            }
-            else
-            {
-                VisibilityExportPDF = Visibility.Collapsed;
-                VisibilityExportHTML = Visibility.Collapsed;
-                ExportPDF = false;
-                ExportHTML = false;
-            }
+            ExportPDF = Properties.Settings.Default.ExportPDF;
+            ExportHTML = Properties.Settings.Default.ExportHTML;
+        }
+        else
+        {
+            VisibilityExportPDF = Visibility.Collapsed;
+            VisibilityExportHTML = Visibility.Collapsed;
+            ExportPDF = false;
+            ExportHTML = false;
         }
     }
 }

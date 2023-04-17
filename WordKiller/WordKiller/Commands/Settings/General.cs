@@ -2,47 +2,46 @@
 using WordKiller.Scripts;
 using WordKiller.ViewModels;
 
-namespace WordKiller.Commands.Settings
+namespace WordKiller.Commands.Settings;
+
+public class General : ViewModelBase
 {
-    public class General : ViewModelBase
+    ICommand? configFileOpen;
+
+    public ICommand ConfigFileOpen
     {
-        ICommand? configFileOpen;
-
-        public ICommand ConfigFileOpen
+        get
         {
-            get
+            return configFileOpen ??= new RelayCommand(obj =>
             {
-                return configFileOpen ??= new RelayCommand(obj =>
-                {
-                    ConfigFile.Open();
-                });
-            }
+                ConfigFile.Open();
+            });
         }
+    }
 
-        ICommand? configFileDelete;
+    ICommand? configFileDelete;
 
-        public ICommand ConfigFileDelete
+    public ICommand ConfigFileDelete
+    {
+        get
         {
-            get
+            return configFileDelete ??= new RelayCommand(obj =>
             {
-                return configFileDelete ??= new RelayCommand(obj =>
-                {
-                    ConfigFile.Delete();
-                });
-            }
+                ConfigFile.Delete();
+            });
         }
+    }
 
-        ICommand? configFileDeleteAll;
+    ICommand? configFileDeleteAll;
 
-        public ICommand ConfigFileDeleteAll
+    public ICommand ConfigFileDeleteAll
+    {
+        get
         {
-            get
+            return configFileDeleteAll ??= new RelayCommand(obj =>
             {
-                return configFileDeleteAll ??= new RelayCommand(obj =>
-                {
-                    ConfigFile.DeleteAll();
-                });
-            }
+                ConfigFile.DeleteAll();
+            });
         }
     }
 }

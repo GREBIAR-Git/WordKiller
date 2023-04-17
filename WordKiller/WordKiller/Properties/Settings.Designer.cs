@@ -85,10 +85,10 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
-        public int Faculty {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Faculty {
             get {
-                return ((int)(this["Faculty"]));
+                return ((string)(this["Faculty"]));
             }
             set {
                 this["Faculty"] = value;
@@ -97,10 +97,10 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
-        public int Course {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Course {
             get {
-                return ((int)(this["Course"]));
+                return ((string)(this["Course"]));
             }
             set {
                 this["Course"] = value;
@@ -109,10 +109,10 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
-        public int Group {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group {
             get {
-                return ((int)(this["Group"]));
+                return ((string)(this["Group"]));
             }
             set {
                 this["Group"] = value;
@@ -200,42 +200,6 @@ namespace WordKiller.Properties {
             }
             set {
                 this["NumberEncoding"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FacultyString {
-            get {
-                return ((string)(this["FacultyString"]));
-            }
-            set {
-                this["FacultyString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CourseString {
-            get {
-                return ((string)(this["CourseString"]));
-            }
-            set {
-                this["CourseString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GroupString {
-            get {
-                return ((string)(this["GroupString"]));
-            }
-            set {
-                this["GroupString"] = value;
             }
         }
         
@@ -389,6 +353,66 @@ namespace WordKiller.Properties {
             }
             set {
                 this["TreeViewSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoInput {
+            get {
+                return ((bool)(this["AutoInput"]));
+            }
+            set {
+                this["AutoInput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Photo {
+            get {
+                return ((bool)(this["Photo"]));
+            }
+            set {
+                this["Photo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoInputS {
+            get {
+                return ((bool)(this["AutoInputS"]));
+            }
+            set {
+                this["AutoInputS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2023")]
+        public string Year {
+            get {
+                return ((string)(this["Year"]));
+            }
+            set {
+                this["Year"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Direction {
+            get {
+                return ((string)(this["Direction"]));
+            }
+            set {
+                this["Direction"] = value;
             }
         }
     }

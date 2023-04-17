@@ -15,7 +15,7 @@ class AdaptiveFontSizeControl : IMultiValueConverter
     {
         Control control = (Control)values[0];
 
-        if (control == null)
+        if (control == null || values[1] == null)
         {
             return double.NaN;
         }

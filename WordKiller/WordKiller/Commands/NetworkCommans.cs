@@ -1,49 +1,48 @@
 ﻿using System.Windows.Input;
 
-namespace WordKiller.Commands
+namespace WordKiller.Commands;
+
+public class NetworkCommans
 {
-    public class NetworkCommans
+    private ICommand createNetwork;
+
+    public ICommand CreateNetwork
     {
-        private ICommand createNetwork;
-
-        public ICommand CreateNetwork
+        get
         {
-            get
+            return createNetwork ??= new RelayCommand(
+            obj =>
             {
-                return createNetwork ??= new RelayCommand(
-                obj =>
-                {
 
-                });
-            }
+            });
         }
+    }
 
-        private ICommand joinNetwork;
+    private ICommand joinNetwork;
 
-        public ICommand JoinNetwork
+    public ICommand JoinNetwork
+    {
+        get
         {
-            get
+            return joinNetwork ??= new RelayCommand(
+            obj =>
             {
-                return joinNetwork ??= new RelayCommand(
-                obj =>
-                {
 
-                });
-            }
+            });
         }
+    }
 
-        private ICommand leaveNetwork;
+    private ICommand leaveNetwork;
 
-        public ICommand LeaveNetwork
+    public ICommand LeaveNetwork
+    {
+        get
         {
-            get
+            return leaveNetwork ??= new RelayCommand(
+            obj =>
             {
-                return leaveNetwork ??= new RelayCommand(
-                obj =>
-                {
 
-                });
-            }
+            });
         }
     }
 }

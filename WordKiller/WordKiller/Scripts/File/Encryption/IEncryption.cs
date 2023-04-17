@@ -1,8 +1,7 @@
-﻿namespace WordKiller.Scripts.File.Encryption
+﻿namespace WordKiller.Scripts.File.Encryption;
+
+public interface IEncryption
 {
-    public interface IEncryption
-    {
-        public string Encrypt(string text);
-        public string Decrypt(string text);
-    }
+    public string Encrypt(string text);
+    public string Decrypt(string text);
 }

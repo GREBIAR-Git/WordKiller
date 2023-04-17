@@ -1,36 +1,35 @@
 ﻿using System.Windows.Input;
 
-namespace WordKiller.Commands
+namespace WordKiller.Commands;
+
+public class HelpCommands
 {
-    public class HelpCommands
+    private ICommand aboutProgram;
+
+    public ICommand AboutProgram
     {
-        private ICommand aboutProgram;
-
-        public ICommand AboutProgram
+        get
         {
-            get
+            return aboutProgram ??= new RelayCommand(
+            obj =>
             {
-                return aboutProgram ??= new RelayCommand(
-                obj =>
-                {
-                    AboutProgram aboutProgram = new();
-                    aboutProgram.Show();
-                });
-            }
+                AboutProgram aboutProgram = new();
+                aboutProgram.Show();
+            });
         }
+    }
 
-        private ICommand documentation;
+    private ICommand documentation;
 
-        public ICommand Documentation
+    public ICommand Documentation
+    {
+        get
         {
-            get
+            return documentation ??= new RelayCommand(obj =>
             {
-                return documentation ??= new RelayCommand(obj =>
-                {
-                    Documentation documentation = new();
-                    documentation.Show();
-                });
-            }
+                Documentation documentation = new();
+                documentation.Show();
+            });
         }
     }
 }

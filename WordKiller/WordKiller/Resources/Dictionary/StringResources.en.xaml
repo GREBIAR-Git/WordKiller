@@ -48,6 +48,8 @@
     <system:String x:Key="Documentation">Documentation</system:String>
     <system:String x:Key="AboutProgram">About</system:String>
 
+    <system:String x:Key="MainClue">Select an item or click the add button to begin</system:String>
+    <system:String x:Key="PictureClue">Drag and drop the cover page photo here</system:String>
 
     <system:String x:Key="Header">Section</system:String>
     <system:String x:Key="SubHeader">Subsection</system:String>
@@ -62,6 +64,13 @@
     <system:String x:Key="ToSubstitutions">To substitutions</system:String>
     <system:String x:Key="Add">Add</system:String>
 
+    <system:String x:Key="Cathedra">Department</system:String>
+    <system:String x:Key="Completed">Implemented by</system:String>
+    <system:String x:Key="Theme">Subject</system:String>
+    <system:String x:Key="Discipline">Discipline</system:String>
+    <system:String x:Key="Lecturer">Lecturer</system:String>
+    <system:String x:Key="FacultyPosition">Faculty position</system:String>
+    
     <system:String x:Key="Content">Content</system:String>
 
     <system:String x:Key="Displayed">Displaying</system:String>
@@ -81,8 +90,8 @@
 
     <system:String x:Key="OffsetFollowing">offset the following</system:String>
 
-    <system:String x:Key="Сolumns">Сolumns</system:String>
-    <system:String x:Key="Rows">Rows</system:String>
+    <system:String x:Key="Columns">Сolumns:</system:String>
+    <system:String x:Key="Rows">Rows:</system:String>
     
     <system:String x:Key="Error">Error</system:String>
     <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
@@ -102,13 +111,16 @@
     <system:String x:Key="Styles">Styles</system:String>
     <system:String x:Key="BackSettings">Back</system:String>
 
-    <system:String x:Key="IsAssociate">Associate an extension (wkr) with a program?</system:String>
-    <system:String x:Key="IsSyntaxChecking">Whether to perform a syntax check (Basic)?</system:String>
-    <system:String x:Key="Encoding">What encoding should be used when saving the file?</system:String>
+    <system:String x:Key="IsAssociate">The extension(wkr) is associated with the program</system:String>
+    <system:String x:Key="IsSyntaxChecking">Syntax Check (Basic)</system:String>
+    <system:String x:Key="Encoding">Encryption when saving and opening a file</system:String>
     <system:String x:Key="Encoding0">None</system:String>
-    <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Close the application after the report has been generated?</system:String>
-    <system:String x:Key="IsAutoHeader">Automatic title for an object</system:String>
+    <system:String x:Key="Encoding1">Default</system:String>
+    <system:String x:Key="AfterExportingClose">Closing the application after the report is generated</system:String>
+    <system:String x:Key="IsAutoHeader">Automatic header for the object</system:String>
+    <system:String x:Key="FileSettings">File with application settings</system:String>
+    <system:String x:Key="Delete">Delete</system:String>
+    <system:String x:Key="DeleteAll">Delete all files</system:String>
 
     <system:String x:Key="ByDefault">By default</system:String>
     <system:String x:Key="MainColor">Primary colour</system:String>
@@ -123,11 +135,11 @@
     <system:String x:Key="FirstName">Firstname:</system:String>
     <system:String x:Key="LastName">Lastname:</system:String>
     <system:String x:Key="MiddleName">Middlename:</system:String>
-    <system:String x:Key="Universitet">Universitet:</system:String>
-    <system:String x:Key="Faculty">Faculty:</system:String>
-    <system:String x:Key="Cours">Years:</system:String>
-    <system:String x:Key="Group">Group:</system:String>
+    <system:String x:Key="Universitet">Universitet</system:String>
+    <system:String x:Key="Faculty">Faculty</system:String>
+    <system:String x:Key="Cours">Cours</system:String>
+    <system:String x:Key="Group">Group</system:String>
     <system:String x:Key="Shifr">Shifr:</system:String>
     <system:String x:Key="Companion">Mate</system:String>
-    <system:String x:Key="Year">Year</system:String>
+    <system:String x:Key="Year">Year:</system:String>
 </ResourceDictionary>

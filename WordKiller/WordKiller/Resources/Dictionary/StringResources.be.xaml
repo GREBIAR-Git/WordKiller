@@ -48,6 +48,8 @@
     <system:String x:Key="Documentation">Дакументацыя</system:String>
     <system:String x:Key="AboutProgram">Пра праграму</system:String>
 
+    <system:String x:Key="MainClue">Абярыце аб'ект або націсніце кнопку дадаць, каб пачаць працу</system:String>
+    <system:String x:Key="PictureClue">Перацягнеце сюды Фатаграфія тытульнага ліста</system:String>
 
     <system:String x:Key="Header">Раздзел</system:String>
     <system:String x:Key="SubHeader">Падліў</system:String>
@@ -63,6 +65,13 @@
     <system:String x:Key="ToSubstitutions">Падстаноўкі</system:String>
     <system:String x:Key="Add">Дадаваць</system:String>
 
+    <system:String x:Key="Cathedra">Кафедра</system:String>
+    <system:String x:Key="Completed">Выканалі</system:String>
+    <system:String x:Key="Theme">Тэма</system:String>
+    <system:String x:Key="Discipline">Дысцыпліна</system:String>
+    <system:String x:Key="Lecturer">Лектар</system:String>
+    <system:String x:Key="FacultyPosition">Месца на кафедры</system:String>
+    
     <system:String x:Key="Content">Задаволены</system:String>
 
     <system:String x:Key="Displayed">Адлюстроўваць</system:String>
@@ -82,8 +91,8 @@
 
     <system:String x:Key="OffsetFollowing">пасля змены</system:String>
 
-    <system:String x:Key="Сolumns">Стоўбцы</system:String>
-    <system:String x:Key="Rows">Шэрагі</system:String>
+    <system:String x:Key="Columns">Стоўбцы: </system:String>
+    <system:String x:Key="Rows">Шэрагі: </system:String>
     
     <system:String x:Key="Error">Памылка</system:String>
     <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
@@ -103,13 +112,16 @@
     <system:String x:Key="Styles">Стыль</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
-    <system:String x:Key="IsAssociate">Асацыяваны пашырэнне (WKR) з праграмай?</system:String>
-    <system:String x:Key="IsSyntaxChecking">Ці з'яўляецца праверку сінтаксісу (асноўны)?</system:String>
-    <system:String x:Key="Encoding">Якое кадаванне выкарыстоўваць пры захаванні файла?</system:String>
-    <system:String x:Key="Encoding0">Не</system:String>
-    <system:String x:Key="Encoding1">Стандарт</system:String>
-    <system:String x:Key="AfterExportingClose">Закрываць прыкладанне пасля фарміравання адліку?</system:String>
+    <system:String x:Key="IsAssociate">Пашырэнне (wkr) асацыявана з праграмай</system:String>
+    <system:String x:Key="IsSyntaxChecking">Праверка сінтаксісу(Базавая)</system:String>
+    <system:String x:Key="Encoding">Шыфраванне пры захаванні і адкрыцці файла</system:String>
+    <system:String x:Key="Encoding0">Які</system:String>
+    <system:String x:Key="Encoding1">Стандартны</system:String>
+    <system:String x:Key="AfterExportingClose">Закрыццё прыкладання пасля фарміравання справаздачы</system:String>
     <system:String x:Key="IsAutoHeader">Аўтаматычны загаловак для аб'екта</system:String>
+    <system:String x:Key="FileSettings">Файл з наладамі прыкладання</system:String>
+    <system:String x:Key="Delete">Выдаліць</system:String>
+    <system:String x:Key="DeleteAll">Выдаліць усе файлы</system:String>
 
     <system:String x:Key="ByDefault">Па змаўчанні</system:String>
     <system:String x:Key="MainColor">Асноўны колер праграмы</system:String>
@@ -124,11 +136,11 @@
     <system:String x:Key="FirstName">Імя:</system:String>
     <system:String x:Key="LastName">Прозвішча:</system:String>
     <system:String x:Key="MiddleName">Імя па бацьку:</system:String>
-    <system:String x:Key="Universitet">Інстытут:</system:String>
-    <system:String x:Key="Faculty">Факультэт:</system:String>
-    <system:String x:Key="Cours">Ну:</system:String>
-    <system:String x:Key="Group">Група:</system:String>
+    <system:String x:Key="Universitet">Інстытут</system:String>
+    <system:String x:Key="Faculty">Факультэт</system:String>
+    <system:String x:Key="Cours">Ну</system:String>
+    <system:String x:Key="Group">Група</system:String>
     <system:String x:Key="Shifr">Cipher:</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>
-    <system:String x:Key="Year">Год</system:String>
+    <system:String x:Key="Year">Год:</system:String>
 </ResourceDictionary>

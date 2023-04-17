@@ -47,6 +47,8 @@
     <system:String x:Key="Documentation">Documentation</system:String>
     <system:String x:Key="AboutProgram">À propos du programme</system:String>
 
+    <system:String x:Key="MainClue">Sélectionnez un élément ou cliquez sur le bouton d'ajout pour commencer à travailler</system:String>
+    <system:String x:Key="PictureClue">Glisser-déposer la photo de la page de couverture ici</system:String>
 
     <system:String x:Key="Header">Chapitre</system:String>
     <system:String x:Key="SubHeader">Sous-section</system:String>
@@ -60,6 +62,13 @@
     <system:String x:Key="ToText">Au texte</system:String>
     <system:String x:Key="ToSubstitutions">Aux substitutions</system:String>
     <system:String x:Key="Add">Ajouter</system:String>
+
+    <system:String x:Key="Cathedra">Département</system:String>
+    <system:String x:Key="Completed">Mis en œuvre par</system:String>
+    <system:String x:Key="Theme">Sujet</system:String>
+    <system:String x:Key="Discipline">Discipline</system:String>
+    <system:String x:Key="Lecturer">Enseignant</system:String>
+    <system:String x:Key="FacultyPosition">Poste dans le département</system:String>
 
     <system:String x:Key="Content">Contenu</system:String>
 
@@ -80,8 +89,8 @@
 
     <system:String x:Key="OffsetFollowing">ultérieur pour changer</system:String>
 
-    <system:String x:Key="Сolumns">Colonnes</system:String>
-    <system:String x:Key="Rows">Rangs</system:String>
+    <system:String x:Key="Columns">Colonnes:</system:String>
+    <system:String x:Key="Rows">Rangs:</system:String>
     
     <system:String x:Key="Error">Erreur</system:String>
     <system:String x:Key="Error1">Erreur d'ouverture du fichier: le fichier n'est pas trouvé ou le format n'est pas pris en charge</system:String>
@@ -101,13 +110,16 @@
     <system:String x:Key="Styles">Styles</system:String>
     <system:String x:Key="BackSettings">Retour</system:String>
 
-    <system:String x:Key="IsAssociate">Associer l'expansion (WKR) au programme?</system:String>
-    <system:String x:Key="IsSyntaxChecking">La syntaxe est-elle (de base)?</system:String>
-    <system:String x:Key="Encoding">Quel codage utiliser lors de l'enregistrement d'un fichier?</system:String>
-    <system:String x:Key="Encoding0">Non</system:String>
+    <system:String x:Key="IsAssociate">Extension(wkr) associée au programme</system:String>
+    <system:String x:Key="IsSyntaxChecking">Contrôle syntaxique(Basic)</system:String>
+    <system:String x:Key="Encoding">Cryptage lors de l'enregistrement et de l'ouverture du fichier</system:String>
+    <system:String x:Key="Encoding0">Aucun</system:String>
     <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Fermer l'application après que le rapport ait été généré ?</system:String>
-    <system:String x:Key="IsAutoHeader">Titre automatique pour l'objet</system:String>
+    <system:String x:Key="AfterExportingClose">Fermer l'application après la génération du rapport</system:String>
+    <system:String x:Key="IsAutoHeader">En-tête automatique pour l'objet</system:String>
+    <system:String x:Key="FileSettings">Fichier avec les paramètres de l'application</system:String>
+    <system:String x:Key="Delete">Supprimer</system:String>
+    <system:String x:Key="DeleteAll">Supprimer tous les fichiers</system:String>
 
     <system:String x:Key="ByDefault">Défaut</system:String>
     <system:String x:Key="MainColor">La couleur principale du programme</system:String>
@@ -122,11 +134,11 @@
     <system:String x:Key="FirstName">Nom:</system:String>
     <system:String x:Key="LastName">Nom de famille:</system:String>
     <system:String x:Key="MiddleName">Deuxième nom:</system:String>
-    <system:String x:Key="Universitet">Institut:</system:String>
-    <system:String x:Key="Faculty">La faculté:</system:String>
-    <system:String x:Key="Cours">Bien:</system:String>
-    <system:String x:Key="Group">Groupe:</system:String>
+    <system:String x:Key="Universitet">Institut</system:String>
+    <system:String x:Key="Faculty">La faculté</system:String>
+    <system:String x:Key="Cours">Bien</system:String>
+    <system:String x:Key="Group">Groupe</system:String>
     <system:String x:Key="Shifr">Chiffrer:</system:String>
     <system:String x:Key="Companion">Partenaire</system:String>
-    <system:String x:Key="Year">Année</system:String>
+    <system:String x:Key="Year">Année:</system:String>
 </ResourceDictionary>

@@ -13,6 +13,9 @@ public class ViewModelMain : ViewModelBase
     ViewModelSettings settings;
     public ViewModelSettings Settings { get => settings; set => SetProperty(ref settings, value); }
 
+    ViewModelResizing resizing;
+    public ViewModelResizing Resizing { get => resizing; set => SetProperty(ref resizing, value); }
+
     public NetworkCommans NetworkCommans { get; set; }
 
     public HelpCommands HelpCommands { get; set; }
@@ -36,7 +39,6 @@ public class ViewModelMain : ViewModelBase
             {
                 VisibilityMainPanel = Visibility.Collapsed;
                 VisibilitySettingsPanel = Visibility.Visible;
-                settings.OpenGeneralSettings();
             });
         }
     }
@@ -68,12 +70,15 @@ public class ViewModelMain : ViewModelBase
         }
     }
 
+
+
     public ViewModelMain()
     {
         document = new();
         HelpCommands = new();
         NetworkCommans = new();
         settings = new();
+        resizing = new();
         VisibilitySettingsPanel = Visibility.Collapsed;
         VisibilityMainPanel = Visibility.Visible;
     }

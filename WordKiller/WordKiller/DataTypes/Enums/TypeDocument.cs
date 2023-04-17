@@ -8,6 +8,5 @@ public enum TypeDocument
     Coursework,
     ControlWork,
     Referat,
-    Diploma,
     VKR
 }

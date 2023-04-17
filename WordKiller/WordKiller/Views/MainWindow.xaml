@@ -26,7 +26,7 @@
         <CommandBinding Command="Undo" Executed="WindowBinding_Unselect"/>
     </Window.CommandBindings>
     <Grid Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
-        <Grid Grid.Row="0" Grid.Column="0" Visibility="{Binding Path=VisibilityMainPanel}">
+        <Grid Visibility="{Binding Path=VisibilityMainPanel}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -37,8 +37,8 @@
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
                     <MenuItem Header="{DynamicResource Export}" Command="{Binding Document.ExportFile}"/>
-                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportPDF,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportPDF, Mode=TwoWay}"/>
-                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportHTML,Mode=TwoWay}" Visibility="{Binding Path=Export.VisibilityExportHTML, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportPDF,Mode=TwoWay}" Visibility="{Binding Path=Document.Export.VisibilityExportPDF, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportHTML,Mode=TwoWay}" Visibility="{Binding Path=Document.Export.VisibilityExportHTML, Mode=TwoWay}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Create}" Command="{Binding Document.NewFile}" InputGestureText="Ctrl+N"/>
                     <MenuItem Header="{DynamicResource Open}" Command="{Binding Document.OpenFile}" InputGestureText="Ctrl+O"/>
@@ -61,7 +61,6 @@
                     <MenuItem Header="{DynamicResource ControlWork}" IsChecked="{Binding Path=Document.ControlWork, Mode=TwoWay}" Command="{Binding Document.ControlWork_Click}"/>
                     <MenuItem Header="{DynamicResource Referat}" IsChecked="{Binding Path=Document.Referat, Mode=TwoWay}" Command="{Binding Document.Referat_Click}"/>
                     <Separator/>
-                    <MenuItem Header="{DynamicResource DiplomaWork}" IsChecked="{Binding Path=Document.Diploma, Mode=TwoWay}" Command="{Binding Document.Diploma_Click}"/>
                     <MenuItem Header="{DynamicResource VKR}" IsChecked="{Binding Path=Document.VKR, Mode=TwoWay}" Command="{Binding Document.VKR_Click}"/>
                 </MenuItem>
                 <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
@@ -95,22 +94,22 @@
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="0" Grid.Column="0">
-                <Button Grid.Column="0" Grid.Row="0" Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
+                <Button Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
                     <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
                 <Image Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" x:Name="textPanel"  Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+            <Grid Grid.Row="1" Grid.Column="0" x:Name="textPanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="75"/>
+                    <ColumnDefinition Width="{Binding Path=Resizing.TreeViewSize, Mode=TwoWay}" MinWidth="75"/>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="100*" MinWidth="75"/>
+                    <ColumnDefinition Width="{Binding Path=Resizing.ContentPanelSize, Mode=TwoWay}" MinWidth="75"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90*"/>
                     <RowDefinition Height="10*" MaxHeight="50" MinHeight="30"/>
                 </Grid.RowDefinitions>
-                <TreeView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Path=Document.Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Document.Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
@@ -324,24 +323,30 @@
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
                 </TreeView>
-                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}" DragCompleted="TreeView_DragCompleted"/>
-                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}" AllowDrop="True" Drop="NewNotComplexObjects_Drop" DragOver="NewNotComplexObjects_DragOver">
+                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" IsTabStop="True" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="DragCompleted">
+                            <i:InvokeCommandAction Command="{Binding Path=Resizing.ResizingTreeView}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </GridSplitter>
+                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}" AllowDrop="True" Drop="NewNotComplexObjects_Drop" DragOver="NewNotComplexObjects_DragOver">
                     <ComboBox.ItemContainerStyle>
                         <Style>
                             <EventSetter Event="ComboBox.PreviewMouseUp" Handler="NewNotComplexObjects"/>
                         </Style>
                     </ComboBox.ItemContainerStyle>
-                    <ComboBoxItem Content="Текст"/>
-                    <ComboBoxItem Content="Заголовок"/>
-                    <ComboBoxItem Content="Подзаголовок"/>
-                    <ComboBoxItem Content="Список"/>
-                    <ComboBoxItem Content="Картинка"/>
-                    <ComboBoxItem Content="Таблица"/>
-                    <ComboBoxItem Content="Фрагмент кода"/>
+                    <ComboBoxItem Content="{DynamicResource Text}"/>
+                    <ComboBoxItem Content="{DynamicResource Header}"/>
+                    <ComboBoxItem Content="{DynamicResource SubHeader}"/>
+                    <ComboBoxItem Content="{DynamicResource List}"/>
+                    <ComboBoxItem Content="{DynamicResource Picture}"/>
+                    <ComboBoxItem Content="{DynamicResource Table}"/>
+                    <ComboBoxItem Content="{DynamicResource Code}"/>
                 </ComboBox>
                 <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
                     <Grid Visibility="{Binding Path=Document.VisibilityUnselectInfo,Mode=TwoWay}">
-                        <TextBlock Text="Выберите объект или нажмите на кнопку добавить, чтобы начать работу" TextWrapping="Wrap" Style="{StaticResource TextBlock}"></TextBlock>
+                        <TextBlock Text="{DynamicResource MainClue}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"></TextBlock>
                     </Grid>
                     <Grid Visibility="{Binding Path=Document.VisibilityNotComplexObjects,Mode=TwoWay}">
                         <Grid.RowDefinitions>
@@ -362,17 +367,17 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0" Grid.Column="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="25*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="25*" MinWidth="10"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="25*" MinWidth="10"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="100*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="Строки: " FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="countRows" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="Столбцы: " FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
                                 <TextBox Grid.Row="0" Grid.Column="3" x:Name="countColumns" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
@@ -402,266 +407,256 @@
                             </Border>
                         </Grid>
                     </Grid>
-                    <Grid x:Name="titlePanel" Visibility="Collapsed" Margin="10,10,10,10" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid x:Name="titlePanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,10,10,5" Text="Кафедра:" Style="{StaticResource TextBlockTitle}"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" x:Name="facultyComboBox" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}"  Margin="10,10,10,5" SelectedItem="информационных систем и цифровых технологий"  SelectionChanged="FacultyComboBox_SelectionChanged">
-                            <ComboBoxItem IsSelected="True">информационных систем и цифровых технологий</ComboBoxItem>
-                            <ComboBoxItem>приборостроения, метрологии и сертификации</ComboBoxItem>
-                            <ComboBoxItem>информационной безопасности</ComboBoxItem>
-                            <ComboBoxItem>технической физики и математики</ComboBoxItem>
-                            <ComboBoxItem>электроники, радиотехники и систем связи</ComboBoxItem>
-                            <ComboBoxItem>электрооборудования и энергосбережения</ComboBoxItem>
-                        </ComboBox>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,5,10,10" Text="Выполнил(и):" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="studentsTextBox" Text="{Binding Path=Document.Data.Title.Students,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Margin="0,5,10,10" Text="№" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="3" x:Name="numberTextBox" Text="{Binding Path=Document.Data.Title.Number,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="4" Margin="0,5,10,10" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="1" Grid.Column="5" x:Name="shifrTextBox" Text="{Binding Path=Document.Data.Title.Shifr,Mode=TwoWay}" Margin="10,5,10,10" Style="{StaticResource TextBoxRounded}"/>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,10,10,5" Text="Тема:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" x:Name="themeTextBox" Text="{Binding Path=Document.Data.Title.Theme,Mode=TwoWay}"  Margin="10,10,10,5" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,5,10,10" Text="Дисциплина:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="disciplineTextBox" Text="{Binding Path=Document.Data.Title.Discipline,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" LostFocus="CapsLockFix_LostFocus" Style="{StaticResource TextBoxRounded}"/>
-                        <TextBlock Grid.Row="6" Grid.Column="0" Margin="0,10,10,5" Text="Преподаватель:" Style="{StaticResource TextBlockTitle}"/>
-                        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="professorComboBox" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Margin="10,10,10,5" Grid.ColumnSpan="3"/>
-                        <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,5,10,10" Text="Год:" Style="{StaticResource TextBlockTitle}"/>
-                        <TextBox Grid.Row="7" Grid.Column="1" x:Name="yearTextBox" Text="{Binding Path=Document.Data.Title.Year,Mode=TwoWay}" Margin="10,5,10,10" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                        <Grid Margin="10 10 10 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" IsChecked="{Binding Path=Document.Photo, Mode=TwoWay}" Style="{StaticResource RadioButton}">
+                                <Image Width="25" Height="30" HorizontalAlignment="Center" Source="/Resources/Pictures/Photo.png"/>
+                            </CheckBox>
+                            <CheckBox Width="30" Height="30" Grid.Column="1" Content="A" IsChecked="{Binding Path=Document.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilityTitleText}" Style="{StaticResource RadioButton}"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilityPhoto}">
+                            <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
+                                <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
+                                    <Grid>
+                                        <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}"/>
+                                        <TextBlock Text="{DynamicResource PictureClue}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
+                                        <Image Stretch="Fill" />
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </Grid>
+                        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.VisibilityTitleText}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Margin="0 15 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource Faculty}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateFaculty}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" Margin="0 15 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource Cathedra}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateCathedra}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="2" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPerformed}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Completed}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}"/>
+                                        <ComboBox Grid.Row="0" Grid.Column="1" Width="25" FontSize="18" Height="25" Text="+" Style="{StaticResource ComboBox}">
+                                            <ComboBoxItem Content="Z"/>
+                                        </ComboBox>
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100*"/>
+                                        </Grid.ColumnDefinitions>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Row="3" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityNumber}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="№" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Number,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="4" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityTheme}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource Theme}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Theme,Mode=TwoWay}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="5" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityDiscipline}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource Discipline}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Discipline,Mode=TwoWay}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="6" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityProfessor}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource Lecturer}" Margin="0 0 10 0"  Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityAutoInput, Mode=TwoWay}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityManualInput, Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="7" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityRank}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource FacultyPosition}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateRank}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Rank,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
                     </Grid>
                     <ScrollViewer x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="auto" MinHeight="100"/>
-                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100*"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Факультет" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Год" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="типа расположить курсовой слва проект а всправ работу" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Text="Дисциплина" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Студент" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Шифр" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="7" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="8" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Тема курсового проекта" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="9" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Срок сдачи" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="10" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Исходные данные" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="11" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Содержание курсвой" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="12" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Отчетный материал курсового" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="13" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Руководитель" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="14" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                                <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="40*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="25*"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Задание принято к исполнению" TextWrapping="Wrap" TextAlignment="Right" FontSize="{Binding Path=FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBlock}"/>
-                                </Grid>
-                            </Border>
+                            <Grid Grid.Row="0" Margin="0 15 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="50*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Тип" Style="{StaticResource TextBlockTitle}"/>
+                                <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Content="Курсовая работа"></RadioButton>
+                                <RadioButton Grid.Row="1" Grid.Column="1" Content="Курсовой проект"></RadioButton>
+                            </Grid>
+                            <Grid Grid.Row="1" Margin="0 0 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Срок сдачи" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <DatePicker Grid.Row="1"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0 0 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Исходные данные" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox Grid.Row="1"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Margin="0 0 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Содержание курсвой" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox Grid.Row="1"/>
+                            </Grid>
+                            <Grid Grid.Row="4" Margin="0 0 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Отчетный материал курсового" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox Grid.Row="1"/>
+                            </Grid>
+                            <Grid Grid.Row="5" Margin="0 0 0 15">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Задание принято к исполнению" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <DatePicker Grid.Row="1"/>
+                            </Grid>
                         </Grid>
                     </ScrollViewer>
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="0" Visibility="{Binding Path=VisibilitySettingsPanel}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="20*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Visibility="{Binding Path=VisibilitySettingsPanel}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*" MinHeight="45"/>
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Margin="4,5,2,0" Content="{DynamicResource GeneralSettings}" Command="{Binding Path=Settings.OpenGeneral}"/>
-            <Button Grid.Row="0" Grid.Column="1" Margin="2,5,2,0" Content="{DynamicResource PersonalizationSettings}" Command="{Binding Path=Settings.OpenPersonalization}"/>
-            <Button Grid.Row="0" Grid.Column="2" Margin="2,5,2,0" Content="{DynamicResource ProfileSettings}" Command="{Binding Path=Settings.OpenProfile}"/>
-            <Button Grid.Row="0" Grid.Column="3" Margin="2,5,2,0" Content="{DynamicResource Styles}"/>
-            <Button Grid.Row="0" Grid.Column="4" Margin="2,5,4,0" Content="{DynamicResource BackSettings}" Command="{Binding Path=ExitSettings}"/>
-            <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="{Binding Path=Settings.VisibilityGeneral,Mode=TwoWay}">
+            <Grid Grid.Row="0" Margin="2 5 2 5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                <RadioButton Style="{StaticResource RadioButton}" IsChecked="True" Grid.Column="0" Margin="2,0,2,0" Content="{DynamicResource GeneralSettings}" Command="{Binding Path=Settings.OpenGeneral}"/>
+                <RadioButton Style="{StaticResource RadioButton}" Grid.Column="1" Margin="2,0,2,0" Content="{DynamicResource PersonalizationSettings}" Command="{Binding Path=Settings.OpenPersonalization}"/>
+                <RadioButton Style="{StaticResource RadioButton}" Grid.Column="2" Margin="2,0,2,0" Content="{DynamicResource ProfileSettings}" Command="{Binding Path=Settings.OpenProfile}"/>
+                <Button Grid.Column="3" Margin="2,0,2,0" Content="{DynamicResource Styles}"/>
+                <Button Grid.Column="4" Margin="2,0,2,0" Content="{DynamicResource BackSettings}" Command="{Binding Path=ExitSettings}"/>
+            </Grid>
+            <ScrollViewer Grid.Row="1" Visibility="{Binding Path=Settings.VisibilityGeneral,Mode=TwoWay}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
@@ -673,7 +668,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -690,7 +685,7 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -707,7 +702,7 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -723,7 +718,7 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -740,7 +735,7 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
@@ -757,7 +752,7 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                    <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                         <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="33*"/>
@@ -768,20 +763,20 @@
                                 <RowDefinition Height="25*"/>
                                 <RowDefinition Height="75*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Файл с настройками приложения" TextWrapping="NoWrap" HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource TextBlock}"/>
-                            <Button Grid.Row="1" Grid.Column="0" Content="Открыть" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileOpen}"/>
-                            <Button Grid.Row="1" Grid.Column="1" Content="Удалить" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileDelete}"/>
-                            <Button Grid.Row="1" Grid.Column="2" Content="Удалить все файлы" Margin="0 5 0 0" Command="{Binding Settings.General.Commands.ConfigFileDeleteAll}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{DynamicResource FileSettings}" TextWrapping="NoWrap" HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource TextBlock}"/>
+                            <Button Grid.Row="1" Grid.Column="0" Content="{DynamicResource Open}" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileOpen}"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource Delete}" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileDelete}"/>
+                            <Button Grid.Row="1" Grid.Column="2" Content="{DynamicResource DeleteAll}" Margin="0 5 0 0" Command="{Binding Settings.General.Commands.ConfigFileDeleteAll}"/>
                         </Grid>
                     </Border>
                 </Grid>
             </ScrollViewer>
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="{Binding Path=Settings.VisibilityPersonalization,Mode=TwoWay}">
+            <Grid Grid.Row="1" Visibility="{Binding Path=Settings.VisibilityPersonalization,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="75"/>
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
@@ -796,7 +791,6 @@
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="10"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="auto" MinHeight="100"/>
@@ -806,17 +800,17 @@
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="10"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="0" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource MainColor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Grid.Column="1" Width="250" MaxHeight="30" HorizontalAlignment="Left" SelectedColor="{Binding Path=Settings.Personalization.MainColor, Mode=TwoWay}">
+                                <TextBlock Grid.Row="0" Text="{DynamicResource MainColor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" SelectedColor="{Binding Path=Settings.Personalization.MainColor, Mode=TwoWay}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
                                             <i:InvokeCommandAction Command="{Binding Path=Settings.Personalization.ClosingMainColor}"/>
@@ -825,17 +819,17 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource ComplementaryСolor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Grid.Column="1" Width="250" MaxHeight="30" HorizontalAlignment="Left" SelectedColor="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                                <TextBlock Grid.Row="0" Text="{DynamicResource ComplementaryСolor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" SelectedColor="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
                                             <i:InvokeCommandAction Command="{Binding Path=Settings.Personalization.ClosingAdditionalColor}"/>
@@ -844,17 +838,17 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource AlternativeСolor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" SelectedColor="{Binding Path=Settings.Personalization.AlternativeColor, Mode=TwoWay}">
+                                <TextBlock Grid.Row="0" Text="{DynamicResource AlternativeСolor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" Grid.Column="1" SelectedColor="{Binding Path=Settings.Personalization.AlternativeColor, Mode=TwoWay}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
                                             <i:InvokeCommandAction Command="{Binding Path=Settings.Personalization.ClosingAlternativeColor}"/>
@@ -863,17 +857,17 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="4" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource HoverColor}" Style="{StaticResource TextBlock}"/>
-                                <xctk:ColorPicker Grid.Row="0" Width="250" MaxHeight="30" HorizontalAlignment="Left" Grid.Column="1" SelectedColor="{Binding Path=Settings.Personalization.HoverColor, Mode=TwoWay}">
+                                <TextBlock Grid.Row="0" Text="{DynamicResource HoverColor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" SelectedColor="{Binding Path=Settings.Personalization.HoverColor, Mode=TwoWay}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
                                             <i:InvokeCommandAction Command="{Binding Path=Settings.Personalization.ClosingHoverColor}"/>
@@ -882,43 +876,43 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
+                        <Border Grid.Row="4" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource FontSize}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <Slider Grid.Row="1" IsSnapToTickEnabled="True" HorizontalAlignment="Center" Value="{Binding Path=Settings.Personalization.FontSize, Mode=TwoWay}" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
                         <Border Grid.Row="5" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource FontSize}" Style="{StaticResource TextBlock}"/>
-                                <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Value="{Binding Path=Settings.Personalization.FontSize, Mode=TwoWay}" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" VerticalAlignment="Bottom" Text="{DynamicResource FontSizeRTB}" Style="{StaticResource TextBlock}"/>
+                                <Slider Grid.Row="1" IsSnapToTickEnabled="True" Value="{Binding Path=Settings.Personalization.FontSizeRTB, Mode=TwoWay}" HorizontalAlignment="Center" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <Border Grid.Row="6" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource FontSizeRTB}" Style="{StaticResource TextBlock}"/>
-                                <Slider Grid.Row="0" Grid.Column="1" IsSnapToTickEnabled="True" Value="{Binding Path=Settings.Personalization.FontSizeRTB, Mode=TwoWay}" HorizontalAlignment="Left" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
-                            </Grid>
-                        </Border>
-                        <Border Grid.Row="7" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="100*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25*"/>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" Text="{DynamicResource Language}" Style="{StaticResource TextBlock}"/>
-                                <ComboBox MinWidth="250" Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding Path=Settings.Personalization.Language}" VerticalAlignment="Center" HorizontalAlignment="Left" HorizontalContentAlignment="Center">
+                                <TextBlock Grid.Row="0" Text="{DynamicResource Language}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" MinWidth="250"  SelectedIndex="{Binding Path=Settings.Personalization.Language}" HorizontalAlignment="Center">
                                     <ComboBoxItem>Русский</ComboBoxItem>
                                     <ComboBoxItem>English</ComboBoxItem>
                                     <ComboBoxItem>Беларускі</ComboBoxItem>
@@ -931,101 +925,180 @@
                     </Grid>
                 </ScrollViewer>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="{Binding Path=Settings.VisibilityProfile,Mode=TwoWay}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="65*"/>
-                    <RowDefinition Height="35*"/>
-                </Grid.RowDefinitions>
-                <GroupBox Grid.Row="0"  Margin="10 10 10 5">
+            <Grid Grid.Row="1" Visibility="{Binding Path=Settings.VisibilityProfile,Mode=TwoWay}">
+                <GroupBox Margin="10 10 10 10">
                     <GroupBox.Header>
-                        <TextBlock Text="{DynamicResource You}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
+                        <ComboBox Margin="0 10 0 10" SelectedIndex="{Binding Settings.Profile.SelectedCategory}">
+                            <ComboBoxItem IsSelected="True" Content="{DynamicResource GeneralSettings}"/>
+                            <ComboBoxItem Content="{DynamicResource You}"/>
+                            <ComboBoxItem Content="{DynamicResource Companion}"/>
+                        </ComboBox>
                     </GroupBox.Header>
                     <ScrollViewer VerticalScrollBarVisibility="Visible">
-                        <Grid HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="0" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.FirstName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="1" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.LastName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="2" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.MiddleName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox Grid.Row="3" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.Universitet,Mode=TwoWay}" HorizontalContentAlignment="Center"/>
-                            <TextBlock Grid.Row="4" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource Faculty}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox Grid.Row="4" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.Faculty,Mode=TwoWay}" HorizontalContentAlignment="Center"/>
-                            <TextBlock Grid.Row="5" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource Cours}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox Grid.Row="5" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.Cours,Mode=TwoWay}" HorizontalContentAlignment="Center" />
-                            <TextBlock Grid.Row="6" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource Group}" Style="{StaticResource TextBlock}"/>
-                            <ComboBox Grid.Row="6" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.Group,Mode=TwoWay}" HorizontalContentAlignment="Center"/>
-                            <TextBlock Grid.Row="7" Grid.Column="0" Margin="0 0 3 10"  TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="7" Margin="0 0 0 10" Grid.Column="1" Text="{Binding Path=Settings.Profile.Shifr,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                        <Grid>
+                            <Grid Visibility="{Binding Path=Settings.Profile.VisibitityCategoryGeneral,Mode=TwoWay}" Margin="10 0 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Path=Settings.Profile.UniversitetItems, Mode=TwoWay}" SelectedValue="{Binding Path=Settings.Profile.Universitet,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Universitet,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Faculty}" Style="{StaticResource TextBlock}"/>
+                                        <Button Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}" Command="{Binding Settings.Profile.UpdateFaculty}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.FacultyItems, Mode=TwoWay}" SelectedValue="{Binding Path=Settings.Profile.Faculty,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Faculty,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="2" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Cours}" Style="{StaticResource TextBlock}"/>
+                                        <Button Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}" Command="{Binding Settings.Profile.UpdateCours}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.CoursItems, Mode=TwoWay}" SelectedValue="{Binding Path=Settings.Profile.Cours,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Cours,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="3" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Group}" Style="{StaticResource TextBlock}"/>
+                                        <Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}" Command="{Binding Settings.Profile.UpdateGroup}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.GroupItems, Mode=TwoWay}" SelectedValue="{Binding Path=Settings.Profile.Group,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Group,Mode=TwoWay}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="4" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="Направление" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Settings.Profile.Direction,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="5" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Year}" TextAlignment="Right" Style="{StaticResource TextBlockTitle}"/>
+                                        <Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" Command="{Binding Settings.Profile.UpdateYear}">
+                                            <Image Source="/Resources/Pictures/Update.png"/>
+                                        </Button>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Year,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <CheckBox Width="30" Height="30" Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="A" IsChecked="{Binding Path=Settings.Profile.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilityTitleText}" Style="{StaticResource RadioButton}"/>
+                            </Grid>
+                            <Grid Visibility="{Binding Path=Settings.Profile.VisibitityCategoryYou,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path=Settings.Profile.FirstName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path=Settings.Profile.LastName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Path=Settings.Profile.MiddleName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="6" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding Path=Settings.Profile.Shifr,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                            </Grid>
+                            <Grid Visibility="{Binding Path=Settings.Profile.VisibitityCategoryCoop,Mode=TwoWay}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path=Settings.Profile.FirstNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path=Settings.Profile.LastNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Path=Settings.Profile.MiddleNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <TextBlock Grid.Row="6" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
+                                <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding Path=Settings.Profile.ShifrCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                            </Grid>
                         </Grid>
                     </ScrollViewer>
                 </GroupBox>
-                <GroupBox Grid.Row="1" Margin="10 10 10 5">
-                    <GroupBox.Header>
-                        <TextBlock Text="{DynamicResource Companion}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource TextBlockRounded}"/>
-                    </GroupBox.Header>
-                    <ScrollViewer VerticalScrollBarVisibility="Visible">
-                        <Grid HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Settings.Profile.FirstNameCoop,Mode=TwoWay}" Margin="0 0 0 10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Settings.Profile.LastNameCoop,Mode=TwoWay}" Margin="0 0 0 10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Settings.Profile.MiddleNameCoop,Mode=TwoWay}" Margin="0 0 0 10" Style="{StaticResource TextBoxRounded}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="0" Margin="0 0 3 10" TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Margin="0 0 0 10" Text="{Binding Path=Settings.Profile.ShifrCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                        </Grid>
-                    </ScrollViewer>
-                </GroupBox>
-            </Grid>
-        </Grid>
-        <Grid Grid.Row="0" Grid.Column="0" x:Name="DrawingPanel" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="95*"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Background="Yellow">
-
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="90*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Background="Yellow">
-
-                </Grid>
-                <Grid Grid.Row="1">
-                    <Canvas Name="DrawingTarget" Background="Transparent"/>
-                </Grid>
             </Grid>
         </Grid>
     </Grid>

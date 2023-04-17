@@ -48,6 +48,8 @@
     <system:String x:Key="Documentation">Bezug</system:String>
     <system:String x:Key="AboutProgram">Über das Programm</system:String>
 
+    <system:String x:Key="MainClue">Wählen Sie ein Element aus oder klicken Sie auf die Schaltfläche "Hinzufügen", um mit der Arbeit zu beginnen</system:String>
+    <system:String x:Key="PictureClue">Ziehen Sie das Deckblattfoto hierher und legen Sie es ab</system:String>
 
     <system:String x:Key="Header">Kapitel</system:String>
     <system:String x:Key="SubHeader">Unterabschnitt</system:String>
@@ -62,6 +64,13 @@
     <system:String x:Key="ToSubstitutions">Aussagen</system:String>
     <system:String x:Key="Add">Hinzufügen</system:String>
 
+    <system:String x:Key="Cathedra">Abteilung</system:String>
+    <system:String x:Key="Completed">Durchgeführt von</system:String>
+    <system:String x:Key="Theme">Thema</system:String>
+    <system:String x:Key="Discipline">Fachbereich</system:String>
+    <system:String x:Key="Lecturer">Dozent</system:String>
+    <system:String x:Key="FacultyPosition">Position in der Abteilung</system:String>
+    
     <system:String x:Key="Content">Inhalt</system:String>
 
     <system:String x:Key="Displayed">Anzeigen</system:String>
@@ -81,8 +90,8 @@
 
     <system:String x:Key="OffsetFollowing">Nach der Verschiebung</system:String>
 
-    <system:String x:Key="Сolumns">Rubriken</system:String>
-    <system:String x:Key="Rows">Zeilen</system:String>
+    <system:String x:Key="Columns">Rubriken:</system:String>
+    <system:String x:Key="Rows">Zeilen:</system:String>
     
     <system:String x:Key="Error">Fehler</system:String>
     <system:String x:Key="Error1">Eröffnungsfehler der Datei: Die Datei wird nicht gefunden oder das Format wird nicht unterstützt</system:String>
@@ -102,13 +111,16 @@
     <system:String x:Key="Styles">Stile</system:String>
     <system:String x:Key="BackSettings">Zurück</system:String>
 
-    <system:String x:Key="IsAssociate">Associate Expansion (WKR) mit dem Programm?</system:String>
-    <system:String x:Key="IsSyntaxChecking">Ist die Syntaxprüfung (Basic)?</system:String>
-    <system:String x:Key="Encoding">Welche Codierung zum Speichern einer Datei zu verwenden?</system:String>
-    <system:String x:Key="Encoding0">Nein</system:String>
+    <system:String x:Key="IsAssociate">Mit dem Programm verbundene Erweiterung(wkr)</system:String>
+    <system:String x:Key="IsSyntaxChecking">Syntaxprüfung(Basic)</system:String>
+    <system:String x:Key="Encoding">Verschlüsselung beim Speichern und Öffnen der Datei</system:String>
+    <system:String x:Key="Encoding0">Keine</system:String>
     <system:String x:Key="Encoding1">Standard</system:String>
-    <system:String x:Key="AfterExportingClose">Die Anwendung schließen, nachdem der Bericht erstellt wurde?</system:String>
-    <system:String x:Key="IsAutoHeader">Automatischer Titel für das Objekt</system:String>
+    <system:String x:Key="AfterExportingClose">Schließen der Anwendung nach der Erstellung des Berichts</system:String>
+    <system:String x:Key="IsAutoHeader">Automatische Kopfzeile für das Objekt</system:String>
+    <system:String x:Key="FileSettings">Datei mit Anwendungseinstellungen</system:String>
+    <system:String x:Key="Delete">Löschen</system:String>
+    <system:String x:Key="DeleteAll">Alle Dateien löschen</system:String>
 
     <system:String x:Key="ByDefault">Default</system:String>
     <system:String x:Key="MainColor">Die Hauptfarbe des Programms</system:String>
@@ -123,12 +135,12 @@
     <system:String x:Key="FirstName">Name:</system:String>
     <system:String x:Key="LastName">Familien-oder Nachname:</system:String>
     <system:String x:Key="MiddleName">Zweiter Vorname:</system:String>
-    <system:String x:Key="Universitet">Institut:</system:String>
-    <system:String x:Key="Faculty">Fakultät:</system:String>
-    <system:String x:Key="Cours">Brunnen:</system:String>
-    <system:String x:Key="Group">Gruppe:</system:String>
+    <system:String x:Key="Universitet">Institut</system:String>
+    <system:String x:Key="Faculty">Fakultät</system:String>
+    <system:String x:Key="Cours">Brunnen</system:String>
+    <system:String x:Key="Group">Gruppe</system:String>
     <system:String x:Key="Shifr">Chiffre:</system:String>
     <system:String x:Key="Companion">Partner</system:String>
-    <system:String x:Key="Year">Jahr</system:String>
+    <system:String x:Key="Year">Jahr:</system:String>
     
 </ResourceDictionary>

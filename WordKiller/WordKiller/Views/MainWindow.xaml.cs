@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
@@ -23,10 +22,9 @@ public partial class MainWindow : Window
     public MainWindow(string[] args)
     {
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
+
         InitializeComponent();
-        TitleElements.SaveTitleUIElements(titlePanel);
-        viewModel = new();
-        DataContext = viewModel;
+        viewModel = (ViewModelMain)DataContext;
 
         if (args.Length > 0)
         {
@@ -39,8 +37,6 @@ public partial class MainWindow : Window
                 UIHelper.ShowError("1");
             }
         }
-        textPanel.ColumnDefinitions[0].Width = new GridLength(Properties.Settings.Default.TreeViewSize, GridUnitType.Star);
-        textPanel.ColumnDefinitions[2].Width = new GridLength(100 - Properties.Settings.Default.TreeViewSize, GridUnitType.Star);
     }
 
     // Таблица
@@ -270,13 +266,16 @@ public partial class MainWindow : Window
     {
         if (e.LeftButton == MouseButtonState.Pressed)
         {
-            if ((IParagraphData)paragraphTree.SelectedItem != null)
+            if (paragraphTree.SelectedItem is IParagraphData drag)
             {
-                DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
-                if ((finalDropEffect == DragDropEffects.Move) && (target != null))
+                if (drag is not ParagraphTitle && drag is not ParagraphTaskSheet)
                 {
-                    CopyItem((IParagraphData)paragraphTree.SelectedValue, target);
-                    target = null;
+                    DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
+                    if ((finalDropEffect == DragDropEffects.Move) && (target != null))
+                    {
+                        CopyItem((IParagraphData)paragraphTree.SelectedValue, target);
+                        target = null;
+                    }
                 }
             }
         }
@@ -416,31 +415,6 @@ public partial class MainWindow : Window
         }
     }
 
-    void TreeView_DragCompleted(object sender, DragCompletedEventArgs e)
-    {
-        Properties.Settings.Default.TreeViewSize = textPanel.ColumnDefinitions[0].Width.Value * 100 / textPanel.ActualWidth;
-        Properties.Settings.Default.Save();
-    }
-
-    //титульник
-
-    void FacultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (professorComboBox != null)
-        {
-            TitleElements.UpdateProfessorComboBox(professorComboBox, facultyComboBox);
-        }
-    }
-
-    void CapsLockFix_LostFocus(object sender, RoutedEventArgs e)
-    {
-        TextBox a = (TextBox)sender;
-        if (!string.IsNullOrEmpty(a.Text))
-        {
-            a.Text = a.Text[..1].ToUpper() + a.Text[1..].ToLower();
-        }
-    }
-
     // Главный RichTextBox
 
     void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -555,31 +529,31 @@ public partial class MainWindow : Window
     {
         ComboBoxItem typeItem = (ComboBoxItem)e.Source;
 
-        if (typeItem.Content.ToString() == "Текст")
+        if (typeItem.Content.ToString() == UIHelper.FindResourse("Text"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphText());
         }
-        else if (typeItem.Content.ToString() == "Заголовок")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Header"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphH1());
         }
-        else if (typeItem.Content.ToString() == "Подзаголовок")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("SubHeader"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphH2());
         }
-        else if (typeItem.Content.ToString() == "Список")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("List"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphList());
         }
-        else if (typeItem.Content.ToString() == "Картинка")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Picture"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphPicture());
         }
-        else if (typeItem.Content.ToString() == "Таблица")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Table"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphTable());
         }
-        else if (typeItem.Content.ToString() == "Фрагмент кода")
+        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Code"))
         {
             viewModel.Document.Data.AddParagraph(new ParagraphCode());
         }

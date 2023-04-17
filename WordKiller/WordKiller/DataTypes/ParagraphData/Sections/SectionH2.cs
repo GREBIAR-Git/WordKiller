@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace WordKiller.DataTypes.ParagraphData.Sections
+namespace WordKiller.DataTypes.ParagraphData.Sections;
+
+[Serializable]
+public class SectionH2 : SectionParagraphs
 {
-    [Serializable]
-    public class SectionH2 : SectionParagraphs
+    public override SectionParagraphs? Current(IParagraphData data)
     {
-        public override SectionParagraphs? Current(IParagraphData data)
+        if (Last is SectionParagraphs sectionParagraphs)
         {
-            if (Last is SectionParagraphs sectionParagraphs)
+            SectionParagraphs sectionParagraphs1 = sectionParagraphs.Current(data);
+            if (sectionParagraphs1 is null)
             {
-                SectionParagraphs sectionParagraphs1 = sectionParagraphs.Current(data);
-                if (sectionParagraphs1 is null)
-                {
-                    return sectionParagraphs;
-                }
-                else
-                {
-                    return sectionParagraphs1;
-                }
+                return sectionParagraphs;
             }
-            return null;
+            else
+            {
+                return sectionParagraphs1;
+            }
         }
+        return null;
     }
 }

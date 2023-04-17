@@ -20,7 +20,6 @@ using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 using Style = DocumentFormat.OpenXml.Wordprocessing.Style;
 
-
 namespace WordKiller.Scripts;
 class Report
 {
@@ -410,7 +409,7 @@ class Report
 
     static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, ViewModelTitle title)
     {
-        Ministry(doc, title.Faculty);
+        Ministry(doc, title.Cathedra);
         switch (typeDocument)
         {
             case TypeDocument.LaboratoryWork:
@@ -428,12 +427,10 @@ class Report
             case TypeDocument.Referat:
                 Referat(doc, title);
                 break;
-            case TypeDocument.Diploma:
-                break;
             case TypeDocument.VKR:
                 break;
         }
-        Orel(doc, title.Year);
+        Orel(doc);
         SectionBreak(doc);
     }
 
@@ -450,11 +447,11 @@ class Report
         EmptyLines(doc, 8);
         text = "Выполнили: Музалевский Н.С., Аллянов М.Д.";
         Text(doc, text);
-        text = Properties.Settings.Default.FacultyString;
+        text = Properties.Settings.Default.Faculty;
         Text(doc, text);
-        text = "Направление: 09.03.04 «Программная инженерия»";
+        text = "Направление: " + Properties.Settings.Default.Direction;
         Text(doc, text);
-        text = "Группа: " + Properties.Settings.Default.GroupString;
+        text = "Группа: " + Properties.Settings.Default.Group;
         Text(doc, text);
 
         text = "Проверил: " + title.Professor;
@@ -464,7 +461,7 @@ class Report
         text = "Отметка о зачёте: ";
         Text(doc, text);
 
-        text = "Дата: «____» __________ " + SpaceForYear(title.Year) + "г.";
+        text = "Дата: «____» __________ " + SpaceForYear(Properties.Settings.Default.Year) + "г.";
         Text(doc, text, justify: JustificationValues.Right);
 
         EmptyLines(doc, 8);
@@ -475,7 +472,7 @@ class Report
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
         text = "______________Руководитель";
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
-        text = "«____»_____________" + SpaceForYear(title.Year) + "г.";
+        text = "«____»_____________" + SpaceForYear(Properties.Settings.Default.Year) + "г.";
         Text(doc, text, multiplier: 1.5f, left: 9.5f);
 
         EmptyLines(doc, 3);
@@ -497,11 +494,11 @@ class Report
         Text(doc, text, multiplier: 1.5f);
         text = "Шифр " + title.Shifr;
         Text(doc, text, multiplier: 1.5f);
-        text = Properties.Settings.Default.FacultyString;
+        text = Properties.Settings.Default.Faculty;
         Text(doc, text, multiplier: 1.5f);
-        text = "Направление: 09.03.04 «Программная инженерия»";
+        text = "Направление: " + Properties.Settings.Default.Direction;
         Text(doc, text, multiplier: 1.5f);
-        text = "Группа: " + Properties.Settings.Default.GroupString;
+        text = "Группа: " + Properties.Settings.Default.Group;
         Text(doc, text, multiplier: 1.5f);
 
         text = "Руководитель __________________" + title.Professor;
@@ -525,9 +522,9 @@ class Report
 
         text = "Выполнил: " + title.Students;
         Text(doc, text);
-        text = Properties.Settings.Default.FacultyString;
+        text = Properties.Settings.Default.Faculty;
         Text(doc, text);
-        text = "Направление: 09.03.04 «Программная инженерия»";
+        text = "Направление: " + Properties.Settings.Default.Direction;
         Text(doc, text);
         text = "Группа: " + Properties.Settings.Default.Group;
         Text(doc, text);
@@ -540,7 +537,7 @@ class Report
         text = "Отметка о зачёте: ";
         Text(doc, text);
 
-        text = "Дата: «____» __________ " + SpaceForYear(title.Year) + "г.";
+        text = "Дата: «____» __________ " + SpaceForYear(Properties.Settings.Default.Year) + "г.";
         Text(doc, text, justify: JustificationValues.Right);
 
         EmptyLines(doc, 9);
@@ -556,11 +553,28 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 16);
 
-        text = "Выполнил: студент группы " + Properties.Settings.Default.GroupString;
+        text = "Выполнил: студент группы " + Properties.Settings.Default.Group;
         Text(doc, text, justify: JustificationValues.Right);
         text = title.Students;
         Text(doc, text, justify: JustificationValues.Right);
-        text = "Проверил: ст. преподаватель кафедры физического воспитания";
+        string cathedra = title.Cathedra;
+        if (!string.IsNullOrWhiteSpace(cathedra))
+        {
+            string[] words = cathedra.Split(' ');
+            if (words.Length > 0)
+            {
+                words = words.Skip(1).ToArray();
+                cathedra = string.Join(" ", words);
+            }
+        }
+        if (title.Rank == "и.о. зав. кафедрой")
+        {
+            text = "Проверил: " + title.Rank + " " + cathedra;
+        }
+        else
+        {
+            text = "Проверил: " + title.Rank + " кафедры " + cathedra;
+        }
         Text(doc, text, justify: JustificationValues.Right);
         text = title.Professor;
         Text(doc, text, justify: JustificationValues.Right);
@@ -584,14 +598,14 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 2);
 
-        text = "Кафедра " + faculty;
+        text = faculty;
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 3);
     }
 
-    static void Orel(WordprocessingDocument doc, string year)
+    static void Orel(WordprocessingDocument doc)
     {
-        string text = "Орел, " + SpaceForYear(year);
+        string text = "Орел, " + SpaceForYear(Properties.Settings.Default.Year);
         Text(doc, text, justify: JustificationValues.Center);
     }
 
@@ -618,9 +632,9 @@ class Report
             EmptyLines(doc, 1);
             text = "Студент    5                Шифр 6";
             Text(doc, text, multiplier: 1.5f);
-            text = "Институт приборостроения, автоматизации и информационных технологий";
+            text = Properties.Settings.Default.Faculty;
             Text(doc, text, multiplier: 1.5f);
-            text = "Направление подготовки 09.03.04 «Программная инженерия»";
+            text = "Направление подготовки " + Properties.Settings.Default.Direction;
             Text(doc, text, multiplier: 1.5f);
             text = "Группа 7";
             Text(doc, text, multiplier: 1.5f);
@@ -706,10 +720,10 @@ class Report
                 {
                     PageBreak(doc);
                 }
-                if (text != "ВВЕДЕНИЕ")
+                if (text.ToUpper() != "ВВЕДЕНИЕ")
                 {
 
-                    if (number && text != "ЗАКЛЮЧЕНИЕ")
+                    if (number && text.ToUpper() != "ЗАКЛЮЧЕНИЕ")
                     {
                         text = h1.ToString() + " " + text;
                         h1++;

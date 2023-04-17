@@ -49,6 +49,8 @@
     <system:String x:Key="Documentation">文檔</system:String>
     <system:String x:Key="AboutProgram">關於程序</system:String>
 
+    <system:String x:Key="MainClue">选择一个对象或点击添加按钮，开始工作</system:String>
+    <system:String x:Key="PictureClue">把封面照片拖到这里</system:String>
 
     <system:String x:Key="Header">章節</system:String>
     <system:String x:Key="SubHeader">小節</system:String>
@@ -63,6 +65,13 @@
     <system:String x:Key="ToSubstitutions">取代</system:String>
     <system:String x:Key="Add">添加</system:String>
 
+    <system:String x:Key="Cathedra">部门</system:String>
+    <system:String x:Key="Completed">实施者</system:String>
+    <system:String x:Key="Theme">主题</system:String>
+    <system:String x:Key="Discipline">学科</system:String>
+    <system:String x:Key="Lecturer">讲师</system:String>
+    <system:String x:Key="FacultyPosition">该部门的职位</system:String>
+    
     <system:String x:Key="Content">內容</system:String>
 
     <system:String x:Key="Displayed">顯示</system:String>
@@ -82,8 +91,8 @@
 
     <system:String x:Key="OffsetFollowing">隨後移動</system:String>
 
-    <system:String x:Key="Сolumns">专栏</system:String>
-    <system:String x:Key="Rows">行数</system:String>
+    <system:String x:Key="Columns">专栏：</system:String>
+    <system:String x:Key="Rows">行数：</system:String>
     
     <system:String x:Key="Error">錯誤</system:String>
     <system:String x:Key="Error1">文件打開錯誤：找不到文件或不支持格式</system:String>
@@ -103,13 +112,16 @@
     <system:String x:Key="Styles">款式</system:String>
     <system:String x:Key="BackSettings">後退</system:String>
 
-    <system:String x:Key="IsAssociate">與該計劃的關聯擴展（wkr）？</system:String>
-    <system:String x:Key="IsSyntaxChecking">語法檢查（基本）嗎？</system:String>
-    <system:String x:Key="Encoding">保存文件時要使用什麼編碼？</system:String>
-    <system:String x:Key="Encoding0">不</system:String>
-    <system:String x:Key="Encoding1">標準</system:String>
-    <system:String x:Key="AfterExportingClose">在报告生成后关闭应用程序？</system:String>
-    <system:String x:Key="IsAutoHeader">對象的自動標題</system:String>
+    <system:String x:Key="IsAssociate">与程序相关的扩展(wkr)</system:String>
+    <system:String x:Key="IsSyntaxChecking">语法检查(基本)</system:String>
+    <system:String x:Key="Encoding">保存和打开文件时的加密</system:String>
+    <system:String x:Key="Encoding0">无</system:String>
+    <system:String x:Key="Encoding1">标准</system:String>
+    <system:String x:Key="AfterExportingClose">报告生成后关闭应用程序</system:String>
+    <system:String x:Key="IsAutoHeader">对象的自动标头а</system:String>
+    <system:String x:Key="FileSettings">带有应用程序设置的文件</system:String>
+    <system:String x:Key="Delete">删除</system:String>
+    <system:String x:Key="DeleteAll">删除所有文件</system:String>
 
     <system:String x:Key="ByDefault">默認</system:String>
     <system:String x:Key="MainColor">程序的主要顏色</system:String>
@@ -124,12 +136,12 @@
     <system:String x:Key="FirstName">姓名：</system:String>
     <system:String x:Key="LastName">姓：</system:String>
     <system:String x:Key="MiddleName">中間名字：</system:String>
-    <system:String x:Key="Universitet">研究所：</system:String>
-    <system:String x:Key="Faculty">學院：</system:String>
-    <system:String x:Key="Cours">出色地：</system:String>
-    <system:String x:Key="Group">團體：</system:String>
+    <system:String x:Key="Universitet">研究所</system:String>
+    <system:String x:Key="Faculty">學院</system:String>
+    <system:String x:Key="Cours">出色地</system:String>
+    <system:String x:Key="Group">團體</system:String>
     <system:String x:Key="Shifr">密碼：</system:String>
     <system:String x:Key="Companion">夥伴</system:String>
-    <system:String x:Key="Year">年</system:String>
+    <system:String x:Key="Year">年：</system:String>
 
 </ResourceDictionary>

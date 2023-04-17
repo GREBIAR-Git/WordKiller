@@ -4,149 +4,148 @@ using WordKiller.Commands.Settings;
 using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 
-namespace WordKiller.ViewModels.Settings
+namespace WordKiller.ViewModels.Settings;
+
+public class ViewModelGeneralSettings : ViewModelBase
 {
-    public class ViewModelGeneralSettings : ViewModelBase
+    public General Commands { get; set; }
+
+    bool? spellCheckRTB;
+
+    public bool? SpellCheckRTB
     {
-        public General Commands { get; set; }
-
-        bool? spellCheckRTB;
-
-        public bool? SpellCheckRTB
+        get => spellCheckRTB;
+        set
         {
-            get => spellCheckRTB;
-            set
-            {
-                SetProperty(ref spellCheckRTB, value);
-            }
+            SetProperty(ref spellCheckRTB, value);
         }
+    }
 
-        bool? associationWKR;
-        public bool? AssociationWKR
+    bool? associationWKR;
+    public bool? AssociationWKR
+    {
+        get => associationWKR;
+        set
         {
-            get => associationWKR;
-            set
+            SetProperty(ref associationWKR, value);
+            bool association = AssociationWKR ?? true;
+            if (association)
             {
-                SetProperty(ref associationWKR, value);
-                bool association = AssociationWKR ?? true;
-                if (association)
+                if (!FileAssociation.IsRunAsAdmin())
                 {
-                    if (!FileAssociation.IsRunAsAdmin())
+                    ProcessStartInfo proc = new()
                     {
-                        ProcessStartInfo proc = new()
-                        {
-                            UseShellExecute = true,
-                            WorkingDirectory = Environment.CurrentDirectory,
-                            FileName = Environment.ProcessPath,
-                            Verb = "runas"
-                        };
-                        proc.Arguments += "FileAssociation";
-                        try
-                        {
-                            Process.Start(proc);
-                        }
-                        catch
-                        {
-                            UIHelper.ShowError("2");
-                        }
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = Environment.ProcessPath,
+                        Verb = "runas"
+                    };
+                    proc.Arguments += "FileAssociation";
+                    try
+                    {
+                        Process.Start(proc);
                     }
-                    else
+                    catch
                     {
-                        FileAssociation.Associate("WordKiller");
+                        UIHelper.ShowError("2");
                     }
                 }
                 else
                 {
-                    if (!FileAssociation.IsRunAsAdmin())
+                    FileAssociation.Associate("WordKiller");
+                }
+            }
+            else
+            {
+                if (!FileAssociation.IsRunAsAdmin())
+                {
+                    ProcessStartInfo proc = new()
                     {
-                        ProcessStartInfo proc = new()
-                        {
-                            UseShellExecute = true,
-                            WorkingDirectory = Environment.CurrentDirectory,
-                            FileName = Environment.ProcessPath,
-                            Verb = "runas"
-                        };
-                        proc.Arguments += "RemoveFileAssociation";
-                        try
-                        {
-                            Process.Start(proc);
-                        }
-                        catch
-                        {
-                            UIHelper.ShowError("2");
-                        }
-                    }
-                    else
+                        UseShellExecute = true,
+                        WorkingDirectory = Environment.CurrentDirectory,
+                        FileName = Environment.ProcessPath,
+                        Verb = "runas"
+                    };
+                    proc.Arguments += "RemoveFileAssociation";
+                    try
                     {
-                        FileAssociation.Remove();
+                        Process.Start(proc);
                     }
+                    catch
+                    {
+                        UIHelper.ShowError("2");
+                    }
+                }
+                else
+                {
+                    FileAssociation.Remove();
                 }
             }
         }
+    }
 
-        bool? syntaxChecking;
+    bool? syntaxChecking;
 
-        public bool? SyntaxChecking
+    public bool? SyntaxChecking
+    {
+        get => syntaxChecking;
+        set
         {
-            get => syntaxChecking;
-            set
-            {
-                SetProperty(ref syntaxChecking, value);
-                Properties.Settings.Default.SyntaxChecking = SyntaxChecking ?? false;
-                Properties.Settings.Default.Save();
-                SpellCheckRTB = SyntaxChecking;
-            }
+            SetProperty(ref syntaxChecking, value);
+            Properties.Settings.Default.SyntaxChecking = SyntaxChecking ?? false;
+            Properties.Settings.Default.Save();
+            SpellCheckRTB = SyntaxChecking;
         }
+    }
 
-        int encodingIndex;
+    int encodingIndex;
 
-        public int EncodingIndex
+    public int EncodingIndex
+    {
+        get => encodingIndex;
+        set
         {
-            get => encodingIndex;
-            set
-            {
-                SetProperty(ref encodingIndex, value);
-                Properties.Settings.Default.NumberEncoding = EncodingIndex;
-                Properties.Settings.Default.Save();
-            }
+            SetProperty(ref encodingIndex, value);
+            Properties.Settings.Default.NumberEncoding = EncodingIndex;
+            Properties.Settings.Default.Save();
         }
+    }
 
 
-        bool? closeWindow;
+    bool? closeWindow;
 
-        public bool? CloseWindow
+    public bool? CloseWindow
+    {
+        get => closeWindow;
+        set
         {
-            get => closeWindow;
-            set
-            {
-                SetProperty(ref closeWindow, value);
-                Properties.Settings.Default.CloseWindow = CloseWindow ?? false;
-                Properties.Settings.Default.Save();
-            }
+            SetProperty(ref closeWindow, value);
+            Properties.Settings.Default.CloseWindow = CloseWindow ?? false;
+            Properties.Settings.Default.Save();
         }
+    }
 
-        bool? autoHeader;
+    bool? autoHeader;
 
-        public bool? AutoHeader
+    public bool? AutoHeader
+    {
+        get => autoHeader;
+        set
         {
-            get => autoHeader;
-            set
-            {
-                SetProperty(ref autoHeader, value);
-                Properties.Settings.Default.AutoHeader = AutoHeader ?? true;
-                Properties.Settings.Default.Save();
-            }
+            SetProperty(ref autoHeader, value);
+            Properties.Settings.Default.AutoHeader = AutoHeader ?? true;
+            Properties.Settings.Default.Save();
         }
+    }
 
-        public ViewModelGeneralSettings()
-        {
-            encodingIndex = Properties.Settings.Default.NumberEncoding;
-            closeWindow = Properties.Settings.Default.CloseWindow;
-            syntaxChecking = Properties.Settings.Default.SyntaxChecking;
-            autoHeader = Properties.Settings.Default.AutoHeader;
-            associationWKR = FileAssociation.IsAssociated;
-            spellCheckRTB = Properties.Settings.Default.SyntaxChecking;
-            Commands = new();
-        }
+    public ViewModelGeneralSettings()
+    {
+        encodingIndex = Properties.Settings.Default.NumberEncoding;
+        closeWindow = Properties.Settings.Default.CloseWindow;
+        syntaxChecking = Properties.Settings.Default.SyntaxChecking;
+        autoHeader = Properties.Settings.Default.AutoHeader;
+        associationWKR = FileAssociation.IsAssociated;
+        spellCheckRTB = Properties.Settings.Default.SyntaxChecking;
+        Commands = new();
     }
 }
