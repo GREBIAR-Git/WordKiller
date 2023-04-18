@@ -22,7 +22,7 @@ public partial class MainWindow : Window
 
     public MainWindow(string[] args)
     {
-        args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
+        //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
 
         InitializeComponent();
         viewModel = (ViewModelMain)DataContext;
