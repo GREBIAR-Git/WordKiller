@@ -83,7 +83,7 @@
                 <Setter Property="TextAlignment" Value="Left"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=18}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="LightGray"/>
@@ -96,7 +96,7 @@
                 <Setter Property="TextAlignment" Value="Left"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=18}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="LightGray"/>

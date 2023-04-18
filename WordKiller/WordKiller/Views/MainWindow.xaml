@@ -348,16 +348,25 @@
                     <Grid Visibility="{Binding Path=Document.VisibilityUnselectInfo,Mode=TwoWay}">
                         <TextBlock Text="{DynamicResource MainClue}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"></TextBlock>
                     </Grid>
-                    <Grid Visibility="{Binding Path=Document.VisibilityNotComplexObjects,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Path=Document.VisibilityNotComplexObjects,Mode=TwoWay}" Margin="0 3 3 3">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="100*"/>
                         </Grid.RowDefinitions>
-                        <TextBox Grid.Row="1" x:Name="descriptionObject" FontSize="{Binding Path=Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged" AllowDrop="True" PreviewDragEnter="Win_DragEnter" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave"/>
-                        <TextBlock Grid.Row="2" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                        <Grid Grid.Row="3" Visibility="Collapsed" x:Name="tablePanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" x:Name="descriptionObject" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged" AllowDrop="True" PreviewDragEnter="Win_DragEnter" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave"/>
+                        <Grid Grid.Row="1" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
+                            <Button Grid.Column="1" Width="30" Height="30" Content="A" x:Name="listProcessing" Margin="5 0 0 0" Visibility="Collapsed" Click="Button_Click"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Visibility="Collapsed" x:Name="tablePanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100*"/>
                             </Grid.ColumnDefinitions>
@@ -376,13 +385,13 @@
                                     <RowDefinition Height="100*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="countRows" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" x:Name="countRows" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                                 <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" x:Name="countColumns" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" x:Name="countColumns" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                             </Grid>
-                            <Grid Grid.Row="1" Grid.Column="0" x:Name="gridTable"/>
+                            <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
                         </Grid>
-                        <Grid Grid.Row="3">
+                        <Grid Grid.Row="2">
                             <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
                                 <typeXaml:RTBox.Resources>
                                     <Style TargetType="{x:Type Paragraph}">
@@ -1049,52 +1058,132 @@
                                 <CheckBox Width="30" Height="30" Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="A" IsChecked="{Binding Path=Settings.Profile.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilityTitleText}" Style="{StaticResource RadioButton}"/>
                             </Grid>
                             <Grid Visibility="{Binding Path=Settings.Profile.VisibitityCategoryYou,Mode=TwoWay}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="3"/>
-                                    <ColumnDefinition Width="100*"/>
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path=Settings.Profile.FirstName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path=Settings.Profile.LastName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="4" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Path=Settings.Profile.MiddleName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="6" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding Path=Settings.Profile.Shifr,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <Grid Grid.Row="0" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.LastName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.FirstName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="2" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.MiddleName,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="3" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Shifr,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
                             </Grid>
                             <Grid Visibility="{Binding Path=Settings.Profile.VisibitityCategoryCoop,Mode=TwoWay}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="3"/>
-                                    <ColumnDefinition Width="100*"/>
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="10"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Path=Settings.Profile.FirstNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="2" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Path=Settings.Profile.LastNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="4" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Path=Settings.Profile.MiddleNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
-                                <TextBlock Grid.Row="6" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding Path=Settings.Profile.ShifrCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                <Grid Grid.Row="0" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource LastName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.LastNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="1" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource FirstName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.FirstNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="2" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource MiddleName}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.MiddleNameCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="3" Margin="0 0 0 15">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Shifr}" Style="{StaticResource TextBlock}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.ShifrCoop,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </ScrollViewer>

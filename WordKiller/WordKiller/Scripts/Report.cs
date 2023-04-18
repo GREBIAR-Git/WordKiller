@@ -53,7 +53,7 @@ class Report
 
                     InitStyles(doc);
 
-                    //try
+                    try
                     {
                         if (data.Type != TypeDocument.DefaultDocument && data.Properties.Title)
                         {
@@ -65,42 +65,42 @@ class Report
                             PageSetup(body);
                         }
                     }
-                    /*catch
+                    catch
                     {
                         UIHelper.ShowError("3");
                         return false;
-                    }*/
+                    }
 
-                    //try
+                    try
                     {
                         TaskSheet(doc, data.Properties.TaskSheet);
                     }
-                    /*catch
+                    catch
                     {
                         UIHelper.ShowError("4");
                         return false;
-                    }*/
+                    }
 
-                    //try
+                    try
                     {
 
                         TableOfContents(doc, data.Properties.TableOfContents);
                     }
-                    /*catch
+                    catch
                     {
                         UIHelper.ShowError("5");
                         return false;
-                    }*/
+                    }
 
-                    //try
+                    try
                     {
                         MainPart(doc, data, data.Properties.NumberHeading);
                     }
-                    /*catch
+                    catch
                     {
                         UIHelper.ShowError("6");
                         return false;
-                    }*/
+                    }
 
                     if (data.Properties.PageNumbers)
                     {
@@ -122,6 +122,7 @@ class Report
                 UIHelper.ShowError("7");
             }
         }
+
         return false;
     }
 
@@ -1163,41 +1164,72 @@ class Report
         }
     }
 
-    static Run Text(WordprocessingDocument doc, string text, int size = 14,
+    static void Text(WordprocessingDocument doc, string text, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
         int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
-        Paragraph paragraph = body.AppendChild(new Paragraph());
 
-        paragraph.AppendChild(new ParagraphProperties());
-
-        paragraph.ParagraphProperties.AddChild(new Justification()
+        foreach (string line in text.Split('\n'))
         {
-            Val = justify
-        });
+            Paragraph paragraph = body.AppendChild(new Paragraph());
 
-        paragraph.ParagraphProperties.AddChild(new SpacingBetweenLines()
+            paragraph.AppendChild(new ParagraphProperties());
+
+            paragraph.ParagraphProperties.AddChild(new Justification()
+            {
+                Val = justify
+            });
+
+            paragraph.ParagraphProperties.AddChild(new SpacingBetweenLines()
+            {
+                After = (after * 20).ToString(),
+                Before = (before * 20).ToString(),
+                Line = (multiplier * 240).ToString(),
+                LineRule = LineSpacingRuleValues.Auto,
+            });
+
+            paragraph.ParagraphProperties.AddChild(new Indentation()
+            {
+                Left = ((int)(left * cm_to_pt)).ToString(),
+                Right = ((int)(right * cm_to_pt)).ToString(),
+                FirstLine = ((int)firstLine * cm_to_pt).ToString()
+            });
+            string[] words = line.Split(' ');
+            for (int i = 0; i < words.Length - 1; i++)
+            {
+                TextIntoParagraph(doc, words[i] + ' ', paragraph, bold, size, caps);
+            }
+            if (words.Length - 1 >= 0)
+            {
+                TextIntoParagraph(doc, words[^1], paragraph, bold, size, caps);
+            }
+        }
+        return;
+    }
+
+    static void TextIntoParagraph(WordprocessingDocument doc, string word, Paragraph paragraph, bool bold, int size, bool caps)
+    {
+        Run run;
+        Hyperlink hyperlink;
+        if (word.StartsWith("https") || word.StartsWith("http"))
         {
-            After = (after * 20).ToString(),
-            Before = (before * 20).ToString(),
-            Line = (multiplier * 240).ToString(),
-            LineRule = LineSpacingRuleValues.Auto,
-        });
+            HyperlinkRelationship relation = doc.MainDocumentPart.AddHyperlinkRelationship
+            (new Uri(word, UriKind.RelativeOrAbsolute), true);
 
-        paragraph.ParagraphProperties.AddChild(new Indentation()
+            string relationid = relation.Id;
+
+            hyperlink = paragraph.AppendChild(new Hyperlink() { Id = relationid });
+            run = hyperlink.AppendChild(new Run(new Text() { Text = word, Space = SpaceProcessingModeValues.Preserve }));
+            run.PrependChild(new RunProperties());
+        }
+        else
         {
-            Left = ((int)(left * cm_to_pt)).ToString(),
-            Right = ((int)(right * cm_to_pt)).ToString(),
-            FirstLine = ((int)firstLine * cm_to_pt).ToString()
-        });
-
-        Run run = paragraph.AppendChild(new Run());
-
-        run.AppendChild(new Text() { Text = text, Space = SpaceProcessingModeValues.Preserve });
-        run.PrependChild(new RunProperties());
-
+            run = paragraph.AppendChild(new Run());
+            run.AppendChild(new Text() { Text = word, Space = SpaceProcessingModeValues.Preserve });
+            run.PrependChild(new RunProperties());
+        }
         if (bold)
         {
             run.RunProperties.AddChild(new Bold());
@@ -1218,7 +1250,6 @@ class Report
         {
             Val = caps
         });
-        return run;
     }
 
     static void Text(WordprocessingDocument doc, string text, string style)
@@ -1226,28 +1257,41 @@ class Report
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
 
-        string[] str = text.Split("\n");
-
-        for (int i = 0; i < str.Length - 1; i++)
+        foreach (string line in text.Split('\n'))
         {
             Paragraph paragraph = body.AppendChild(new Paragraph());
-
             paragraph.ParagraphProperties = new ParagraphProperties(
                 new ParagraphStyleId() { Val = style });
-
-            Run run = paragraph.AppendChild(new Run());
-            run.AppendChild(new Text() { Text = str[i], Space = SpaceProcessingModeValues.Preserve });
+            string[] words = line.Split(' ');
+            for (int i = 0; i < words.Length - 1; i++)
+            {
+                TextIntoParagraph(doc, words[i] + ' ', paragraph);
+            }
+            if (words.Length - 1 >= 0)
+            {
+                TextIntoParagraph(doc, words[^1], paragraph);
+            }
         }
+    }
 
-        if (str.Length - 1 >= 0)
+    static void TextIntoParagraph(WordprocessingDocument doc, string word, Paragraph paragraph)
+    {
+        Run run;
+        Hyperlink hyperlink;
+        if (word.StartsWith("https") || word.StartsWith("http"))
         {
-            Paragraph paragraph = body.AppendChild(new Paragraph());
+            HyperlinkRelationship relation = doc.MainDocumentPart.AddHyperlinkRelationship
+            (new Uri(word, UriKind.RelativeOrAbsolute), true);
 
-            paragraph.ParagraphProperties = new ParagraphProperties(
-                new ParagraphStyleId() { Val = style });
+            string relationid = relation.Id;
 
-            Run run = paragraph.AppendChild(new Run());
-            run.AppendChild(new Text() { Text = str[^1], Space = SpaceProcessingModeValues.Preserve });
+            hyperlink = paragraph.AppendChild(new Hyperlink() { Id = relationid });
+            hyperlink.AppendChild(new Run(new Text() { Text = word, Space = SpaceProcessingModeValues.Preserve }));
+        }
+        else
+        {
+            run = paragraph.AppendChild(new Run());
+            run.AppendChild(new Text() { Text = word, Space = SpaceProcessingModeValues.Preserve });
         }
     }
 }

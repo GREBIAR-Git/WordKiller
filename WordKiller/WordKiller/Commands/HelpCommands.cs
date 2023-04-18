@@ -4,7 +4,7 @@ namespace WordKiller.Commands;
 
 public class HelpCommands
 {
-    private ICommand aboutProgram;
+    ICommand aboutProgram;
 
     public ICommand AboutProgram
     {
@@ -19,7 +19,7 @@ public class HelpCommands
         }
     }
 
-    private ICommand documentation;
+    ICommand documentation;
 
     public ICommand Documentation
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +22,7 @@ public partial class MainWindow : Window
 
     public MainWindow(string[] args)
     {
-        //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
+        args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
 
         InitializeComponent();
         viewModel = (ViewModelMain)DataContext;
@@ -461,6 +462,7 @@ public partial class MainWindow : Window
     {
         richTextBox.AllowDrop = false;
         viewModel.Document.VisibilityUnselectInfo = Visibility.Collapsed;
+        listProcessing.Visibility = Visibility.Collapsed;
         if (paragraphTree.SelectedItem is ParagraphTitle)
         {
             viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
@@ -514,6 +516,10 @@ public partial class MainWindow : Window
                     {
                         richTextBox.SetText(data.Data, false);
                         richTextBox.AllowDrop = true;
+                    }
+                    if (data is ParagraphList)
+                    {
+                        listProcessing.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -587,5 +593,85 @@ public partial class MainWindow : Window
     {
         if (paragraphTree.SelectedItem == null) return;
         viewModel.Document.Data.InsertBefore(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
+    }
+
+    void Button_Click(object sender, RoutedEventArgs e)
+    {
+        string tt = richTextBox.GetText();
+        string[] lines = tt.Split("\r\n");
+        for (int j = 0; j < lines.Length; j++)
+        {
+            string[] words = lines[j].Split(' ');
+            if (words.Length > 0)
+            {
+                int after = words[0].IndexOf(')');
+                int before = words[0].IndexOf('(');
+                int numberSeparators = 0;
+                if (after != -1 && before == -1)
+                {
+                    if (words[0].Length == after + 1)
+                    {
+                        int separator = -1;
+                        for (int i = 0; i < words[0].Length; i++)
+                        {
+                            separator = words[0].IndexOf('.', separator + 1);
+                            if (separator != -1)
+                            {
+                                numberSeparators++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        if (numberSeparators > 0)
+                        {
+                            string sep = "";
+                            for (int f = 0; f < numberSeparators; f++)
+                            {
+                                sep += "!";
+                            }
+                            words[0] = sep;
+                        }
+                        else
+                        {
+                            words = words.Skip(1).ToArray();
+                        }
+                    }
+                    else
+                    {
+                        string txt = words[0].Substring(after + 1);
+                        int separator = -1;
+                        for (int i = 0; i < words[0].Length; i++)
+                        {
+                            separator = words[0].IndexOf('.', separator + 1);
+                            if (separator != -1)
+                            {
+                                numberSeparators++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        if (numberSeparators > 0)
+                        {
+                            string sep = "";
+                            for (int f = 0; f < numberSeparators; f++)
+                            {
+                                sep += "!";
+                            }
+                            words[0] = sep + " " + txt;
+                        }
+                        else
+                        {
+                            words[0] = txt;
+                        }
+                    }
+                }
+            }
+            lines[j] = string.Join(" ", words);
+        }
+        richTextBox.SetText(string.Join("\n", lines));
     }
 }
