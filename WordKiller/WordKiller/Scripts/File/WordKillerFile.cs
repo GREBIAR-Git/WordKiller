@@ -4,7 +4,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using System.Windows;
 using WordKiller.DataTypes;
-using WordKiller.DataTypes.TypeXAML;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 

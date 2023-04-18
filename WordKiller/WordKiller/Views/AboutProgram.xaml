@@ -18,7 +18,7 @@
         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="58" Text="WordKiller" FontWeight="Bold" Style="{StaticResource TextBlockTitle}"/>
         <GroupBox Margin="5 0 5 5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#335e8f">
             <GroupBox.Header>
-                <TextBlock Text="Информация о продукте" FontSize="22" Style="{StaticResource TextBlock}"/>
+                <TextBlock Text="{DynamicResource ProductInfo}" FontSize="22" Style="{StaticResource TextBlock}"/>
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
@@ -26,9 +26,24 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" HorizontalAlignment="Left" FontSize="17" Text="Программа написана на языке C#" Style="{StaticResource TextBlockTitle}"/>
-                <TextBlock Grid.Row="1" HorizontalAlignment="Left" FontSize="17" Text="Интерфейс - XAML" Style="{StaticResource TextBlockTitle}"/>
-                <TextBlock Grid.Row="2" HorizontalAlignment="Left" FontSize="17" Text="Версия продукта: 1.5" Style="{StaticResource TextBlockTitle}"/>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Left" FontSize="17" Text="{DynamicResource WrittenIn}" Style="{StaticResource TextBlockTitle}"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" FontSize="17" Text="{DynamicResource Interface}" Style="{StaticResource TextBlockTitle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="17" Text=" - XAML" Style="{StaticResource TextBlockTitle}"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" FontSize="17" Text="{DynamicResource Version}" Style="{StaticResource TextBlockTitle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="17" Text=": 1.6" Style="{StaticResource TextBlockTitle}"/>
+                </Grid>
+                
             </Grid>
         </GroupBox>
     </Grid>

@@ -29,6 +29,7 @@
     <system:String x:Key="PageNumbers">Nummerierung</system:String>
     <system:String x:Key="TOC">Inhalt</system:String>
     <system:String x:Key="NumbersToHeaders">Zahlen für Schlagzeilen</system:String>
+    <system:String x:Key="Appendix">Anhang</system:String>
 
     <system:String x:Key="Network">Netz</system:String>
 
@@ -58,6 +59,7 @@
     <system:String x:Key="CourseProject">Kurs-Projekt</system:String>
     <system:String x:Key="SourceData">Eingabedaten</system:String>
     <system:String x:Key="ReportingMaterial">Berichtsmaterial</system:String>
+    <system:String x:Key="Direction">Reiseziel</system:String>
     
     <system:String x:Key="Content">Inhalt</system:String>
 
@@ -118,4 +120,9 @@
     <system:String x:Key="Shifr">Chiffre</system:String>
     <system:String x:Key="Companion">Partner</system:String>
     <system:String x:Key="Year">Jahr</system:String>
+
+    <system:String x:Key="ProductInfo">Produkt-Informationen</system:String>
+    <system:String x:Key="WrittenIn">Geschrieben in C#</system:String>
+    <system:String x:Key="Interface">Schnittstelle</system:String>
+    <system:String x:Key="Version">Version des Produkts</system:String>
 </ResourceDictionary>

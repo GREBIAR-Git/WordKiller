@@ -29,6 +29,7 @@
     <system:String x:Key="PageNumbers">Нумараванне</system:String>
     <system:String x:Key="TOC">Задаволены</system:String>
     <system:String x:Key="NumbersToHeaders">Лічбы для загалоўкаў</system:String>
+    <system:String x:Key="Appendix">Прыкладанне</system:String>
 
     <system:String x:Key="Network">Сетка</system:String>
 
@@ -58,6 +59,7 @@
     <system:String x:Key="CourseProject">Курсавой праект</system:String>
     <system:String x:Key="SourceData">Зыходныя дадзеныя</system:String>
     <system:String x:Key="ReportingMaterial">Справаздачны матэрыял</system:String>
+    <system:String x:Key="Direction">Кірунак</system:String>
     
     <system:String x:Key="Content">Задаволены</system:String>
 
@@ -118,4 +120,9 @@
     <system:String x:Key="Shifr">Cipher</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>
     <system:String x:Key="Year">Год</system:String>
+
+    <system:String x:Key="ProductInfo">Інфармацыя пра прадукт</system:String>
+    <system:String x:Key="WrittenIn">Праграма напісана на мове C#</system:String>
+    <system:String x:Key="Interface">Інтэрфейс</system:String>
+    <system:String x:Key="Version">Версія прадукта</system:String>
 </ResourceDictionary>

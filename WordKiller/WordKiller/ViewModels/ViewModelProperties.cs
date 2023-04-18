@@ -25,4 +25,7 @@ public class ViewModelProperties : ViewModelBase
 
     bool taskSheet;
     public bool TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
+
+    bool appendix;
+    public bool Appendix { get => appendix; set => SetProperty(ref appendix, value); }
 }

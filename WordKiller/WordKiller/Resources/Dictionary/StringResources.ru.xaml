@@ -29,6 +29,7 @@
     <system:String x:Key="TOC">Содержание</system:String>
     <system:String x:Key="NumbersToHeaders">Цифры к заголовкам</system:String>
     <system:String x:Key="ListOfReferences">Список литературы</system:String>
+    <system:String x:Key="Appendix">Приложение</system:String>
 
     <system:String x:Key="Network">Сеть</system:String>
 
@@ -58,7 +59,8 @@
     <system:String x:Key="CourseProject">Курсовой проект</system:String>
     <system:String x:Key="SourceData">Исходные данные</system:String>
     <system:String x:Key="ReportingMaterial">Отчетный материал</system:String>
-
+    <system:String x:Key="Direction">Направление</system:String>
+    
     <system:String x:Key="Content">Содержание</system:String>
 
     <system:String x:Key="Unidentified">Не указан</system:String>
@@ -118,4 +120,9 @@
     <system:String x:Key="Shifr">Шифр</system:String>
     <system:String x:Key="Companion">Напарник</system:String>
     <system:String x:Key="Year">Год</system:String>
+
+    <system:String x:Key="ProductInfo">Информация о продукте</system:String>
+    <system:String x:Key="WrittenIn">Программа написана на языке C#</system:String>
+    <system:String x:Key="Interface">Интерфейс</system:String>
+    <system:String x:Key="Version">Версия продукта</system:String>
 </ResourceDictionary>

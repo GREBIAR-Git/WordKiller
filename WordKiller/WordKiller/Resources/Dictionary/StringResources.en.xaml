@@ -29,6 +29,7 @@
     <system:String x:Key="PageNumbers">Page numbers</system:String>
     <system:String x:Key="TOC">Table of Columns</system:String>
     <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
+    <system:String x:Key="Appendix">Appendix</system:String>
 
     <system:String x:Key="Network">Network</system:String>
 
@@ -58,6 +59,7 @@
     <system:String x:Key="CourseProject">Course project</system:String>
     <system:String x:Key="SourceData">Source data</system:String>
     <system:String x:Key="ReportingMaterial">Reporting material</system:String>
+    <system:String x:Key="Direction">Direction</system:String>
     
     <system:String x:Key="Content">Content</system:String>
 
@@ -118,4 +120,9 @@
     <system:String x:Key="Shifr">Shifr</system:String>
     <system:String x:Key="Companion">Mate</system:String>
     <system:String x:Key="Year">Year</system:String>
+
+    <system:String x:Key="ProductInfo">Product info</system:String>
+    <system:String x:Key="WrittenIn">The program is written in C#</system:String>
+    <system:String x:Key="Interface">Interface</system:String>
+    <system:String x:Key="Version">Product version</system:String>
 </ResourceDictionary>

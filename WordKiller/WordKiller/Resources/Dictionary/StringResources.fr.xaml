@@ -29,6 +29,7 @@
     <system:String x:Key="PageNumbers">Numérotage</system:String>
     <system:String x:Key="TOC">Contenu</system:String>
     <system:String x:Key="NumbersToHeaders">Chiffres pour les gros titres</system:String>
+    <system:String x:Key="Appendix">Annexe</system:String>
 
     <system:String x:Key="Network">Rapporter</system:String>
 
@@ -58,6 +59,7 @@
     <system:String x:Key="CourseProject">Projet de cours</system:String>
     <system:String x:Key="SourceData">Données d'entrée</system:String>
     <system:String x:Key="ReportingMaterial">Matériel de rapport</system:String>
+    <system:String x:Key="Direction">Destination</system:String>
 
     <system:String x:Key="Content">Contenu</system:String>
 
@@ -118,4 +120,9 @@
     <system:String x:Key="Shifr">Chiffrer</system:String>
     <system:String x:Key="Companion">Partenaire</system:String>
     <system:String x:Key="Year">Année</system:String>
+
+    <system:String x:Key="ProductInfo">Informations sur le produit</system:String>
+    <system:String x:Key="WrittenIn">Écrit en C#</system:String>
+    <system:String x:Key="Interface">Interface</system:String>
+    <system:String x:Key="Version">Version du produit</system:String>
 </ResourceDictionary>

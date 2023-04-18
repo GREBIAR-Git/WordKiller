@@ -10,7 +10,7 @@
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=Document.WinTitle,Mode=TwoWay}" Height="450" Width="700" MinHeight="300" MinWidth="700" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
+        Title="{Binding Path=Document.WinTitle,Mode=TwoWay}" Height="480" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
     <Window.DataContext>
         <vm:ViewModelMain/>
     </Window.DataContext>
@@ -70,6 +70,7 @@
                     <MenuItem Header="{DynamicResource Title}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Title, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTitleMI,Mode=TwoWay}" Command="{Binding Document.TitleMI}"/>
                     <MenuItem Header="{DynamicResource TaskSheet}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TaskSheet, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTaskSheetMI,Mode=TwoWay}" Command="{Binding Document.TaskSheetMI}"/>
                     <MenuItem Header="{DynamicResource ListOfReferences}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.ListOfReferences, Mode=TwoWay}"/>
+                    <MenuItem Header="{DynamicResource Appendix}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Appendix, Mode=TwoWay}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource TOC}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TableOfContents, Mode=TwoWay}"/>
                     <MenuItem Header="{DynamicResource PageNumbers}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.PageNumbers, Mode=TwoWay}"/>
@@ -1013,7 +1014,7 @@
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="Направление" Style="{StaticResource TextBlock}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Direction}" Style="{StaticResource TextBlock}"/>
                                     </Grid>
                                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Settings.Profile.Direction,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
