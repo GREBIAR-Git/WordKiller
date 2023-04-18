@@ -64,6 +64,9 @@
     <system:String x:Key="Discipline">Дисциплина</system:String>
     <system:String x:Key="Lecturer">Преподаватель</system:String>
     <system:String x:Key="FacultyPosition">Позиция на кафедре</system:String>
+    <system:String x:Key="CourseProject">Курсовой проект</system:String>
+    <system:String x:Key="SourceData">Исходные данные</system:String>
+    <system:String x:Key="ReportingMaterial">Отчетный материал</system:String>
 
     <system:String x:Key="Content">Содержание</system:String>
 
@@ -86,7 +89,7 @@
 
     <system:String x:Key="Columns">Строки: </system:String>
     <system:String x:Key="Rows">Столбцы: </system:String>
-
+    
     <system:String x:Key="Error">Ошибка</system:String>
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
     <system:String x:Key="Error2">Мы не можем это сделать на вашем устройстве, обновите ОС</system:String>

@@ -71,6 +71,9 @@
     <system:String x:Key="Discipline">Дысцыпліна</system:String>
     <system:String x:Key="Lecturer">Лектар</system:String>
     <system:String x:Key="FacultyPosition">Месца на кафедры</system:String>
+    <system:String x:Key="CourseProject">Курсавой праект</system:String>
+    <system:String x:Key="SourceData">Зыходныя дадзеныя</system:String>
+    <system:String x:Key="ReportingMaterial">Справаздачны матэрыял</system:String>
     
     <system:String x:Key="Content">Задаволены</system:String>
 

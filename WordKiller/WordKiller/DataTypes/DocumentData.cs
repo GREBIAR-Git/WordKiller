@@ -16,6 +16,9 @@ public class DocumentData : MainSection
     ViewModelTitle title;
     public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }
 
+    ViewModelTaskSheet taskSheet;
+    public ViewModelTaskSheet TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
+
     public void Clear()
     {
         Paragraphs.Clear();
@@ -27,5 +30,6 @@ public class DocumentData : MainSection
     {
         properties = new ViewModelProperties();
         title = new();
+        taskSheet = new();
     }
 }

@@ -73,7 +73,7 @@ class Report
 
                     try
                     {
-                        TaskSheet(doc, data.Properties.TaskSheet);
+                        TaskSheet(doc, data.Properties.TaskSheet, data.Title, data.TaskSheet);
                     }
                     catch
                     {
@@ -478,7 +478,15 @@ class Report
 
         EmptyLines(doc, 3);
 
-        text = "КУРСОВАЯ РАБОТА";
+        if (title.Work)
+        {
+            text = "КУРСОВАЯ РАБОТА";
+        }
+        else
+        {
+            text = "КУРСОВОЙ ПРОЕКТ";
+        }
+
         Text(doc, text, justify: JustificationValues.Center, bold: true);
 
         EmptyLines(doc, 1);
@@ -610,25 +618,35 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
     }
 
-    static void TaskSheet(WordprocessingDocument doc, bool on)
+    static void TaskSheet(WordprocessingDocument doc, bool on, ViewModelTitle title, ViewModelTaskSheet taskSheet)
     {
         if (on)
         {
             PageSetup(doc.MainDocumentPart.Document.Body, title: true);
-            Ministry(doc, "1");
+            Ministry(doc, title.Cathedra);
 
             string text = "УТВЕРЖДАЮ:";
             Text(doc, text, left: 9.5f);
             text = "____________и.о. зав. кафедрой";
             Text(doc, text, left: 9.5f);
-            text = "«___»_____________2г.";
+            text = "«___»_____________" + Properties.Settings.Default.Year + "г.";
             Text(doc, text, left: 9.5f);
             EmptyLines(doc, 2);
             text = "ЗАДАНИЕ";
             Text(doc, text, 16, JustificationValues.Center, true);
-            text = "на курсов 3";//тут проект или работу
+            string type = string.Empty;
+            if(title.Project)
+            {
+                text = "на курсовой проект";
+                type = "курсового проекта";
+            }
+            else if (title.Work)
+            {
+                text = "на курсовую работу";
+                type = "курсовой работы";
+            }
             Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
-            text = "по дисциплине «4»";
+            text = "по дисциплине «" + title.Discipline + "»";
             Text(doc, text, multiplier: 2);
             EmptyLines(doc, 1);
             text = "Студент    5                Шифр 6";
@@ -637,15 +655,15 @@ class Report
             Text(doc, text, multiplier: 1.5f);
             text = "Направление подготовки " + Properties.Settings.Default.Direction;
             Text(doc, text, multiplier: 1.5f);
-            text = "Группа 7";
+            text = "Группа " + Properties.Settings.Default.Group;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
-            text = "1 Тема курсового проекта";
+            text = "1 Тема "+type;
             Text(doc, text, multiplier: 1.5f);
-            text = "8";
+            text = title.Theme;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
-            text = "2 Срок сдачи студентом законченной работы «9» 10 11";
+            text = "2 Срок сдачи студентом законченной работы «___» _____________ " + Properties.Settings.Default.Year;
             Text(doc, text, multiplier: 1.5f);
 
             SectionBreak(doc);
@@ -654,29 +672,29 @@ class Report
             text = "3 Исходные данные";
             Text(doc, text, multiplier: 1.5f);
 
-            text = "12";
+            text = taskSheet.SourceData;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 
-            text = "4 Содержание курсового проекта";
+            text = "4 Содержание "+type;
             Text(doc, text, multiplier: 1.5f);
 
-            text = "13";
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "5 Отчетный материал курсового проекта";
-            Text(doc, text, multiplier: 1.5f);
-
-            text = "16";
+            text = taskSheet.TOC;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 
-            text = "Руководитель ________________________ 17";
+            text = "5 Отчетный материал "+type;
+            Text(doc, text, multiplier: 1.5f);
+
+            text = taskSheet.ReportingMaterial;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 
-            text = "Задание принял к исполнению: «18» 19 20";
+            text = "Руководитель ________________________ " + title.Professor;
+            Text(doc, text, multiplier: 1.5f);
+            EmptyLines(doc, 1);
+
+            text = "Задание принял к исполнению: «___» _____________ " + Properties.Settings.Default.Year;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 

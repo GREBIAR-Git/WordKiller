@@ -69,6 +69,9 @@
     <system:String x:Key="Discipline">Discipline</system:String>
     <system:String x:Key="Lecturer">Enseignant</system:String>
     <system:String x:Key="FacultyPosition">Poste dans le département</system:String>
+    <system:String x:Key="CourseProject">Projet de cours</system:String>
+    <system:String x:Key="SourceData">Données d'entrée</system:String>
+    <system:String x:Key="ReportingMaterial">Matériel de rapport</system:String>
 
     <system:String x:Key="Content">Contenu</system:String>
 

@@ -85,6 +85,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Collapsed;
                     Data.Title.VisibitityProfessor = Visibility.Collapsed;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                     Data.Type = TypeDocument.DefaultDocument;
                 }
             }
@@ -121,6 +122,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Visible;
                     Data.Title.VisibitityProfessor = Visibility.Visible;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Visible;
                 }
             }
             else if (coursework)
@@ -154,6 +156,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Visible;
                     Data.Title.VisibitityProfessor = Visibility.Visible;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                 }
             }
             else if (laboratoryWork)
@@ -187,6 +190,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Visible;
                     Data.Title.VisibitityProfessor = Visibility.Visible;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                 }
             }
             else if (practiceWork)
@@ -220,6 +224,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Visible;
                     Data.Title.VisibitityProfessor = Visibility.Visible;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                 }
             }
             else if (controlWork)
@@ -253,6 +258,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Visible;
                     Data.Title.VisibitityProfessor = Visibility.Visible;
                     Data.Title.VisibitityRank = Visibility.Visible;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                 }
             }
             else if (referat)
@@ -286,6 +292,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityDiscipline = Visibility.Collapsed;
                     Data.Title.VisibitityProfessor = Visibility.Collapsed;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
+                    Data.Title.VisibitityType = Visibility.Collapsed;
                 }
             }
             else if (vkr)

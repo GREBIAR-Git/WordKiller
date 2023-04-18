@@ -70,6 +70,9 @@
     <system:String x:Key="Discipline">Fachbereich</system:String>
     <system:String x:Key="Lecturer">Dozent</system:String>
     <system:String x:Key="FacultyPosition">Position in der Abteilung</system:String>
+    <system:String x:Key="CourseProject">Kurs-Projekt</system:String>
+    <system:String x:Key="SourceData">Eingabedaten</system:String>
+    <system:String x:Key="ReportingMaterial">Berichtsmaterial</system:String>
     
     <system:String x:Key="Content">Inhalt</system:String>
 

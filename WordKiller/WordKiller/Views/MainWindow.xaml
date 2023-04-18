@@ -392,13 +392,7 @@
                             <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
                         </Grid>
                         <Grid Grid.Row="2">
-                            <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
-                                <typeXaml:RTBox.Resources>
-                                    <Style TargetType="{x:Type Paragraph}">
-                                        <Setter x:Name="richTextBoxMargin" Property="Margin" Value="0,0,0,10"/>
-                                    </Style>
-                                </typeXaml:RTBox.Resources>
-                            </typeXaml:RTBox>
+                            <typeXaml:RTBox Grid.Row="3" x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver"/>
                             <Border Grid.Row="3" x:Name="picture" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver">
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
                                     <Grid>
@@ -456,6 +450,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0" Margin="0 15 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
                                     <Grid.RowDefinitions>
@@ -475,7 +470,7 @@
                                     <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityAutoInput}"/>
                                     <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
-                                <Grid Grid.Row="1" Margin="0 15 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
+                                <Grid Grid.Row="1" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="auto"/>
@@ -573,15 +568,28 @@
                                     </Grid>
                                     <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Rank,Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
+                                <Grid Grid.Row="8" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityType}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Type}" Style="{StaticResource TextBlockTitle}"/>
+                                    <Grid Grid.Row="1" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="175"/>
+                                            <ColumnDefinition Width="10"/>
+                                            <ColumnDefinition Width="175"/>
+                                        </Grid.ColumnDefinitions>
+                                        <RadioButton Grid.Column="0" IsChecked="{Binding Path=Document.Data.Title.Work, Mode=TwoWay}" Content="{DynamicResource Coursework}" Style="{StaticResource RadioButton}"/>
+                                        <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.Title.Project, Mode=TwoWay}" Content="{DynamicResource CourseProject}" Style="{StaticResource RadioButton}"/>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <ScrollViewer x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <ScrollViewer Margin="10 0 0 0" x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
@@ -591,53 +599,24 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*"/>
-                                    <ColumnDefinition Width="50*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="Тип" Style="{StaticResource TextBlockTitle}"/>
-                                <RadioButton Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Content="Курсовая работа"></RadioButton>
-                                <RadioButton Grid.Row="1" Grid.Column="1" Content="Курсовой проект"></RadioButton>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource SourceData}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.SourceData, Mode=TwoWay}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
                             </Grid>
                             <Grid Grid.Row="1" Margin="0 0 0 15">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Срок сдачи" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                <DatePicker Grid.Row="1"/>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource TOC}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.TOC, Mode=TwoWay}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
                             </Grid>
                             <Grid Grid.Row="2" Margin="0 0 0 15">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Исходные данные" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                <TextBox Grid.Row="1"/>
-                            </Grid>
-                            <Grid Grid.Row="3" Margin="0 0 0 15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Содержание курсвой" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                <TextBox Grid.Row="1"/>
-                            </Grid>
-                            <Grid Grid.Row="4" Margin="0 0 0 15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Отчетный материал курсового" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                <TextBox Grid.Row="1"/>
-                            </Grid>
-                            <Grid Grid.Row="5" Margin="0 0 0 15">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Задание принято к исполнению" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                <DatePicker Grid.Row="1"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource ReportingMaterial}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
+                                <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.ReportingMaterial, Mode=TwoWay}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
                             </Grid>
                         </Grid>
                     </ScrollViewer>

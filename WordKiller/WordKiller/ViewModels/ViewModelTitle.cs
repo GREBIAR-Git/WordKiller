@@ -264,6 +264,26 @@ public class ViewModelTitle : ViewModelBase
     string students;
     public string Students { get => students; set => SetProperty(ref students, value); }
 
+    bool project;
+    public bool Project
+    {
+        get => project;
+        set
+        {
+            SetProperty(ref project, value);
+        }
+    }
+
+    bool work;
+    public bool Work
+    {
+        get => work;
+        set
+        {
+            SetProperty(ref work, value);
+        }
+    }
+
     [NonSerialized]
     Visibility visibitityFaculty;
     public Visibility VisibitityFaculty { get => visibitityFaculty; set => SetProperty(ref visibitityFaculty, value); }
@@ -292,6 +312,10 @@ public class ViewModelTitle : ViewModelBase
     Visibility visibitityRank;
     public Visibility VisibitityRank { get => visibitityRank; set => SetProperty(ref visibitityRank, value); }
 
+    [NonSerialized]
+    Visibility visibitityType;
+    public Visibility VisibitityType { get => visibitityType; set => SetProperty(ref visibitityType, value); }
+
     public ViewModelTitle()
     {
         FacultyItems = new();
@@ -305,6 +329,8 @@ public class ViewModelTitle : ViewModelBase
         shifr = string.Empty;
         students = string.Empty;
         rank = string.Empty;
+        Project = false;
+        Work = true;
         UpdateFaculty.Execute(null);
     }
 }

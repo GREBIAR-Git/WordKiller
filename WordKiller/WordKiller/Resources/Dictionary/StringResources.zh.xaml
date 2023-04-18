@@ -71,6 +71,9 @@
     <system:String x:Key="Discipline">学科</system:String>
     <system:String x:Key="Lecturer">讲师</system:String>
     <system:String x:Key="FacultyPosition">该部门的职位</system:String>
+    <system:String x:Key="CourseProject">课程项目</system:String>
+    <system:String x:Key="SourceData">输入数据</system:String>
+    <system:String x:Key="ReportingMaterial">报告材料</system:String>
     
     <system:String x:Key="Content">內容</system:String>
 

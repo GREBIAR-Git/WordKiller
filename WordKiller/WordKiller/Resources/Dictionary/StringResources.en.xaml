@@ -70,6 +70,9 @@
     <system:String x:Key="Discipline">Discipline</system:String>
     <system:String x:Key="Lecturer">Lecturer</system:String>
     <system:String x:Key="FacultyPosition">Faculty position</system:String>
+    <system:String x:Key="CourseProject">Course project</system:String>
+    <system:String x:Key="SourceData">Source data</system:String>
+    <system:String x:Key="ReportingMaterial">Reporting material</system:String>
     
     <system:String x:Key="Content">Content</system:String>
 

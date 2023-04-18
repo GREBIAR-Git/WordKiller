@@ -108,6 +108,21 @@
                 </Style.Resources>
             </Style>
 
+            <Style x:Key="DatePickerRounded" TargetType="{x:Type DatePicker}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=18}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="LightGray"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
             <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -430,7 +445,7 @@
                 <Setter Property="FontSize" Value="{Binding Path=Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}"/>
                 <Style.Resources>
                     <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Margin" Value="0,0,0,10"/>
                     </Style>
                 </Style.Resources>
             </Style>
