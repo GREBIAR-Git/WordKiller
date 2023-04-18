@@ -2,7 +2,6 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-
     <system:String x:Key="File">Fichier</system:String>
 
     <system:String x:Key="Export">Exportation</system:String>
@@ -14,14 +13,6 @@
     <system:String x:Key="SaveAs">Enregistrer sous...</system:String>
     <system:String x:Key="Exit">Sortir</system:String>
 
-
-    <system:String x:Key="View">Voir</system:String>
-
-    <system:String x:Key="Substitution">Substitution</system:String>
-
-
-    <system:String x:Key="Document">Document</system:String>
-
     <system:String x:Key="Type">Type de</system:String>
     <system:String x:Key="DefaultDocument">Document ordinaire</system:String>
     <system:String x:Key="Coursework">Cours</system:String>
@@ -29,9 +20,9 @@
     <system:String x:Key="PracticeWork">Travaux pratiques</system:String>
     <system:String x:Key="ControlWork">Test</system:String>
     <system:String x:Key="Referat">Abstrait</system:String>
-    <system:String x:Key="DiplomaWork">Études supérieures</system:String>
     <system:String x:Key="VKR">VR</system:String>
 
+    <system:String x:Key="Document">Document</system:String>
     <system:String x:Key="Title">Titre</system:String>
     <system:String x:Key="TaskSheet">Feuille de travail</system:String>
     <system:String x:Key="ListOfReferences">Liste des références</system:String>
@@ -41,9 +32,7 @@
 
     <system:String x:Key="Network">Rapporter</system:String>
 
-
     <system:String x:Key="Help">Référence</system:String>
-
     <system:String x:Key="Documentation">Documentation</system:String>
     <system:String x:Key="AboutProgram">À propos du programme</system:String>
 
@@ -58,9 +47,6 @@
     <system:String x:Key="Code">Le code</system:String>
     <system:String x:Key="Text">Texte</system:String>
 
-    <system:String x:Key="ToTitle">Au titre</system:String>
-    <system:String x:Key="ToText">Au texte</system:String>
-    <system:String x:Key="ToSubstitutions">Aux substitutions</system:String>
     <system:String x:Key="Add">Ajouter</system:String>
 
     <system:String x:Key="Cathedra">Département</system:String>
@@ -75,22 +61,10 @@
 
     <system:String x:Key="Content">Contenu</system:String>
 
-    <system:String x:Key="Displayed">Affichages</system:String>
-    <system:String x:Key="Something">quelque chose</system:String>
-
     <system:String x:Key="Unidentified">Non précisé</system:String>
     <system:String x:Key="NotFound">Pas trouvé</system:String>
     <system:String x:Key="ForPicture">Pour la photo</system:String>
     <system:String x:Key="ForСode">Pour code</system:String>
-
-    <system:String x:Key="AllText">Le texte entier</system:String>
-    <system:String x:Key="BeforeHeaders">Aux sections</system:String>
-    <system:String x:Key="Before">Avant de</system:String>
-    <system:String x:Key="Paste">Insérer</system:String>
-    <system:String x:Key="In">dans</system:String>
-    <system:String x:Key="Start">Commencer</system:String>
-
-    <system:String x:Key="OffsetFollowing">ultérieur pour changer</system:String>
 
     <system:String x:Key="Columns">Colonnes:</system:String>
     <system:String x:Key="Rows">Rangs:</system:String>
@@ -134,14 +108,14 @@
     <system:String x:Key="Language">Langue</system:String>
 
     <system:String x:Key="You">Tu</system:String>
-    <system:String x:Key="FirstName">Nom:</system:String>
-    <system:String x:Key="LastName">Nom de famille:</system:String>
-    <system:String x:Key="MiddleName">Deuxième nom:</system:String>
+    <system:String x:Key="FirstName">Nom</system:String>
+    <system:String x:Key="LastName">Nom de famille</system:String>
+    <system:String x:Key="MiddleName">Deuxième nom</system:String>
     <system:String x:Key="Universitet">Institut</system:String>
     <system:String x:Key="Faculty">La faculté</system:String>
     <system:String x:Key="Cours">Bien</system:String>
     <system:String x:Key="Group">Groupe</system:String>
-    <system:String x:Key="Shifr">Chiffrer:</system:String>
+    <system:String x:Key="Shifr">Chiffrer</system:String>
     <system:String x:Key="Companion">Partenaire</system:String>
-    <system:String x:Key="Year">Année:</system:String>
+    <system:String x:Key="Year">Année</system:String>
 </ResourceDictionary>

@@ -2,7 +2,6 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-
     <system:String x:Key="File">File</system:String>
 
     <system:String x:Key="Export">Export</system:String>
@@ -14,14 +13,6 @@
     <system:String x:Key="SaveAs">Save as...</system:String>
     <system:String x:Key="Exit">Exit</system:String>
 
-
-    <system:String x:Key="View">View</system:String>
-
-    <system:String x:Key="Substitution">Substitution</system:String>
-
-
-    <system:String x:Key="Document">Document</system:String>
-
     <system:String x:Key="Type">Type</system:String>
     <system:String x:Key="DefaultDocument">Default document</system:String>
     <system:String x:Key="Coursework">Coursework</system:String>
@@ -29,9 +20,9 @@
     <system:String x:Key="PracticeWork">Practice work</system:String>
     <system:String x:Key="ControlWork">Control work</system:String>
     <system:String x:Key="Referat">Referat</system:String>
-    <system:String x:Key="DiplomaWork">Diploma work</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
+    <system:String x:Key="Document">Document</system:String>
     <system:String x:Key="Title">Title menu</system:String>
     <system:String x:Key="TaskSheet">Task sheet</system:String>
     <system:String x:Key="ListOfReferences">List of references</system:String>
@@ -39,12 +30,9 @@
     <system:String x:Key="TOC">Table of Columns</system:String>
     <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
 
-
     <system:String x:Key="Network">Network</system:String>
 
-
     <system:String x:Key="Help">Help</system:String>
-
     <system:String x:Key="Documentation">Documentation</system:String>
     <system:String x:Key="AboutProgram">About</system:String>
 
@@ -59,9 +47,6 @@
     <system:String x:Key="Code">Code</system:String>
     <system:String x:Key="Text">Text</system:String>
 
-    <system:String x:Key="ToTitle">To title</system:String>
-    <system:String x:Key="ToText">To text</system:String>
-    <system:String x:Key="ToSubstitutions">To substitutions</system:String>
     <system:String x:Key="Add">Add</system:String>
 
     <system:String x:Key="Cathedra">Department</system:String>
@@ -76,22 +61,10 @@
     
     <system:String x:Key="Content">Content</system:String>
 
-    <system:String x:Key="Displayed">Displaying</system:String>
-    <system:String x:Key="Something">something</system:String>
-
     <system:String x:Key="Unidentified">Not given</system:String>
     <system:String x:Key="NotFound">Not found</system:String>
     <system:String x:Key="ForPicture">Picture here</system:String>
     <system:String x:Key="ForСode">Code here</system:String>
-
-    <system:String x:Key="AllText">Whole text</system:String>
-    <system:String x:Key="BeforeHeaders">Before section</system:String>
-    <system:String x:Key="Before">Before</system:String>
-    <system:String x:Key="Paste">Insert</system:String>
-    <system:String x:Key="In">into</system:String>
-    <system:String x:Key="Start">Beginning</system:String>
-
-    <system:String x:Key="OffsetFollowing">offset the following</system:String>
 
     <system:String x:Key="Columns">Сolumns:</system:String>
     <system:String x:Key="Rows">Rows:</system:String>
@@ -135,14 +108,14 @@
     <system:String x:Key="Language">Language</system:String>
 
     <system:String x:Key="You">You</system:String>
-    <system:String x:Key="FirstName">Firstname:</system:String>
-    <system:String x:Key="LastName">Lastname:</system:String>
-    <system:String x:Key="MiddleName">Middlename:</system:String>
+    <system:String x:Key="FirstName">Firstname</system:String>
+    <system:String x:Key="LastName">Lastname</system:String>
+    <system:String x:Key="MiddleName">Middlename</system:String>
     <system:String x:Key="Universitet">Universitet</system:String>
     <system:String x:Key="Faculty">Faculty</system:String>
     <system:String x:Key="Cours">Cours</system:String>
     <system:String x:Key="Group">Group</system:String>
-    <system:String x:Key="Shifr">Shifr:</system:String>
+    <system:String x:Key="Shifr">Shifr</system:String>
     <system:String x:Key="Companion">Mate</system:String>
-    <system:String x:Key="Year">Year:</system:String>
+    <system:String x:Key="Year">Year</system:String>
 </ResourceDictionary>

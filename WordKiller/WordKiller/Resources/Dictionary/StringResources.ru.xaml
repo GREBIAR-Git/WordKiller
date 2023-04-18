@@ -13,11 +13,6 @@
     <system:String x:Key="SaveAs">Сохранить как...</system:String>
     <system:String x:Key="Exit">Выход</system:String>
     
-    <system:String x:Key="View">Вид</system:String>
-    <system:String x:Key="Substitution">Подстановка</system:String>
-
-    <system:String x:Key="Document">Документ</system:String>
-    
     <system:String x:Key="Type">Тип</system:String>
     <system:String x:Key="DefaultDocument">Обычный документ</system:String>
     <system:String x:Key="Coursework">Курсовая работа</system:String>
@@ -25,9 +20,9 @@
     <system:String x:Key="PracticeWork">Практическая работа</system:String>
     <system:String x:Key="ControlWork">Контрольная работа</system:String>
     <system:String x:Key="Referat">Реферат</system:String>
-    <system:String x:Key="DiplomaWork">Дипломная работа</system:String>
     <system:String x:Key="VKR">ВКР</system:String>
 
+    <system:String x:Key="Document">Документ</system:String>
     <system:String x:Key="Title">Титульник</system:String>
     <system:String x:Key="TaskSheet">Лист задания</system:String>
     <system:String x:Key="PageNumbers">Нумерация</system:String>
@@ -38,7 +33,6 @@
     <system:String x:Key="Network">Сеть</system:String>
 
     <system:String x:Key="Help">Справка</system:String>
-
     <system:String x:Key="Documentation">Документация</system:String>
     <system:String x:Key="AboutProgram">О программе</system:String>
 
@@ -53,9 +47,6 @@
     <system:String x:Key="Code">Код</system:String>
     <system:String x:Key="Text">Текст</system:String>
 
-    <system:String x:Key="ToTitle">К титульнику</system:String>
-    <system:String x:Key="ToText">К тексту</system:String>
-    <system:String x:Key="ToSubstitutions">К подстановкам</system:String>
     <system:String x:Key="Add">Добавить</system:String>
 
     <system:String x:Key="Cathedra">Кафедра</system:String>
@@ -70,22 +61,10 @@
 
     <system:String x:Key="Content">Содержание</system:String>
 
-    <system:String x:Key="Displayed">Отображется</system:String>
-    <system:String x:Key="Something">нечто</system:String>
-
     <system:String x:Key="Unidentified">Не указан</system:String>
     <system:String x:Key="NotFound">Не найден</system:String>
     <system:String x:Key="ForPicture">Для картинки</system:String>
     <system:String x:Key="ForСode">Для кода</system:String>
-
-    <system:String x:Key="AllText">Весь текст</system:String>
-    <system:String x:Key="BeforeHeaders">До разделов</system:String>
-    <system:String x:Key="Before">До</system:String>
-    <system:String x:Key="Paste">Вставить</system:String>
-    <system:String x:Key="In">в</system:String>
-    <system:String x:Key="Start">Начало</system:String>
-
-    <system:String x:Key="OffsetFollowing">, последующие сместить</system:String>
 
     <system:String x:Key="Columns">Строки: </system:String>
     <system:String x:Key="Rows">Столбцы: </system:String>
@@ -129,14 +108,14 @@
     <system:String x:Key="Language">Язык</system:String>
     
     <system:String x:Key="You">Вы</system:String>
-    <system:String x:Key="FirstName">Имя:</system:String>
-    <system:String x:Key="LastName">Фамилия:</system:String>
-    <system:String x:Key="MiddleName">Отчество:</system:String>
+    <system:String x:Key="FirstName">Имя</system:String>
+    <system:String x:Key="LastName">Фамилия</system:String>
+    <system:String x:Key="MiddleName">Отчество</system:String>
     <system:String x:Key="Universitet">Институт</system:String>
     <system:String x:Key="Faculty">Факультет</system:String>
     <system:String x:Key="Cours">Курс</system:String>
     <system:String x:Key="Group">Группа</system:String>
-    <system:String x:Key="Shifr">Шифр:</system:String>
+    <system:String x:Key="Shifr">Шифр</system:String>
     <system:String x:Key="Companion">Напарник</system:String>
-    <system:String x:Key="Year">Год:</system:String>
+    <system:String x:Key="Year">Год</system:String>
 </ResourceDictionary>

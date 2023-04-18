@@ -2,7 +2,6 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-
     <system:String x:Key="File">文件</system:String>
 
     <system:String x:Key="Export">出口</system:String>
@@ -14,14 +13,6 @@
     <system:String x:Key="SaveAs">另存為...</system:String>
     <system:String x:Key="Exit">出口</system:String>
 
-
-    <system:String x:Key="View">看法</system:String>
-
-    <system:String x:Key="Substitution">替代</system:String>
-
-
-    <system:String x:Key="Document">文檔</system:String>
-
     <system:String x:Key="Type">類型</system:String>
     <system:String x:Key="DefaultDocument">普通文件</system:String>
     <system:String x:Key="Coursework">課程工作</system:String>
@@ -29,10 +20,9 @@
     <system:String x:Key="PracticeWork">實際工作</system:String>
     <system:String x:Key="ControlWork">測試</system:String>
     <system:String x:Key="Referat">抽象的</system:String>
-    <system:String x:Key="DiplomaWork">研究生工作</system:String>
     <system:String x:Key="VKR">VKR</system:String>
-
     
+    <system:String x:Key="Document">文檔</system:String>
     <system:String x:Key="Title">標題</system:String>
     <system:String x:Key="TaskSheet">任务表</system:String>
     <system:String x:Key="ListOfReferences">参考资料清单</system:String>
@@ -40,12 +30,9 @@
     <system:String x:Key="TOC">內容</system:String>
     <system:String x:Key="NumbersToHeaders">頭條新聞</system:String>
 
-
     <system:String x:Key="Network">網</system:String>
 
-
     <system:String x:Key="Help">參考</system:String>
-
     <system:String x:Key="Documentation">文檔</system:String>
     <system:String x:Key="AboutProgram">關於程序</system:String>
 
@@ -60,9 +47,6 @@
     <system:String x:Key="Code">編碼</system:String>
     <system:String x:Key="Text">文本</system:String>
 
-    <system:String x:Key="ToTitle">標題</system:String>
-    <system:String x:Key="ToText">到文字</system:String>
-    <system:String x:Key="ToSubstitutions">取代</system:String>
     <system:String x:Key="Add">添加</system:String>
 
     <system:String x:Key="Cathedra">部门</system:String>
@@ -77,22 +61,10 @@
     
     <system:String x:Key="Content">內容</system:String>
 
-    <system:String x:Key="Displayed">顯示</system:String>
-    <system:String x:Key="Something">某物</system:String>
-
     <system:String x:Key="Unidentified">未指定</system:String>
     <system:String x:Key="NotFound">未找到</system:String>
     <system:String x:Key="ForPicture">圖片</system:String>
     <system:String x:Key="ForСode">對於代碼</system:String>
-
-    <system:String x:Key="AllText">整個文字</system:String>
-    <system:String x:Key="BeforeHeaders">到各個部分</system:String>
-    <system:String x:Key="Before">前</system:String>
-    <system:String x:Key="Paste">插入</system:String>
-    <system:String x:Key="In">在</system:String>
-    <system:String x:Key="Start">開始</system:String>
-
-    <system:String x:Key="OffsetFollowing">隨後移動</system:String>
 
     <system:String x:Key="Columns">专栏：</system:String>
     <system:String x:Key="Rows">行数：</system:String>
@@ -136,15 +108,14 @@
     <system:String x:Key="Language">語</system:String>
 
     <system:String x:Key="You">你</system:String>
-    <system:String x:Key="FirstName">姓名：</system:String>
-    <system:String x:Key="LastName">姓：</system:String>
-    <system:String x:Key="MiddleName">中間名字：</system:String>
+    <system:String x:Key="FirstName">姓名</system:String>
+    <system:String x:Key="LastName">姓</system:String>
+    <system:String x:Key="MiddleName">中間名字</system:String>
     <system:String x:Key="Universitet">研究所</system:String>
     <system:String x:Key="Faculty">學院</system:String>
     <system:String x:Key="Cours">出色地</system:String>
     <system:String x:Key="Group">團體</system:String>
-    <system:String x:Key="Shifr">密碼：</system:String>
+    <system:String x:Key="Shifr">密碼</system:String>
     <system:String x:Key="Companion">夥伴</system:String>
-    <system:String x:Key="Year">年：</system:String>
-
+    <system:String x:Key="Year">年</system:String>
 </ResourceDictionary>
