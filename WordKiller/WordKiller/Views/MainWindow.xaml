@@ -11,7 +11,7 @@
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         xmlns:m="clr-namespace:WordKiller.Models"
         xmlns:local="clr-namespace:WordKiller"
-        xmlns:rtb="clr-namespace:WordKiller.Converters"
+        xmlns:rtb="clr-namespace:WordKiller.Scripts"
         mc:Ignorable="d"
         Name="win"
         Title="{Binding Path=Document.WinTitle,Mode=TwoWay}" Height="480" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
