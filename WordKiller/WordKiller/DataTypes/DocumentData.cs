@@ -19,6 +19,12 @@ public class DocumentData : MainSection
     ViewModelTaskSheet taskSheet;
     public ViewModelTaskSheet TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
 
+    ViewModelListOfReferences listOfReferences;
+    public ViewModelListOfReferences ListOfReferences { get => listOfReferences; set => SetProperty(ref listOfReferences, value); }
+
+    ViewModelAppendix appendix;
+    public ViewModelAppendix Appendix { get => appendix; set => SetProperty(ref appendix, value); }
+
     public void Clear()
     {
         Paragraphs.Clear();
@@ -28,8 +34,10 @@ public class DocumentData : MainSection
 
     public DocumentData() : base()
     {
-        properties = new ViewModelProperties();
+        appendix = new();
+        properties = new();
         title = new();
         taskSheet = new();
+        ListOfReferences = new();
     }
 }

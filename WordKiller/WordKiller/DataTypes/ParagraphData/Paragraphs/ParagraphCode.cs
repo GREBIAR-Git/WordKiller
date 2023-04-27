@@ -11,7 +11,11 @@ public class ParagraphCode : ViewModelBase, IParagraphData
 
     string data;
 
-    public string Data { get => data; set => SetProperty(ref data, value); }
+    public string Data
+    {
+        get => data;
+        set => SetProperty(ref data, value);
+    }
 
     string description;
 
@@ -31,6 +35,6 @@ public class ParagraphCode : ViewModelBase, IParagraphData
     public ParagraphCode()
     {
         description = string.Empty;
-        data = string.Empty;
+        data = "<FlowDocument xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"></FlowDocument>";
     }
 }

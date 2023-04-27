@@ -60,7 +60,18 @@
     <system:String x:Key="SourceData">Source data</system:String>
     <system:String x:Key="ReportingMaterial">Reporting material</system:String>
     <system:String x:Key="Direction">Direction</system:String>
-    
+
+    <system:String x:Key="Bibliography">List of references</system:String>
+    <system:String x:Key="ListSourcesUsed">List sources used</system:String>
+    <system:String x:Key="Book">Book</system:String>
+    <system:String x:Key="ElectronicResources">Electronic resource</system:String>
+    <system:String x:Key="Autors">Authors</system:String>
+    <system:String x:Key="Name">Title</system:String>
+    <system:String x:Key="Publication">Edition</system:String>
+    <system:String x:Key="Page">Page</system:String>
+    <system:String x:Key="Url">Link</system:String>
+    <system:String x:Key="CirculationDate">Date of reference</system:String>
+
     <system:String x:Key="Content">Content</system:String>
 
     <system:String x:Key="Unidentified">Not given</system:String>
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">Shifr</system:String>
     <system:String x:Key="Companion">Mate</system:String>
     <system:String x:Key="Year">Year</system:String>
+    <system:String x:Key="Users">Users</system:String>
+    <system:String x:Key="AutoPerformed">Performed (auto)</system:String>
 
     <system:String x:Key="ProductInfo">Product info</system:String>
     <system:String x:Key="WrittenIn">The program is written in C#</system:String>

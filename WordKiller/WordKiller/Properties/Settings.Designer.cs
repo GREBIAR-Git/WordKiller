@@ -8,6 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
+using WordKiller.Models;
+
 namespace WordKiller.Properties {
     
     
@@ -22,55 +25,23 @@ namespace WordKiller.Properties {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FirstName {
-            get {
-                return ((string)(this["FirstName"]));
+        public ObservableCollection<User> Users
+        {
+            get
+            {
+                return ((ObservableCollection<User>)(this["Users"]));
             }
-            set {
-                this["FirstName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastName {
-            get {
-                return ((string)(this["LastName"]));
-            }
-            set {
-                this["LastName"] = value;
+            set
+            {
+                this["Users"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string MiddleName {
-            get {
-                return ((string)(this["MiddleName"]));
-            }
-            set {
-                this["MiddleName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Shifr {
-            get {
-                return ((string)(this["Shifr"]));
-            }
-            set {
-                this["Shifr"] = value;
-            }
-        }
-        
+
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]

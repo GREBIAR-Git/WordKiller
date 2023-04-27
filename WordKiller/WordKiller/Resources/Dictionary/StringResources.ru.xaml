@@ -60,6 +60,17 @@
     <system:String x:Key="SourceData">Исходные данные</system:String>
     <system:String x:Key="ReportingMaterial">Отчетный материал</system:String>
     <system:String x:Key="Direction">Направление</system:String>
+
+    <system:String x:Key="Bibliography">Список литературы</system:String>
+    <system:String x:Key="ListSourcesUsed">Список использованных источников</system:String>
+    <system:String x:Key="Book">Книга</system:String>
+    <system:String x:Key="ElectronicResources">Электронный ресурс</system:String>
+    <system:String x:Key="Autors">Авторы</system:String>
+    <system:String x:Key="Name">Название</system:String>
+    <system:String x:Key="Publication">Издание</system:String>
+    <system:String x:Key="Page">Страница</system:String>
+    <system:String x:Key="Url">Ссылка</system:String>
+    <system:String x:Key="CirculationDate">Дата обращения</system:String>
     
     <system:String x:Key="Content">Содержание</system:String>
 
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">Шифр</system:String>
     <system:String x:Key="Companion">Напарник</system:String>
     <system:String x:Key="Year">Год</system:String>
+    <system:String x:Key="Users">Пользователи</system:String>
+    <system:String x:Key="AutoPerformed">Выполнял (авто)</system:String>
 
     <system:String x:Key="ProductInfo">Информация о продукте</system:String>
     <system:String x:Key="WrittenIn">Программа написана на языке C#</system:String>

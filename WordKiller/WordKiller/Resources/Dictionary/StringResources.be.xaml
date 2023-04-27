@@ -60,7 +60,18 @@
     <system:String x:Key="SourceData">Зыходныя дадзеныя</system:String>
     <system:String x:Key="ReportingMaterial">Справаздачны матэрыял</system:String>
     <system:String x:Key="Direction">Кірунак</system:String>
-    
+
+    <system:String x:Key="Bibliography">Спіс выкарыстанай літаратуры</system:String>
+    <system:String x:Key="ListSourcesUsed">Спіс выкарыстаных крыніц</system:String>
+    <system:String x:Key="Book">Кніга</system:String>
+    <system:String x:Key="ElectronicResources">Электронны рэсурс</system:String>
+    <system:String x:Key="Autors">Аўтар</system:String>
+    <system:String x:Key="Name">Загаловак</system:String>
+    <system:String x:Key="Publication">Выданне</system:String>
+    <system:String x:Key="Page">Старонка</system:String>
+    <system:String x:Key="Url">Спасылка</system:String>
+    <system:String x:Key="CirculationDate">Дата звароту</system:String>
+
     <system:String x:Key="Content">Задаволены</system:String>
 
     <system:String x:Key="Unidentified">Ня вызначана</system:String>
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">Cipher</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>
     <system:String x:Key="Year">Год</system:String>
+    <system:String x:Key="Users">Карыстальнік</system:String>
+    <system:String x:Key="AutoPerformed">Выконваў (Аўта)</system:String>
 
     <system:String x:Key="ProductInfo">Інфармацыя пра прадукт</system:String>
     <system:String x:Key="WrittenIn">Праграма напісана на мове C#</system:String>

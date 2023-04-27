@@ -1,9 +1,11 @@
 ﻿using OrelUniverEmbeddedAPI;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
+using WordKiller.Models;
 
 namespace WordKiller.ViewModels.Settings;
 
@@ -20,20 +22,12 @@ public class ViewModelProfileSettings : ViewModelBase
             if (selectedCategory == 0)
             {
                 VisibitityCategoryGeneral = Visibility.Visible;
-                VisibitityCategoryYou = Visibility.Collapsed;
-                VisibitityCategoryCoop = Visibility.Collapsed;
+                VisibitityCategoryUsers = Visibility.Collapsed;
             }
             else if (selectedCategory == 1)
             {
                 VisibitityCategoryGeneral = Visibility.Collapsed;
-                VisibitityCategoryYou = Visibility.Visible;
-                VisibitityCategoryCoop = Visibility.Collapsed;
-            }
-            else if (selectedCategory == 2)
-            {
-                VisibitityCategoryGeneral = Visibility.Collapsed;
-                VisibitityCategoryYou = Visibility.Collapsed;
-                VisibitityCategoryCoop = Visibility.Visible;
+                VisibitityCategoryUsers = Visibility.Visible;
             }
         }
     }
@@ -41,48 +35,42 @@ public class ViewModelProfileSettings : ViewModelBase
     Visibility visibitityCategoryGeneral;
     public Visibility VisibitityCategoryGeneral { get => visibitityCategoryGeneral; set => SetProperty(ref visibitityCategoryGeneral, value); }
 
-    Visibility visibitityCategoryYou;
-    public Visibility VisibitityCategoryYou { get => visibitityCategoryYou; set => SetProperty(ref visibitityCategoryYou, value); }
+    Visibility visibitityCategoryUsers;
+    public Visibility VisibitityCategoryUsers { get => visibitityCategoryUsers; set => SetProperty(ref visibitityCategoryUsers, value); }
 
-    Visibility visibitityCategoryCoop;
-    public Visibility VisibitityCategoryCoop { get => visibitityCategoryCoop; set => SetProperty(ref visibitityCategoryCoop, value); }
-
-    string firstName;
-
-    public string FirstName
+    ObservableCollection<User> users;
+    public ObservableCollection<User> Users
     {
-        get => firstName;
+        get => users;
         set
         {
-            SetProperty(ref firstName, value);
-            Properties.Settings.Default.FirstName = firstName;
-            Properties.Settings.Default.Save();
+            SetProperty(ref users, value);
         }
     }
 
-    string lastName;
-
-    public string LastName
+    ICommand? editPartnersCell;
+    public ICommand EditPartnersCell
     {
-        get => lastName;
-        set
+        get
         {
-            SetProperty(ref lastName, value);
-            Properties.Settings.Default.LastName = lastName;
-            Properties.Settings.Default.Save();
+            return editPartnersCell ??= new RelayCommand(obj =>
+            {
+                Properties.Settings.Default.Users = Users;
+                Properties.Settings.Default.Save();
+            });
         }
     }
 
-    string middleName;
+    ICommand? add;
 
-    public string MiddleName
+    public ICommand Add
     {
-        get => middleName;
-        set
+        get
         {
-            SetProperty(ref middleName, value);
-            Properties.Settings.Default.MiddleName = middleName;
-            Properties.Settings.Default.Save();
+            return add ??= new RelayCommand(obj =>
+            {
+                Users.Add(new());
+            });
         }
     }
 
@@ -100,19 +88,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    string shifr;
-
-    public string Shifr
-    {
-        get => shifr;
-        set
-        {
-            SetProperty(ref shifr, value);
-            Properties.Settings.Default.Shifr = shifr;
-            Properties.Settings.Default.Save();
-        }
-    }
-
     string year;
     public string Year
     {
@@ -121,58 +96,6 @@ public class ViewModelProfileSettings : ViewModelBase
         {
             SetProperty(ref year, value);
             Properties.Settings.Default.Year = year;
-            Properties.Settings.Default.Save();
-        }
-    }
-
-    string firstNameCoop;
-
-    public string FirstNameCoop
-    {
-        get => firstNameCoop;
-        set
-        {
-            SetProperty(ref firstNameCoop, value);
-            Properties.Settings.Default.FirstNameCoop = firstNameCoop;
-            Properties.Settings.Default.Save();
-        }
-    }
-
-    string lastNameCoop;
-
-    public string LastNameCoop
-    {
-        get => lastNameCoop;
-        set
-        {
-            SetProperty(ref lastNameCoop, value);
-            Properties.Settings.Default.LastNameCoop = lastNameCoop;
-            Properties.Settings.Default.Save();
-        }
-    }
-
-    string middleNameCoop;
-
-    public string MiddleNameCoop
-    {
-        get => middleNameCoop;
-        set
-        {
-            SetProperty(ref middleNameCoop, value);
-            Properties.Settings.Default.MiddleNameCoop = middleNameCoop;
-            Properties.Settings.Default.Save();
-        }
-    }
-
-    string shifrCoop;
-
-    public string ShifrCoop
-    {
-        get => shifrCoop;
-        set
-        {
-            SetProperty(ref shifrCoop, value);
-            Properties.Settings.Default.ShifrCoop = shifrCoop;
             Properties.Settings.Default.Save();
         }
     }
@@ -391,23 +314,23 @@ public class ViewModelProfileSettings : ViewModelBase
         return false;
     }
 
+    void DataGrid_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Properties.Settings.Default.Users = Users;
+        Properties.Settings.Default.Save();
+    }
+
     public ViewModelProfileSettings()
     {
+        Users = new();
         UniversitetItems = new();
         FacultyItems = new();
         CoursItems = new();
         GroupItems = new();
         AutoInput = Properties.Settings.Default.AutoInputS;
-        VisibitityCategoryCoop = Visibility.Collapsed;
-        VisibitityCategoryYou = Visibility.Collapsed;
-        FirstName = Properties.Settings.Default.FirstName;
-        LastName = Properties.Settings.Default.LastName;
-        MiddleName = Properties.Settings.Default.MiddleName;
-        Shifr = Properties.Settings.Default.Shifr;
-        FirstNameCoop = Properties.Settings.Default.FirstNameCoop;
-        LastNameCoop = Properties.Settings.Default.LastNameCoop;
-        MiddleNameCoop = Properties.Settings.Default.MiddleNameCoop;
-        ShifrCoop = Properties.Settings.Default.ShifrCoop;
+        VisibitityCategoryUsers = Visibility.Collapsed;
+        Users = Properties.Settings.Default.Users;
+        Users.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
         Year = Properties.Settings.Default.Year;
         UniversitetItems.Add("Орловский Государственный университет имени И.С. Тургенева");
         Universitet = Properties.Settings.Default.Universitet;

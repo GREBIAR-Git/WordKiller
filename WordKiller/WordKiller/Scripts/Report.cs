@@ -13,6 +13,7 @@ using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.Models;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -101,6 +102,26 @@ class Report
                         UIHelper.ShowError("6");
                         return false;
                     }
+
+                    try
+                    {
+                        ListOfReferencesPart(doc, data.ListOfReferences, data.Properties.ListOfReferences);
+                    }
+                    catch
+                    {
+                        UIHelper.ShowError("6");
+                        return false;
+                    }
+
+                    //try
+                    {
+                        AppendixPart(doc, data.Appendix, data.Properties.Appendix);
+                    }
+                    /*catch
+                    {
+                        UIHelper.ShowError("6");
+                        return false;
+                    }*/
 
                     if (data.Properties.PageNumbers)
                     {
@@ -198,7 +219,8 @@ class Report
                 </w:r>
             </w:p>
         </w:sdtContent>
-    </w:sdt>";
+    </w:sdt>
+        ";
     }
 
     static void PageNumber(WordprocessingDocument document)
@@ -257,6 +279,15 @@ class Report
         PageSetup(body, title: title);
     }
 
+    static void NewLine(WordprocessingDocument doc, Paragraph paragraph)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+        Run run = new Run();
+        run.Append(new Break());
+        paragraph.AppendChild(run);
+    }
+
     static string SpaceForYear(string year, char spaceCharacter = '_')
     {
         for (int i = 0; i < 4 - year.Length; i++)
@@ -284,6 +315,9 @@ class Report
 
         styles.Append(
             InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true, outlineLevel: 1));
+
+        styles.Append(
+            InitStyle("H1Appendix", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 0f, caps: false, outlineLevel: 1));
 
         styles.Append(
             InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, outlineLevel: 2));
@@ -435,6 +469,90 @@ class Report
         SectionBreak(doc);
     }
 
+    static void ListOfReferencesPart(WordprocessingDocument doc, ViewModelListOfReferences listOfReferences, bool on)
+    {
+        if (on)
+        {
+            if (listOfReferences.ListSourcesUsed)
+            {
+                Text(doc, "Список использованных источников", "H1");
+            }
+            else if (listOfReferences.Bibliography)
+            {
+                Text(doc, "Список литературы", "H1");
+            }
+            List<string> resours = new();
+            foreach (Book book in listOfReferences.Books)
+            {
+                resours.Add(book.Autors + " " + book.Name + ". " + book.Publication + ", " + book.Year + ". " + book.Page + " с.");
+            }
+            foreach (ElectronicResource electronicResource in listOfReferences.ElectronicResources)
+            {
+                resours.Add(electronicResource.Name + " [Электронный ресурс]. URL: " + electronicResource.Url + " (дата обращения: " + electronicResource.CirculationDate + ").");
+            }
+            resours = resours.OrderBy(x => x).ToList();
+            ListOfReferences(doc, string.Join("\r\n", resours));
+            SectionBreak(doc);
+        }
+    }
+
+    static void AppendixPart(WordprocessingDocument doc, ViewModelAppendix viewModelAppendix, bool on)
+    {
+        if (on)
+        {
+            char letter = 'А';
+            foreach (IParagraphData appendix in viewModelAppendix.Appendix)
+            {
+                string name = "«";
+                if (appendix != null)
+                {
+                    name += appendix.Description;
+                }
+                name += "»";
+                TitleAppendix(doc, "ПРИЛОЖЕНИЕ " + letter + "\n(обязательное)\n" + name);
+                if (appendix is ParagraphPicture picture)
+                {
+                    Picture(doc, picture);
+                    //Text(doc, "Рисунок " + p + " – " + picture.Description, "Picture");
+                }
+                else if (appendix is ParagraphTable table)
+                {
+                    //Text(doc, "Таблица " + t + " – " + table.Description, "TableText");
+                    Table(doc, table.TableData);
+                }
+                else if (appendix is ParagraphCode code)
+                {
+                    Text(doc, code.Data, "Code");
+                }
+                SectionBreak(doc);
+                letter++;
+            }
+        }
+    }
+
+    static void TitleAppendix(WordprocessingDocument doc, string text)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+
+        Paragraph paragraph = body.AppendChild(new Paragraph());
+        paragraph.ParagraphProperties = new ParagraphProperties(
+                new ParagraphStyleId() { Val = "H1Appendix" });
+        foreach (string line in text.Split('\n'))
+        {
+            string[] words = line.Split(' ');
+            for (int i = 0; i < words.Length - 1; i++)
+            {
+                TextIntoParagraph(doc, words[i] + ' ', paragraph);
+            }
+            if (words.Length - 1 >= 0)
+            {
+                TextIntoParagraph(doc, words[^1], paragraph);
+            }
+            NewLine(doc, paragraph);
+        }
+    }
+
     static void LabPra(WordprocessingDocument doc, string type, ViewModelTitle title)
     {
         string text = "ОТЧЁТ";
@@ -446,7 +564,15 @@ class Report
         text = "по дисциплине: «" + title.Discipline + "»";
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 8);
-        text = "Выполнили: Музалевский Н.С., Аллянов М.Д.";
+        if (title.OnePerformed())
+        {
+            text = "Выполнил: ";
+        }
+        else
+        {
+            text = "Выполнили: ";
+        }
+        text += title.AllPerformed();
         Text(doc, text);
         text = Properties.Settings.Default.Faculty;
         Text(doc, text);
@@ -499,9 +625,11 @@ class Report
 
         EmptyLines(doc, 2);
 
-        text = "Студент _________________" + title.Students;
+        User performed = title.FirstPerformed();
+
+        text = "Студент _________________" + performed.Full;
         Text(doc, text, multiplier: 1.5f);
-        text = "Шифр " + title.Shifr;
+        text = "Шифр " + performed.Shifr;
         Text(doc, text, multiplier: 1.5f);
         text = Properties.Settings.Default.Faculty;
         Text(doc, text, multiplier: 1.5f);
@@ -529,7 +657,15 @@ class Report
 
         EmptyLines(doc, 10);
 
-        text = "Выполнил: " + title.Students;
+        if (title.OnePerformed())
+        {
+            text = "Выполнил: ";
+        }
+        else
+        {
+            text = "Выполнили: ";
+        }
+        text += title.AllPerformed();
         Text(doc, text);
         text = Properties.Settings.Default.Faculty;
         Text(doc, text);
@@ -562,9 +698,17 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
         EmptyLines(doc, 16);
 
-        text = "Выполнил: студент группы " + Properties.Settings.Default.Group;
+        if (title.OnePerformed())
+        {
+            text = "Выполнил: студент группы ";
+        }
+        else
+        {
+            text = "Выполнили: студенты группы ";
+        }
+        text += Properties.Settings.Default.Group;
         Text(doc, text, justify: JustificationValues.Right);
-        text = title.Students;
+        text = title.AllPerformed();
         Text(doc, text, justify: JustificationValues.Right);
         string cathedra = title.Cathedra;
         if (!string.IsNullOrWhiteSpace(cathedra))
@@ -635,7 +779,7 @@ class Report
             text = "ЗАДАНИЕ";
             Text(doc, text, 16, JustificationValues.Center, true);
             string type = string.Empty;
-            if(title.Project)
+            if (title.Project)
             {
                 text = "на курсовой проект";
                 type = "курсового проекта";
@@ -649,7 +793,8 @@ class Report
             text = "по дисциплине «" + title.Discipline + "»";
             Text(doc, text, multiplier: 2);
             EmptyLines(doc, 1);
-            text = "Студент    5                Шифр 6";
+            User performed = title.FirstPerformed();
+            text = "Студент    " + performed.Full + "                Шифр " + performed.Shifr;
             Text(doc, text, multiplier: 1.5f);
             text = Properties.Settings.Default.Faculty;
             Text(doc, text, multiplier: 1.5f);
@@ -658,7 +803,7 @@ class Report
             text = "Группа " + Properties.Settings.Default.Group;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
-            text = "1 Тема "+type;
+            text = "1 Тема " + type;
             Text(doc, text, multiplier: 1.5f);
             text = title.Theme;
             Text(doc, text, multiplier: 1.5f);
@@ -676,14 +821,14 @@ class Report
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 
-            text = "4 Содержание "+type;
+            text = "4 Содержание " + type;
             Text(doc, text, multiplier: 1.5f);
 
             text = taskSheet.TOC;
             Text(doc, text, multiplier: 1.5f);
             EmptyLines(doc, 1);
 
-            text = "5 Отчетный материал "+type;
+            text = "5 Отчетный материал " + type;
             Text(doc, text, multiplier: 1.5f);
 
             text = taskSheet.ReportingMaterial;
@@ -862,6 +1007,104 @@ class Report
         }
     }
 
+    static void ListOfReferences(WordprocessingDocument doc, string list)
+    {
+        NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
+        if (numberingPart == null)
+        {
+            numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
+            Numbering element = new();
+            element.Save(numberingPart);
+        }
+
+        int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
+        Level[] levels = new Level[9];
+        string levelText = string.Empty;
+
+        levelText += "%" + (1);
+        levels[0] = new()
+        {
+            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
+            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            LevelText = new LevelText() { Val = levelText + "." },
+            LevelIndex = 0,
+            LevelSuffix = new LevelSuffix()
+            {
+                Val = LevelSuffixValues.Space
+            },
+            PreviousParagraphProperties = new PreviousParagraphProperties()
+            {
+                Indentation = new Indentation()
+                {
+                    Start = (0).ToString(),
+                    Hanging = (-(int)(1.25 * 1 * cm_to_pt)).ToString(),
+                }
+            }
+        };
+
+        AbstractNum abstractNum1 = new(levels) { AbstractNumberId = abstractNumberId, MultiLevelType = new MultiLevelType() { Val = MultiLevelValues.HybridMultilevel } };
+        if (abstractNumberId == 1)
+        {
+            numberingPart.Numbering.Append(abstractNum1);
+        }
+        else
+        {
+            AbstractNum lastAbstractNum = numberingPart.Numbering.Elements<AbstractNum>().Last();
+            numberingPart.Numbering.InsertAfter(abstractNum1, lastAbstractNum);
+        }
+
+        int numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
+        NumberingInstance numberingInstance1 = new() { NumberID = numberId };
+        AbstractNumId abstractNumId1 = new() { Val = abstractNumberId };
+        numberingInstance1.Append(abstractNumId1);
+
+        if (numberId == 1)
+        {
+            numberingPart.Numbering.Append(numberingInstance1);
+        }
+        else
+        {
+            var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
+            numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
+        }
+        Body body = doc.MainDocumentPart.Document.Body;
+
+        string[] items = list.Split('\n').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+        int level = 0;
+        if (items.Length > 0)
+        {
+            level = Level(items[0]);
+        }
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(items[i]))
+            {
+                string itemText = items[i][StartLine(items[i], Level(items[i]))..].Trim();
+                string item = itemText[..1];
+                if (itemText.Length > 1)
+                {
+                    if (itemText[1] == char.ToUpper(itemText[1]))
+                    {
+                        item = itemText[..1];
+                    }
+                    item += itemText[1..];
+                }
+                level = Level(items[i]);
+                Paragraph paragraph = body.AppendChild(new Paragraph());
+
+                paragraph.ParagraphProperties = new ParagraphProperties(
+                    new NumberingProperties(
+                        new NumberingLevelReference() { Val = Level(items[i]) },
+                        new NumberingId() { Val = numberId }),
+                    new ParagraphStyleId() { Val = "ListM" }
+                    );
+
+                Run run = paragraph.AppendChild(new Run());
+                run.AppendChild(new Text() { Text = item, Space = SpaceProcessingModeValues.Preserve });
+            }
+        }
+    }
+
     static void List(WordprocessingDocument doc, string list)
     {
         NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
@@ -891,8 +1134,8 @@ class Report
             {
                 Indentation = new Indentation()
                 {
-                    Start = ((int)(0.63f * 1 * cm_to_pt)).ToString(),
-                    Hanging = (-(int)(0.63f * 1 * cm_to_pt)).ToString(),
+                    Start = (0).ToString(),
+                    Hanging = (-(int)(1.25 * 1 * cm_to_pt)).ToString(),
                 }
             }
         };

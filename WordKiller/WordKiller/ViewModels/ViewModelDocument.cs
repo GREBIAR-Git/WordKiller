@@ -110,11 +110,11 @@ public class ViewModelDocument : ViewModelBase
                     SetProperty(ref coursework, value);
 
                     NoDefaultDocument();
-
                     AddTaskSheet();
+                    AddListOfReferences();
+                    AddAppendix();
                     Data.Type = TypeDocument.Coursework;
                     TextHeader("Coursework");
-
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
                     Data.Title.VisibitityNumber = Visibility.Collapsed;
@@ -248,7 +248,7 @@ public class ViewModelDocument : ViewModelBase
                     SetProperty(ref referat, value);
 
                     NoDefaultDocument();
-
+                    AddListOfReferences();
                     Data.Type = TypeDocument.Referat;
                     TextHeader("Referat");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
@@ -282,7 +282,8 @@ public class ViewModelDocument : ViewModelBase
                     SetProperty(ref vkr, value);
 
                     NoDefaultDocument();
-
+                    AddListOfReferences();
+                    AddAppendix();
                     Data.Type = TypeDocument.VKR;
                     TextHeader("VKR");
                     Data.Title.VisibitityFaculty = Visibility.Collapsed;
@@ -429,10 +430,6 @@ public class ViewModelDocument : ViewModelBase
         Data.Title.UpdateFaculty.Execute(null);
         Data.Title.UpdateCathedra.Execute(null);
         Data.Title.UpdateProfessor.Execute(null);
-        /*if (paragraphTree.Items.Count > 0)
-        {
-            //paragraphTree.SelectedIndex = 0;
-        }*/
     }
 
     ICommand? saveFile;
@@ -533,6 +530,26 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
+    ICommand? listOfReferencesMI;
+
+    public ICommand ListOfReferencesMI
+    {
+        get
+        {
+            return listOfReferencesMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.ListOfReferences)
+                {
+                    AddListOfReferences();
+                }
+                else
+                {
+                    DeleteListOfReferences();
+                }
+            });
+        }
+    }
+
     void AddTaskSheet()
     {
         VisibilityTaskSheetMI = Visibility.Visible;
@@ -595,6 +612,98 @@ public class ViewModelDocument : ViewModelBase
         if (Data.Paragraphs.Count > 0 && Data.Paragraphs[0] is ParagraphTitle)
         {
             Data.Paragraphs.RemoveAt(0);
+        }
+        if (Data.Paragraphs.Count == 0)
+        {
+            VisibilityNotComplexObjects = Visibility.Collapsed;
+        }
+    }
+
+    void AddListOfReferences()
+    {
+        Data.Properties.ListOfReferences = true;
+        if (Data.Paragraphs.Count > 0)
+        {
+            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix && Data.Paragraphs[^2] is not ParagraphListOfReferences)
+            {
+                Data.InsertBefore(Data.Paragraphs[^1], new ParagraphListOfReferences());
+            }
+            else if (Data.Paragraphs[^1] is not ParagraphListOfReferences && Data.Paragraphs[^1] is not ParagraphAppendix)
+            {
+                Data.InsertAfter(Data.Paragraphs[^1], new ParagraphListOfReferences());
+            }
+        }
+        else
+        {
+            Data.AddParagraph(new ParagraphListOfReferences());
+        }
+    }
+
+    void DeleteListOfReferences()
+    {
+        Data.Properties.ListOfReferences = false;
+        if (Data.Paragraphs.Count > 0)
+        {
+            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix && Data.Paragraphs[^2] is ParagraphListOfReferences)
+            {
+                Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 2);
+            }
+            else if (Data.Paragraphs[^1] is ParagraphListOfReferences)
+            {
+                Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 1);
+            }
+        }
+        if (Data.Paragraphs.Count == 0)
+        {
+            VisibilityNotComplexObjects = Visibility.Collapsed;
+        }
+    }
+
+    ICommand? appendixMI;
+
+    public ICommand AppendixMI
+    {
+        get
+        {
+            return appendixMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.Appendix)
+                {
+                    AddAppendix();
+                }
+                else
+                {
+                    DeleteAppendix();
+                }
+            });
+        }
+    }
+
+    void AddAppendix()
+    {
+        Data.Properties.Appendix = true;
+        if (Data.Paragraphs.Count > 0)
+        {
+            if (Data.Paragraphs[^1] is not ParagraphAppendix)
+            {
+                Data.InsertAfter(Data.Paragraphs[^1], new ParagraphAppendix());
+            }
+        }
+        else
+        {
+            Data.AddParagraph(new ParagraphAppendix());
+        }
+    }
+
+    void DeleteAppendix()
+    {
+        Data.Properties.Appendix = false;
+        if (Data.Paragraphs.Count > 0)
+        {
+            if (Data.Paragraphs[^1] is ParagraphAppendix)
+            {
+                Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 1);
+            }
         }
         if (Data.Paragraphs.Count == 0)
         {
@@ -789,8 +898,7 @@ public class ViewModelDocument : ViewModelBase
         VisibilityNotComplexObjects = Visibility.Collapsed;
         VisibilityTitleMI = Visibility.Collapsed;
         VisibilityTaskSheetMI = Visibility.Collapsed;
-        WinTitle = "WordKiller";
-        data = new();
+        Data = new();
         file = new();
         export = new();
         DefaultDocument = true;

@@ -60,7 +60,18 @@
     <system:String x:Key="SourceData">输入数据</system:String>
     <system:String x:Key="ReportingMaterial">报告材料</system:String>
     <system:String x:Key="Direction">目的地</system:String>
-    
+
+    <system:String x:Key="Bibliography">参考资料清单</system:String>
+    <system:String x:Key="ListSourcesUsed">所用资料来源清单</system:String>
+    <system:String x:Key="Book">书籍</system:String>
+    <system:String x:Key="ElectronicResources">电子资源</system:String>
+    <system:String x:Key="Autors">作者</system:String>
+    <system:String x:Key="Name">标题</system:String>
+    <system:String x:Key="Publication">版本</system:String>
+    <system:String x:Key="Page">页数</system:String>
+    <system:String x:Key="Url">链接</system:String>
+    <system:String x:Key="CirculationDate">参考日期</system:String>
+
     <system:String x:Key="Content">內容</system:String>
 
     <system:String x:Key="Unidentified">未指定</system:String>
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">密碼</system:String>
     <system:String x:Key="Companion">夥伴</system:String>
     <system:String x:Key="Year">年</system:String>
+    <system:String x:Key="Users">用户</system:String>
+    <system:String x:Key="AutoPerformed">已执行(自动)</system:String>
 
     <system:String x:Key="ProductInfo">产品信息</system:String>
     <system:String x:Key="WrittenIn">用C#编写</system:String>

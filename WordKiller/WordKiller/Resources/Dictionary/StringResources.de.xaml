@@ -60,7 +60,18 @@
     <system:String x:Key="SourceData">Eingabedaten</system:String>
     <system:String x:Key="ReportingMaterial">Berichtsmaterial</system:String>
     <system:String x:Key="Direction">Reiseziel</system:String>
-    
+
+    <system:String x:Key="Bibliography">Liste der Referenzen</system:String>
+    <system:String x:Key="ListSourcesUsed">Liste der verwendeten Quellen</system:String>
+    <system:String x:Key="Book">Buch</system:String>
+    <system:String x:Key="ElectronicResources">Elektronische Quelle</system:String>
+    <system:String x:Key="Autors">Autoren</system:String>
+    <system:String x:Key="Name">Titel</system:String>
+    <system:String x:Key="Publication">Ausgabe</system:String>
+    <system:String x:Key="Page">Seite</system:String>
+    <system:String x:Key="Url">Link</system:String>
+    <system:String x:Key="CirculationDate">Datum der Referenz</system:String>
+
     <system:String x:Key="Content">Inhalt</system:String>
 
     <system:String x:Key="Unidentified">Unbestimmt</system:String>
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">Chiffre</system:String>
     <system:String x:Key="Companion">Partner</system:String>
     <system:String x:Key="Year">Jahr</system:String>
+    <system:String x:Key="Users">Benutzer</system:String>
+    <system:String x:Key="AutoPerformed">Durchgeführt (auto)</system:String>
 
     <system:String x:Key="ProductInfo">Produkt-Informationen</system:String>
     <system:String x:Key="WrittenIn">Geschrieben in C#</system:String>

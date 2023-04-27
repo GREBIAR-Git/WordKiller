@@ -70,16 +70,32 @@ public class ViewModelMain : ViewModelBase
         }
     }
 
+    ICommand? updatePerformed;
 
+    public ICommand UpdatePerformed
+    {
+        get
+        {
+            return updatePerformed ??= new RelayCommand(
+            obj =>
+            {
+                Document.Data.Title.Performed = Settings.Profile.Users;
+            });
+        }
+    }
+
+    Visibility visibilityDrag;
+    public Visibility VisibilityDrag { get => visibilityDrag; set => SetProperty(ref visibilityDrag, value); }
 
     public ViewModelMain()
     {
-        document = new();
+        Document = new();
         HelpCommands = new();
         NetworkCommans = new();
         settings = new();
         resizing = new();
         VisibilitySettingsPanel = Visibility.Collapsed;
         VisibilityMainPanel = Visibility.Visible;
+        VisibilityDrag = Visibility.Collapsed;
     }
 }

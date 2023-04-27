@@ -61,6 +61,17 @@
     <system:String x:Key="ReportingMaterial">Matériel de rapport</system:String>
     <system:String x:Key="Direction">Destination</system:String>
 
+    <system:String x:Key="Bibliography">Liste des références</system:String>
+    <system:String x:Key="ListSourcesUsed">Liste des sources utilisées</system:String>
+    <system:String x:Key="Book">Livre</system:String>
+    <system:String x:Key="ElectronicResources">Ressource électronique</system:String>
+    <system:String x:Key="Autors">Auteurs</system:String>
+    <system:String x:Key="Name">Titre de l'ouvrage</system:String>
+    <system:String x:Key="Publication">Édition</system:String>
+    <system:String x:Key="Page">Page</system:String>
+    <system:String x:Key="Url">Lien</system:String>
+    <system:String x:Key="CirculationDate">Date de référence</system:String>
+    
     <system:String x:Key="Content">Contenu</system:String>
 
     <system:String x:Key="Unidentified">Non précisé</system:String>
@@ -120,6 +131,8 @@
     <system:String x:Key="Shifr">Chiffrer</system:String>
     <system:String x:Key="Companion">Partenaire</system:String>
     <system:String x:Key="Year">Année</system:String>
+    <system:String x:Key="Users">Utilisateurs</system:String>
+    <system:String x:Key="AutoPerformed">Effectué (auto)</system:String>
 
     <system:String x:Key="ProductInfo">Informations sur le produit</system:String>
     <system:String x:Key="WrittenIn">Écrit en C#</system:String>

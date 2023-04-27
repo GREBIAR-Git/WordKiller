@@ -1,15 +1,76 @@
 ﻿using OrelUniverEmbeddedAPI;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
+using WordKiller.Models;
 
 namespace WordKiller.ViewModels;
 
 [Serializable]
 public class ViewModelTitle : ViewModelBase
 {
+    ObservableCollection<User> performed;
+    public ObservableCollection<User> Performed
+    {
+        get => performed;
+        set
+        {
+            SetProperty(ref performed, value);
+        }
+    }
+
+    public User FirstPerformed()
+    {
+        if (performed != null)
+        {
+            for (int i = 0; i < performed.Count; i++)
+            {
+                if (performed[i].AutoSelected)
+                {
+                    return performed[i];
+                }
+            }
+        }
+        return new();
+    }
+
+    public bool OnePerformed()
+    {
+        int number = 0;
+        foreach (User user in performed)
+        {
+            if (user.AutoSelected)
+            {
+                number++;
+            }
+        }
+        if (number <= 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public string AllPerformed()
+    {
+        List<string> isChecked = new();
+
+        for (int i = 0; i < performed.Count; i++)
+        {
+            if (performed[i].AutoSelected)
+            {
+                isChecked.Add(performed[i].Full);
+            }
+        }
+        return string.Join(", ", isChecked);
+    }
+
     [NonSerialized]
     ObservableCollection<string> facultyItems;
     public ObservableCollection<string> FacultyItems { get => facultyItems; set => SetProperty(ref facultyItems, value); }
@@ -258,12 +319,6 @@ public class ViewModelTitle : ViewModelBase
     string rank;
     public string Rank { get => rank; set => SetProperty(ref rank, value); }
 
-    string shifr;
-    public string Shifr { get => shifr; set => SetProperty(ref shifr, value); }
-
-    string students;
-    public string Students { get => students; set => SetProperty(ref students, value); }
-
     bool project;
     public bool Project
     {
@@ -326,8 +381,6 @@ public class ViewModelTitle : ViewModelBase
         theme = string.Empty;
         discipline = string.Empty;
         professor = string.Empty;
-        shifr = string.Empty;
-        students = string.Empty;
         rank = string.Empty;
         Project = false;
         Work = true;

@@ -23,12 +23,21 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
 
     Bitmap? bitmap;
 
-    public Bitmap? Bitmap { get { return bitmap; } set { bitmap = value; bitmapImage = null; } }
+    public Bitmap? Bitmap { get { return bitmap; } set { SetProperty(ref bitmap, value); ; bitmapImage = null; } }
 
     [NonSerialized]
     BitmapImage? bitmapImage;
 
-    public BitmapImage? BitmapImage { get => GetBitmapImage(); set => bitmapImage = value; }
+    public BitmapImage? BitmapImage
+    {
+        get => GetBitmapImage();
+        set => SetProperty(ref bitmapImage, value);
+    }
+
+    public void UpdateBitmapImage()
+    {
+        BitmapImage = GetBitmapImage();
+    }
 
     BitmapImage GetBitmapImage()
     {
@@ -88,7 +97,7 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
 
     public ParagraphPicture()
     {
-        bitmap = new Bitmap(400, 400);
+        bitmap = new Bitmap(200, 200);
         description = string.Empty;
         data = description;
     }

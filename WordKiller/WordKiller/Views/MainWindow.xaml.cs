@@ -155,7 +155,7 @@ public partial class MainWindow : Window
     bool EnableDragDrop(DragEventArgs e)
     {
         DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
-        if (dragDropInfo == null && e.Data.GetData(DataFormats.FileDrop) != null && (paragraphTree.SelectedItem is ParagraphPicture || paragraphTree.SelectedItem is ParagraphCode))
+        if (dragDropInfo == null && e.Data.GetData(DataFormats.FileDrop) != null && (paragraphTree.SelectedItem is ParagraphPicture || paragraphTree.SelectedItem is ParagraphCode || paragraphTree.SelectedItem is ParagraphAppendix))
         {
             return true;
         }
@@ -168,7 +168,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         if (EnableDragDrop(e))
         {
-            dragDrop.Visibility = Visibility.Visible;
+            viewModel.VisibilityDrag = Visibility.Visible;
         }
     }
 
@@ -178,7 +178,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         if (EnableDragDrop(e))
         {
-            dragDrop.Visibility = Visibility.Visible;
+            viewModel.VisibilityDrag = Visibility.Visible;
         }
     }
 
@@ -188,7 +188,7 @@ public partial class MainWindow : Window
         e.Effects = DragDropEffects.None;
         if (EnableDragDrop(e))
         {
-            dragDrop.Visibility = Visibility.Collapsed;
+            viewModel.VisibilityDrag = Visibility.Collapsed;
         }
     }
 
@@ -198,7 +198,7 @@ public partial class MainWindow : Window
         {
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
-            dragDrop.Visibility = Visibility.Visible;
+            viewModel.VisibilityDrag = Visibility.Visible;
         }
     }
 
@@ -208,7 +208,7 @@ public partial class MainWindow : Window
         {
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
-            dragDrop.Visibility = Visibility.Visible;
+            viewModel.VisibilityDrag = Visibility.Visible;
         }
     }
 
@@ -218,7 +218,7 @@ public partial class MainWindow : Window
         {
             e.Effects = DragDropEffects.Copy;
             e.Handled = true;
-            dragDrop.Visibility = Visibility.Collapsed;
+            viewModel.VisibilityDrag = Visibility.Collapsed;
         }
     }
 
@@ -259,7 +259,39 @@ public partial class MainWindow : Window
                     }
                 }
             }
-            dragDrop.Visibility = Visibility.Collapsed;
+            viewModel.VisibilityDrag = Visibility.Collapsed;
+        }
+    }
+
+    void PictureBox_Drop_Appendix(object sender, DragEventArgs e)
+    {
+        if (EnableDragDrop(e))
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop);
+            if (data != null)
+            {
+                string path = (data as string[])[0];
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    if (viewModel.Document.Data.Appendix.Selected is ParagraphPicture paragraphPicture)
+                    {
+                        System.Drawing.Bitmap bitmap;
+                        try
+                        {
+                            bitmap = new(path);
+                        }
+                        catch
+                        {
+                            return;
+                        }
+                        paragraphPicture.Bitmap = bitmap;
+                        paragraphPicture.UpdateBitmapImage();
+                        paragraphPicture.Description = nameFile;
+                    }
+                }
+            }
+            viewModel.VisibilityDrag = Visibility.Collapsed;
         }
     }
 
@@ -269,7 +301,7 @@ public partial class MainWindow : Window
         {
             if (paragraphTree.SelectedItem is IParagraphData drag)
             {
-                if (drag is not ParagraphTitle && drag is not ParagraphTaskSheet)
+                if (drag is not ParagraphTitle && drag is not ParagraphTaskSheet && drag is not ParagraphListOfReferences && drag is not ParagraphAppendix)
                 {
                     DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
                     if ((finalDropEffect == DragDropEffects.Move) && (target != null))
@@ -289,7 +321,8 @@ public partial class MainWindow : Window
 
         DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
         if (dragDropInfo == null || (TargetItem.Header == dragDropInfo.ParagraphData ||
-            dragDropInfo.ParagraphData is ParagraphTitle || dragDropInfo.ParagraphData is ParagraphTaskSheet || TargetItem.Header is ParagraphTitle || TargetItem.Header is ParagraphTaskSheet ||
+            dragDropInfo.ParagraphData is ParagraphTitle || dragDropInfo.ParagraphData is ParagraphTaskSheet || dragDropInfo.ParagraphData is ParagraphListOfReferences || dragDropInfo.ParagraphData is ParagraphAppendix ||
+            TargetItem.Header is ParagraphTitle || TargetItem.Header is ParagraphTaskSheet || TargetItem.Header is ParagraphListOfReferences || TargetItem.Header is ParagraphAppendix ||
             (dragDropInfo.ParagraphData is ParagraphH1 && TargetItem.Header is not ParagraphH1) ||
             (dragDropInfo.ParagraphData is ParagraphH2 && (TargetItem.Header is not ParagraphH2 && TargetItem.Header is not ParagraphH1))))
         {
@@ -398,7 +431,7 @@ public partial class MainWindow : Window
                 }
             }
         }
-        dragDrop.Visibility = Visibility.Collapsed;
+        viewModel.VisibilityDrag = Visibility.Collapsed;
     }
 
     void NewNotComplexObjects_DragOver(object sender, DragEventArgs e)
@@ -468,18 +501,40 @@ public partial class MainWindow : Window
             viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
             taskSheetPanel.Visibility = Visibility.Collapsed;
             titlePanel.Visibility = Visibility.Visible;
+            listOfReferencesPanel.Visibility = Visibility.Collapsed;
+            appendix.Visibility = Visibility.Collapsed;
         }
         else if (paragraphTree.SelectedItem is ParagraphTaskSheet)
         {
             viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
             taskSheetPanel.Visibility = Visibility.Visible;
             titlePanel.Visibility = Visibility.Collapsed;
+            listOfReferencesPanel.Visibility = Visibility.Collapsed;
+            appendix.Visibility = Visibility.Collapsed;
+        }
+        else if (paragraphTree.SelectedItem is ParagraphListOfReferences)
+        {
+            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
+            titlePanel.Visibility = Visibility.Collapsed;
+            taskSheetPanel.Visibility = Visibility.Collapsed;
+            listOfReferencesPanel.Visibility = Visibility.Visible;
+            appendix.Visibility = Visibility.Collapsed;
+        }
+        else if (paragraphTree.SelectedItem is ParagraphAppendix)
+        {
+            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
+            titlePanel.Visibility = Visibility.Collapsed;
+            taskSheetPanel.Visibility = Visibility.Collapsed;
+            listOfReferencesPanel.Visibility = Visibility.Collapsed;
+            appendix.Visibility = Visibility.Visible;
         }
         else
         {
             viewModel.Document.VisibilityNotComplexObjects = Visibility.Visible;
             taskSheetPanel.Visibility = Visibility.Collapsed;
             titlePanel.Visibility = Visibility.Collapsed;
+            listOfReferencesPanel.Visibility = Visibility.Collapsed;
+            appendix.Visibility = Visibility.Collapsed;
             if (paragraphTree.SelectedItem is IParagraphData data)
             {
                 descriptionObject.Visibility = data.DescriptionVisibility();
@@ -605,9 +660,9 @@ public partial class MainWindow : Window
             if (words.Length > 0)
             {
                 int after = words[0].IndexOf(')');
-                int before = words[0].IndexOf('(');
+                bool before = words[0].Contains('(');
                 int numberSeparators = 0;
-                if (after != -1 && before == -1)
+                if (after != -1 && !before)
                 {
                     if (words[0].Length == after + 1)
                     {
@@ -640,7 +695,7 @@ public partial class MainWindow : Window
                     }
                     else
                     {
-                        string txt = words[0].Substring(after + 1);
+                        string txt = words[0][(after + 1)..];
                         int separator = -1;
                         for (int i = 0; i < words[0].Length; i++)
                         {

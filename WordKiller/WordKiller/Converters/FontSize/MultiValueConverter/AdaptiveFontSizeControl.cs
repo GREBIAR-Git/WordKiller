@@ -14,11 +14,11 @@ class AdaptiveFontSizeControl : IMultiValueConverter
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         Control control = (Control)values[0];
-
         if (control == null || values[1] == null)
         {
             return double.NaN;
         }
+        
         var dpiX = 96.0 * VisualTreeHelper.GetDpi(control).DpiScaleX;
         FormattedText formattedText;
         try
