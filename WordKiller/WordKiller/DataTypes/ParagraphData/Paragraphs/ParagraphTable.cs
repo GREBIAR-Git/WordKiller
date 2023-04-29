@@ -17,9 +17,9 @@ public class ParagraphTable : ViewModelBase, IParagraphData
 
     public string Description { get => description; set => SetProperty(ref description, value, "Data"); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Visible;
+        get => Visibility.Visible;
     }
 
     public ParagraphTable(string description)

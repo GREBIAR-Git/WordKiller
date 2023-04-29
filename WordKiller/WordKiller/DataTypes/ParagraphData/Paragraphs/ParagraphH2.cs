@@ -15,9 +15,9 @@ public class ParagraphH2 : SectionH2, IParagraphData
 
     public string Description { get => data.Replace("\r\n", " "); set => SetProperty(ref data, value, "Data"); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Collapsed;
+        get => Visibility.Collapsed;
     }
 
     public ParagraphH2(string data)

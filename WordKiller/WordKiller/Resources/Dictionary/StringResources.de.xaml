@@ -49,6 +49,8 @@
     <system:String x:Key="Text">Text</system:String>
 
     <system:String x:Key="Add">Hinzufügen</system:String>
+    <system:String x:Key="InsertBefore">Einfügen (Vorher)</system:String>
+    <system:String x:Key="InsertAfter">Einfügen (Nachher)</system:String>
 
     <system:String x:Key="Cathedra">Abteilung</system:String>
     <system:String x:Key="Completed">Durchgeführt von</system:String>
@@ -72,6 +74,10 @@
     <system:String x:Key="Url">Link</system:String>
     <system:String x:Key="CirculationDate">Datum der Referenz</system:String>
 
+    <system:String x:Key="DeleteСurrent">Aktuell löschen</system:String>
+    <system:String x:Key="FirstPage">Erste Seite des Auftragsblatts</system:String>
+    <system:String x:Key="SecondPage">Zweite Seite des Auftragsblatts</system:String>
+    
     <system:String x:Key="Content">Inhalt</system:String>
 
     <system:String x:Key="Unidentified">Unbestimmt</system:String>

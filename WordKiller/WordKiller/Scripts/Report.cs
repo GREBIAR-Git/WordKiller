@@ -4,10 +4,10 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Windows.Media.Imaging;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
@@ -279,11 +279,9 @@ class Report
         PageSetup(body, title: title);
     }
 
-    static void NewLine(WordprocessingDocument doc, Paragraph paragraph)
+    static void NewLine(Paragraph paragraph)
     {
-        MainDocumentPart mainPart = doc.MainDocumentPart;
-        Body body = mainPart.Document.Body;
-        Run run = new Run();
+        Run run = new();
         run.Append(new Break());
         paragraph.AppendChild(run);
     }
@@ -549,7 +547,7 @@ class Report
             {
                 TextIntoParagraph(doc, words[^1], paragraph);
             }
-            NewLine(doc, paragraph);
+            NewLine(paragraph);
         }
     }
 
@@ -1288,17 +1286,17 @@ class Report
             imagePart.FeedData(stream);
         }
 
-        AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), picture.BitmapImage);
+        AddImageToBody(doc, mainPart.GetIdOfPart(imagePart), picture.Bitmap);
     }
 
-    static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, BitmapImage bitmap)
+    static void AddImageToBody(WordprocessingDocument wordDoc, string relationshipId, Bitmap bitmap)
     {
         int emusPerCm = 360000;
         float maxWidthCm = 16.51f;
         int maxWidthEmus = (int)(maxWidthCm * emusPerCm);
 
-        int iWidth = bitmap.PixelWidth;
-        int iHeight = bitmap.PixelHeight;
+        int iWidth = bitmap.Width;
+        int iHeight = bitmap.Height;
         iWidth = (int)Math.Round((decimal)iWidth * pixel_to_EMU);
         iHeight = (int)Math.Round((decimal)iHeight * pixel_to_EMU);
         float ratio = iHeight / (float)iWidth;

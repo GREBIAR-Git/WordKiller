@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
+using Xceed.Wpf.Toolkit;
+using RichTextBox = Xceed.Wpf.Toolkit.RichTextBox;
 
 namespace WordKiller.DataTypes.TypeXAML;
 
 public class RTBox : RichTextBox
 {
+
+    public RTBox()
+    {
+        TextFormatter = new PlainTextFormatter();
+    }
+
     public string GetText()
     {
         string text = new TextRange(Document.ContentStart, Document.ContentEnd).Text;

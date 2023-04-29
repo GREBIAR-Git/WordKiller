@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -245,16 +244,15 @@ public partial class MainWindow : Window
                             return;
                         }
                         paragraphPicture.Bitmap = bitmap;
-                        pictureI.Source = paragraphPicture.BitmapImage;
-                        descriptionObject.Text = nameFile;
-
+                        viewModel.Document.MainImage = paragraphPicture.BitmapImage;
+                        paragraphPicture.Description = nameFile;
                     }
-                    else if (paragraphTree.SelectedItem is ParagraphCode)
+                    else if (paragraphTree.SelectedItem is ParagraphCode paragraphCode)
                     {
                         FileStream file = new(path, FileMode.Open);
                         StreamReader reader = new(file);
                         string data1 = reader.ReadToEnd();
-                        descriptionObject.Text = nameFile;
+                        paragraphCode.Description = nameFile;
                         richTextBox.SetText(data1, false);
                     }
                 }
@@ -288,6 +286,14 @@ public partial class MainWindow : Window
                         paragraphPicture.Bitmap = bitmap;
                         paragraphPicture.UpdateBitmapImage();
                         paragraphPicture.Description = nameFile;
+                    }
+                    else if (viewModel.Document.Data.Appendix.Selected is ParagraphCode paragraphCode)
+                    {
+                        FileStream file = new(path, FileMode.Open);
+                        StreamReader reader = new(file);
+                        string data1 = reader.ReadToEnd();
+                        paragraphCode.Description = nameFile;
+                        paragraphCode.Data = data1;
                     }
                 }
             }
@@ -451,132 +457,13 @@ public partial class MainWindow : Window
 
     // Главный RichTextBox
 
-    void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (paragraphTree.SelectedItem != null)
-        {
-            if (paragraphTree.SelectedItem is IParagraphData item)
-            {
-                item.Data = richTextBox.GetText();
-            }
-        }
-    }
-
-    void DescriptionObject_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (paragraphTree.SelectedItem != null)
-        {
-            if (paragraphTree.SelectedItem is IParagraphData item)
-            {
-                item.Description = descriptionObject.Text;
-            }
-        }
-    }
-
     void WindowBinding_Unselect(object sender, ExecutedRoutedEventArgs e)
     {
-        if (paragraphTree.SelectedItem != null)
+        if (viewModel.Document.Selected != null)
         {
             if (paragraphTree.ItemContainerGenerator.ContainerFromItem(paragraphTree.SelectedItem) is TreeViewItem item)
             {
                 item.IsSelected = false;
-                if (!item.IsSelected)
-                {
-                    viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-                    taskSheetPanel.Visibility = Visibility.Collapsed;
-                    titlePanel.Visibility = Visibility.Collapsed;
-                    viewModel.Document.VisibilityUnselectInfo = Visibility.Visible;
-                }
-            }
-        }
-    }
-
-    void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-    {
-        richTextBox.AllowDrop = false;
-        viewModel.Document.VisibilityUnselectInfo = Visibility.Collapsed;
-        listProcessing.Visibility = Visibility.Collapsed;
-        if (paragraphTree.SelectedItem is ParagraphTitle)
-        {
-            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-            taskSheetPanel.Visibility = Visibility.Collapsed;
-            titlePanel.Visibility = Visibility.Visible;
-            listOfReferencesPanel.Visibility = Visibility.Collapsed;
-            appendix.Visibility = Visibility.Collapsed;
-        }
-        else if (paragraphTree.SelectedItem is ParagraphTaskSheet)
-        {
-            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-            taskSheetPanel.Visibility = Visibility.Visible;
-            titlePanel.Visibility = Visibility.Collapsed;
-            listOfReferencesPanel.Visibility = Visibility.Collapsed;
-            appendix.Visibility = Visibility.Collapsed;
-        }
-        else if (paragraphTree.SelectedItem is ParagraphListOfReferences)
-        {
-            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-            titlePanel.Visibility = Visibility.Collapsed;
-            taskSheetPanel.Visibility = Visibility.Collapsed;
-            listOfReferencesPanel.Visibility = Visibility.Visible;
-            appendix.Visibility = Visibility.Collapsed;
-        }
-        else if (paragraphTree.SelectedItem is ParagraphAppendix)
-        {
-            viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-            titlePanel.Visibility = Visibility.Collapsed;
-            taskSheetPanel.Visibility = Visibility.Collapsed;
-            listOfReferencesPanel.Visibility = Visibility.Collapsed;
-            appendix.Visibility = Visibility.Visible;
-        }
-        else
-        {
-            viewModel.Document.VisibilityNotComplexObjects = Visibility.Visible;
-            taskSheetPanel.Visibility = Visibility.Collapsed;
-            titlePanel.Visibility = Visibility.Collapsed;
-            listOfReferencesPanel.Visibility = Visibility.Collapsed;
-            appendix.Visibility = Visibility.Collapsed;
-            if (paragraphTree.SelectedItem is IParagraphData data)
-            {
-                descriptionObject.Visibility = data.DescriptionVisibility();
-                if (descriptionObject.IsVisible)
-                {
-                    descriptionObject.Text = data.Description;
-                }
-
-                if (data is ParagraphPicture paragraphPicture)
-                {
-                    richTextBox.Visibility = Visibility.Collapsed;
-                    picture.Visibility = Visibility.Visible;
-                    pictureI.Source = paragraphPicture.BitmapImage;
-                    tablePanel.Visibility = Visibility.Collapsed;
-                }
-                else if (data is ParagraphTable paragraphTable)
-                {
-                    richTextBox.Visibility = Visibility.Collapsed;
-                    picture.Visibility = Visibility.Collapsed;
-                    tablePanel.Visibility = Visibility.Visible;
-                    countRows.Text = paragraphTable.TableData.Rows.ToString();
-                    countColumns.Text = paragraphTable.TableData.Columns.ToString();
-                    UpdateTable();
-                }
-                else if (data != null && e.OldValue != e.NewValue)
-                {
-                    richTextBox.Visibility = Visibility.Visible;
-                    picture.Visibility = Visibility.Collapsed;
-                    if (data is not ParagraphCode)
-                    {
-                        richTextBox.SetText(data.Data, richTextBox.SpellCheck.IsEnabled);
-                    }
-                    else
-                    {
-                        richTextBox.SetText(data.Data, false);
-                        richTextBox.AllowDrop = true;
-                    }
-                    if (data is ParagraphList)
-                    {
-                        listProcessing.Visibility = Visibility.Visible;
-                    }
-                }
             }
         }
     }
@@ -584,149 +471,5 @@ public partial class MainWindow : Window
     void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         richTextBox.KeyProcessing(e);
-    }
-
-    void NewNotComplexObjects(object sender, MouseButtonEventArgs e)
-    {
-        ComboBoxItem typeItem = (ComboBoxItem)e.Source;
-
-        if (typeItem.Content.ToString() == UIHelper.FindResourse("Text"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphText());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Header"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphH1());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("SubHeader"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphH2());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("List"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphList());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Picture"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphPicture());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Table"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphTable());
-        }
-        else if (typeItem.Content.ToString() == UIHelper.FindResourse("Code"))
-        {
-            viewModel.Document.Data.AddParagraph(new ParagraphCode());
-        }
-    }
-
-    void ContextMenuDelete_Click(object sender, RoutedEventArgs e)
-    {
-        if (paragraphTree.SelectedItem != null)
-        {
-            if (paragraphTree.SelectedItem is IParagraphData item)
-            {
-                viewModel.Document.Data.RemoveParagraph(item);
-                if (paragraphTree.SelectedItem == null)
-                {
-                    viewModel.Document.VisibilityNotComplexObjects = Visibility.Collapsed;
-                    taskSheetPanel.Visibility = Visibility.Collapsed;
-                    titlePanel.Visibility = Visibility.Collapsed;
-                    viewModel.Document.VisibilityUnselectInfo = Visibility.Visible;
-                }
-            }
-        }
-    }
-
-    void ContextMenuInsertAfter_Click(object sender, RoutedEventArgs e)
-    {
-        if (paragraphTree.SelectedItem == null) return;
-        viewModel.Document.Data.InsertAfter(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
-    }
-
-    void ContextMenuInsertBefore_Click(object sender, RoutedEventArgs e)
-    {
-        if (paragraphTree.SelectedItem == null) return;
-        viewModel.Document.Data.InsertBefore(paragraphTree.SelectedItem as IParagraphData, new ParagraphText());
-    }
-
-    void Button_Click(object sender, RoutedEventArgs e)
-    {
-        string tt = richTextBox.GetText();
-        string[] lines = tt.Split("\r\n");
-        for (int j = 0; j < lines.Length; j++)
-        {
-            string[] words = lines[j].Split(' ');
-            if (words.Length > 0)
-            {
-                int after = words[0].IndexOf(')');
-                bool before = words[0].Contains('(');
-                int numberSeparators = 0;
-                if (after != -1 && !before)
-                {
-                    if (words[0].Length == after + 1)
-                    {
-                        int separator = -1;
-                        for (int i = 0; i < words[0].Length; i++)
-                        {
-                            separator = words[0].IndexOf('.', separator + 1);
-                            if (separator != -1)
-                            {
-                                numberSeparators++;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        if (numberSeparators > 0)
-                        {
-                            string sep = "";
-                            for (int f = 0; f < numberSeparators; f++)
-                            {
-                                sep += "!";
-                            }
-                            words[0] = sep;
-                        }
-                        else
-                        {
-                            words = words.Skip(1).ToArray();
-                        }
-                    }
-                    else
-                    {
-                        string txt = words[0][(after + 1)..];
-                        int separator = -1;
-                        for (int i = 0; i < words[0].Length; i++)
-                        {
-                            separator = words[0].IndexOf('.', separator + 1);
-                            if (separator != -1)
-                            {
-                                numberSeparators++;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        if (numberSeparators > 0)
-                        {
-                            string sep = "";
-                            for (int f = 0; f < numberSeparators; f++)
-                            {
-                                sep += "!";
-                            }
-                            words[0] = sep + " " + txt;
-                        }
-                        else
-                        {
-                            words[0] = txt;
-                        }
-                    }
-                }
-            }
-            lines[j] = string.Join(" ", words);
-        }
-        richTextBox.SetText(string.Join("\n", lines));
     }
 }

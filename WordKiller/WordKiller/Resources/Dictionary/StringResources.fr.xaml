@@ -49,6 +49,8 @@
     <system:String x:Key="Text">Texte</system:String>
 
     <system:String x:Key="Add">Ajouter</system:String>
+    <system:String x:Key="InsertBefore">Insérer (avant)</system:String>
+    <system:String x:Key="InsertAfter">Insérer (après)</system:String>
 
     <system:String x:Key="Cathedra">Département</system:String>
     <system:String x:Key="Completed">Mis en œuvre par</system:String>
@@ -71,7 +73,11 @@
     <system:String x:Key="Page">Page</system:String>
     <system:String x:Key="Url">Lien</system:String>
     <system:String x:Key="CirculationDate">Date de référence</system:String>
-    
+
+    <system:String x:Key="DeleteСurrent">Supprimer le courant</system:String>
+    <system:String x:Key="FirstPage">Première page de la feuille de travail</system:String>
+    <system:String x:Key="SecondPage">Deuxième page de la feuille de travail</system:String>
+
     <system:String x:Key="Content">Contenu</system:String>
 
     <system:String x:Key="Unidentified">Non précisé</system:String>

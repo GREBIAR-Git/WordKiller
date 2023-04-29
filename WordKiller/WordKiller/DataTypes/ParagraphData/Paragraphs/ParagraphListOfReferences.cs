@@ -11,8 +11,8 @@ public class ParagraphListOfReferences : IParagraphData
     public string Data { get => "ListOfReferences"; set => throw new NotImplementedException(); }
     public string Description { get => "ListOfReferences"; set => throw new NotImplementedException(); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Collapsed;
+        get => Visibility.Collapsed;
     }
 }

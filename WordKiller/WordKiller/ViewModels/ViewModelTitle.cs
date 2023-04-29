@@ -180,7 +180,7 @@ public class ViewModelTitle : ViewModelBase
                                         {
                                             foreach (var professor in result1.Response)
                                             {
-                                                ProfessorItems.Add(professor.LastName + " " + professor.FirstName.Substring(0, 1) + "." + professor.ParentName.Substring(0, 1) + ".");
+                                                ProfessorItems.Add(professor.LastName + " " + professor.FirstName[..1] + "." + professor.ParentName[..1] + ".");
                                             }
                                         }
                                     }

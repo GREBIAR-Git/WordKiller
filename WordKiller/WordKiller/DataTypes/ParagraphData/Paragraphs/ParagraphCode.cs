@@ -21,9 +21,9 @@ public class ParagraphCode : ViewModelBase, IParagraphData
 
     public string Description { get => description; set => SetProperty(ref description, value); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Visible;
+        get => Visibility.Visible;
     }
 
     public ParagraphCode(string description, string data)
@@ -35,6 +35,6 @@ public class ParagraphCode : ViewModelBase, IParagraphData
     public ParagraphCode()
     {
         description = string.Empty;
-        data = "<FlowDocument xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"></FlowDocument>";
+        data = string.Empty;
     }
 }

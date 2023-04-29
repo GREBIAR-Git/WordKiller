@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WordKiller.ViewModels;
 
@@ -26,12 +27,15 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
     public Bitmap? Bitmap { get { return bitmap; } set { SetProperty(ref bitmap, value); ; bitmapImage = null; } }
 
     [NonSerialized]
-    BitmapImage? bitmapImage;
+    ImageSource? bitmapImage;
 
-    public BitmapImage? BitmapImage
+    public ImageSource? BitmapImage
     {
         get => GetBitmapImage();
-        set => SetProperty(ref bitmapImage, value);
+        set
+        {
+            SetProperty(ref bitmapImage, value);
+        }
     }
 
     public void UpdateBitmapImage()
@@ -39,7 +43,7 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
         BitmapImage = GetBitmapImage();
     }
 
-    BitmapImage GetBitmapImage()
+    ImageSource GetBitmapImage()
     {
         if (bitmapImage == null)
         {
@@ -50,13 +54,13 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
                     Bitmap.Save(memory, ImageFormat.Png);
                     memory.Position = 0;
 
-                    bitmapImage = new BitmapImage();
+                    BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = memory;
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
-
+                    this.bitmapImage = bitmapImage;
                     return bitmapImage;
                 }
             }
@@ -66,13 +70,13 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
                 {
                     memory.Position = 0;
 
-                    bitmapImage = new BitmapImage();
+                    BitmapImage bitmapImage = new();
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = memory;
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
-
+                    this.bitmapImage = bitmapImage;
                     return bitmapImage;
                 }
             }
@@ -83,9 +87,9 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
         }
     }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Visible;
+        get => Visibility.Visible;
     }
 
     public ParagraphPicture(string description, Bitmap bitmap)

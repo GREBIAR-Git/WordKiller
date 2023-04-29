@@ -34,11 +34,20 @@
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
-    <PackageReference Include="Gu.Wpf.FlipView" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="OrelUniverAPI" Version="1.0.4.1" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Gu.Wpf.FlipView">
+      <HintPath>..\Library\Gu.Wpf.FlipView.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\Library\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit.NET5">
+      <HintPath>..\Library\Xceed.Wpf.Toolkit.NET5.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 

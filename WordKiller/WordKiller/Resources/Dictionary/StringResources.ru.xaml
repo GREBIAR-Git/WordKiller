@@ -49,6 +49,8 @@
     <system:String x:Key="Text">Текст</system:String>
 
     <system:String x:Key="Add">Добавить</system:String>
+    <system:String x:Key="InsertBefore">Вставить (До)</system:String>
+    <system:String x:Key="InsertAfter">Вставить (После)</system:String>
 
     <system:String x:Key="Cathedra">Кафедра</system:String>
     <system:String x:Key="Completed">Выполнили</system:String>
@@ -71,7 +73,11 @@
     <system:String x:Key="Page">Страница</system:String>
     <system:String x:Key="Url">Ссылка</system:String>
     <system:String x:Key="CirculationDate">Дата обращения</system:String>
-    
+
+    <system:String x:Key="DeleteСurrent">Удалить текущий</system:String>
+    <system:String x:Key="FirstPage">Первая страница листа задания</system:String>
+    <system:String x:Key="SecondPage">Вторая страница листа задания</system:String>
+
     <system:String x:Key="Content">Содержание</system:String>
 
     <system:String x:Key="Unidentified">Не указан</system:String>

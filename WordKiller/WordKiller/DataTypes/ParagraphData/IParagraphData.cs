@@ -10,5 +10,5 @@ public interface IParagraphData
 
     string Description { get; set; }
 
-    Visibility DescriptionVisibility();
+    Visibility DescriptionVisibility { get; }
 }

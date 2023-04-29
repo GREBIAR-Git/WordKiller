@@ -27,6 +27,79 @@ public class MainSection : SectionParagraphs
         return null;
     }
 
+    public IParagraphData? PrevLevel(SectionParagraphs section, IParagraphData data)
+    {
+        foreach (IParagraphData paragraph in section.Paragraphs)
+        {
+            if (paragraph == data)
+            {
+                return section as IParagraphData;
+            }
+            if (paragraph is SectionParagraphs section1)
+            {
+                IParagraphData? paragraphData = PrevLevel(section1, data);
+                if (paragraphData != null)
+                {
+                    return paragraphData;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void AddToTop(IParagraphData data)
+    {
+        if (Paragraphs.Count > 1 && Paragraphs[0] is ParagraphTitle && Paragraphs[1] is ParagraphTaskSheet)
+        {
+            InsertAfter(Paragraphs[1], data);
+        }
+        else if (Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTitle || Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTaskSheet)
+        {
+            InsertAfter(Paragraphs[0], data);
+        }
+        else
+        {
+            if (Paragraphs.Count > 0)
+            {
+                InsertBefore(Paragraphs[0], data);
+            }
+            else
+            {
+                Paragraphs.Add(data);
+            }
+        }
+    }
+
+    public void AddToEnd(IParagraphData data)
+    {
+        if (Paragraphs.Count > 1 && Paragraphs[^2] is ParagraphListOfReferences && Paragraphs[^1] is ParagraphAppendix)
+        {
+            if (Paragraphs.Count > 2 && Paragraphs[^3] is SectionParagraphs paragraph && data is not ParagraphH1)
+            {
+                paragraph.AddParagraph(data);
+            }
+            else
+            {
+                InsertBefore(Paragraphs[^2], data);
+            }
+        }
+        else if (Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphListOfReferences || Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphAppendix)
+        {
+            if (Paragraphs.Count > 1 && Paragraphs[^2] is SectionParagraphs paragraph && data is not ParagraphH1)
+            {
+                paragraph.AddParagraph(data);
+            }
+            else
+            {
+                InsertBefore(Paragraphs[^1], data);
+            }
+        }
+        else
+        {
+            Paragraphs.Add(data);
+        }
+    }
+
     public void SwapParagraphs(IParagraphData paragraphData1, IParagraphData paragraphData2)
     {
         SectionParagraphs? section1 = FindSection(this, paragraphData1);
@@ -36,10 +109,10 @@ public class MainSection : SectionParagraphs
         (section1.Paragraphs[i], section2.Paragraphs[f]) = (section2.Paragraphs[f], section1.Paragraphs[i]);
     }
 
-    public void InsertBefore(IParagraphData old, IParagraphData insert)
+    public void InsertBefore(IParagraphData into, IParagraphData insert)
     {
-        SectionParagraphs? section = FindSection(this, old);
-        int i = section.Paragraphs.IndexOf(old);
+        SectionParagraphs? section = FindSection(this, into);
+        int i = section.Paragraphs.IndexOf(into);
         section.Paragraphs.Insert(i, insert);
     }
 

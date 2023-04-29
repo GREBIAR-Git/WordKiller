@@ -11,8 +11,8 @@ public class ParagraphTaskSheet : IParagraphData
     public string Data { get => "TaskSheet"; set => throw new NotImplementedException(); }
     public string Description { get => "TaskSheet"; set => throw new NotImplementedException(); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Collapsed;
+        get => Visibility.Collapsed;
     }
 }

@@ -1,4 +1,4 @@
-﻿ <Window x:Class="WordKiller.MainWindow"
+﻿<Window x:Class="WordKiller.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -71,8 +71,8 @@
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource Document}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
-                    <MenuItem Header="{DynamicResource Title}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Title, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTitleMI,Mode=TwoWay}" Command="{Binding Document.TitleMI}"/>
-                    <MenuItem Header="{DynamicResource TaskSheet}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TaskSheet, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityTaskSheetMI,Mode=TwoWay}" Command="{Binding Document.TaskSheetMI}"/>
+                    <MenuItem Header="{DynamicResource Title}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Title, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilitY.TitleMI,Mode=TwoWay}" Command="{Binding Document.TitleMI}"/>
+                    <MenuItem Header="{DynamicResource TaskSheet}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.TaskSheet, Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilitY.TaskSheetMI,Mode=TwoWay}" Command="{Binding Document.TaskSheetMI}"/>
                     <MenuItem Header="{DynamicResource ListOfReferences}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.ListOfReferences, Mode=TwoWay}" Command="{Binding Document.ListOfReferencesMI}"/>
                     <MenuItem Header="{DynamicResource Appendix}" IsCheckable="True" IsChecked="{Binding Path=Document.Data.Properties.Appendix, Mode=TwoWay}" Command="{Binding Document.AppendixMI}"/>
                     <Separator/>
@@ -104,7 +104,7 @@
                 </Button>
                 <Image Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" x:Name="textPanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+            <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding Path=Resizing.TreeViewSize, Mode=TwoWay}" MinWidth="75"/>
                     <ColumnDefinition Width="auto"/>
@@ -114,39 +114,10 @@
                     <RowDefinition Height="90*"/>
                     <RowDefinition Height="10*" MaxHeight="50" MinHeight="30"/>
                 </Grid.RowDefinitions>
-                <TreeView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Document.Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="TreeView_SelectedItemChanged">
-                    <TreeView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}">
-                            <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
-                            <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
-                            <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
-                            <Setter Property="IsExpanded" Value="True" />
-                            <Setter Property="AllowDrop" Value="True"/>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
-                    <TreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Вставить(До)" Click="ContextMenuInsertBefore_Click">
-                                <MenuItem Header="Текст" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Заголовок" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Подзаголовок" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Список" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Картинка" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Таблица" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Фрагмент кода" Click="ContextMenuInsertBefore_Click"/>
-                            </MenuItem>
-                            <MenuItem Header="Вставить(После)" Click="ContextMenuInsertAfter_Click">
-                                <MenuItem Header="Текст" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Заголовок" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Подзаголовок" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Список" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Картинка" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Таблица" Click="ContextMenuInsertBefore_Click"/>
-                                <MenuItem Header="Фрагмент кода" Click="ContextMenuInsertBefore_Click"/>
-                            </MenuItem>
-                            <MenuItem Header="Удалить" Click="ContextMenuDelete_Click"/>
-                        </ContextMenu>
-                    </TreeView.ContextMenu>
+                <TreeView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Document.Data.Paragraphs, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree">
+                    <i:Interaction.Behaviors>
+                        <rtb:BindableSelectedItemBehavior SelectedItem="{Binding Document.Selected, Mode=TwoWay}" />
+                    </i:Interaction.Behaviors>
                     <TreeView.Resources>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH1}" >
                             <Grid>
@@ -162,10 +133,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Header}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Header}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataType="{x:Type tp:ParagraphH2}" >
@@ -182,10 +153,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="100*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource SubHeader}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource SubHeader}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphList}" >
@@ -202,10 +173,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource List}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource List}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphPicture}" >
@@ -222,10 +193,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Picture}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Picture}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTable}" >
@@ -242,10 +213,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Table}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Table}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphCode}" >
@@ -262,10 +233,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Code}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Code}" />
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphText}" >
@@ -282,10 +253,10 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Text}"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Text}"/>
                                 </Grid>
-                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="16" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="17" Grid.ColumnSpan="2" Text="{Binding Description,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTitle}">
@@ -302,8 +273,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Title}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Title}" />
                                 </Grid>
                             </Grid>
                         </HierarchicalDataTemplate>
@@ -321,8 +292,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource TaskSheet}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource TaskSheet}" />
                                 </Grid>
                             </Grid>
                         </HierarchicalDataTemplate>
@@ -340,8 +311,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource ListOfReferences}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource ListOfReferences}" />
                                 </Grid>
                             </Grid>
                         </HierarchicalDataTemplate>
@@ -359,12 +330,44 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
-                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Appendix}" />
+                                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="17" FontWeight="Bold" DataContext = "{DynamicResource Type}" Text = "{Binding Path=., StringFormat='{}{0}: '}" HorizontalAlignment="Right" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" FontSize="17" FontWeight="Bold" HorizontalAlignment="Left" Text="{DynamicResource Appendix}" />
                                 </Grid>
                             </Grid>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
+                            <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
+                            <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
+                            <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="AllowDrop" Value="True"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ContextMenu>
+                        <ContextMenu ItemContainerStyle="{StaticResource MenuItem}">
+                            <MenuItem Header="{DynamicResource InsertBefore}" FontSize="17" ItemContainerStyle="{StaticResource MenuItem}">
+                                <MenuItem Header="{DynamicResource Text}" FontSize="17" Command="{Binding Document.InsertTextBefore}"/>
+                                <MenuItem Header="{DynamicResource Header}" FontSize="17" Command="{Binding Document.InsertHeaderBefore}"/>
+                                <MenuItem Header="{DynamicResource SubHeader}" FontSize="17" Command="{Binding Document.InsertSubHeaderBefore}"/>
+                                <MenuItem Header="{DynamicResource List}" FontSize="17" Command="{Binding Document.InsertListBefore}"/>
+                                <MenuItem Header="{DynamicResource Picture}" FontSize="17" Command="{Binding Document.InsertPictureBefore}"/>
+                                <MenuItem Header="{DynamicResource Table}" FontSize="17" Command="{Binding Document.InsertTableBefore}"/>
+                                <MenuItem Header="{DynamicResource Code}" FontSize="17" Command="{Binding Document.InsertCodeBefore}"/>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource InsertAfter}" FontSize="17" ItemContainerStyle="{StaticResource MenuItem}">
+                                <MenuItem Header="{DynamicResource Text}" FontSize="17" Command="{Binding Document.InsertTextAfter}"/>
+                                <MenuItem Header="{DynamicResource Header}" FontSize="17" Command="{Binding Document.InsertHeaderAfter}"/>
+                                <MenuItem Header="{DynamicResource SubHeader}" FontSize="17" Command="{Binding Document.InsertSubHeaderAfter}"/>
+                                <MenuItem Header="{DynamicResource List}" FontSize="17" Command="{Binding Document.InsertListAfter}"/>
+                                <MenuItem Header="{DynamicResource Picture}" FontSize="17" Command="{Binding Document.InsertPictureAfter}"/>
+                                <MenuItem Header="{DynamicResource Table}" FontSize="17" Command="{Binding Document.InsertTableAfter}"/>
+                                <MenuItem Header="{DynamicResource Code}" FontSize="17" Command="{Binding Document.InsertCodeAfter}"/>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource Delete}" FontSize="17" Command="{Binding Document.DeleteSelected}"/>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
                 </TreeView>
                 <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" IsTabStop="True" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                     <i:Interaction.Triggers>
@@ -373,12 +376,15 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </GridSplitter>
-                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" x:Name="newNotComplexObjects" Style="{StaticResource ComboBox1}" AllowDrop="True" Drop="NewNotComplexObjects_Drop" DragOver="NewNotComplexObjects_DragOver">
-                    <ComboBox.ItemContainerStyle>
-                        <Style>
-                            <EventSetter Event="ComboBox.PreviewMouseUp" Handler="NewNotComplexObjects"/>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
+                <ComboBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Style="{StaticResource ComboBox1}" SelectedIndex="{Binding Document.AddIndex}" AllowDrop="True" Drop="NewNotComplexObjects_Drop" DragOver="NewNotComplexObjects_DragOver">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Path=Document.Add}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="DropDownClosed">
+                            <i:InvokeCommandAction Command="{Binding Path=Document.ResetAddIndex}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ComboBoxItem Content="{DynamicResource Text}"/>
                     <ComboBoxItem Content="{DynamicResource Header}"/>
                     <ComboBoxItem Content="{DynamicResource SubHeader}"/>
@@ -388,10 +394,10 @@
                     <ComboBoxItem Content="{DynamicResource Code}"/>
                 </ComboBox>
                 <Grid Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
-                    <Grid Visibility="{Binding Path=Document.VisibilityUnselectInfo,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Path=Document.VisibilitY.UnselectInfo,Mode=TwoWay}">
                         <TextBlock Text="{DynamicResource MainClue}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"></TextBlock>
                     </Grid>
-                    <Grid Visibility="{Binding Path=Document.VisibilityNotComplexObjects,Mode=TwoWay}" Margin="0 3 3 3">
+                    <Grid Visibility="{Binding Path=Document.VisibilitY.NotComplexObjects,Mode=TwoWay}" Margin="0 3 3 3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -400,16 +406,16 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Row="0" x:Name="descriptionObject" Style="{StaticResource TextBox}" TextChanged="DescriptionObject_TextChanged" AllowDrop="True" PreviewDragEnter="Win_DragEnter" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave"/>
+                        <TextBox Grid.Row="0" Text="{Binding Document.Selected.Description, Mode=TwoWay}" Visibility="{Binding Document.Selected.DescriptionVisibility}" AllowDrop="True" PreviewDragEnter="Win_DragEnter" PreviewDragOver="Win_DragOver" PreviewDragLeave="Win_DragLeave" Style="{StaticResource TextBox}"/>
                         <Grid Grid.Row="1" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                            <Button Grid.Column="1" Width="30" Height="30" Content="A" x:Name="listProcessing" Margin="5 0 0 0" Visibility="Collapsed" Click="Button_Click"/>
+                            <Button Grid.Column="1" Width="30" Height="30" Content="A" Margin="5 0 0 0" Visibility="{Binding Document.VisibilitY.AutoList}" Command="{Binding Document.AutoList}"/>
                         </Grid>
-                        <Grid Grid.Row="2" Visibility="Collapsed" x:Name="tablePanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.TablePanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100*"/>
                             </Grid.ColumnDefinitions>
@@ -434,19 +440,21 @@
                             </Grid>
                             <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
                         </Grid>
-                        <Grid Grid.Row="2">
-                            <typeXaml:RTBox x:Name="richTextBox" Style="{StaticResource RichTextBox}" Background="White" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" TextChanged="RichTextBox_TextChanged" PreviewKeyDown="RichTextBox_PreviewKeyDown" FontFamily="Serif" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver"/>
-                            <Border x:Name="picture" Visibility="Collapsed" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.RTBPanel}">
+                            <typeXaml:RTBox x:Name="richTextBox" Style="{StaticResource RichTextBox}" Text="{Binding Document.Selected.Data, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="{Binding Document.AllowDropRTB, Mode=TwoWay}" PreviewDragEnter="PictureBox_DragEnter" PreviewDragLeave="PictureBox_DragLeave" PreviewDragOver="PictureBox_DragOver" Drop="PictureBox_Drop"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.ImagePanel}">
+                            <Border Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop">
                                 <Border BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
                                     <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
-                                        <Image x:Name="pictureI" Stretch="Fill" />
+                                        <Image Source="{Binding Document.MainImage}" Stretch="Fill" />
                                         <ContentControl Background="White" Visibility="{Binding VisibilityDrag, Mode=TwoWay}" Style="{StaticResource TheAwesomeXAMLimage}" />
                                     </Grid>
                                 </Border>
                             </Border>
                         </Grid>
                     </Grid>
-                    <Grid x:Name="titlePanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.TitlePanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
@@ -462,9 +470,9 @@
                             <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" IsChecked="{Binding Path=Document.Photo, Mode=TwoWay}" Style="{StaticResource RadioButton}">
                                 <Image Width="25" Height="30" HorizontalAlignment="Center" Source="/Resources/Pictures/Photo.png"/>
                             </CheckBox>
-                            <CheckBox Width="30" Height="30" Grid.Column="1" Content="A" IsChecked="{Binding Path=Document.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilityTitleText}" Style="{StaticResource RadioButton}"/>
+                            <CheckBox Width="30" Height="30" Grid.Column="1" Content="A" IsChecked="{Binding Path=Document.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilitY.TitleText}" Style="{StaticResource RadioButton}"/>
                         </Grid>
-                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilityPhoto}">
+                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilitY.Photo}">
                             <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
                                     <Grid>
@@ -475,7 +483,7 @@
                                 </Border>
                             </Border>
                         </Grid>
-                        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.VisibilityTitleText}">
+                        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.VisibilitY.TitleText}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -499,12 +507,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Faculty}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateFaculty}">
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateFaculty}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityAutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilitY.AutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty,Mode=TwoWay}" Visibility="{Binding Document.VisibilitY.ManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
                                     <Grid.RowDefinitions>
@@ -517,12 +525,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Cathedra}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateCathedra}">
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateCathedra}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilityAutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilitY.AutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra,Mode=TwoWay}" Visibility="{Binding Document.VisibilitY.ManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="2" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPerformed}">
                                     <Grid.RowDefinitions>
@@ -587,12 +595,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Lecturer}" Margin="0 0 10 0"  Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityAutoInput, Mode=TwoWay}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilityManualInput, Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilitY.AutoInput, Mode=TwoWay}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilitY.ManualInput, Mode=TwoWay}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="7" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityRank}">
                                     <Grid.RowDefinitions>
@@ -605,7 +613,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource FacultyPosition}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilityAutoInput}" Command="{Binding Document.Data.Title.UpdateRank}">
+                                        <Button Width="20" Height="20" Grid.Column="1" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateRank}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
@@ -631,7 +639,7 @@
                             </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <Grid x:Name="taskSheetPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.TaskSheetPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
@@ -648,7 +656,7 @@
                                 <Image Width="25" Height="30" HorizontalAlignment="Center" Source="/Resources/Pictures/Photo.png"/>
                             </CheckBox>
                         </Grid>
-                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilityPhoto}">
+                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilitY.Photo}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50*"/>
                                 <ColumnDefinition Width="50*"/>
@@ -657,7 +665,7 @@
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
                                     <Grid>
                                         <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}"/>
-                                        <TextBlock Text="Первая страница листа задания" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
+                                        <TextBlock Text="{DynamicResource FirstPage}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
                                         <Image Stretch="Fill" />
                                     </Grid>
                                 </Border>
@@ -666,13 +674,13 @@
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor,Mode=TwoWay}">
                                     <Grid>
                                         <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}"/>
-                                        <TextBlock Text="Вторая страница листа задания" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
+                                        <TextBlock Text="{DynamicResource SecondPage}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
                                         <Image Stretch="Fill" />
                                     </Grid>
                                 </Border>
                             </Border>
                         </Grid>
-                        <ScrollViewer Grid.Row="1" Margin="10 0 0 0"  Visibility="{Binding Document.VisibilityTitleText}">
+                        <ScrollViewer Grid.Row="1" Margin="10 0 0 0"  Visibility="{Binding Document.VisibilitY.TitleText}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -706,7 +714,7 @@
                             </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <ScrollViewer Margin="10 0 0 0" x:Name="listOfReferencesPanel" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <ScrollViewer Margin="10 0 0 0" Visibility="{Binding Document.VisibilitY.ListOfReferencesPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -769,7 +777,7 @@
                             </DataGrid>
                         </Grid>
                     </ScrollViewer>
-                    <Grid x:Name="appendix" Visibility="Collapsed" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.AppendixPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                         <Grid Margin="10 15 10 15" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
@@ -789,9 +797,9 @@
                                 <ComboBoxItem Content="{DynamicResource Table}"/>
                                 <ComboBoxItem Content="{DynamicResource Code}"/>
                             </ComboBox>
-                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ItemsSource="{Binding Document.Data.Appendix.Appendix}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
+                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" ItemsSource="{Binding Document.Data.Appendix.Appendix}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
                                 <gu:FlipView.Resources>
-                                    <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphCode}">
+                                    <DataTemplate DataType="{x:Type tp:ParagraphCode}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="auto"/>
@@ -800,10 +808,10 @@
                                             </Grid.RowDefinitions>
                                             <TextBox Grid.Row="0" Style="{StaticResource TextBox}" Text="{Binding Description}" AllowDrop="True"/>
                                             <TextBlock Grid.Row="1" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                                            <typeXaml:RTBox Grid.Row="2" Style="{StaticResource RichTextBox}" Background="White" FontFamily="Serif" rtb:RichTextBoxHelper.DocumentXaml="{Binding Data, Mode=TwoWay}"/>
+                                            <typeXaml:RTBox Grid.Row="2" Style="{StaticResource RichTextBox}" Text="{Binding Data}" SpellCheck.IsEnabled="False"  AllowDrop="True" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop_Appendix"/>
                                         </Grid>
-                                    </HierarchicalDataTemplate>
-                                    <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphPicture}">
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type tp:ParagraphPicture}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="auto"/>
@@ -821,8 +829,8 @@
                                                 </Border>
                                             </Border>
                                         </Grid>
-                                    </HierarchicalDataTemplate>
-                                    <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTable}">
+                                    </DataTemplate>
+                                    <DataTemplate DataType="{x:Type tp:ParagraphTable}">
                                         <Grid Grid.Row="3">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="auto"/>
@@ -831,7 +839,7 @@
                                             </Grid.RowDefinitions>
                                             <TextBox Grid.Row="0" Style="{StaticResource TextBox}" Text="{Binding Description}" AllowDrop="True" />
                                             <TextBlock Grid.Row="1" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                                            <Grid Grid.Row="2" x:Name="tablePanel" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                                            <Grid Grid.Row="2" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="100*"/>
                                                 </Grid.ColumnDefinitions>
@@ -857,10 +865,10 @@
                                                 <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
                                             </Grid>
                                         </Grid>
-                                    </HierarchicalDataTemplate>
+                                    </DataTemplate>
                                 </gu:FlipView.Resources>
                             </gu:FlipView>
-                            <Button Grid.Row="2" Content="Удалить текущий" Command="{Binding Document.Data.Appendix.Delete}"/>
+                            <Button Grid.Row="2" Content="{DynamicResource DeleteСurrent}" Command="{Binding Document.Data.Appendix.Delete}"/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -1171,7 +1179,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="1">
-                                <CheckBox Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="A" IsChecked="{Binding Path=Settings.Profile.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilityTitleText}" Style="{StaticResource RadioButton}"/>
+                                <CheckBox Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="A" IsChecked="{Binding Path=Settings.Profile.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilitY.TitleText}" Style="{StaticResource RadioButton}"/>
                             </Grid>
                             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible">
                                 <Grid Margin="10 0 0 0">

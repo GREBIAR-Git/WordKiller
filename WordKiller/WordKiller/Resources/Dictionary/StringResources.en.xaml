@@ -49,6 +49,8 @@
     <system:String x:Key="Text">Text</system:String>
 
     <system:String x:Key="Add">Add</system:String>
+    <system:String x:Key="InsertBefore">Insert (Before)</system:String>
+    <system:String x:Key="InsertAfter">Insert (After)</system:String>
 
     <system:String x:Key="Cathedra">Department</system:String>
     <system:String x:Key="Completed">Implemented by</system:String>
@@ -72,6 +74,10 @@
     <system:String x:Key="Url">Link</system:String>
     <system:String x:Key="CirculationDate">Date of reference</system:String>
 
+    <system:String x:Key="DeleteСurrent">Delete current</system:String>
+    <system:String x:Key="FirstPage">First page of the task sheet</system:String>
+    <system:String x:Key="SecondPage">Second page of the task sheet</system:String>
+    
     <system:String x:Key="Content">Content</system:String>
 
     <system:String x:Key="Unidentified">Not given</system:String>

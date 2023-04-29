@@ -11,8 +11,8 @@ public class ParagraphAppendix : IParagraphData
     public string Data { get => "Appendix"; set => throw new NotImplementedException(); }
     public string Description { get => "Appendix"; set => throw new NotImplementedException(); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Collapsed;
+        get => Visibility.Collapsed;
     }
 }

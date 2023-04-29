@@ -1,12 +1,15 @@
 ﻿using Microsoft.Win32;
-using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using WordKiller.Commands;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
+using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 using WordKiller.Scripts.ImportExport;
@@ -20,44 +23,576 @@ public class ViewModelDocument : ViewModelBase
 
     readonly WordKillerFile file;
 
-    ViewModelExport export;
-    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
-
-    string? winTitle;
-    public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
-
-    Visibility visibilityTitleMI;
-    public Visibility VisibilityTitleMI { get => visibilityTitleMI; set => SetProperty(ref visibilityTitleMI, value); }
-
-    Visibility visibilityTaskSheetMI;
-    public Visibility VisibilityTaskSheetMI { get => visibilityTaskSheetMI; set => SetProperty(ref visibilityTaskSheetMI, value); }
-
-    Visibility visibilityRTB;
-    public Visibility VisibilityNotComplexObjects
+    IParagraphData? selected;
+    public IParagraphData? Selected
     {
-        get => visibilityRTB;
+        get => selected;
         set
         {
-            if (SetProperty(ref visibilityRTB, value))
+            SetProperty(ref selected, value);
+            if (selected == null)
             {
-                if (VisibilityNotComplexObjects == Visibility.Collapsed)
+                VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                VisibilitY.TitlePanel = Visibility.Collapsed;
+                VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                VisibilitY.AppendixPanel = Visibility.Collapsed;
+                VisibilitY.UnselectInfo = Visibility.Visible;
+            }
+            else
+            {
+                VisibilitY.UnselectInfo = Visibility.Collapsed;
+                if (selected is ParagraphTitle)
                 {
-                    VisibilityUnselectInfo = Visibility.Visible;
+                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                    VisibilitY.TitlePanel = Visibility.Visible;
+                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                    VisibilitY.AppendixPanel = Visibility.Collapsed;
+                }
+                else if (selected is ParagraphTaskSheet)
+                {
+                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                    VisibilitY.TitlePanel = Visibility.Collapsed;
+                    VisibilitY.TaskSheetPanel = Visibility.Visible;
+                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                    VisibilitY.AppendixPanel = Visibility.Collapsed;
+                }
+                else if (selected is ParagraphListOfReferences)
+                {
+                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                    VisibilitY.TitlePanel = Visibility.Collapsed;
+                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                    VisibilitY.ListOfReferencesPanel = Visibility.Visible;
+                    VisibilitY.AppendixPanel = Visibility.Collapsed;
+                }
+                else if (selected is ParagraphAppendix)
+                {
+                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                    VisibilitY.TitlePanel = Visibility.Collapsed;
+                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                    VisibilitY.AppendixPanel = Visibility.Visible;
+                }
+                else
+                {
+                    VisibilitY.NotComplexObjects = Visibility.Visible;
+                    VisibilitY.TitlePanel = Visibility.Collapsed;
+                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                    VisibilitY.AppendixPanel = Visibility.Collapsed;
+                    VisibilitY.AutoList = Visibility.Collapsed;
+                    if (selected is ParagraphPicture paragraphPicture)
+                    {
+                        VisibilitY.RTBPanel = Visibility.Collapsed;
+                        VisibilitY.ImagePanel = Visibility.Visible;
+                        MainImage = paragraphPicture.BitmapImage;
+                        VisibilitY.TablePanel = Visibility.Collapsed;
+                    }
+                    else if (selected is ParagraphTable)
+                    {
+                        VisibilitY.RTBPanel = Visibility.Collapsed;
+                        VisibilitY.ImagePanel = Visibility.Collapsed;
+                        VisibilitY.TablePanel = Visibility.Visible;
+                        //countRows.Text = paragraphTable.TableData.Rows.ToString();
+                        //countColumns.Text = paragraphTable.TableData.Columns.ToString();
+                        //UpdateTable();
+                    }
+                    else
+                    {
+                        VisibilitY.RTBPanel = Visibility.Visible;
+                        VisibilitY.ImagePanel = Visibility.Collapsed;
+                        VisibilitY.TablePanel = Visibility.Collapsed;
+                        if (selected is ParagraphCode)
+                        {
+                            AllowDropRTB = true;
+                        }
+                        else
+                        {
+                            AllowDropRTB = false;
+                            if (selected is ParagraphList)
+                            {
+                                VisibilitY.AutoList = Visibility.Visible;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    Visibility visibilityUnselectInfo;
+    int addIndex;
+    public int AddIndex { get => addIndex; set => SetProperty(ref addIndex, value); }
 
-    public Visibility VisibilityUnselectInfo
+    ICommand? add;
+    public ICommand Add
     {
-        get => visibilityUnselectInfo;
-        set
+        get
         {
-            SetProperty(ref visibilityUnselectInfo, value);
+            return add ??= new RelayCommand(obj =>
+            {
+                IParagraphData dataToAdd;
+                if (AddIndex == 0)
+                {
+                    dataToAdd = new ParagraphText();
+                }
+                else if (AddIndex == 1)
+                {
+                    dataToAdd = new ParagraphH1();
+                }
+                else if (AddIndex == 2)
+                {
+                    dataToAdd = new ParagraphH2();
+                }
+                else if (AddIndex == 3)
+                {
+                    dataToAdd = new ParagraphList();
+                }
+                else if (AddIndex == 4)
+                {
+                    dataToAdd = new ParagraphPicture();
+                }
+                else if (AddIndex == 5)
+                {
+                    dataToAdd = new ParagraphTable();
+                }
+                else if (AddIndex == 6)
+                {
+                    dataToAdd = new ParagraphCode();
+                }
+                else
+                {
+                    return;
+                }
+                ParagraphToTreeView(dataToAdd);
+            });
         }
     }
+
+    void ParagraphToTreeView(IParagraphData dataToAdd)
+    {
+        if (Selected is ParagraphTitle || Selected is ParagraphTaskSheet || Selected is null)
+        {
+            Data.AddToTop(dataToAdd);
+        }
+        else if (Selected is ParagraphListOfReferences || Selected is ParagraphAppendix)
+        {
+            Data.AddToEnd(dataToAdd);
+        }
+        else
+        {
+            if (Selected is SectionH1 paragraphH1)
+            {
+                if (dataToAdd is SectionH1)
+                {
+                    Data.InsertAfter(Selected, dataToAdd);
+                }
+                else
+                {
+                    paragraphH1.AddParagraph(dataToAdd);
+                }
+            }
+            else if (Selected is SectionH2 paragraphH2)
+            {
+                if (dataToAdd is SectionH1)
+                {
+                    IParagraphData? paragraphData = Data.PrevLevel(Data, Selected);
+                    if (paragraphData == null)
+                    {
+                        Data.InsertAfter(Selected, dataToAdd);
+                    }
+                    else
+                    {
+                        Data.InsertAfter(paragraphData, dataToAdd);
+                    }
+                }
+                else if (dataToAdd is SectionH2)
+                {
+                    Data.InsertAfter(Selected, dataToAdd);
+                }
+                else
+                {
+                    paragraphH2.AddParagraph(dataToAdd);
+                }
+            }
+            else
+            {
+                if (dataToAdd is SectionParagraphs)
+                {
+                    IParagraphData? paragraphData1 = Data.PrevLevel(Data, Selected);
+                    if (paragraphData1 == null)
+                    {
+                        Data.InsertAfter(Selected, dataToAdd);
+                    }
+                    else
+                    {
+                        if (paragraphData1 is SectionH1)
+                        {
+                            Data.InsertAfter(Selected, dataToAdd);
+                        }
+                        else if (dataToAdd is SectionH2)
+                        {
+                            Data.InsertAfter(paragraphData1, dataToAdd);
+                        }
+                        else
+                        {
+                            IParagraphData? paragraphData2 = Data.PrevLevel(Data, paragraphData1);
+                            if (paragraphData2 == null)
+                            {
+                                Data.InsertAfter(paragraphData1, dataToAdd);
+                            }
+                            else
+                            {
+                                Data.InsertAfter(paragraphData2, dataToAdd);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Data.InsertAfter(Selected, dataToAdd);
+                }
+            }
+        }
+    }
+
+    delegate void Insert(IParagraphData into, IParagraphData insert);
+
+    void InsertToTreeView(IParagraphData dataToAdd, Insert insert)
+    {
+        if (Selected is SectionH1)
+        {
+            insert(Selected, dataToAdd);
+        }
+        else if (Selected is SectionH2)
+        {
+            if (dataToAdd is SectionH1)
+            {
+                IParagraphData? paragraphData1 = Data.PrevLevel(Data, Selected);
+                if (paragraphData1 == null)
+                {
+                    insert(Selected, dataToAdd);
+                }
+                else
+                {
+                    insert(paragraphData1, dataToAdd);
+                }
+            }
+            else
+            {
+                insert(Selected, dataToAdd);
+            }
+        }
+        else
+        {
+            if (dataToAdd is SectionH1)
+            {
+                IParagraphData? paragraphData1 = Data.PrevLevel(Data, Selected);
+                if (paragraphData1 == null)
+                {
+                    insert(Selected, dataToAdd);
+                }
+                else
+                {
+                    IParagraphData? paragraphData2 = Data.PrevLevel(Data, paragraphData1);
+                    if (paragraphData2 == null)
+                    {
+                        insert(paragraphData1, dataToAdd);
+                    }
+                    else
+                    {
+                        insert(paragraphData2, dataToAdd);
+                    }
+                }
+            }
+            else if (dataToAdd is SectionH2)
+            {
+                IParagraphData? paragraphData1 = Data.PrevLevel(Data, Selected);
+                if (paragraphData1 == null)
+                {
+                    insert(Selected, dataToAdd);
+                }
+                else
+                {
+                    if (paragraphData1 is SectionH1)
+                    {
+                        insert(Selected, dataToAdd);
+                    }
+                    else
+                    {
+                        insert(paragraphData1, dataToAdd);
+                    }
+                }
+            }
+            else
+            {
+                insert(Selected, dataToAdd);
+            }
+        }
+    }
+
+    void InsetBefore(IParagraphData dataToAdd)
+    {
+        if (Selected is ParagraphTitle || Selected is ParagraphTaskSheet || Selected is null)
+        {
+            Data.AddToTop(dataToAdd);
+        }
+        else if (Selected is ParagraphListOfReferences || Selected is ParagraphAppendix)
+        {
+            Data.AddToEnd(dataToAdd);
+        }
+        else
+        {
+            InsertToTreeView(dataToAdd, Data.InsertBefore);
+        }
+    }
+
+    void InsetAfter(IParagraphData dataToAdd)
+    {
+        if (Selected is ParagraphTitle || Selected is ParagraphTaskSheet)
+        {
+            Data.AddToTop(dataToAdd);
+        }
+        else if (Selected is ParagraphListOfReferences || Selected is ParagraphAppendix || Selected is null)
+        {
+            Data.AddToEnd(dataToAdd);
+        }
+        else
+        {
+            InsertToTreeView(dataToAdd, Data.InsertAfter);
+        }
+    }
+
+    ICommand insertTextBefore;
+    public ICommand InsertTextBefore
+    {
+        get
+        {
+            return insertTextBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphText());
+            });
+        }
+    }
+
+    ICommand insertTextAfter;
+    public ICommand InsertTextAfter
+    {
+        get
+        {
+            return insertTextAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphText());
+            });
+        }
+    }
+
+    ICommand insertHeaderBefore;
+    public ICommand InsertHeaderBefore
+    {
+        get
+        {
+            return insertHeaderBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphH1());
+            });
+        }
+    }
+
+    ICommand insertHeaderAfter;
+    public ICommand InsertHeaderAfter
+    {
+        get
+        {
+            return insertHeaderAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphH1());
+            });
+        }
+    }
+
+    ICommand insertSubHeaderBefore;
+    public ICommand InsertSubHeaderBefore
+    {
+        get
+        {
+            return insertSubHeaderBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphH2());
+            });
+        }
+    }
+
+    ICommand insertSubHeaderAfter;
+    public ICommand InsertSubHeaderAfter
+    {
+        get
+        {
+            return insertSubHeaderAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphH2());
+            });
+        }
+    }
+
+    ICommand insertListBefore;
+    public ICommand InsertListBefore
+    {
+        get
+        {
+            return insertListBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphList());
+            });
+        }
+    }
+
+    ICommand insertListAfter;
+    public ICommand InsertListAfter
+    {
+        get
+        {
+            return insertListAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphList());
+            });
+        }
+    }
+
+    ICommand insertPictureBefore;
+    public ICommand InsertPictureBefore
+    {
+        get
+        {
+            return insertPictureBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphPicture());
+            });
+        }
+    }
+
+    ICommand insertPictureAfter;
+    public ICommand InsertPictureAfter
+    {
+        get
+        {
+            return insertPictureAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphPicture());
+            });
+        }
+    }
+
+    ICommand insertTableBefore;
+    public ICommand InsertTableBefore
+    {
+        get
+        {
+            return insertTableBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphTable());
+            });
+        }
+    }
+
+    ICommand insertTableAfter;
+    public ICommand InsertTableAfter
+    {
+        get
+        {
+            return insertTableAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphTable());
+            });
+        }
+    }
+
+    ICommand insertCodeBefore;
+    public ICommand InsertCodeBefore
+    {
+        get
+        {
+            return insertCodeBefore ??= new RelayCommand(obj =>
+            {
+                InsetBefore(new ParagraphCode());
+            });
+        }
+    }
+
+    ICommand insertCodeAfter;
+    public ICommand InsertCodeAfter
+    {
+        get
+        {
+            return insertCodeAfter ??= new RelayCommand(obj =>
+            {
+                InsetAfter(new ParagraphCode());
+            });
+        }
+    }
+
+    ICommand? resetAddIndex;
+    public ICommand ResetAddIndex
+    {
+        get
+        {
+            return resetAddIndex ??= new RelayCommand(obj =>
+            {
+                AddIndex = -1;
+            });
+        }
+    }
+
+    ICommand? deleteSelected;
+    public ICommand DeleteSelected
+    {
+        get
+        {
+            return deleteSelected ??= new RelayCommand(
+            obj =>
+            {
+                if (Selected != null)
+                {
+                    if (Selected is ParagraphTitle)
+                    {
+                        DeleteTitle();
+                    }
+                    else if (Selected is ParagraphTaskSheet)
+                    {
+                        DeleteTaskSheet();
+                    }
+                    else if (Selected is ParagraphListOfReferences)
+                    {
+                        DeleteListOfReferences();
+                    }
+                    else if (Selected is ParagraphAppendix)
+                    {
+                        DeleteAppendix();
+                    }
+                    else
+                    {
+                        Data.RemoveParagraph(Selected);
+                    }
+                }
+            });
+        }
+    }
+
+    ImageSource? mainImage;
+    public ImageSource? MainImage
+    {
+        get => mainImage;
+        set => SetProperty(ref mainImage, value);
+    }
+
+    ViewModelExport export;
+    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
+
+    ViewModelVisibility visibility;
+    public ViewModelVisibility VisibilitY { get => visibility; set => SetProperty(ref visibility, value); }
+
+    string? winTitle;
+    public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
 
     bool defaultDocument;
     public bool DefaultDocument
@@ -72,9 +607,9 @@ public class ViewModelDocument : ViewModelBase
                     DocumentTypeFalse();
                     SetProperty(ref defaultDocument, value);
 
-                    VisibilityTitleMI = Visibility.Collapsed;
+                    VisibilitY.TitleMI = Visibility.Collapsed;
                     DeleteTitle();
-                    VisibilityTaskSheetMI = Visibility.Collapsed;
+                    VisibilitY.TaskSheetMI = Visibility.Collapsed;
                     DeleteTaskSheet();
 
                     TextHeader("DefaultDocument");
@@ -317,7 +852,7 @@ public class ViewModelDocument : ViewModelBase
     void NoDefaultDocument()
     {
         AddTitle();
-        VisibilityTaskSheetMI = Visibility.Collapsed;
+        VisibilitY.TaskSheetMI = Visibility.Collapsed;
         DeleteTaskSheet();
     }
 
@@ -363,7 +898,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? exportFile;
-
     public ICommand ExportFile
     {
         get
@@ -383,7 +917,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? newFile;
-
     public ICommand NewFile
     {
         get
@@ -392,14 +925,13 @@ public class ViewModelDocument : ViewModelBase
             obj =>
             {
                 Data = file.NewFile();
-                VisibilityNotComplexObjects = Visibility.Collapsed;
+                VisibilitY.NotComplexObjects = Visibility.Collapsed;
             });
         }
     }
 
 
     ICommand? openFile;
-
     public ICommand OpenFile
     {
         get
@@ -433,7 +965,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? saveFile;
-
     public ICommand SaveFile
     {
         get
@@ -448,7 +979,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? saveAsFile;
-
     public ICommand SaveAsFile
     {
         get
@@ -491,7 +1021,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? titleMI;
-
     public ICommand TitleMI
     {
         get
@@ -510,8 +1039,38 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ICommand? taskSheetMI;
+    void AddTitle()
+    {
+        VisibilitY.TitleMI = Visibility.Visible;
+        Data.Properties.Title = true;
+        if (Data.Paragraphs.Count > 0)
+        {
+            if (Data.Paragraphs[0] is not ParagraphTitle)
+            {
+                Data.InsertBefore(Data.Paragraphs[0], new ParagraphTitle());
+            }
+        }
+        else
+        {
+            Data.AddParagraph(new ParagraphTitle());
+        }
+    }
 
+    void DeleteTitle()
+    {
+        Data.Properties.Title = false;
+
+        if (Data.Paragraphs.Count > 0 && Data.Paragraphs[0] is ParagraphTitle)
+        {
+            Data.Paragraphs.RemoveAt(0);
+        }
+        if (Data.Paragraphs.Count == 0)
+        {
+            VisibilitY.NotComplexObjects = Visibility.Collapsed;
+        }
+    }
+
+    ICommand? taskSheetMI;
     public ICommand TaskSheetMI
     {
         get
@@ -530,29 +1089,9 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ICommand? listOfReferencesMI;
-
-    public ICommand ListOfReferencesMI
-    {
-        get
-        {
-            return listOfReferencesMI ??= new RelayCommand(obj =>
-            {
-                if (Data.Properties.ListOfReferences)
-                {
-                    AddListOfReferences();
-                }
-                else
-                {
-                    DeleteListOfReferences();
-                }
-            });
-        }
-    }
-
     void AddTaskSheet()
     {
-        VisibilityTaskSheetMI = Visibility.Visible;
+        VisibilitY.TaskSheetMI = Visibility.Visible;
         Data.Properties.TaskSheet = true;
         if (Data.Paragraphs.Count > 0)
         {
@@ -584,38 +1123,26 @@ public class ViewModelDocument : ViewModelBase
         }
         if (Data.Paragraphs.Count == 0)
         {
-            VisibilityNotComplexObjects = Visibility.Collapsed;
+            VisibilitY.NotComplexObjects = Visibility.Collapsed;
         }
     }
 
-    void AddTitle()
+    ICommand? listOfReferencesMI;
+    public ICommand ListOfReferencesMI
     {
-        VisibilityTitleMI = Visibility.Visible;
-        Data.Properties.Title = true;
-        if (Data.Paragraphs.Count > 0)
+        get
         {
-            if (Data.Paragraphs[0] is not ParagraphTitle)
+            return listOfReferencesMI ??= new RelayCommand(obj =>
             {
-                Data.InsertBefore(Data.Paragraphs[0], new ParagraphTitle());
-            }
-        }
-        else
-        {
-            Data.AddParagraph(new ParagraphTitle());
-        }
-    }
-
-    void DeleteTitle()
-    {
-        Data.Properties.Title = false;
-
-        if (Data.Paragraphs.Count > 0 && Data.Paragraphs[0] is ParagraphTitle)
-        {
-            Data.Paragraphs.RemoveAt(0);
-        }
-        if (Data.Paragraphs.Count == 0)
-        {
-            VisibilityNotComplexObjects = Visibility.Collapsed;
+                if (Data.Properties.ListOfReferences)
+                {
+                    AddListOfReferences();
+                }
+                else
+                {
+                    DeleteListOfReferences();
+                }
+            });
         }
     }
 
@@ -655,12 +1182,11 @@ public class ViewModelDocument : ViewModelBase
         }
         if (Data.Paragraphs.Count == 0)
         {
-            VisibilityNotComplexObjects = Visibility.Collapsed;
+            VisibilitY.NotComplexObjects = Visibility.Collapsed;
         }
     }
 
     ICommand? appendixMI;
-
     public ICommand AppendixMI
     {
         get
@@ -707,12 +1233,11 @@ public class ViewModelDocument : ViewModelBase
         }
         if (Data.Paragraphs.Count == 0)
         {
-            VisibilityNotComplexObjects = Visibility.Collapsed;
+            VisibilitY.NotComplexObjects = Visibility.Collapsed;
         }
     }
 
     ICommand? defaultDocument_Click;
-
     public ICommand DefaultDocument_Click
     {
         get
@@ -729,7 +1254,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? coursework_Click;
-
     public ICommand Coursework_Click
     {
         get
@@ -746,7 +1270,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? laboratoryWork_Click;
-
     public ICommand LaboratoryWork_Click
     {
         get
@@ -763,7 +1286,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? practiceWork_Click;
-
     public ICommand PracticeWork_Click
     {
         get
@@ -780,7 +1302,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? controlWork_Click;
-
     public ICommand ControlWork_Click
     {
         get
@@ -797,7 +1318,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? referat_Click;
-
     public ICommand Referat_Click
     {
         get
@@ -814,7 +1334,6 @@ public class ViewModelDocument : ViewModelBase
     }
 
     ICommand? vkr_Click;
-
     public ICommand VKR_Click
     {
         get
@@ -830,15 +1349,6 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    [NonSerialized]
-    Visibility visibilityManualInput;
-    public Visibility VisibilityManualInput { get => visibilityManualInput; set => SetProperty(ref visibilityManualInput, value); }
-
-    [NonSerialized]
-    Visibility visibilityAutoInput;
-    public Visibility VisibilityAutoInput { get => visibilityAutoInput; set => SetProperty(ref visibilityAutoInput, value); }
-
-    [NonSerialized]
     bool autoInput;
     public bool AutoInput
     {
@@ -848,26 +1358,18 @@ public class ViewModelDocument : ViewModelBase
             SetProperty(ref autoInput, value);
             if (autoInput)
             {
-                VisibilityManualInput = Visibility.Collapsed;
-                VisibilityAutoInput = Visibility.Visible;
+                VisibilitY.ManualInput = Visibility.Collapsed;
+                VisibilitY.AutoInput = Visibility.Visible;
             }
             else
             {
-                VisibilityManualInput = Visibility.Visible;
-                VisibilityAutoInput = Visibility.Collapsed;
+                VisibilitY.ManualInput = Visibility.Visible;
+                VisibilitY.AutoInput = Visibility.Collapsed;
             }
             Properties.Settings.Default.AutoInput = autoInput;
             Properties.Settings.Default.Save();
         }
     }
-
-    [NonSerialized]
-    Visibility visibilityPhoto;
-    public Visibility VisibilityPhoto { get => visibilityPhoto; set => SetProperty(ref visibilityPhoto, value); }
-
-    [NonSerialized]
-    Visibility visibilityTitleText;
-    public Visibility VisibilityTitleText { get => visibilityTitleText; set => SetProperty(ref visibilityTitleText, value); }
 
     bool photo;
     public bool Photo
@@ -878,27 +1380,122 @@ public class ViewModelDocument : ViewModelBase
             SetProperty(ref photo, value);
             if (photo)
             {
-                VisibilityTitleText = Visibility.Collapsed;
-                VisibilityPhoto = Visibility.Visible;
+                VisibilitY.TitleText = Visibility.Collapsed;
+                VisibilitY.Photo = Visibility.Visible;
             }
             else
             {
-                VisibilityTitleText = Visibility.Visible;
-                VisibilityPhoto = Visibility.Collapsed;
+                VisibilitY.TitleText = Visibility.Visible;
+                VisibilitY.Photo = Visibility.Collapsed;
             }
             Properties.Settings.Default.Photo = photo;
             Properties.Settings.Default.Save();
         }
     }
 
+    ICommand? autoList;
+    public ICommand AutoList
+    {
+        get
+        {
+            return autoList ??= new RelayCommand(
+            obj =>
+            {
+                if (Selected != null)
+                {
+
+                    string tt = Selected.Data;
+                    string[] lines = tt.Split("\r\n");
+                    for (int j = 0; j < lines.Length; j++)
+                    {
+                        string[] words = lines[j].Split(' ');
+                        if (words.Length > 0)
+                        {
+                            int after = words[0].IndexOf(')');
+                            bool before = words[0].Contains('(');
+                            int numberSeparators = 0;
+                            if (after != -1 && !before)
+                            {
+                                if (words[0].Length == after + 1)
+                                {
+                                    int separator = -1;
+                                    for (int i = 0; i < words[0].Length; i++)
+                                    {
+                                        separator = words[0].IndexOf('.', separator + 1);
+                                        if (separator != -1)
+                                        {
+                                            numberSeparators++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    if (numberSeparators > 0)
+                                    {
+                                        string sep = "";
+                                        for (int f = 0; f < numberSeparators; f++)
+                                        {
+                                            sep += "!";
+                                        }
+                                        words[0] = sep;
+                                    }
+                                    else
+                                    {
+                                        words = words.Skip(1).ToArray();
+                                    }
+                                }
+                                else
+                                {
+                                    string txt = words[0][(after + 1)..];
+                                    int separator = -1;
+                                    for (int i = 0; i < words[0].Length; i++)
+                                    {
+                                        separator = words[0].IndexOf('.', separator + 1);
+                                        if (separator != -1)
+                                        {
+                                            numberSeparators++;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    if (numberSeparators > 0)
+                                    {
+                                        string sep = "";
+                                        for (int f = 0; f < numberSeparators; f++)
+                                        {
+                                            sep += "!";
+                                        }
+                                        words[0] = sep + " " + txt;
+                                    }
+                                    else
+                                    {
+                                        words[0] = txt;
+                                    }
+                                }
+                            }
+                        }
+                        lines[j] = string.Join(" ", words);
+                    }
+                    Selected.Data = string.Join("\n", lines);
+                }
+            });
+        }
+    }
+
+    bool allowDropRTB;
+    public bool AllowDropRTB { get => allowDropRTB; set => SetProperty(ref allowDropRTB, value); }
+
     public ViewModelDocument()
     {
+        AddIndex = -1;
+        visibility = new();
+        AllowDropRTB = false;
         Photo = Properties.Settings.Default.Photo;
         AutoInput = Properties.Settings.Default.AutoInput;
-        VisibilityNotComplexObjects = Visibility.Collapsed;
-        VisibilityTitleMI = Visibility.Collapsed;
-        VisibilityTaskSheetMI = Visibility.Collapsed;
-        Data = new();
+        data = new();
         file = new();
         export = new();
         DefaultDocument = true;

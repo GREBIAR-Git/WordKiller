@@ -49,6 +49,8 @@
     <system:String x:Key="Text">Тэкст</system:String>
 
     <system:String x:Key="Add">Дадаваць</system:String>
+    <system:String x:Key="InsertBefore">Уставіць (Да)</system:String>
+    <system:String x:Key="InsertAfter">Уставіць (Пасля)</system:String>
 
     <system:String x:Key="Cathedra">Кафедра</system:String>
     <system:String x:Key="Completed">Выканалі</system:String>
@@ -72,6 +74,10 @@
     <system:String x:Key="Url">Спасылка</system:String>
     <system:String x:Key="CirculationDate">Дата звароту</system:String>
 
+    <system:String x:Key="DeleteСurrent">Выдаліць бягучы</system:String>
+    <system:String x:Key="FirstPage">Першая старонка ліста заданні</system:String>
+    <system:String x:Key="SecondPage">Другая старонка ліста заданні</system:String>
+    
     <system:String x:Key="Content">Задаволены</system:String>
 
     <system:String x:Key="Unidentified">Ня вызначана</system:String>

@@ -17,9 +17,9 @@ public class ParagraphList : ViewModelBase, IParagraphData
 
     public string Description { get => description; set => SetProperty(ref description, value); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Visible;
+        get => Visibility.Visible;
     }
     public ParagraphList(string description, string data)
     {

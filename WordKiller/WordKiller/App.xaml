@@ -345,6 +345,8 @@
                 <Style.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="3"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                     </Style>
                 </Style.Resources>
                 
@@ -418,6 +420,8 @@
                 <Style.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="3"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="1"/>
                     </Style>
                 </Style.Resources>
 
@@ -459,6 +463,8 @@
             
             <Style x:Key="RichTextBox" TargetType="{x:Type RichTextBox}">
                 <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="FontFamily" Value="Serif"/>
                 <Style.Resources>
                     <Style TargetType="{x:Type Paragraph}">
                         <Setter Property="Margin" Value="0,0,0,10"/>

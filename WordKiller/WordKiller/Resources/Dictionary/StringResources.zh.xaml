@@ -49,6 +49,8 @@
     <system:String x:Key="Text">文本</system:String>
 
     <system:String x:Key="Add">添加</system:String>
+    <system:String x:Key="InsertBefore">插入 (之前)</system:String>
+    <system:String x:Key="InsertAfter">插入 (之后)</system:String>
 
     <system:String x:Key="Cathedra">部门</system:String>
     <system:String x:Key="Completed">实施者</system:String>
@@ -72,6 +74,10 @@
     <system:String x:Key="Url">链接</system:String>
     <system:String x:Key="CirculationDate">参考日期</system:String>
 
+    <system:String x:Key="DeleteСurrent">删除当前</system:String>
+    <system:String x:Key="FirstPage">工作表的第一页</system:String>
+    <system:String x:Key="SecondPage">工作表的第二页</system:String>
+    
     <system:String x:Key="Content">內容</system:String>
 
     <system:String x:Key="Unidentified">未指定</system:String>

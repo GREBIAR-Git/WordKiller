@@ -11,8 +11,8 @@ public class ParagraphTitle : IParagraphData
     public string Data { get => "Title"; set => throw new NotImplementedException(); }
     public string Description { get => "Title"; set => throw new NotImplementedException(); }
 
-    public Visibility DescriptionVisibility()
+    public Visibility DescriptionVisibility
     {
-        return Visibility.Collapsed;
+        get => Visibility.Collapsed;
     }
 }
