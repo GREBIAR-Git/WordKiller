@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">Fehler beim Validieren des Auftragsblatts</system:String>
     <system:String x:Key="Error5">Fehler bei der Gestaltung des Inhalts</system:String>
     <system:String x:Key="Error6">Fehler bei der Generierung des Textes</system:String>
-    <system:String x:Key="Error7">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
-    <system:String x:Key="Error8">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
+    <system:String x:Key="Error7">Fehler bei der Erstellung einer Referenzliste</system:String>
+    <system:String x:Key="Error8">Fehler bei der Erstellung eines Anhangs</system:String>
+    <system:String x:Key="Error9">Fehler beim Erstellen des Berichts: die zu ersetzende Datei ist geöffnet</system:String>
+    <system:String x:Key="Error10">Fehler beim Öffnen der Datei: Datei ist beschädigt</system:String>
 
     <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
 
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">Zurück</system:String>
 
     <system:String x:Key="IsAssociate">Mit dem Programm verbundene Erweiterung(wkr)</system:String>
+    <system:String x:Key="AutoSave">Automatisches Speichern</system:String>
     <system:String x:Key="IsSyntaxChecking">Syntaxprüfung(Basic)</system:String>
     <system:String x:Key="Encoding">Verschlüsselung beim Speichern und Öffnen der Datei</system:String>
     <system:String x:Key="Encoding0">Keine</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">Zusätzliche Farbe des Programms</system:String>
     <system:String x:Key="AlternativeСolor">Alternative Farbe</system:String>
     <system:String x:Key="HoverColor">Farbe beim Schweben</system:String>
+    <system:String x:Key="ActiveColor">Farbe, wenn das Objekt aktiv ist</system:String>
     <system:String x:Key="FontSize">Schriftgröße</system:String>
     <system:String x:Key="FontSizeRTB">Schriftgröße für RichTextBox</system:String>
     <system:String x:Key="Language">Sprache</system:String>

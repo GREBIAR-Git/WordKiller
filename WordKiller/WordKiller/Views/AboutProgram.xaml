@@ -41,7 +41,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" FontSize="17" Text="{DynamicResource Version}" Style="{StaticResource TextBlockTitle}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="17" Text=": 1.6" Style="{StaticResource TextBlockTitle}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="17" Text=": 1.8" Style="{StaticResource TextBlockTitle}"/>
                 </Grid>
                 
             </Grid>

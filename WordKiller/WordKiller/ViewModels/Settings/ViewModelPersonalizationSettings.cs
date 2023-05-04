@@ -29,6 +29,9 @@ public class ViewModelPersonalizationSettings : ViewModelBase
 
     public string HoverColor { get => hoverColor; set => SetProperty(ref hoverColor, value); }
 
+    string activeColor;
+    public string ActiveColor { get => activeColor; set => SetProperty(ref activeColor, value); }
+
     double fontSize;
     public double FontSize
     {
@@ -92,6 +95,7 @@ public class ViewModelPersonalizationSettings : ViewModelBase
                 AdditionalColor = "#4a76a8";
                 AlternativeColor = "#335e8f";
                 HoverColor = "#b8860b";
+                ActiveColor = "#ff0000";
                 Language = 0;
                 FontSize = 28;
                 FontSizeRTB = 20;
@@ -99,6 +103,7 @@ public class ViewModelPersonalizationSettings : ViewModelBase
                 Properties.Settings.Default.AdditionalColor = additionalColor;
                 Properties.Settings.Default.AlternativeColor = alternativeColor;
                 Properties.Settings.Default.HoverColor = hoverColor;
+                Properties.Settings.Default.ActiveColor = activeColor;
                 Properties.Settings.Default.Save();
             });
         }
@@ -162,12 +167,27 @@ public class ViewModelPersonalizationSettings : ViewModelBase
         }
     }
 
+    ICommand? closingActiveColor;
+
+    public ICommand ClosingActiveColor
+    {
+        get
+        {
+            return closingActiveColor ??= new RelayCommand(obj =>
+            {
+                Properties.Settings.Default.ActiveColor = ActiveColor;
+                Properties.Settings.Default.Save();
+            });
+        }
+    }
+
     public ViewModelPersonalizationSettings()
     {
         mainColor = WordKiller.Properties.Settings.Default.MainColor;
         additionalColor = WordKiller.Properties.Settings.Default.AdditionalColor;
         alternativeColor = WordKiller.Properties.Settings.Default.AlternativeColor;
         hoverColor = WordKiller.Properties.Settings.Default.HoverColor;
+        activeColor = WordKiller.Properties.Settings.Default.ActiveColor;
         fontSize = WordKiller.Properties.Settings.Default.FontSize;
         fontSizeRTB = WordKiller.Properties.Settings.Default.FontSizeRTB;
         language = Properties.Settings.Default.Language;

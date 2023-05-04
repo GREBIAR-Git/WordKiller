@@ -53,13 +53,14 @@ class Report
                     Body body = main.Document.AppendChild(new Body());
 
                     InitStyles(doc);
-
+                    int pageStartNumber = 1;
                     try
                     {
                         if (data.Type != TypeDocument.DefaultDocument && data.Properties.Title)
                         {
                             PageSetup(body, title: true);
                             TitlePart(doc, data.Type, data.Title);
+                            pageStartNumber++;
                         }
                         else
                         {
@@ -74,7 +75,11 @@ class Report
 
                     try
                     {
-                        TaskSheet(doc, data.Properties.TaskSheet, data.Title, data.TaskSheet);
+                        if (data.Properties.TaskSheet)
+                        {
+                            TaskSheet(doc, data.Title, data.TaskSheet);
+                            pageStartNumber++;
+                        }
                     }
                     catch
                     {
@@ -84,8 +89,11 @@ class Report
 
                     try
                     {
-
-                        TableOfContents(doc, data.Properties.TableOfContents);
+                        if (data.Properties.TableOfContents)
+                        {
+                            TableOfContents(doc);
+                            pageStartNumber++;
+                        }
                     }
                     catch
                     {
@@ -109,23 +117,23 @@ class Report
                     }
                     catch
                     {
-                        UIHelper.ShowError("6");
+                        UIHelper.ShowError("7");
                         return false;
                     }
 
-                    //try
+                    try
                     {
                         AppendixPart(doc, data.Appendix, data.Properties.Appendix);
                     }
-                    /*catch
+                    catch
                     {
-                        UIHelper.ShowError("6");
+                        UIHelper.ShowError("8");
                         return false;
-                    }*/
+                    }
 
                     if (data.Properties.PageNumbers)
                     {
-                        PageNumber(doc);
+                        PageNumber(doc, pageStartNumber);
                     }
                 }
                 if (exportHTML)
@@ -140,7 +148,7 @@ class Report
             }
             catch (IOException)
             {
-                UIHelper.ShowError("7");
+                UIHelper.ShowError("9");
             }
         }
 
@@ -223,7 +231,7 @@ class Report
         ";
     }
 
-    static void PageNumber(WordprocessingDocument document)
+    static void PageNumber(WordprocessingDocument document, int start = 4)
     {
         MainDocumentPart mainDocumentPart = document.MainDocumentPart;
 
@@ -239,7 +247,7 @@ class Report
         {
             section.RemoveAllChildren<HeaderReference>();
             section.PrependChild(new HeaderReference() { Id = headerPartId, Type = HeaderFooterValues.Default });
-            section.PrependChild(new PageNumberType { Start = 4 });
+            section.PrependChild(new PageNumberType { Start = start });
         }
     }
 
@@ -420,24 +428,21 @@ class Report
         return style;
     }
 
-    static void TableOfContents(WordprocessingDocument doc, bool on)
+    static void TableOfContents(WordprocessingDocument doc)
     {
-        if (on)
+        PageSetup(doc.MainDocumentPart.Document.Body, title: true);
+        var sdtBlock = new SdtBlock
         {
-            PageSetup(doc.MainDocumentPart.Document.Body, title: true);
-            var sdtBlock = new SdtBlock
-            {
-                InnerXml = GetTOC("Содержание", 14)
-            };
-            doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
+            InnerXml = GetTOC("Содержание", 14)
+        };
+        doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
 
-            var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
-            settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
+        var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
+        settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
 
-            settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
+        settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
 
-            SectionBreak(doc);
-        }
+        SectionBreak(doc);
     }
 
     static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, ViewModelTitle title)
@@ -760,94 +765,91 @@ class Report
         Text(doc, text, justify: JustificationValues.Center);
     }
 
-    static void TaskSheet(WordprocessingDocument doc, bool on, ViewModelTitle title, ViewModelTaskSheet taskSheet)
+    static void TaskSheet(WordprocessingDocument doc, ViewModelTitle title, ViewModelTaskSheet taskSheet)
     {
-        if (on)
+        PageSetup(doc.MainDocumentPart.Document.Body, title: true);
+        Ministry(doc, title.Cathedra);
+
+        string text = "УТВЕРЖДАЮ:";
+        Text(doc, text, left: 9.5f);
+        text = "____________и.о. зав. кафедрой";
+        Text(doc, text, left: 9.5f);
+        text = "«___»_____________" + Properties.Settings.Default.Year + "г.";
+        Text(doc, text, left: 9.5f);
+        EmptyLines(doc, 2);
+        text = "ЗАДАНИЕ";
+        Text(doc, text, 16, JustificationValues.Center, true);
+        string type = string.Empty;
+        if (title.Project)
         {
-            PageSetup(doc.MainDocumentPart.Document.Body, title: true);
-            Ministry(doc, title.Cathedra);
-
-            string text = "УТВЕРЖДАЮ:";
-            Text(doc, text, left: 9.5f);
-            text = "____________и.о. зав. кафедрой";
-            Text(doc, text, left: 9.5f);
-            text = "«___»_____________" + Properties.Settings.Default.Year + "г.";
-            Text(doc, text, left: 9.5f);
-            EmptyLines(doc, 2);
-            text = "ЗАДАНИЕ";
-            Text(doc, text, 16, JustificationValues.Center, true);
-            string type = string.Empty;
-            if (title.Project)
-            {
-                text = "на курсовой проект";
-                type = "курсового проекта";
-            }
-            else if (title.Work)
-            {
-                text = "на курсовую работу";
-                type = "курсовой работы";
-            }
-            Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
-            text = "по дисциплине «" + title.Discipline + "»";
-            Text(doc, text, multiplier: 2);
-            EmptyLines(doc, 1);
-            User performed = title.FirstPerformed();
-            text = "Студент    " + performed.Full + "                Шифр " + performed.Shifr;
-            Text(doc, text, multiplier: 1.5f);
-            text = Properties.Settings.Default.Faculty;
-            Text(doc, text, multiplier: 1.5f);
-            text = "Направление подготовки " + Properties.Settings.Default.Direction;
-            Text(doc, text, multiplier: 1.5f);
-            text = "Группа " + Properties.Settings.Default.Group;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-            text = "1 Тема " + type;
-            Text(doc, text, multiplier: 1.5f);
-            text = title.Theme;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-            text = "2 Срок сдачи студентом законченной работы «___» _____________ " + Properties.Settings.Default.Year;
-            Text(doc, text, multiplier: 1.5f);
-
-            SectionBreak(doc);
-
-            PageSetup(doc.MainDocumentPart.Document.Body, 0.74f, 1.31f, 0.49f, 1.31f, true);
-            text = "3 Исходные данные";
-            Text(doc, text, multiplier: 1.5f);
-
-            text = taskSheet.SourceData;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "4 Содержание " + type;
-            Text(doc, text, multiplier: 1.5f);
-
-            text = taskSheet.TOC;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "5 Отчетный материал " + type;
-            Text(doc, text, multiplier: 1.5f);
-
-            text = taskSheet.ReportingMaterial;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "Руководитель ________________________ " + title.Professor;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "Задание принял к исполнению: «___» _____________ " + Properties.Settings.Default.Year;
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-
-            text = "Подпись студента__________________ ";
-            Text(doc, text, multiplier: 1.5f);
-            EmptyLines(doc, 1);
-            SectionBreak(doc);
-
-            PageSetup(doc.MainDocumentPart.Document.Body);
+            text = "на курсовой проект";
+            type = "курсового проекта";
         }
+        else if (title.Work)
+        {
+            text = "на курсовую работу";
+            type = "курсовой работы";
+        }
+        Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
+        text = "по дисциплине «" + title.Discipline + "»";
+        Text(doc, text, multiplier: 2);
+        EmptyLines(doc, 1);
+        User performed = title.FirstPerformed();
+        text = "Студент    " + performed.Full + "                Шифр " + performed.Shifr;
+        Text(doc, text, multiplier: 1.5f);
+        text = Properties.Settings.Default.Faculty;
+        Text(doc, text, multiplier: 1.5f);
+        text = "Направление подготовки " + Properties.Settings.Default.Direction;
+        Text(doc, text, multiplier: 1.5f);
+        text = "Группа " + Properties.Settings.Default.Group;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+        text = "1 Тема " + type;
+        Text(doc, text, multiplier: 1.5f);
+        text = title.Theme;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+        text = "2 Срок сдачи студентом законченной работы «___» _____________ " + Properties.Settings.Default.Year;
+        Text(doc, text, multiplier: 1.5f);
+
+        SectionBreak(doc);
+
+        PageSetup(doc.MainDocumentPart.Document.Body, 0.74f, 1.31f, 0.49f, 1.31f, true);
+        text = "3 Исходные данные";
+        Text(doc, text, multiplier: 1.5f);
+
+        text = taskSheet.SourceData;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+
+        text = "4 Содержание " + type;
+        Text(doc, text, multiplier: 1.5f);
+
+        text = taskSheet.TOC;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+
+        text = "5 Отчетный материал " + type;
+        Text(doc, text, multiplier: 1.5f);
+
+        text = taskSheet.ReportingMaterial;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+
+        text = "Руководитель ________________________ " + title.Professor;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+
+        text = "Задание принял к исполнению: «___» _____________ " + Properties.Settings.Default.Year;
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+
+        text = "Подпись студента__________________ ";
+        Text(doc, text, multiplier: 1.5f);
+        EmptyLines(doc, 1);
+        SectionBreak(doc);
+
+        PageSetup(doc.MainDocumentPart.Document.Body);
     }
 
     static void MainPart(WordprocessingDocument doc, DocumentData data, bool numberHeading)

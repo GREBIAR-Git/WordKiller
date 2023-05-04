@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">Памылка пры праверцы ліста задання</system:String>
     <system:String x:Key="Error5">Памылка пры фарміраванні зместу</system:String>
     <system:String x:Key="Error6">Памылка пры фарміраванні асноўнага тэксту дакумента</system:String>
-    <system:String x:Key="Error7">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
-    <system:String x:Key="Error8">Памылка адкрыцця файла: файл пашкоджаны</system:String>
+    <system:String x:Key="Error7">Памылка пры фармаванні спісу літаратуры</system:String>
+    <system:String x:Key="Error8">Памылка пры фармаванні прыкладання</system:String>
+    <system:String x:Key="Error9">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
+    <system:String x:Key="Error10">Памылка адкрыцця файла: файл пашкоджаны</system:String>
 
     <system:String x:Key="Question1">Трэба захаваць?</system:String>
     
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">Назад</system:String>
 
     <system:String x:Key="IsAssociate">Пашырэнне (wkr) асацыявана з праграмай</system:String>
+    <system:String x:Key="AutoSave">Аўта-захаванне</system:String>
     <system:String x:Key="IsSyntaxChecking">Праверка сінтаксісу(Базавая)</system:String>
     <system:String x:Key="Encoding">Шыфраванне пры захаванні і адкрыцці файла</system:String>
     <system:String x:Key="Encoding0">Які</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">Дадатковы колер праграмы</system:String>
     <system:String x:Key="AlternativeСolor">Альтэрнатыўны колер колеру</system:String>
     <system:String x:Key="HoverColor">Колер пры навядзенні</system:String>
+    <system:String x:Key="ActiveColor">Колер, калі аб'ект актыўны</system:String>
     <system:String x:Key="FontSize">Памер шрыфта</system:String>
     <system:String x:Key="FontSizeRTB">Памер шрыфта для RichTextBox</system:String>
     <system:String x:Key="Language">Мова</system:String>

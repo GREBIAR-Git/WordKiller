@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -22,6 +23,7 @@ public class ViewModelDocument : ViewModelBase
     public DocumentData Data { get => data; set => SetProperty(ref data, value); }
 
     readonly WordKillerFile file;
+    public WordKillerFile File { get => file; init => SetProperty(ref file, value); }
 
     IParagraphData? selected;
     public IParagraphData? Selected
@@ -585,6 +587,36 @@ public class ViewModelDocument : ViewModelBase
         set => SetProperty(ref mainImage, value);
     }
 
+    Timer timer;
+
+    bool autoSave;
+    public bool AutoSave
+    {
+        get => autoSave;
+        set
+        {
+            SetProperty(ref autoSave, value);
+            Properties.Settings.Default.AutoSave = autoSave;
+            Properties.Settings.Default.Save();
+            if (autoSave)
+            {
+                timer.Change(300000, 300000);
+            }
+            else
+            {
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+    }
+
+    public void AutoSaveFile(object obj)
+    {
+        if (!string.IsNullOrEmpty(File.SavePath))
+        {
+            File.Save(Data);
+        }
+    }
+
     ViewModelExport export;
     public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
 
@@ -924,8 +956,8 @@ public class ViewModelDocument : ViewModelBase
             return newFile ??= new RelayCommand(
             obj =>
             {
-                Data = file.NewFile();
-                VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                Data = file.NewFile(Data);
+                HeaderUpdateSave();
             });
         }
     }
@@ -937,7 +969,7 @@ public class ViewModelDocument : ViewModelBase
         get
         {
             return openFile ??= new RelayCommand(
-            obj =>
+            async obj =>
             {
                 OpenFileDialog openFileDialog = new()
                 {
@@ -945,16 +977,16 @@ public class ViewModelDocument : ViewModelBase
                 };
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    Open(openFileDialog.FileName);
+                    await OpenAsync(openFileDialog.FileName);
                 }
             });
         }
     }
 
-    public void Open(string fileName)
+    public async Task OpenAsync(string fileName)
     {
         DocumentTypeFalse();
-        Data = file.OpenFile(fileName);
+        Data = await file.OpenFile(fileName);
         HeaderUpdate();
         Data.Title.FacultyItems = new();
         Data.Title.CathedraItems = new();
@@ -1488,11 +1520,28 @@ public class ViewModelDocument : ViewModelBase
     bool allowDropRTB;
     public bool AllowDropRTB { get => allowDropRTB; set => SetProperty(ref allowDropRTB, value); }
 
+    ICommand? closed;
+    public ICommand Closed
+    {
+        get
+        {
+            return closed ??= new RelayCommand(
+            obj =>
+            {
+                if (false)
+                {
+                    File.NeedSave(Data);
+                }
+            });
+        }
+    }
     public ViewModelDocument()
     {
+        timer = new Timer(new TimerCallback(AutoSaveFile));
         AddIndex = -1;
         visibility = new();
         AllowDropRTB = false;
+        autoSave = Properties.Settings.Default.AutoSave;
         Photo = Properties.Settings.Default.Photo;
         AutoInput = Properties.Settings.Default.AutoInput;
         data = new();

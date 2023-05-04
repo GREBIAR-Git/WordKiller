@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using WordKiller.Scripts.File.Encryption;
 
-namespace WordKiller.Scripts.ImportExport.Encryption;
+namespace WordKiller.Scripts.File.Encryption;
 
-class Encryption : IEncryption
+class RLEEncryption : IEncryption
 {
     public string Encrypt(string text)
     {
@@ -22,22 +21,43 @@ class Encryption : IEncryption
 
     static string RepeatEncodingBinary(string binarystring)
     {
-        StringBuilder str = new(binarystring);
-        StringBuilder encoded = new();
-        for (int i = 0; i < str.Length; i++)
+        StringBuilder output = new();
+        if (binarystring.Length > 0)
         {
-            int f = 1;
-            for (; f < 10 && i + f < str.Length; f++)
+            char currentSybmol = binarystring[0];
+            int count = 1;
+            foreach (char symbol in binarystring[1..])
             {
-                if (str[i] != str[f + i])
+                if (symbol == currentSybmol)
                 {
-                    break;
+                    count++;
+                }
+                else
+                {
+                    Repeat(ref output, currentSybmol, count);
+                    currentSybmol = symbol;
+                    count = 1;
                 }
             }
-            encoded.Append(f.ToString() + str[i]);
-            i += f - 1;
+            Repeat(ref output, currentSybmol, count);
         }
-        return encoded.ToString();
+        return output.ToString();
+    }
+
+    static void Repeat(ref StringBuilder output, char currentSybmol, int count)
+    {
+        int f = count / 9;
+        for (int i = 0; i < f; i++)
+        {
+            output.Append(9);
+            output.Append(currentSybmol);
+        }
+        if (count > 9 * f)
+        {
+            int c = count - 9 * f;
+            output.Append(c);
+            output.Append(currentSybmol);
+        }
     }
 
     static void DigitsToAbc(ref string digits)
@@ -74,8 +94,6 @@ class Encryption : IEncryption
     static string BinaryStringToString(string binary)
     {
         string normal = Encoding.UTF8.GetString(Enumerable.Range(0, binary.Length / 8).Select(i => Convert.ToByte(binary.Substring(i * 8, 8), 2)).ToArray());
-        normal = normal.Remove(normal.Length - 1, 1);
-        normal = normal.Replace("\n", "\r\n");
         return normal;
     }
 }

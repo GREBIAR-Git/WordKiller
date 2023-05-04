@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">Ошибка при формировании листа задания</system:String>
     <system:String x:Key="Error5">Ошибка при формировании содержания</system:String>
     <system:String x:Key="Error6">Ошибка при формировании основного текста документа</system:String>
-    <system:String x:Key="Error7">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
-    <system:String x:Key="Error8">Ошибка открытия файла: файл повреждён</system:String>
+    <system:String x:Key="Error7">Ошибка при формировании списка литературы</system:String>
+    <system:String x:Key="Error8">Ошибка при формировании приложения</system:String>
+    <system:String x:Key="Error9">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
+    <system:String x:Key="Error10">Ошибка открытия файла: файл повреждён</system:String>
 
     <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
     
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">Назад</system:String>
 
     <system:String x:Key="IsAssociate">Расширение(wkr) ассоциировано с программой</system:String>
+    <system:String x:Key="AutoSave">Авто-сохранение</system:String>
     <system:String x:Key="IsSyntaxChecking">Проверка синтаксиса(Базовая)</system:String>
     <system:String x:Key="Encoding">Шифрование при сохранении и открытии файла</system:String>
     <system:String x:Key="Encoding0">Никакое</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">Дополнительный цвет программы</system:String>
     <system:String x:Key="AlternativeСolor">Альтернативный цвет программы</system:String>
     <system:String x:Key="HoverColor">Цвет при наведении</system:String>
+    <system:String x:Key="ActiveColor">Цвет, когда объект активен</system:String>
     <system:String x:Key="FontSize">Размер шрифта</system:String>
     <system:String x:Key="FontSizeRTB">Размер шрифта для RichTextBox</system:String>
     <system:String x:Key="Language">Язык</system:String>

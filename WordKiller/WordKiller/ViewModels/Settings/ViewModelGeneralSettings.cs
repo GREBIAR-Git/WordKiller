@@ -11,7 +11,6 @@ public class ViewModelGeneralSettings : ViewModelBase
     public General Commands { get; set; }
 
     bool? spellCheckRTB;
-
     public bool? SpellCheckRTB
     {
         get => spellCheckRTB;
@@ -21,14 +20,14 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-    bool? associationWKR;
-    public bool? AssociationWKR
+    bool associationWKR;
+    public bool AssociationWKR
     {
         get => associationWKR;
         set
         {
             SetProperty(ref associationWKR, value);
-            bool association = AssociationWKR ?? true;
+            bool association = AssociationWKR;
             if (association)
             {
                 if (!FileAssociation.IsRunAsAdmin())
@@ -84,63 +83,59 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-    bool? syntaxChecking;
-
-    public bool? SyntaxChecking
+    bool syntaxChecking;
+    public bool SyntaxChecking
     {
         get => syntaxChecking;
         set
         {
             SetProperty(ref syntaxChecking, value);
-            Properties.Settings.Default.SyntaxChecking = SyntaxChecking ?? false;
+            Properties.Settings.Default.SyntaxChecking = SyntaxChecking;
             Properties.Settings.Default.Save();
             SpellCheckRTB = SyntaxChecking;
         }
     }
 
     int encodingIndex;
-
     public int EncodingIndex
     {
         get => encodingIndex;
         set
         {
             SetProperty(ref encodingIndex, value);
-            Properties.Settings.Default.NumberEncoding = EncodingIndex;
+            Properties.Settings.Default.NumberEncryption = EncodingIndex;
             Properties.Settings.Default.Save();
         }
     }
 
 
-    bool? closeWindow;
-
-    public bool? CloseWindow
+    bool closeWindow;
+    public bool CloseWindow
     {
         get => closeWindow;
         set
         {
             SetProperty(ref closeWindow, value);
-            Properties.Settings.Default.CloseWindow = CloseWindow ?? false;
+            Properties.Settings.Default.CloseWindow = CloseWindow;
             Properties.Settings.Default.Save();
         }
     }
 
-    bool? autoHeader;
-
-    public bool? AutoHeader
+    bool autoHeader;
+    public bool AutoHeader
     {
         get => autoHeader;
         set
         {
             SetProperty(ref autoHeader, value);
-            Properties.Settings.Default.AutoHeader = AutoHeader ?? true;
+            Properties.Settings.Default.AutoHeader = AutoHeader;
             Properties.Settings.Default.Save();
         }
     }
 
     public ViewModelGeneralSettings()
     {
-        encodingIndex = Properties.Settings.Default.NumberEncoding;
+        encodingIndex = Properties.Settings.Default.NumberEncryption;
         closeWindow = Properties.Settings.Default.CloseWindow;
         syntaxChecking = Properties.Settings.Default.SyntaxChecking;
         autoHeader = Properties.Settings.Default.AutoHeader;

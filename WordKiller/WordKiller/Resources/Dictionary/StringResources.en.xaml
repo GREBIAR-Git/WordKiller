@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">Error validating task sheet</system:String>
     <system:String x:Key="Error5">Error generating content</system:String>
     <system:String x:Key="Error6">Error in generating the body text of the document</system:String>
-    <system:String x:Key="Error7">Error when generating the report: The file you want to replace is open</system:String>
-    <system:String x:Key="Error8">Error opening the file: The file is corrupted</system:String>
+    <system:String x:Key="Error7">Error in generating a reference list</system:String>
+    <system:String x:Key="Error8">Error in generating an appendix</system:String>
+    <system:String x:Key="Error9">Error when generating the report: The file you want to replace is open</system:String>
+    <system:String x:Key="Error10">Error opening the file: The file is corrupted</system:String>
 
     <system:String x:Key="Question1">Do you need to save it?</system:String>
 
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">Back</system:String>
 
     <system:String x:Key="IsAssociate">The extension(wkr) is associated with the program</system:String>
+    <system:String x:Key="AutoSave">Autosave</system:String>
     <system:String x:Key="IsSyntaxChecking">Syntax Check (Basic)</system:String>
     <system:String x:Key="Encoding">Encryption when saving and opening a file</system:String>
     <system:String x:Key="Encoding0">None</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">Secondary colour</system:String>
     <system:String x:Key="AlternativeСolor">Alternative colour</system:String>
     <system:String x:Key="HoverColor">Selection colour</system:String>
+    <system:String x:Key="ActiveColor">Color when object is active</system:String>
     <system:String x:Key="FontSize">Font size</system:String>
     <system:String x:Key="FontSizeRTB">Font size for RichTextBox</system:String>
     <system:String x:Key="Language">Language</system:String>

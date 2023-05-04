@@ -2,20 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WordKiller.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="FirstName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="LastName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MiddleName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Shifr" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="Universitet" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Орловский Государственный университет имени И.С. Тургенева</Value>
     </Setting>
     <Setting Name="Faculty" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -26,17 +14,11 @@
     <Setting Name="Group" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FirstNameCoop" Type="System.String" Scope="User">
+    <Setting Name="Direction" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LastNameCoop" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="MiddleNameCoop" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ShifrCoop" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="Year" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2023</Value>
     </Setting>
     <Setting Name="CloseWindow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -44,7 +26,7 @@
     <Setting Name="SyntaxChecking" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="NumberEncoding" Type="System.Int32" Scope="User">
+    <Setting Name="NumberEncryption" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Extension" Type="System.String" Scope="Application">
@@ -71,17 +53,20 @@
     <Setting Name="HoverColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#b8860b</Value>
     </Setting>
+      <Setting Name="ActiveColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#ff0000</Value>
+    </Setting>
     <Setting Name="FontSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">28</Value>
+    </Setting>
+    <Setting Name="FontSizeRTB" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="Language" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="MaxRowAndColumn" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
-    </Setting>
-    <Setting Name="FontSizeRTB" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="TreeViewSize" Type="System.Double" Scope="User">
       <Value Profile="(Default)">40</Value>
@@ -95,11 +80,8 @@
     <Setting Name="AutoInputS" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Year" Type="System.String" Scope="User">
-      <Value Profile="(Default)">2023</Value>
-    </Setting>
-    <Setting Name="Direction" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="AutoSave" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

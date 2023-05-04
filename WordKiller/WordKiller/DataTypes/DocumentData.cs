@@ -25,19 +25,12 @@ public class DocumentData : MainSection
     ViewModelAppendix appendix;
     public ViewModelAppendix Appendix { get => appendix; set => SetProperty(ref appendix, value); }
 
-    public void Clear()
-    {
-        Paragraphs.Clear();
-        Title = new();
-        Properties = new();
-    }
-
     public DocumentData() : base()
     {
-        appendix = new();
         properties = new();
         title = new();
         taskSheet = new();
-        ListOfReferences = new();
+        listOfReferences = new();
+        appendix = new();
     }
 }

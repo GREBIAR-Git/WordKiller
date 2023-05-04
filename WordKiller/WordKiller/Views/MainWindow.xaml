@@ -9,12 +9,15 @@
         xmlns:vm="clr-namespace:WordKiller.ViewModels"
         xmlns:gu="https://github.com/GuOrg/Gu.Wpf.FlipView"
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
-        xmlns:m="clr-namespace:WordKiller.Models"
-        xmlns:local="clr-namespace:WordKiller"
         xmlns:rtb="clr-namespace:WordKiller.Scripts"
         mc:Ignorable="d"
         Name="win"
         Title="{Binding Path=Document.WinTitle,Mode=TwoWay}" Height="480" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" DragEnter="Win_DragEnter" DragOver="Win_DragOver" DragLeave="Win_DragLeave">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding Path=Document.Closed}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.DataContext>
         <vm:ViewModelMain/>
     </Window.DataContext>
@@ -29,7 +32,7 @@
     <Window.CommandBindings>
         <CommandBinding Command="Undo" Executed="WindowBinding_Unselect"/>
     </Window.CommandBindings>
-    <Grid x:Name="root" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+    <Grid x:Name="root" Background="{Binding Path=Settings.Personalization.MainColor}">
         <Grid Visibility="{Binding Path=VisibilityMainPanel}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -102,9 +105,9 @@
                 <Button Margin="0,0,3,0" HorizontalAlignment="Right" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
                     <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
-                <Image Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                <Image Width="20" Height="20" Margin="0,0,28,0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilitySaveLogo, Mode=TwoWay}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+            <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{Binding Path=Resizing.TreeViewSize, Mode=TwoWay}" MinWidth="75"/>
                     <ColumnDefinition Width="auto"/>
@@ -369,7 +372,7 @@
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
-                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" IsTabStop="True" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                <GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" IsTabStop="True" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{Binding Path=Settings.Personalization.MainColor}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="DragCompleted">
                             <i:InvokeCommandAction Command="{Binding Path=Resizing.ResizingTreeView}"/>
@@ -415,7 +418,7 @@
                             <TextBlock Grid.Column="0" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
                             <Button Grid.Column="1" Width="30" Height="30" Content="A" Margin="5 0 0 0" Visibility="{Binding Document.VisibilitY.AutoList}" Command="{Binding Document.AutoList}"/>
                         </Grid>
-                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.TablePanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.TablePanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100*"/>
                             </Grid.ColumnDefinitions>
@@ -454,7 +457,7 @@
                             </Border>
                         </Grid>
                     </Grid>
-                    <Grid Visibility="{Binding Document.VisibilitY.TitlePanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.TitlePanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
@@ -639,7 +642,7 @@
                             </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <Grid Visibility="{Binding Document.VisibilitY.TaskSheetPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.TaskSheetPanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
@@ -714,7 +717,7 @@
                             </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <ScrollViewer Margin="10 0 0 0" Visibility="{Binding Document.VisibilitY.ListOfReferencesPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <ScrollViewer Margin="10 0 0 0" Visibility="{Binding Document.VisibilitY.ListOfReferencesPanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -777,7 +780,7 @@
                             </DataGrid>
                         </Grid>
                     </ScrollViewer>
-                    <Grid Visibility="{Binding Document.VisibilitY.AppendixPanel}" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                    <Grid Visibility="{Binding Document.VisibilitY.AppendixPanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                         <Grid Margin="10 15 10 15" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30"/>
@@ -822,7 +825,7 @@
                                             <TextBlock Grid.Row="1" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
                                             <Border Grid.Row="2" BorderThickness="3" BorderBrush="White" AllowDrop="True" DragEnter="PictureBox_DragEnter" DragLeave="PictureBox_DragLeave" DragOver="PictureBox_DragOver" Drop="PictureBox_Drop_Appendix">
                                                 <Border BorderThickness="4" BorderBrush="{Binding Path=DataContext.Settings.Personalization.AlternativeColor,Mode=TwoWay, ElementName=root}">
-                                                    <Grid Background="{Binding Path=DataContext.Settings.Personalization.AdditionalColor,Mode=TwoWay, ElementName=root}">
+                                                    <Grid Background="{Binding Path=DataContext.Settings.Personalization.AdditionalColor, ElementName=root}">
                                                         <Image Source="{Binding BitmapImage}" Stretch="Fill" />
                                                         <ContentControl Background="White" Visibility="{Binding ElementName=root, Path=DataContext.VisibilityDrag, Mode=TwoWay}" Style="{StaticResource TheAwesomeXAMLimage}"/>
                                                     </Grid>
@@ -839,7 +842,7 @@
                                             </Grid.RowDefinitions>
                                             <TextBox Grid.Row="0" Style="{StaticResource TextBox}" Text="{Binding Description}" AllowDrop="True" />
                                             <TextBlock Grid.Row="1" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                                            <Grid Grid.Row="2" Background="{Binding Path=Settings.Personalization.MainColor,Mode=TwoWay}">
+                                            <Grid Grid.Row="2" Background="{Binding Path=Settings.Personalization.MainColor}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="100*"/>
                                                 </Grid.ColumnDefinitions>
@@ -902,13 +905,14 @@
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="auto" MinHeight="100"/>
+                        <RowDefinition Height="auto" MinHeight="100"/>
                         <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
                                 <ColumnDefinition Width="40*"/>
@@ -925,7 +929,24 @@
                         </Grid>
                     </Border>
                     <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="40*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextAlignment="Right" Text="{DynamicResource AutoSave}" Style="{StaticResource TextBlock}"/>
+                            <CheckBox Grid.Row="0" Grid.Column="1" Margin="10 0 0 0" HorizontalAlignment="Left" IsChecked="{Binding Path=Document.AutoSave, Mode=TwoWay}">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" ScaleY="{Binding Path=Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=1}" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
                                 <ColumnDefinition Width="40*"/>
@@ -941,8 +962,8 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                    <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
                                 <ColumnDefinition Width="40*"/>
@@ -957,8 +978,8 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                    <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
                                 <ColumnDefinition Width="40*"/>
@@ -974,8 +995,8 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                    <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="70*"/>
                                 <ColumnDefinition Width="40*"/>
@@ -991,8 +1012,8 @@
                             </CheckBox>
                         </Grid>
                     </Border>
-                    <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
-                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                    <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="33*"/>
                                 <ColumnDefinition Width="34*"/>
@@ -1003,9 +1024,9 @@
                                 <RowDefinition Height="75*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{DynamicResource FileSettings}" TextWrapping="NoWrap" HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource TextBlock}"/>
-                            <Button Grid.Row="1" Grid.Column="0" Content="{DynamicResource Open}" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileOpen}"/>
-                            <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource Delete}" Margin="0 5 5 0" Command="{Binding Settings.General.Commands.ConfigFileDelete}"/>
-                            <Button Grid.Row="1" Grid.Column="2" Content="{DynamicResource DeleteAll}" Margin="0 5 0 0" Command="{Binding Settings.General.Commands.ConfigFileDeleteAll}"/>
+                            <Button Grid.Row="1" Grid.Column="0" Content="{DynamicResource Open}" Margin="5 5 5 5" Command="{Binding Settings.General.Commands.ConfigFileOpen}"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource Delete}" Margin="0 5 5 5" Command="{Binding Settings.General.Commands.ConfigFileDelete}"/>
+                            <Button Grid.Row="1" Grid.Column="2" Content="{DynamicResource DeleteAll}" Margin="0 5 5 5" Command="{Binding Settings.General.Commands.ConfigFileDeleteAll}"/>
                         </Grid>
                     </Border>
                 </Grid>
@@ -1020,7 +1041,7 @@
                     <RowDefinition Height="100*"/>
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource BorderGroupBox}" Margin="10 10 10 0">
-                    <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}">
+                    <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}">
                         <Button Grid.Row="0" Grid.Column="0" Content="{DynamicResource ByDefault}" Command="{Binding Settings.Personalization.ByDefault}"/>
                     </Grid>
                 </Border>
@@ -1039,7 +1060,7 @@
                             <RowDefinition Height="auto" MinHeight="100"/>
                             <RowDefinition Height="10"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="0" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1058,7 +1079,7 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1077,7 +1098,7 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="2" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1096,7 +1117,7 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1115,7 +1136,26 @@
                                 </xctk:ColorPicker>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="4" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="3" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="45*"/>
+                                    <RowDefinition Height="55*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource ActiveColor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" SelectedColor="{Binding Path=Settings.Personalization.ActiveColor, Mode=TwoWay}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="Closed">
+                                            <i:InvokeCommandAction Command="{Binding Path=Settings.Personalization.ClosingActiveColor}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </xctk:ColorPicker>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="4" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1128,7 +1168,7 @@
                                 <Slider Grid.Row="1" IsSnapToTickEnabled="True" HorizontalAlignment="Center" Value="{Binding Path=Settings.Personalization.FontSize, Mode=TwoWay}" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="5" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="5" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1141,7 +1181,7 @@
                                 <Slider Grid.Row="1" IsSnapToTickEnabled="True" Value="{Binding Path=Settings.Personalization.FontSizeRTB, Mode=TwoWay}" HorizontalAlignment="Center" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Minimum="0" Maximum="48" MinWidth="250" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="6" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor,Mode=TwoWay}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
+                        <Border Grid.Row="6" Grid.Column="0" Background="{Binding Path=Settings.Personalization.AdditionalColor}" Style="{StaticResource BorderGroupBox}" Margin="10 10 0 0">
                             <Grid HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100*"/>
@@ -1181,7 +1221,7 @@
                             <Grid Grid.Row="1">
                                 <CheckBox Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="A" IsChecked="{Binding Path=Settings.Profile.AutoInput, Mode=TwoWay}" FontSize="26" Visibility="{Binding Document.VisibilitY.TitleText}" Style="{StaticResource RadioButton}"/>
                             </Grid>
-                            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible">
+                            <ScrollViewer Grid.Row="0">
                                 <Grid Margin="10 0 0 0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>

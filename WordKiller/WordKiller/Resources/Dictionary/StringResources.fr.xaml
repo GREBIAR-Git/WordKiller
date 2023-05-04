@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">Erreur lors de la validation de la feuille de travail</system:String>
     <system:String x:Key="Error5">Erreur de mise en forme du contenu</system:String>
     <system:String x:Key="Error6">Erreur de génération du corps du texte</system:String>
-    <system:String x:Key="Error7">Erreur lors de la génération du rapport : le fichier que vous voulez remplacer est ouvert</system:String>
-    <system:String x:Key="Error8">Erreur d'ouverture du fichier : le fichier est corrompu</system:String>
+    <system:String x:Key="Error7">Erreur dans la génération d'une liste de référence</system:String>
+    <system:String x:Key="Error8">Erreur dans la génération d'une annexe</system:String>
+    <system:String x:Key="Error9">Erreur lors de la génération du rapport : le fichier que vous voulez remplacer est ouvert</system:String>
+    <system:String x:Key="Error10">Erreur d'ouverture du fichier : le fichier est corrompu</system:String>
 
     <system:String x:Key="Question1">Avez-vous besoin d'économiser ?</system:String>
     
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">Retour</system:String>
 
     <system:String x:Key="IsAssociate">Extension(wkr) associée au programme</system:String>
+    <system:String x:Key="AutoSave">Sauvegarde automatique</system:String>
     <system:String x:Key="IsSyntaxChecking">Contrôle syntaxique(Basic)</system:String>
     <system:String x:Key="Encoding">Cryptage lors de l'enregistrement et de l'ouverture du fichier</system:String>
     <system:String x:Key="Encoding0">Aucun</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">Couleur supplémentaire du programme</system:String>
     <system:String x:Key="AlternativeСolor">Couleur de couleur alternative</system:String>
     <system:String x:Key="HoverColor">Couleur lorsqu'il oscille</system:String>
+    <system:String x:Key="ActiveColor">Couleur lorsque l'objet est actif</system:String>
     <system:String x:Key="FontSize">Taille de police</system:String>
     <system:String x:Key="FontSizeRTB">Taille de police pour RichTextBox</system:String>
     <system:String x:Key="Language">Langue</system:String>

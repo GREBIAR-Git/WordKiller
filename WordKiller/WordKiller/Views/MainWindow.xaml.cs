@@ -19,24 +19,11 @@ public partial class MainWindow : Window
 
     IParagraphData? target;
 
-    public MainWindow(string[] args)
+    public MainWindow(ViewModelDocument document)
     {
-        //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
-
         InitializeComponent();
         viewModel = (ViewModelMain)DataContext;
-
-        if (args.Length > 0)
-        {
-            if (args[0].EndsWith(Properties.Settings.Default.Extension) && File.Exists(args[0]))
-            {
-                viewModel.Document.Open(args[0]);
-            }
-            else
-            {
-                UIHelper.ShowError("1");
-            }
-        }
+        viewModel.Document = document;
     }
 
     // Таблица
@@ -364,7 +351,6 @@ public partial class MainWindow : Window
 
     void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
     {
-        //добавить чтобы главный копировать
         if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
         {
             if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -456,7 +442,6 @@ public partial class MainWindow : Window
     }
 
     // Главный RichTextBox
-
     void WindowBinding_Unselect(object sender, ExecutedRoutedEventArgs e)
     {
         if (viewModel.Document.Selected != null)

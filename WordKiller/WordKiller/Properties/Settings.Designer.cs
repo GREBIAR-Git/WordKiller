@@ -41,10 +41,9 @@ namespace WordKiller.Properties {
             }
         }
 
-
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Орловский Государственный университет имени И.С. Тургенева")]
         public string Universitet {
             get {
                 return ((string)(this["Universitet"]));
@@ -93,48 +92,24 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FirstNameCoop {
+        public string Direction {
             get {
-                return ((string)(this["FirstNameCoop"]));
+                return ((string)(this["Direction"]));
             }
             set {
-                this["FirstNameCoop"] = value;
+                this["Direction"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LastNameCoop {
+        [global::System.Configuration.DefaultSettingValueAttribute("2023")]
+        public string Year {
             get {
-                return ((string)(this["LastNameCoop"]));
+                return ((string)(this["Year"]));
             }
             set {
-                this["LastNameCoop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string MiddleNameCoop {
-            get {
-                return ((string)(this["MiddleNameCoop"]));
-            }
-            set {
-                this["MiddleNameCoop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ShifrCoop {
-            get {
-                return ((string)(this["ShifrCoop"]));
-            }
-            set {
-                this["ShifrCoop"] = value;
+                this["Year"] = value;
             }
         }
         
@@ -165,12 +140,12 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int NumberEncoding {
+        public int NumberEncryption {
             get {
-                return ((int)(this["NumberEncoding"]));
+                return ((int)(this["NumberEncryption"]));
             }
             set {
-                this["NumberEncoding"] = value;
+                this["NumberEncryption"] = value;
             }
         }
         
@@ -269,6 +244,18 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
+        public string ActiveColor {
+            get {
+                return ((string)(this["ActiveColor"]));
+            }
+            set {
+                this["ActiveColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("28")]
         public double FontSize {
             get {
@@ -276,6 +263,18 @@ namespace WordKiller.Properties {
             }
             set {
                 this["FontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public double FontSizeRTB {
+            get {
+                return ((double)(this["FontSizeRTB"]));
+            }
+            set {
+                this["FontSizeRTB"] = value;
             }
         }
         
@@ -300,18 +299,6 @@ namespace WordKiller.Properties {
             }
             set {
                 this["MaxRowAndColumn"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public double FontSizeRTB {
-            get {
-                return ((double)(this["FontSizeRTB"]));
-            }
-            set {
-                this["FontSizeRTB"] = value;
             }
         }
         
@@ -365,25 +352,13 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2023")]
-        public string Year {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoSave {
             get {
-                return ((string)(this["Year"]));
+                return ((bool)(this["AutoSave"]));
             }
             set {
-                this["Year"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Direction {
-            get {
-                return ((string)(this["Direction"]));
-            }
-            set {
-                this["Direction"] = value;
+                this["AutoSave"] = value;
             }
         }
     }

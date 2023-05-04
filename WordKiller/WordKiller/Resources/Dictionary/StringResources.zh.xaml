@@ -95,8 +95,10 @@
     <system:String x:Key="Error4">驗證工作表時出錯</system:String>
     <system:String x:Key="Error5">内容形成的错误</system:String>
     <system:String x:Key="Error6">形成文档主文本时出错</system:String>
-    <system:String x:Key="Error7">生成报告时出错：要替换的文件已打开</system:String>
-    <system:String x:Key="Error8">文件打开错误：文件已损坏</system:String>
+    <system:String x:Key="Error7">生成参考文献列表时出错</system:String>
+    <system:String x:Key="Error8">生成附录时出错</system:String>
+    <system:String x:Key="Error9">生成报告时出错：要替换的文件已打开</system:String>
+    <system:String x:Key="Error10">文件打开错误：文件已损坏</system:String>
 
     <system:String x:Key="Question1">我需要保存它吗？</system:String>
     
@@ -107,6 +109,7 @@
     <system:String x:Key="BackSettings">後退</system:String>
 
     <system:String x:Key="IsAssociate">与程序相关的扩展(wkr)</system:String>
+    <system:String x:Key="AutoSave">自动保存</system:String>
     <system:String x:Key="IsSyntaxChecking">语法检查(基本)</system:String>
     <system:String x:Key="Encoding">保存和打开文件时的加密</system:String>
     <system:String x:Key="Encoding0">无</system:String>
@@ -122,6 +125,7 @@
     <system:String x:Key="ComplementaryСolor">程序的其他顏色</system:String>
     <system:String x:Key="AlternativeСolor">替代顏色</system:String>
     <system:String x:Key="HoverColor">懸停時顏色</system:String>
+    <system:String x:Key="ActiveColor">对象处于活动状态时的颜色</system:String>
     <system:String x:Key="FontSize">字體大小</system:String>
     <system:String x:Key="FontSizeRTB">RichTextBox 的字體大小</system:String>
     <system:String x:Key="Language">語</system:String>
