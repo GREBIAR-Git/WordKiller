@@ -144,6 +144,20 @@
     <system:String x:Key="Users">Benutzer</system:String>
     <system:String x:Key="AutoPerformed">Durchgeführt (auto)</system:String>
 
+    <system:String x:Key="Settings">Einstellungen</system:String>
+    <system:String x:Key="Saved">Gespeicherte</system:String>
+    <system:String x:Key="OpensFolder">Öffnet den Ordner mit der Anwendungseinstellungsdatei im Explorer</system:String>
+    <system:String x:Key="DeletesFile">Löscht die Datei mit den Anwendungseinstellungen</system:String>
+    <system:String x:Key="DeletesAllFile">Löscht alle Dateien und Ordner, die mit den Anwendungseinstellungen verbunden sind</system:String>
+    <system:String x:Key="DefaultValues">Stellt alle Personalisierungseinstellungen auf die Standardwerte zurück</system:String>
+    <system:String x:Key="RefreshAllData">Alle Daten in der Dropdown-Liste aktualisieren</system:String>
+    <system:String x:Key="SetYear">Aktuelles Jahr einstellen</system:String>
+    <system:String x:Key="ManualInput">Aktivieren oder Deaktivieren der manuellen Eingabe</system:String>
+    <system:String x:Key="DaDImage">Bild hierher ziehen und ablegen</system:String>
+    <system:String x:Key="DeleteNumbering">Nummerierung löschen (z.B.: wenn sie beim Kopieren übrig geblieben ist)</system:String>
+    <system:String x:Key="LoadUsers">Benutzer laden, die in den Profileinstellungen hinzugefügt wurden</system:String>
+    <system:String x:Key="ReplacePagePhoto">Seite durch Foto ersetzen</system:String>
+
     <system:String x:Key="ProductInfo">Produkt-Informationen</system:String>
     <system:String x:Key="WrittenIn">Geschrieben in C#</system:String>
     <system:String x:Key="Interface">Schnittstelle</system:String>

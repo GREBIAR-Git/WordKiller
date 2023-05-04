@@ -144,6 +144,20 @@
     <system:String x:Key="Users">Пользователи</system:String>
     <system:String x:Key="AutoPerformed">Выполнял (авто)</system:String>
 
+    <system:String x:Key="Settings">Настройки</system:String>
+    <system:String x:Key="Saved">Сохранено</system:String>
+    <system:String x:Key="OpensFolder">Открывает папку с файлом настроек приложения в проводнике</system:String>
+    <system:String x:Key="DeletesFile">Удаляет файл с настройками приложения</system:String>
+    <system:String x:Key="DeletesAllFile">Удаляет все файлы и папки, связанные с настройками приложения</system:String>
+    <system:String x:Key="DefaultValues">Восстановить все настройки персонализации до значений по умолчанию</system:String>
+    <system:String x:Key="RefreshAllData">Обновить все данные в выпадающем списке</system:String>
+    <system:String x:Key="SetYear">Установить текущий год</system:String>
+    <system:String x:Key="ManualInput">Включить или отключить ручной ввод</system:String>
+    <system:String x:Key="DaDImage">Перетащите сюда изображение</system:String>
+    <system:String x:Key="DeleteNumbering">Удалить нумерацию (например: если она осталось при копировании)</system:String>
+    <system:String x:Key="LoadUsers">Загрузить пользователей, которые были добавлены в настройках профиля</system:String>
+    <system:String x:Key="ReplacePagePhoto">Заменить страницу фотографией</system:String>
+
     <system:String x:Key="ProductInfo">Информация о продукте</system:String>
     <system:String x:Key="WrittenIn">Программа написана на языке C#</system:String>
     <system:String x:Key="Interface">Интерфейс</system:String>

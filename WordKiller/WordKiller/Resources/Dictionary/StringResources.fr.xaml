@@ -144,6 +144,20 @@
     <system:String x:Key="Users">Utilisateurs</system:String>
     <system:String x:Key="AutoPerformed">Effectué (auto)</system:String>
 
+    <system:String x:Key="Settings">Paramètres</system:String>
+    <system:String x:Key="Saved">Sauvegardé</system:String>
+    <system:String x:Key="OpensFolder">Ouvre le dossier contenant le fichier des paramètres de l'application dans l'explorateur</system:String>
+    <system:String x:Key="DeletesFile">Supprime le fichier des paramètres de l'application</system:String>
+    <system:String x:Key="DeletesAllFile">Supprime tous les fichiers et dossiers associés aux paramètres de l'application</system:String>
+    <system:String x:Key="DefaultValues">Rétablit les valeurs par défaut de tous les paramètres de personnalisation</system:String>
+    <system:String x:Key="RefreshAllData">Actualise toutes les données de la liste déroulante</system:String>
+    <system:String x:Key="SetYear">Définir l'année en cours</system:String>
+    <system:String x:Key="ManualInput">Activer ou désactiver la saisie manuelle</system:String>
+    <system:String x:Key="DaDImage">Glisser-déposer une image ici</system:String>
+    <system:String x:Key="DeleteNumbering">Supprimer la numérotation (par exemple : si elle a été laissée lors de la copie)</system:String>
+    <system:String x:Key="LoadUsers">Charger les utilisateurs qui ont été ajoutés dans les paramètres du profil</system:String>
+    <system:String x:Key="ReplacePagePhoto">Remplacer la page par une photo</system:String>
+
     <system:String x:Key="ProductInfo">Informations sur le produit</system:String>
     <system:String x:Key="WrittenIn">Écrit en C#</system:String>
     <system:String x:Key="Interface">Interface</system:String>

@@ -1390,13 +1390,13 @@ public class ViewModelDocument : ViewModelBase
             SetProperty(ref autoInput, value);
             if (autoInput)
             {
-                VisibilitY.ManualInput = Visibility.Collapsed;
-                VisibilitY.AutoInput = Visibility.Visible;
+                VisibilitY.ManualInput = Visibility.Visible;
+                VisibilitY.AutoInput = Visibility.Collapsed;
             }
             else
             {
-                VisibilitY.ManualInput = Visibility.Visible;
-                VisibilitY.AutoInput = Visibility.Collapsed;
+                VisibilitY.ManualInput = Visibility.Collapsed;
+                VisibilitY.AutoInput = Visibility.Visible;
             }
             Properties.Settings.Default.AutoInput = autoInput;
             Properties.Settings.Default.Save();

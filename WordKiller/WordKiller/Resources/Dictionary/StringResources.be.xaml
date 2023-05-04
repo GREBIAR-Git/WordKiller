@@ -144,6 +144,20 @@
     <system:String x:Key="Users">Карыстальнік</system:String>
     <system:String x:Key="AutoPerformed">Выконваў (Аўта)</system:String>
 
+    <system:String x:Key="Settings">Наладжваньне</system:String>
+    <system:String x:Key="Saved">Захавана</system:String>
+    <system:String x:Key="OpensFolder">Адкрывае тэчку з файлам налад прыкладання ў правадыру</system:String>
+    <system:String x:Key="DeletesFile">Выдаляе файл з наладамі прыкладання</system:String>
+    <system:String x:Key="DeletesAllFile">Выдаляе ўсе файлы і тэчкі, звязаныя з наладамі прыкладання</system:String>
+    <system:String x:Key="DefaultValues">Аднавіць усе налады персаналізацыі да значэнняў па змаўчанні</system:String>
+    <system:String x:Key="RefreshAllData">Абнавіць усе дадзеныя ў выпадальным спісе</system:String>
+    <system:String x:Key="SetYear">Ўсталяваць бягучы год</system:String>
+    <system:String x:Key="ManualInput">Ўключыць або адключыць ручной ўвод</system:String>
+    <system:String x:Key="DaDImage">Перацягнуць сюды малюнак</system:String>
+    <system:String x:Key="DeleteNumbering">Выдаліць нумарацыю (напрыклад: калі яна засталася пры капіяванні)</system:String>
+    <system:String x:Key="LoadUsers">Загрузіць карыстальнікаў, якія былі дададзеныя ў наладах профілю</system:String>
+    <system:String x:Key="ReplacePagePhoto">Замяніць старонку фатаграфіяй</system:String>
+
     <system:String x:Key="ProductInfo">Інфармацыя пра прадукт</system:String>
     <system:String x:Key="WrittenIn">Праграма напісана на мове C#</system:String>
     <system:String x:Key="Interface">Інтэрфейс</system:String>

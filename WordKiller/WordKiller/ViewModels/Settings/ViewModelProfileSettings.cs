@@ -115,13 +115,13 @@ public class ViewModelProfileSettings : ViewModelBase
             SetProperty(ref autoInput, value);
             if (autoInput)
             {
-                VisibilityManualInput = Visibility.Collapsed;
-                VisibilityAutoInput = Visibility.Visible;
+                VisibilityManualInput = Visibility.Visible;
+                VisibilityAutoInput = Visibility.Collapsed;
             }
             else
             {
-                VisibilityManualInput = Visibility.Visible;
-                VisibilityAutoInput = Visibility.Collapsed;
+                VisibilityManualInput = Visibility.Collapsed;
+                VisibilityAutoInput = Visibility.Visible;
             }
             Properties.Settings.Default.AutoInputS = autoInput;
             Properties.Settings.Default.Save();

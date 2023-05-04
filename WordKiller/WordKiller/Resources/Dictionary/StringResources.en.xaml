@@ -144,6 +144,20 @@
     <system:String x:Key="Users">Users</system:String>
     <system:String x:Key="AutoPerformed">Performed (auto)</system:String>
 
+    <system:String x:Key="Settings">Settings</system:String>
+    <system:String x:Key="Saved">Saved</system:String>
+    <system:String x:Key="OpensFolder">Opens the folder with the application settings file in Explorer</system:String>
+    <system:String x:Key="DeletesFile">Deletes the file with application settings</system:String>
+    <system:String x:Key="DeletesAllFile">Deletes all files and folders associated with the application settings</system:String>
+    <system:String x:Key="DefaultValues">Restore all personalization settings to defaults</system:String>
+    <system:String x:Key="RefreshAllData">Refresh all data in the drop-down list</system:String>
+    <system:String x:Key="SetYear">Set current year</system:String>
+    <system:String x:Key="ManualInput">Enable or disable manual input</system:String>
+    <system:String x:Key="DaDImage">Drag and drop image here</system:String>
+    <system:String x:Key="DeleteNumbering">Delete numbering (for example: if it was left when you copied it)</system:String>
+    <system:String x:Key="LoadUsers">Load users that have been added in the profile settings</system:String>
+    <system:String x:Key="ReplacePagePhoto">Replace page with photo</system:String>
+
     <system:String x:Key="ProductInfo">Product info</system:String>
     <system:String x:Key="WrittenIn">The program is written in C#</system:String>
     <system:String x:Key="Interface">Interface</system:String>

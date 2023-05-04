@@ -316,7 +316,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AutoInput {
             get {
                 return ((bool)(this["AutoInput"]));
@@ -329,24 +329,24 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Photo {
-            get {
-                return ((bool)(this["Photo"]));
-            }
-            set {
-                this["Photo"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AutoInputS {
             get {
                 return ((bool)(this["AutoInputS"]));
             }
             set {
                 this["AutoInputS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Photo {
+            get {
+                return ((bool)(this["Photo"]));
+            }
+            set {
+                this["Photo"] = value;
             }
         }
         

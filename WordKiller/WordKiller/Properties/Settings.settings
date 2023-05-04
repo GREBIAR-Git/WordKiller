@@ -53,7 +53,7 @@
     <Setting Name="HoverColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#b8860b</Value>
     </Setting>
-      <Setting Name="ActiveColor" Type="System.String" Scope="User">
+    <Setting Name="ActiveColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#ff0000</Value>
     </Setting>
     <Setting Name="FontSize" Type="System.Double" Scope="User">
@@ -72,13 +72,13 @@
       <Value Profile="(Default)">40</Value>
     </Setting>
     <Setting Name="AutoInput" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="Photo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AutoInputS" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Photo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AutoSave" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
