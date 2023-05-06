@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.Win32;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 using WordKiller.Scripts.ImportExport;
+using WordKiller.Views;
 
 namespace WordKiller.ViewModels;
 
@@ -166,12 +168,12 @@ public class ViewModelDocument : ViewModelBase
                 {
                     return;
                 }
-                ParagraphToTreeView(dataToAdd);
+                ParagraphToTreeView(dataToAdd, Selected);
             });
         }
     }
 
-    void ParagraphToTreeView(IParagraphData dataToAdd)
+    public void ParagraphToTreeView(IParagraphData dataToAdd, IParagraphData? Selected)
     {
         if (Selected is ParagraphTitle || Selected is ParagraphTaskSheet || Selected is null)
         {
@@ -258,9 +260,124 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    delegate void Insert(IParagraphData into, IParagraphData insert);
+    public void DragDrop(IParagraphData targetItem, IParagraphData sourceItem)//target - выбран source - отпущен в 
+    {
+        MessageDragDrop mgg;
+        if (sourceItem is ParagraphH1)
+        {
+            if (targetItem is ParagraphH1)
+            {
+                mgg = new(insert: Visibility.Collapsed);
+            }
+            else if (targetItem is ParagraphH2)
+            {
+                if (Data.PrevLevel(Data, targetItem) != null)
+                {
+                    mgg = new(swap: Visibility.Collapsed);
+                }
+                else
+                {
+                    mgg = new();
+                }
+            }
+            else
+            {
+                if (Data.PrevLevel(Data, targetItem) != null)
+                {
+                    mgg = new(swap: Visibility.Collapsed);
+                }
+                else
+                {
+                    mgg = new();
+                }
+            }
+        }
+        else if (sourceItem is ParagraphH2)
+        {
+            if (targetItem is ParagraphH1)
+            {
+                if (Data.PrevLevel(Data, sourceItem) != null)
+                {
+                    mgg = new(Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed);
+                }
+                else
+                {
+                    mgg = new(insert: Visibility.Collapsed);
+                }
+            }
+            else if (targetItem is ParagraphH2)
+            {
+                mgg = new(insert: Visibility.Collapsed);
+            }
+            else
+            {
+                IParagraphData? paragraphData = Data.PrevLevel(Data, targetItem);
+                if (paragraphData is SectionH1 || paragraphData is null)
+                {
+                    mgg = new();
+                }
+                else
+                {
+                    mgg = new(swap: Visibility.Collapsed);
+                }
+            }
+        }
+        else
+        {
+            if (targetItem is ParagraphH1)
+            {
+                if (Data.PrevLevel(Data, sourceItem) != null)
+                {
+                    mgg = new(Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed);
+                }
+                else
+                {
+                    mgg = new(insert: Visibility.Collapsed);
+                }
+            }
+            else if (targetItem is ParagraphH2)
+            {
+                IParagraphData? paragraphData = Data.PrevLevel(Data, sourceItem);
+                if (paragraphData is SectionH1 || paragraphData is null)
+                {
+                    mgg = new(insert: Visibility.Collapsed);
+                }
+                else
+                {
+                    mgg = new(Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed, Visibility.Collapsed);
+                }
+            }
+            else
+            {
+                mgg = new(insert: Visibility.Collapsed);
+            }
+        }
+        mgg.ShowDialog();
+        int i = mgg.ViewModel.Number;
+        if (i == 0)
+        {
+            Delete(targetItem);
+            ParagraphToTreeView(targetItem, sourceItem);
+        }
+        else if (i == 1)
+        {
+            Delete(targetItem);
+            InsertToTreeView(targetItem, Data.InsertBefore, sourceItem);
+        }
+        else if (i == 2)
+        {
+            Delete(targetItem);
+            InsertToTreeView(targetItem, Data.InsertAfter, sourceItem);
+        }
+        else if (i == 3)
+        {
+            Data.SwapParagraphs(sourceItem, targetItem);
+        }
+    }
 
-    void InsertToTreeView(IParagraphData dataToAdd, Insert insert)
+    public delegate void Insert(IParagraphData into, IParagraphData insert);
+
+    public void InsertToTreeView(IParagraphData dataToAdd, Insert insert, IParagraphData? Selected)
     {
         if (Selected is SectionH1)
         {
@@ -345,7 +462,7 @@ public class ViewModelDocument : ViewModelBase
         }
         else
         {
-            InsertToTreeView(dataToAdd, Data.InsertBefore);
+            InsertToTreeView(dataToAdd, Data.InsertBefore, Selected);
         }
     }
 
@@ -361,7 +478,7 @@ public class ViewModelDocument : ViewModelBase
         }
         else
         {
-            InsertToTreeView(dataToAdd, Data.InsertAfter);
+            InsertToTreeView(dataToAdd, Data.InsertAfter, Selected);
         }
     }
 
@@ -553,30 +670,35 @@ public class ViewModelDocument : ViewModelBase
             return deleteSelected ??= new RelayCommand(
             obj =>
             {
-                if (Selected != null)
-                {
-                    if (Selected is ParagraphTitle)
-                    {
-                        DeleteTitle();
-                    }
-                    else if (Selected is ParagraphTaskSheet)
-                    {
-                        DeleteTaskSheet();
-                    }
-                    else if (Selected is ParagraphListOfReferences)
-                    {
-                        DeleteListOfReferences();
-                    }
-                    else if (Selected is ParagraphAppendix)
-                    {
-                        DeleteAppendix();
-                    }
-                    else
-                    {
-                        Data.RemoveParagraph(Selected);
-                    }
-                }
+                Delete(Selected);
             });
+        }
+    }
+
+    public void Delete(IParagraphData paragraph)
+    {
+        if (paragraph != null)
+        {
+            if (paragraph is ParagraphTitle)
+            {
+                DeleteTitle();
+            }
+            else if (paragraph is ParagraphTaskSheet)
+            {
+                DeleteTaskSheet();
+            }
+            else if (paragraph is ParagraphListOfReferences)
+            {
+                DeleteListOfReferences();
+            }
+            else if (paragraph is ParagraphAppendix)
+            {
+                DeleteAppendix();
+            }
+            else
+            {
+                Data.RemoveParagraph(paragraph);
+            }
         }
     }
 
@@ -587,7 +709,7 @@ public class ViewModelDocument : ViewModelBase
         set => SetProperty(ref mainImage, value);
     }
 
-    Timer timer;
+    readonly Timer timer;
 
     bool autoSave;
     public bool AutoSave

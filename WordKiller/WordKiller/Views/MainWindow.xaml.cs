@@ -7,7 +7,6 @@ using System.Windows.Input;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
-using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 
@@ -299,7 +298,7 @@ public partial class MainWindow : Window
                     DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
                     if ((finalDropEffect == DragDropEffects.Move) && (target != null))
                     {
-                        CopyItem((IParagraphData)paragraphTree.SelectedValue, target);
+                        viewModel.Document.DragDrop((IParagraphData)paragraphTree.SelectedValue, target);
                         target = null;
                     }
                 }
@@ -315,9 +314,7 @@ public partial class MainWindow : Window
         DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
         if (dragDropInfo == null || (TargetItem.Header == dragDropInfo.ParagraphData ||
             dragDropInfo.ParagraphData is ParagraphTitle || dragDropInfo.ParagraphData is ParagraphTaskSheet || dragDropInfo.ParagraphData is ParagraphListOfReferences || dragDropInfo.ParagraphData is ParagraphAppendix ||
-            TargetItem.Header is ParagraphTitle || TargetItem.Header is ParagraphTaskSheet || TargetItem.Header is ParagraphListOfReferences || TargetItem.Header is ParagraphAppendix ||
-            (dragDropInfo.ParagraphData is ParagraphH1 && TargetItem.Header is not ParagraphH1) ||
-            (dragDropInfo.ParagraphData is ParagraphH2 && (TargetItem.Header is not ParagraphH2 && TargetItem.Header is not ParagraphH1))))
+            TargetItem.Header is ParagraphTitle || TargetItem.Header is ParagraphTaskSheet || TargetItem.Header is ParagraphListOfReferences || TargetItem.Header is ParagraphAppendix))
         {
             e.Effects = DragDropEffects.None;
         }
@@ -347,54 +344,6 @@ public partial class MainWindow : Window
         catch (Exception)
         {
         }
-    }
-
-    void CopyItem(IParagraphData _sourceItem, IParagraphData _targetItem)
-    {
-        if (_targetItem is ParagraphH1 && _sourceItem is ParagraphH1)
-        {
-            if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                int i = viewModel.Document.Data.Paragraphs.IndexOf(_targetItem);
-                int f = viewModel.Document.Data.Paragraphs.IndexOf(_sourceItem);
-                (viewModel.Document.Data.Paragraphs[i], viewModel.Document.Data.Paragraphs[f]) = (viewModel.Document.Data.Paragraphs[f], viewModel.Document.Data.Paragraphs[i]);
-            }
-            return;
-        }
-        else if (_targetItem is ParagraphH2)
-        {
-            if (_sourceItem is ParagraphH2)
-            {
-                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    viewModel.Document.Data.SwapParagraphs(_targetItem, _sourceItem);
-                }
-                return;
-            }
-        }
-        if (_targetItem is not SectionParagraphs)
-        {
-            if (_sourceItem is not ParagraphH2 && _sourceItem is not ParagraphH1)
-            {
-                if (MessageBox.Show("Поменять местами «" + _sourceItem.Description.ToString() + "» с «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    viewModel.Document.Data.SwapParagraphs(_targetItem, _sourceItem);
-                }
-                return;
-            }
-            else
-            {
-                MessageBox.Show("Так сделать невозможно", "Ошибка", MessageBoxButton.OK);
-                return;
-            }
-        }
-        if (MessageBox.Show("Вставить «" + _sourceItem.Description.ToString() + "» в «" + _targetItem.Description.ToString() + "»", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-        {
-            viewModel.Document.Data.RemoveParagraph(_sourceItem);
-            SectionParagraphs section = _targetItem as SectionParagraphs;
-            section.AddParagraph(_sourceItem);
-        }
-
     }
 
     void NewNotComplexObjects_Drop(object sender, DragEventArgs e)

@@ -8,6 +8,9 @@
     <Compile Update="Views\Documentation.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\MessageDragDrop.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\AboutProgram.xaml">
@@ -17,6 +20,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MessageDragDrop.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
