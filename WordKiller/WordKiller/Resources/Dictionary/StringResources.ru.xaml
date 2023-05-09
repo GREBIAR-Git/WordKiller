@@ -162,4 +162,12 @@
     <system:String x:Key="WrittenIn">Программа написана на языке C#</system:String>
     <system:String x:Key="Interface">Интерфейс</system:String>
     <system:String x:Key="Version">Версия продукта</system:String>
+
+    <system:String x:Key="Insert">Вставить</system:String>
+    <system:String x:Key="Before">Вставить до</system:String>
+    <system:String x:Key="After">Вставить после</system:String>
+    <system:String x:Key="Swap">Поменять местами</system:String>
+    <system:String x:Key="Cancel">Отмена</system:String>
+    <system:String x:Key="DragDrop1">Что вы хотите сделать?</system:String>
+    <system:String x:Key="DragDrop2">Это сделать невозможно</system:String>
 </ResourceDictionary>

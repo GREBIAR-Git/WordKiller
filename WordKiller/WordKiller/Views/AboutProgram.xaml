@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="{DynamicResource AboutProgram}" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Height="240" Width="405">
-    <Grid Background="#8daacc">
+    <Grid Background="{Binding MainColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="22*"/>
             <ColumnDefinition Width="78*"/>
@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Image Margin="5 0 5 0" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="58" Text="WordKiller" FontWeight="Bold" Style="{StaticResource TextBlockTitle}"/>
-        <GroupBox Margin="5 0 5 5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="#335e8f">
+        <GroupBox Margin="5 0 5 5" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="{Binding AlternativeColor}">
             <GroupBox.Header>
                 <TextBlock Text="{DynamicResource ProductInfo}" FontSize="22" Style="{StaticResource TextBlock}"/>
             </GroupBox.Header>

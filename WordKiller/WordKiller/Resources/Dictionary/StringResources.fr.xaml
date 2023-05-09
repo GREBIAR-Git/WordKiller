@@ -162,4 +162,12 @@
     <system:String x:Key="WrittenIn">Écrit en C#</system:String>
     <system:String x:Key="Interface">Interface</system:String>
     <system:String x:Key="Version">Version du produit</system:String>
+
+    <system:String x:Key="Insert">Insérer</system:String>
+    <system:String x:Key="Before">Coller avant</system:String>
+    <system:String x:Key="After">Coller après</system:String>
+    <system:String x:Key="Swap">Inverser</system:String>
+    <system:String x:Key="Cancel">Annuler</system:String>
+    <system:String x:Key="DragDrop1">Que voulez-vous faire?</system:String>
+    <system:String x:Key="DragDrop2">Ce n'est pas possible</system:String>
 </ResourceDictionary>

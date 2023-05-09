@@ -162,4 +162,12 @@
     <system:String x:Key="WrittenIn">Geschrieben in C#</system:String>
     <system:String x:Key="Interface">Schnittstelle</system:String>
     <system:String x:Key="Version">Version des Produkts</system:String>
+
+    <system:String x:Key="Insert">Einfügen</system:String>
+    <system:String x:Key="Before">Einfügen vor</system:String>
+    <system:String x:Key="After">Einfügen nach</system:String>
+    <system:String x:Key="Swap">Umkehren</system:String>
+    <system:String x:Key="Cancel">Rückgängig machen</system:String>
+    <system:String x:Key="DragDrop1">Was möchten Sie tun?</system:String>
+    <system:String x:Key="DragDrop2">Es kann nicht gemacht werden</system:String>
 </ResourceDictionary>

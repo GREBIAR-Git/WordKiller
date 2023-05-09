@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,7 +63,7 @@ public partial class MainWindow : Window
         }
     }
 
-    void CountRowOrColumn(TextBox textBox, ref int count)
+    static void CountRowOrColumn(TextBox textBox, ref int count)
     {
         int beginningNumber = 0;
         foreach (char number in textBox.Text)
@@ -136,171 +135,18 @@ public partial class MainWindow : Window
     }
 
     //Drag Drop
-
-    bool EnableDragDrop(DragEventArgs e)
-    {
-        DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
-        if (dragDropInfo == null && e.Data.GetData(DataFormats.FileDrop) != null && (paragraphTree.SelectedItem is ParagraphPicture || paragraphTree.SelectedItem is ParagraphCode || paragraphTree.SelectedItem is ParagraphAppendix))
-        {
-            return true;
-        }
-        return false;
-    }
-
-    void Win_DragEnter(object sender, DragEventArgs e)
-    {
-        e.Handled = true;
-        e.Effects = DragDropEffects.None;
-        if (EnableDragDrop(e))
-        {
-            viewModel.VisibilityDrag = Visibility.Visible;
-        }
-    }
-
-    void Win_DragOver(object sender, DragEventArgs e)
-    {
-        e.Handled = true;
-        e.Effects = DragDropEffects.None;
-        if (EnableDragDrop(e))
-        {
-            viewModel.VisibilityDrag = Visibility.Visible;
-        }
-    }
-
-    void Win_DragLeave(object sender, DragEventArgs e)
-    {
-        e.Handled = true;
-        e.Effects = DragDropEffects.None;
-        if (EnableDragDrop(e))
-        {
-            viewModel.VisibilityDrag = Visibility.Collapsed;
-        }
-    }
-
-    void PictureBox_DragEnter(object sender, DragEventArgs e)
-    {
-        if (EnableDragDrop(e))
-        {
-            e.Effects = DragDropEffects.Copy;
-            e.Handled = true;
-            viewModel.VisibilityDrag = Visibility.Visible;
-        }
-    }
-
-    void PictureBox_DragOver(object sender, DragEventArgs e)
-    {
-        if (EnableDragDrop(e))
-        {
-            e.Effects = DragDropEffects.Copy;
-            e.Handled = true;
-            viewModel.VisibilityDrag = Visibility.Visible;
-        }
-    }
-
-    void PictureBox_DragLeave(object sender, DragEventArgs e)
-    {
-        if (EnableDragDrop(e))
-        {
-            e.Effects = DragDropEffects.Copy;
-            e.Handled = true;
-            viewModel.VisibilityDrag = Visibility.Collapsed;
-        }
-    }
-
-    void PictureBox_Drop(object sender, DragEventArgs e)
-    {
-        if (EnableDragDrop(e))
-        {
-            var data = e.Data.GetData(DataFormats.FileDrop);
-            if (data != null)
-            {
-                string path = (data as string[])[0];
-                if (path.Length > 0)
-                {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
-                    if (paragraphTree.SelectedItem is ParagraphPicture paragraphPicture)
-                    {
-                        System.Drawing.Bitmap bitmap;
-                        try
-                        {
-                            bitmap = new(path);
-                        }
-                        catch
-                        {
-                            return;
-                        }
-                        paragraphPicture.Bitmap = bitmap;
-                        viewModel.Document.MainImage = paragraphPicture.BitmapImage;
-                        paragraphPicture.Description = nameFile;
-                    }
-                    else if (paragraphTree.SelectedItem is ParagraphCode paragraphCode)
-                    {
-                        FileStream file = new(path, FileMode.Open);
-                        StreamReader reader = new(file);
-                        string data1 = reader.ReadToEnd();
-                        paragraphCode.Description = nameFile;
-                        richTextBox.SetText(data1, false);
-                    }
-                }
-            }
-            viewModel.VisibilityDrag = Visibility.Collapsed;
-        }
-    }
-
-    void PictureBox_Drop_Appendix(object sender, DragEventArgs e)
-    {
-        if (EnableDragDrop(e))
-        {
-            var data = e.Data.GetData(DataFormats.FileDrop);
-            if (data != null)
-            {
-                string path = (data as string[])[0];
-                if (path.Length > 0)
-                {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
-                    if (viewModel.Document.Data.Appendix.Selected is ParagraphPicture paragraphPicture)
-                    {
-                        System.Drawing.Bitmap bitmap;
-                        try
-                        {
-                            bitmap = new(path);
-                        }
-                        catch
-                        {
-                            return;
-                        }
-                        paragraphPicture.Bitmap = bitmap;
-                        paragraphPicture.UpdateBitmapImage();
-                        paragraphPicture.Description = nameFile;
-                    }
-                    else if (viewModel.Document.Data.Appendix.Selected is ParagraphCode paragraphCode)
-                    {
-                        FileStream file = new(path, FileMode.Open);
-                        StreamReader reader = new(file);
-                        string data1 = reader.ReadToEnd();
-                        paragraphCode.Description = nameFile;
-                        paragraphCode.Data = data1;
-                    }
-                }
-            }
-            viewModel.VisibilityDrag = Visibility.Collapsed;
-        }
-    }
-
     void TreeView_MouseMove(object sender, MouseEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed)
         {
-            if (paragraphTree.SelectedItem is IParagraphData drag)
+            IParagraphData? drag = viewModel.Document.Selected;
+            if (drag is not null && drag is not ParagraphTitle && drag is not ParagraphTaskSheet && drag is not ParagraphListOfReferences && drag is not ParagraphAppendix)
             {
-                if (drag is not ParagraphTitle && drag is not ParagraphTaskSheet && drag is not ParagraphListOfReferences && drag is not ParagraphAppendix)
+                DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo(drag), DragDropEffects.Move);
+                if ((finalDropEffect == DragDropEffects.Move) && (target != null))
                 {
-                    DragDropEffects finalDropEffect = DragDrop.DoDragDrop(paragraphTree, new DragDropInfo((IParagraphData)paragraphTree.SelectedValue), DragDropEffects.Move);
-                    if ((finalDropEffect == DragDropEffects.Move) && (target != null))
-                    {
-                        viewModel.Document.DragDrop((IParagraphData)paragraphTree.SelectedValue, target);
-                        target = null;
-                    }
+                    viewModel.Document.DragDrop(drag, target);
+                    target = null;
                 }
             }
         }
@@ -308,9 +154,7 @@ public partial class MainWindow : Window
 
     void TreeView_DragOver(object sender, DragEventArgs e)
     {
-        TreeViewItem TargetItem = UIHelper.GetNearestContainer
-                (e.OriginalSource as UIElement);
-
+        TreeViewItem TargetItem = UIHelper.GetNearestContainer(e.OriginalSource as UIElement);
         DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
         if (dragDropInfo == null || (TargetItem.Header == dragDropInfo.ParagraphData ||
             dragDropInfo.ParagraphData is ParagraphTitle || dragDropInfo.ParagraphData is ParagraphTaskSheet || dragDropInfo.ParagraphData is ParagraphListOfReferences || dragDropInfo.ParagraphData is ParagraphAppendix ||
@@ -332,8 +176,8 @@ public partial class MainWindow : Window
             e.Effects = DragDropEffects.None;
             e.Handled = true;
 
-            TreeViewItem TargetItem = UIHelper.GetNearestContainer
-                (e.OriginalSource as UIElement);
+            TreeViewItem TargetItem = UIHelper.GetNearestContainer(e.OriginalSource as UIElement);
+
             DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
             if (TargetItem != null && dragDropInfo != null)
             {
@@ -343,50 +187,6 @@ public partial class MainWindow : Window
         }
         catch (Exception)
         {
-        }
-    }
-
-    void NewNotComplexObjects_Drop(object sender, DragEventArgs e)
-    {
-        var data = e.Data.GetData(DataFormats.FileDrop);
-        if (data != null)
-        {
-            foreach (string path in data as string[])
-            {
-                if (path.Length > 0)
-                {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
-                    System.Drawing.Bitmap bitmap;
-                    try
-                    {
-                        bitmap = new(path);
-                        this.viewModel.Document.Data.AddParagraph(new ParagraphPicture(nameFile, bitmap));
-                    }
-                    catch
-                    {
-                        FileStream file = new(path, FileMode.Open);
-                        StreamReader reader = new(file);
-                        string data1 = reader.ReadToEnd();
-                        this.viewModel.Document.Data.AddParagraph(new ParagraphCode(nameFile, data1));
-                    }
-                }
-            }
-        }
-        viewModel.VisibilityDrag = Visibility.Collapsed;
-    }
-
-    void NewNotComplexObjects_DragOver(object sender, DragEventArgs e)
-    {
-        DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
-        if (dragDropInfo != null)
-        {
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
-        }
-        else
-        {
-            e.Effects = DragDropEffects.All;
-            e.Handled = true;
         }
     }
 

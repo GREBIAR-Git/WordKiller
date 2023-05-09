@@ -5,7 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordKiller.Views"
         mc:Ignorable="d"
-        Title="Выберите" Height="120" WindowStyle="SingleBorderWindow" DataContext="{Binding ElementName=root,Path=Owner.DataContext}" x:Name="root" Width="230" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="DRAG DROP" Height="120" WindowStyle="SingleBorderWindow" DataContext="{Binding ElementName=root,Path=Owner.DataContext}" x:Name="root" Width="230" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="3"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+            </Style.Resources>
+
+            <Style.Setters>
+                <Setter Property="Background" Value="{Binding Path=AlternativeColor}"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                            <Binding RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="FontSize" Mode="TwoWay"/>
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{Binding HoverColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Background="{Binding Path=MainColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -20,11 +63,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="33*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Что вы хотите сделать?" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" Style="{StaticResource TextBlock}"/>
-        <Button Grid.Row="1" Grid.Column="1" Background="{Binding AlternativeColor}" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" Content="*" ToolTip="Вставить" Margin="0 0 3 3" Command="{Binding Insert}"/>
-        <Button Grid.Row="1" Grid.Column="2" Background="{Binding AlternativeColor}" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" Content="↑" ToolTip="Вставить до" Margin="0 0 3 3" Command="{Binding Before}"/>
-        <Button Grid.Row="1" Grid.Column="3" Background="{Binding AlternativeColor}" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" Content="↓" ToolTip="Вставить после" Margin="0 0 3 3" Command="{Binding After}"/>
-        <Button Grid.Row="1" Grid.Column="4" Background="{Binding AlternativeColor}" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" Content="**" ToolTip="Поменять местами" Margin="0 0 0 3" Command="{Binding Swap}"/>
-        <Button Grid.Row="2" Grid.Column="1" Background="{Binding AlternativeColor}" Grid.ColumnSpan="4" MinWidth="100" Margin="0 0 0 3" Content="Отменить" Command="{Binding Exit}"/>
+        <TextBlock Text="{DynamicResource DragDrop1}" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" Style="{StaticResource TextBlock}"/>
+        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" Content="*" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}"/>
+        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" Content="↑" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}"/>
+        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" Content="↓" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}"/>
+        <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" Content="**" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}"/>
+        <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" MinWidth="100" Margin="0 0 0 3" Content="{DynamicResource Cancel}" Command="{Binding Exit}"/>
     </Grid>
 </Window>

@@ -162,4 +162,12 @@
     <system:String x:Key="WrittenIn">Праграма напісана на мове C#</system:String>
     <system:String x:Key="Interface">Інтэрфейс</system:String>
     <system:String x:Key="Version">Версія прадукта</system:String>
+
+    <system:String x:Key="Insert">Уставіць</system:String>
+    <system:String x:Key="Before">Уставіць да</system:String>
+    <system:String x:Key="After">Уставіць пасля</system:String>
+    <system:String x:Key="Swap">Памяняць месцамі</system:String>
+    <system:String x:Key="Cancel">Адмяніць</system:String>
+    <system:String x:Key="DragDrop1">Што вы хочаце зрабіць?</system:String>
+    <system:String x:Key="DragDrop2">Гэтага зрабіць немагчыма</system:String>
 </ResourceDictionary>

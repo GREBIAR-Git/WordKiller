@@ -149,7 +149,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref universitet, value);
-            if (AutoInput)
+            if (!AutoInput)
             {
                 UpdateFaculty.Execute(null);
             }
@@ -166,7 +166,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref faculty, value);
-            if (AutoInput)
+            if (!AutoInput)
             {
                 UpdateCours.Execute(null);
             }
@@ -183,7 +183,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref cours, value);
-            if (AutoInput)
+            if (!AutoInput)
             {
                 UpdateGroup.Execute(null);
             }

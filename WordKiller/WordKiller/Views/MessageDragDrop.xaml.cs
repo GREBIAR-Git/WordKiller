@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using WordKiller.ViewModels;
 
 namespace WordKiller.Views
@@ -17,7 +18,7 @@ namespace WordKiller.Views
             ViewModel = new ViewModelMessageDragDrop(insert, before, after, swap);
             if (insert == Visibility.Collapsed && before == Visibility.Collapsed && after == Visibility.Collapsed && swap == Visibility.Collapsed)
             {
-                mainText.Text = "Этого сделать невозможно";
+                mainText.SetResourceReference(TextBlock.TextProperty, "DragDrop2");
             }
             DataContext = ViewModel;
             if (ViewModel.CloseAction == null)

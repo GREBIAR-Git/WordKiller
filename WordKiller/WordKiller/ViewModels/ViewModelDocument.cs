@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1657,6 +1656,7 @@ public class ViewModelDocument : ViewModelBase
             });
         }
     }
+
     public ViewModelDocument()
     {
         timer = new Timer(new TimerCallback(AutoSaveFile));

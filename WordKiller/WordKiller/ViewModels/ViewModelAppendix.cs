@@ -20,7 +20,6 @@ public class ViewModelAppendix : ViewModelBase
 
     [NonSerialized]
     ICommand? add;
-
     public ICommand Add
     {
         get

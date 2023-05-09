@@ -162,4 +162,12 @@
     <system:String x:Key="WrittenIn">用C#编写</system:String>
     <system:String x:Key="Interface">界面</system:String>
     <system:String x:Key="Version">产品版本</system:String>
+
+    <system:String x:Key="Insert">插入</system:String>
+    <system:String x:Key="Before">粘贴在前</system:String>
+    <system:String x:Key="After">粘贴在后</system:String>
+    <system:String x:Key="Swap">反转</system:String>
+    <system:String x:Key="Cancel">撤销</system:String>
+    <system:String x:Key="DragDrop1">你想做什么？</system:String>
+    <system:String x:Key="DragDrop2">不能做</system:String>
 </ResourceDictionary>

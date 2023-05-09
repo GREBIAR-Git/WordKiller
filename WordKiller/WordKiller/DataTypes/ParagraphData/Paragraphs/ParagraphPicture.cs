@@ -60,7 +60,7 @@ public class ParagraphPicture : ViewModelBase, IParagraphData
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
-                    this.bitmapImage = bitmapImage;
+                    this.BitmapImage = bitmapImage;
                     return bitmapImage;
                 }
             }
