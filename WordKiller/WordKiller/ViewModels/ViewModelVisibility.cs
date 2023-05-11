@@ -106,18 +106,6 @@ public class ViewModelVisibility : ViewModelBase
         }
     }
 
-    Visibility manualInput;
-    public Visibility ManualInput { get => manualInput; set => SetProperty(ref manualInput, value); }
-
-    Visibility autoInput;
-    public Visibility AutoInput { get => autoInput; set => SetProperty(ref autoInput, value); }
-
-    Visibility photo;
-    public Visibility Photo { get => photo; set => SetProperty(ref photo, value); }
-
-    Visibility titleText;
-    public Visibility TitleText { get => titleText; set => SetProperty(ref titleText, value); }
-
     Visibility autoList;
     public Visibility AutoList
     {

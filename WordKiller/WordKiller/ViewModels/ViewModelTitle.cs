@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Models;
 
 namespace WordKiller.ViewModels;
@@ -371,17 +372,82 @@ public class ViewModelTitle : ViewModelBase
     Visibility visibitityType;
     public Visibility VisibitityType { get => visibitityType; set => SetProperty(ref visibitityType, value); }
 
+    Visibility visibitityManualInput;
+    public Visibility VisibitityManualInput { get => visibitityManualInput; set => SetProperty(ref visibitityManualInput, value); }
+
+    Visibility visibitityAutoInput;
+    public Visibility VisibitityAutoInput { get => visibitityAutoInput; set => SetProperty(ref visibitityAutoInput, value); }
+
+    Visibility visibitityPhoto;
+    public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetProperty(ref visibitityPhoto, value); }
+
+    Visibility visibitityTitleText;
+    public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetProperty(ref visibitityTitleText, value); }
+
+    bool autoInput;
+    public bool AutoInput
+    {
+        get => autoInput;
+        set
+        {
+            SetProperty(ref autoInput, value);
+            if (autoInput)
+            {
+                VisibitityManualInput = Visibility.Visible;
+                VisibitityAutoInput = Visibility.Collapsed;
+            }
+            else
+            {
+                VisibitityManualInput = Visibility.Collapsed;
+                VisibitityAutoInput = Visibility.Visible;
+            }
+        }
+    }
+
+    bool photo;
+    public bool Photo
+    {
+        get => photo;
+        set
+        {
+            SetProperty(ref photo, value);
+            if (photo)
+            {
+                VisibitityTitleText = Visibility.Collapsed;
+                VisibitityPhoto = Visibility.Visible;
+            }
+            else
+            {
+                VisibitityTitleText = Visibility.Visible;
+                VisibitityPhoto = Visibility.Collapsed;
+            }
+        }
+    }
+
+    ParagraphPicture picture;
+    public ParagraphPicture Picture
+    {
+        get => picture;
+        set
+        {
+            SetProperty(ref picture, value);
+        }
+    }
+
     public ViewModelTitle()
     {
         FacultyItems = new();
         CathedraItems = new();
         ProfessorItems = new();
+        picture = new();
         cathedra = string.Empty;
         number = string.Empty;
         theme = string.Empty;
         discipline = string.Empty;
         professor = string.Empty;
         rank = string.Empty;
+        Photo = false;
+        AutoInput = false;
         Project = false;
         Work = true;
         UpdateFaculty.Execute(null);

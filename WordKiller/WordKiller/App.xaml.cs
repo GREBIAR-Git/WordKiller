@@ -16,7 +16,7 @@ public partial class App : Application
         UIHelper.SelectCulture(WordKiller.Properties.Settings.Default.Language);
 
         string[] args = e.Args;
-        //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
+        args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
 
         MainWindow mainWindow = new(await OpenFile(args));
         mainWindow.Show();

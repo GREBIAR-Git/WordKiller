@@ -123,7 +123,7 @@ public class ViewModelProfileSettings : ViewModelBase
                 VisibilityManualInput = Visibility.Collapsed;
                 VisibilityAutoInput = Visibility.Visible;
             }
-            Properties.Settings.Default.AutoInputS = autoInput;
+            Properties.Settings.Default.AutoInput = autoInput;
             Properties.Settings.Default.Save();
         }
     }
@@ -326,7 +326,7 @@ public class ViewModelProfileSettings : ViewModelBase
         FacultyItems = new();
         CoursItems = new();
         GroupItems = new();
-        AutoInput = Properties.Settings.Default.AutoInputS;
+        AutoInput = Properties.Settings.Default.AutoInput;
         VisibitityCategoryUsers = Visibility.Collapsed;
         Users = Properties.Settings.Default.Users;
         Users.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);

@@ -437,23 +437,37 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" ToolTip="{DynamicResource ReplacePagePhoto}" IsChecked="{Binding Path=Document.Photo}" Style="{StaticResource RadioButton}">
+                            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" ToolTip="{DynamicResource ReplacePagePhoto}" IsChecked="{Binding Path=Document.Data.Title.Photo}" Style="{StaticResource RadioButton}">
                                 <Image Width="25" Height="30" HorizontalAlignment="Center" Source="/Resources/Pictures/Photo.png"/>
                             </CheckBox>
-                            <CheckBox Width="30" Height="30" Grid.Column="1" Content="P" ToolTip="{DynamicResource ManualInput}" IsChecked="{Binding Path=Document.AutoInput}" FontSize="26" Visibility="{Binding Document.VisibilitY.TitleText}" Style="{StaticResource RadioButton}"/>
+                            <CheckBox Width="30" Height="30" Grid.Column="1" Content="P" ToolTip="{DynamicResource ManualInput}" IsChecked="{Binding Path=Document.Data.Title.AutoInput}" FontSize="26" Visibility="{Binding Document.Data.Title.VisibitityTitleText}" Style="{StaticResource RadioButton}"/>
                         </Grid>
-                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilitY.Photo}">
+                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.Data.Title.VisibitityPhoto}">
                             <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="3" BorderBrush="White">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=DropTitle}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor}">
-                                    <Grid ToolTip="{DynamicResource DaDImage}">
-                                        <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor}"/>
+                                    <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}" ToolTip="{DynamicResource DaDImage}">
                                         <TextBlock Text="{DynamicResource PictureClue}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
-                                        <Image Stretch="Fill" />
+                                        <Image Source="{Binding Document.Data.Title.Picture.BitmapImage}" Stretch="Fill" />
+                                        <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource TheAwesomeXAMLimage}" />
                                     </Grid>
                                 </Border>
                             </Border>
                         </Grid>
-                        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.VisibilitY.TitleText}">
+                        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityTitleText}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -477,12 +491,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Faculty}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateFaculty}">
+                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}" Command="{Binding Document.Data.Title.UpdateFaculty}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.VisibilitY.AutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.VisibilitY.ManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
                                     <Grid.RowDefinitions>
@@ -495,12 +509,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Cathedra}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateCathedra}">
+                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}" Command="{Binding Document.Data.Title.UpdateCathedra}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra}" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.VisibilitY.AutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.VisibilitY.ManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra}" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="2" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPerformed}">
                                     <Grid.RowDefinitions>
@@ -565,12 +579,12 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Lecturer}" Margin="0 0 10 0"  Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
+                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor}" Visibility="{Binding Path=Document.VisibilitY.AutoInput, Mode=TwoWay}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.VisibilitY.ManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor}" Visibility="{Binding Path=Document.Data.Title.VisibitityAutoInput, Mode=TwoWay}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                                 <Grid Grid.Row="7" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityRank}">
                                     <Grid.RowDefinitions>
@@ -583,7 +597,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource FacultyPosition}" Margin="0 0 10 0" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.VisibilitY.AutoInput}" Command="{Binding Document.Data.Title.UpdateRank}">
+                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}" Command="{Binding Document.Data.Title.UpdateRank}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
@@ -622,35 +636,63 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" ToolTip="{DynamicResource ReplacePagePhoto}" IsChecked="{Binding Path=Document.Photo}" Style="{StaticResource RadioButton}">
+                            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" ToolTip="{DynamicResource ReplacePagePhoto}" IsChecked="{Binding Path=Document.Data.TaskSheet.Photo}" Style="{StaticResource RadioButton}">
                                 <Image Width="25" Height="30" HorizontalAlignment="Center" Source="/Resources/Pictures/Photo.png"/>
                             </CheckBox>
                         </Grid>
-                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.VisibilitY.Photo}">
+                        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.Data.TaskSheet.VisibitityPhoto}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50*"/>
                                 <ColumnDefinition Width="50*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" BorderThickness="3" BorderBrush="White">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=DropTaskSheet1}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor}">
-                                    <Grid ToolTip="{DynamicResource DaDImage}">
-                                        <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor}"/>
+                                    <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}" ToolTip="{DynamicResource DaDImage}">
                                         <TextBlock Text="{DynamicResource FirstPage}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
-                                        <Image Stretch="Fill" />
+                                        <Image Source="{Binding Document.Data.TaskSheet.FirstPicture.BitmapImage}" Stretch="Fill" />
+                                        <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource TheAwesomeXAMLimage}" />
                                     </Grid>
                                 </Border>
                             </Border>
                             <Border Grid.Column="1" BorderThickness="3" BorderBrush="White">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=DropTaskSheet2}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Border Grid.Row="0" Grid.Column="1" BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor}">
-                                    <Grid ToolTip="{DynamicResource DaDImage}">
-                                        <Rectangle Fill="{Binding Path=Settings.Personalization.AdditionalColor}"/>
+                                    <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}" ToolTip="{DynamicResource DaDImage}">
                                         <TextBlock Text="{DynamicResource SecondPage}" TextWrapping="Wrap" Style="{StaticResource TextBlock}"/>
-                                        <Image Stretch="Fill" />
+                                        <Image Source="{Binding Document.Data.TaskSheet.SecondPicture.BitmapImage}" Stretch="Fill" />
+                                        <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource TheAwesomeXAMLimage}" />
                                     </Grid>
                                 </Border>
                             </Border>
                         </Grid>
-                        <ScrollViewer Grid.Row="1" Margin="10 0 0 0"  Visibility="{Binding Document.VisibilitY.TitleText}">
+                        <ScrollViewer Grid.Row="1" Margin="10 0 0 0"  Visibility="{Binding Document.Data.TaskSheet.VisibitityTitleText}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -1227,7 +1269,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="1">
-                                <CheckBox Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="Р" ToolTip="{DynamicResource ManualInput}" IsChecked="{Binding Path=Settings.Profile.AutoInput}" FontSize="26" Visibility="{Binding Document.VisibilitY.TitleText}" Style="{StaticResource RadioButton}"/>
+                                <CheckBox Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 0 10" Grid.ColumnSpan="5" Content="Р" ToolTip="{DynamicResource ManualInput}" IsChecked="{Binding Path=Settings.Profile.AutoInput}" FontSize="26" Style="{StaticResource RadioButton}"/>
                             </Grid>
                             <ScrollViewer Grid.Row="0">
                                 <Grid Margin="10 0 0 0">

@@ -94,7 +94,7 @@ public class ViewModelMain : ViewModelBase
     public bool EnableDragDrop(DragEventArgs e)
     {
         DragDropInfo dragDropInfo = (DragDropInfo)e.Data.GetData(typeof(DragDropInfo));
-        if (dragDropInfo == null && e.Data.GetData(DataFormats.FileDrop) != null && (Document.Selected is ParagraphPicture || Document.Selected is ParagraphCode || Document.Selected is ParagraphAppendix))
+        if (dragDropInfo == null && e.Data.GetData(DataFormats.FileDrop) != null && (Document.Selected is ParagraphPicture || Document.Selected is ParagraphCode || Document.Selected is ParagraphAppendix || Document.Selected is ParagraphTitle || Document.Selected is ParagraphTaskSheet))
         {
             return true;
         }
@@ -246,6 +246,129 @@ public class ViewModelMain : ViewModelBase
         }
     }
 
+    ICommand? dropTitle;
+    public ICommand DropTitle
+    {
+        get
+        {
+            return dropTitle ??= new RelayCommand(
+            obj =>
+            {
+                TitleDragDrop((DragEventArgs)obj);
+            });
+        }
+    }
+
+    void TitleDragDrop(DragEventArgs e)
+    {
+        if (EnableDragDrop(e))
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop);
+            if (data != null)
+            {
+                string path = (data as string[])[0];
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    System.Drawing.Bitmap bitmap;
+                    try
+                    {
+                        bitmap = new(path);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    Document.Data.Title.Picture.Bitmap = bitmap;
+                    Document.Data.Title.Picture.UpdateBitmapImage();
+                }
+            }
+            VisibilityDrag = Visibility.Collapsed;
+        }
+    }
+
+    ICommand? dropTaskSheet1;
+    public ICommand DropTaskSheet1
+    {
+        get
+        {
+            return dropTaskSheet1 ??= new RelayCommand(
+            obj =>
+            {
+                TaskSheet1DragDrop((DragEventArgs)obj);
+            });
+        }
+    }
+
+    void TaskSheet1DragDrop(DragEventArgs e)
+    {
+        if (EnableDragDrop(e))
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop);
+            if (data != null)
+            {
+                string path = (data as string[])[0];
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    System.Drawing.Bitmap bitmap;
+                    try
+                    {
+                        bitmap = new(path);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    Document.Data.TaskSheet.FirstPicture.Bitmap = bitmap;
+                    Document.Data.TaskSheet.FirstPicture.UpdateBitmapImage();
+                }
+            }
+            VisibilityDrag = Visibility.Collapsed;
+        }
+    }
+
+    ICommand? dropTaskSheet2;
+    public ICommand DropTaskSheet2
+    {
+        get
+        {
+            return dropTaskSheet2 ??= new RelayCommand(
+            obj =>
+            {
+                TaskSheet2DragDrop((DragEventArgs)obj);
+            });
+        }
+    }
+
+    void TaskSheet2DragDrop(DragEventArgs e)
+    {
+        if (EnableDragDrop(e))
+        {
+            var data = e.Data.GetData(DataFormats.FileDrop);
+            if (data != null)
+            {
+                string path = (data as string[])[0];
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    System.Drawing.Bitmap bitmap;
+                    try
+                    {
+                        bitmap = new(path);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                    Document.Data.TaskSheet.SecondPicture.Bitmap = bitmap;
+                    Document.Data.TaskSheet.SecondPicture.UpdateBitmapImage();
+                }
+            }
+            VisibilityDrag = Visibility.Collapsed;
+        }
+    }
+
     ICommand? dropNotComplexObjects;
     public ICommand DropNotComplexObjects
     {
@@ -267,14 +390,14 @@ public class ViewModelMain : ViewModelBase
                             try
                             {
                                 bitmap = new(path);
-                                Document.Data.AddParagraph(new ParagraphPicture(nameFile, bitmap));
+                                Document.ParagraphToTreeView(new ParagraphPicture(nameFile, bitmap), Document.Selected);
                             }
                             catch
                             {
                                 FileStream file = new(path, FileMode.Open);
                                 StreamReader reader = new(file);
                                 string data1 = reader.ReadToEnd();
-                                Document.Data.AddParagraph(new ParagraphCode(nameFile, data1));
+                                Document.ParagraphToTreeView(new ParagraphCode(nameFile, data1), Document.Selected);
                             }
                         }
                     }

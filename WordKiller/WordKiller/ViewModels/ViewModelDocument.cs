@@ -1502,50 +1502,6 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    bool autoInput;
-    public bool AutoInput
-    {
-        get => autoInput;
-        set
-        {
-            SetProperty(ref autoInput, value);
-            if (autoInput)
-            {
-                VisibilitY.ManualInput = Visibility.Visible;
-                VisibilitY.AutoInput = Visibility.Collapsed;
-            }
-            else
-            {
-                VisibilitY.ManualInput = Visibility.Collapsed;
-                VisibilitY.AutoInput = Visibility.Visible;
-            }
-            Properties.Settings.Default.AutoInput = autoInput;
-            Properties.Settings.Default.Save();
-        }
-    }
-
-    bool photo;
-    public bool Photo
-    {
-        get => photo;
-        set
-        {
-            SetProperty(ref photo, value);
-            if (photo)
-            {
-                VisibilitY.TitleText = Visibility.Collapsed;
-                VisibilitY.Photo = Visibility.Visible;
-            }
-            else
-            {
-                VisibilitY.TitleText = Visibility.Visible;
-                VisibilitY.Photo = Visibility.Collapsed;
-            }
-            Properties.Settings.Default.Photo = photo;
-            Properties.Settings.Default.Save();
-        }
-    }
-
     ICommand? autoList;
     public ICommand AutoList
     {
@@ -1664,8 +1620,6 @@ public class ViewModelDocument : ViewModelBase
         visibility = new();
         AllowDropRTB = false;
         autoSave = Properties.Settings.Default.AutoSave;
-        Photo = Properties.Settings.Default.Photo;
-        AutoInput = Properties.Settings.Default.AutoInput;
         data = new();
         file = new();
         export = new();

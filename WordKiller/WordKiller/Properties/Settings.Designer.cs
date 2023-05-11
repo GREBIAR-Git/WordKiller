@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 
 using System.Collections.ObjectModel;
-using WordKiller.Models;
 using WordKiller.Models.Template;
+using WordKiller.Models;
 
 namespace WordKiller.Properties {
     
@@ -340,30 +340,6 @@ namespace WordKiller.Properties {
             }
             set {
                 this["AutoInput"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoInputS {
-            get {
-                return ((bool)(this["AutoInputS"]));
-            }
-            set {
-                this["AutoInputS"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool Photo {
-            get {
-                return ((bool)(this["Photo"]));
-            }
-            set {
-                this["Photo"] = value;
             }
         }
         

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 namespace WordKiller.ViewModels
 {
@@ -38,11 +40,60 @@ namespace WordKiller.ViewModels
             }
         }
 
+        Visibility visibitityPhoto;
+        public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetProperty(ref visibitityPhoto, value); }
+
+        Visibility visibitityTitleText;
+        public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetProperty(ref visibitityTitleText, value); }
+
+        bool photo;
+        public bool Photo
+        {
+            get => photo;
+            set
+            {
+                SetProperty(ref photo, value);
+                if (photo)
+                {
+                    VisibitityTitleText = Visibility.Collapsed;
+                    VisibitityPhoto = Visibility.Visible;
+                }
+                else
+                {
+                    VisibitityTitleText = Visibility.Visible;
+                    VisibitityPhoto = Visibility.Collapsed;
+                }
+            }
+        }
+
+        ParagraphPicture firstPicture;
+        public ParagraphPicture FirstPicture
+        {
+            get => firstPicture;
+            set
+            {
+                SetProperty(ref firstPicture, value);
+            }
+        }
+
+        ParagraphPicture secondPicture;
+        public ParagraphPicture SecondPicture
+        {
+            get => secondPicture;
+            set
+            {
+                SetProperty(ref secondPicture, value);
+            }
+        }
+
         public ViewModelTaskSheet()
         {
+            FirstPicture = new();
+            SecondPicture = new();
             ReportingMaterial = string.Empty;
             TOC = string.Empty;
             SourceData = string.Empty;
+            Photo = false;
         }
     }
 }
