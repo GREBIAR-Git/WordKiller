@@ -322,7 +322,6 @@ public class ViewModelProfileSettings : ViewModelBase
 
     public ViewModelProfileSettings()
     {
-        Users = new();
         UniversitetItems = new();
         FacultyItems = new();
         CoursItems = new();

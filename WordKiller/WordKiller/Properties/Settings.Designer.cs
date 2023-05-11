@@ -10,6 +10,7 @@
 
 using System.Collections.ObjectModel;
 using WordKiller.Models;
+using WordKiller.Models.Template;
 
 namespace WordKiller.Properties {
     
@@ -38,6 +39,22 @@ namespace WordKiller.Properties {
             set
             {
                 this["Users"] = value;
+            }
+        }
+
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public ObservableCollection<TemplateType> TemplateTypes
+        {
+            get
+            {
+                return ((ObservableCollection<TemplateType>)(this["TemplateTypes"]));
+            }
+            set
+            {
+                this["TemplateTypes"] = value;
             }
         }
 

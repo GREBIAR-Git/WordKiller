@@ -18,7 +18,7 @@ class AdaptiveFontSizeControl : IMultiValueConverter
         {
             return double.NaN;
         }
-        
+
         var dpiX = 96.0 * VisualTreeHelper.GetDpi(control).DpiScaleX;
         FormattedText formattedText;
         try

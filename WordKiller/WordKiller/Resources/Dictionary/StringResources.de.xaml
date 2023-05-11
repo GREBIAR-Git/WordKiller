@@ -144,6 +144,15 @@
     <system:String x:Key="Users">Benutzer</system:String>
     <system:String x:Key="AutoPerformed">Durchgeführt (auto)</system:String>
 
+    <system:String x:Key="Alignment">Ausrichtung</system:String>
+    <system:String x:Key="Bold">Fettschrift</system:String>
+    <system:String x:Key="BeforeS">Vorher</system:String>
+    <system:String x:Key="AfterS">Nachher</system:String>
+    <system:String x:Key="LineSpacing">Zwischenzeile</system:String>
+    <system:String x:Key="Left">Links</system:String>
+    <system:String x:Key="Right">Rechts</system:String>
+    <system:String x:Key="FirstLine">Erster Stapel</system:String>
+    
     <system:String x:Key="Settings">Einstellungen</system:String>
     <system:String x:Key="Saved">Gespeicherte</system:String>
     <system:String x:Key="OpensFolder">Öffnet den Ordner mit der Anwendungseinstellungsdatei im Explorer</system:String>

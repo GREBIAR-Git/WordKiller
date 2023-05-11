@@ -15,17 +15,20 @@ public class ViewModelSettings : ViewModelBase
     ViewModelProfileSettings profile;
     public ViewModelProfileSettings Profile { get => profile; set => SetProperty(ref profile, value); }
 
-    Visibility visibilityGeneral;
+    ViewModelTemplatesSettings template;
+    public ViewModelTemplatesSettings Template { get => template; set => SetProperty(ref template, value); }
 
+    Visibility visibilityGeneral;
     public Visibility VisibilityGeneral { get => visibilityGeneral; set => SetProperty(ref visibilityGeneral, value); }
 
     Visibility visibilityPersonalization;
-
     public Visibility VisibilityPersonalization { get => visibilityPersonalization; set => SetProperty(ref visibilityPersonalization, value); }
 
     Visibility visibilityProfile;
-
     public Visibility VisibilityProfile { get => visibilityProfile; set => SetProperty(ref visibilityProfile, value); }
+
+    Visibility visibilityTemplates;
+    public Visibility VisibilityTemplates { get => visibilityTemplates; set => SetProperty(ref visibilityTemplates, value); }
 
     ICommand? openGeneral;
 
@@ -46,6 +49,7 @@ public class ViewModelSettings : ViewModelBase
         VisibilityGeneral = Visibility.Visible;
         VisibilityPersonalization = Visibility.Collapsed;
         VisibilityProfile = Visibility.Collapsed;
+        VisibilityTemplates = Visibility.Collapsed;
     }
 
     ICommand? openPersonalization;
@@ -67,6 +71,7 @@ public class ViewModelSettings : ViewModelBase
         VisibilityGeneral = Visibility.Collapsed;
         VisibilityPersonalization = Visibility.Visible;
         VisibilityProfile = Visibility.Collapsed;
+        VisibilityTemplates = Visibility.Collapsed;
     }
 
     ICommand? openProfile;
@@ -88,6 +93,29 @@ public class ViewModelSettings : ViewModelBase
         VisibilityGeneral = Visibility.Collapsed;
         VisibilityPersonalization = Visibility.Collapsed;
         VisibilityProfile = Visibility.Visible;
+        VisibilityTemplates = Visibility.Collapsed;
+    }
+
+    ICommand? openTemplates;
+
+    public ICommand OpenTemplates
+    {
+        get
+        {
+            return openTemplates ??= new RelayCommand(
+            obj =>
+            {
+                OpenTemplatesSettings();
+            });
+        }
+    }
+
+    void OpenTemplatesSettings()
+    {
+        VisibilityGeneral = Visibility.Collapsed;
+        VisibilityPersonalization = Visibility.Collapsed;
+        VisibilityProfile = Visibility.Collapsed;
+        VisibilityTemplates = Visibility.Visible;
     }
 
     public ViewModelSettings()
@@ -95,8 +123,10 @@ public class ViewModelSettings : ViewModelBase
         VisibilityGeneral = Visibility.Visible;
         VisibilityPersonalization = Visibility.Collapsed;
         VisibilityProfile = Visibility.Collapsed;
+        VisibilityTemplates = Visibility.Collapsed;
         general = new();
         personalization = new();
         profile = new();
+        template = new();
     }
 }

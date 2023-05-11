@@ -1,6 +1,9 @@
-﻿namespace WordKiller.DataTypes.Enums;
+﻿using System;
 
-public enum TypeDocument
+namespace WordKiller.DataTypes.Enums;
+
+[Serializable]
+public enum DocumentType
 {
     DefaultDocument,
     LaboratoryWork,

@@ -9,11 +9,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using WordKiller.DataTypes;
-using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Models;
+using WordKiller.Models.Template;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 using A = DocumentFormat.OpenXml.Drawing;
@@ -52,11 +52,11 @@ class Report
                     main.Document = new Document();
                     Body body = main.Document.AppendChild(new Body());
 
-                    InitStyles(doc);
+                    InitStyles(doc, data.Type);
                     int pageStartNumber = 1;
                     try
                     {
-                        if (data.Type != TypeDocument.DefaultDocument && data.Properties.Title)
+                        if (data.Type != DataTypes.Enums.DocumentType.DefaultDocument && data.Properties.Title)
                         {
                             PageSetup(body, title: true);
                             TitlePart(doc, data.Type, data.Title);
@@ -303,7 +303,7 @@ class Report
         return year;
     }
 
-    static void InitStyles(WordprocessingDocument doc)
+    static void InitStyles(WordprocessingDocument doc, DataTypes.Enums.DocumentType typeDocument)
     {
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
@@ -316,33 +316,32 @@ class Report
         styles.Append(
             InitStyle("EmptyLines", justify: JustificationValues.Center));
 
-        styles.Append(
-            InitStyle("Simple", justify: JustificationValues.Both, multiplier: 1.5f, firstLine: 1.25f));
-
-        styles.Append(
-            InitStyle("H1", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, caps: true, outlineLevel: 1));
-
-        styles.Append(
-            InitStyle("H1Appendix", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 0f, caps: false, outlineLevel: 1));
-
-        styles.Append(
-            InitStyle("H2", justify: JustificationValues.Center, bold: true, after: 8, multiplier: 1.5f, firstLine: 1.5f, outlineLevel: 2));
-
-        styles.Append(
-            InitStyle("ListM", justify: JustificationValues.Both, multiplier: 1.5f, left: 1.25f, hanging: 0.63f));
-
-        styles.Append(
-            InitStyle("Picture", justify: JustificationValues.Center, after: 8, multiplier: 1.5f));
-
-        styles.Append(
-            InitStyle("TableText", justify: JustificationValues.Both, before: 8, multiplier: 1.5f));
-
-        styles.Append(
-            InitStyle("Table", justify: JustificationValues.Both, after: 6, multiplier: 1f));
-
-        styles.Append(
-            InitStyle("Code", 12, JustificationValues.Left));
-
+        foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+        {
+            if (templateType.Type == typeDocument)
+            {
+                foreach (Template template in templateType.Templates)
+                {
+                    if (template.Name == "Раздел")
+                    {
+                        styles.Append(InitStyle(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, true, outlineLevel: 1));
+                        styles.Append(InitStyle(template.Name + "Приложение", template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, true, outlineLevel: 1));
+                    }
+                    else if (template.Name == "Подраздел")
+                    {
+                        styles.Append(InitStyle(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, outlineLevel: 2));
+                    }
+                    else if (template.Name == "Список")
+                    {
+                        styles.Append(InitStyle(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, hanging: 0.63f));
+                    }
+                    else
+                    {
+                        styles.Append(InitStyle(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine));
+                    }
+                }
+            }
+        }
     }
 
     static Style InitStyle(string name, int size = 14,
@@ -445,27 +444,27 @@ class Report
         SectionBreak(doc);
     }
 
-    static void TitlePart(WordprocessingDocument doc, TypeDocument typeDocument, ViewModelTitle title)
+    static void TitlePart(WordprocessingDocument doc, DataTypes.Enums.DocumentType typeDocument, ViewModelTitle title)
     {
         Ministry(doc, title.Cathedra);
         switch (typeDocument)
         {
-            case TypeDocument.LaboratoryWork:
+            case DataTypes.Enums.DocumentType.LaboratoryWork:
                 LabPra(doc, "лабораторной", title);
                 break;
-            case TypeDocument.PracticeWork:
+            case DataTypes.Enums.DocumentType.PracticeWork:
                 LabPra(doc, "практической", title);
                 break;
-            case TypeDocument.Coursework:
+            case DataTypes.Enums.DocumentType.Coursework:
                 Coursework(doc, title);
                 break;
-            case TypeDocument.ControlWork:
+            case DataTypes.Enums.DocumentType.ControlWork:
                 ControlWork(doc, title);
                 break;
-            case TypeDocument.Referat:
+            case DataTypes.Enums.DocumentType.Referat:
                 Referat(doc, title);
                 break;
-            case TypeDocument.VKR:
+            case DataTypes.Enums.DocumentType.VKR:
                 break;
         }
         Orel(doc);
@@ -478,11 +477,11 @@ class Report
         {
             if (listOfReferences.ListSourcesUsed)
             {
-                Text(doc, "Список использованных источников", "H1");
+                Text(doc, "Список использованных источников", "Раздел");
             }
             else if (listOfReferences.Bibliography)
             {
-                Text(doc, "Список литературы", "H1");
+                Text(doc, "Список литературы", "Раздел");
             }
             List<string> resours = new();
             foreach (Book book in listOfReferences.Books)
@@ -516,16 +515,16 @@ class Report
                 if (appendix is ParagraphPicture picture)
                 {
                     Picture(doc, picture);
-                    //Text(doc, "Рисунок " + p + " – " + picture.Description, "Picture");
+                    //Text(doc, "Рисунок " + p + " – " + picture.Description, "Картинка");
                 }
                 else if (appendix is ParagraphTable table)
                 {
-                    //Text(doc, "Таблица " + t + " – " + table.Description, "TableText");
+                    //Text(doc, "Таблица " + t + " – " + table.Description, "ТекстКТаблице");
                     Table(doc, table.TableData);
                 }
                 else if (appendix is ParagraphCode code)
                 {
-                    Text(doc, code.Data, "Code");
+                    Text(doc, code.Data, "Код");
                 }
                 SectionBreak(doc);
                 letter++;
@@ -540,7 +539,7 @@ class Report
 
         Paragraph paragraph = body.AppendChild(new Paragraph());
         paragraph.ParagraphProperties = new ParagraphProperties(
-                new ParagraphStyleId() { Val = "H1Appendix" });
+                new ParagraphStyleId() { Val = "РазделПриложение" });
         foreach (string line in text.Split('\n'))
         {
             string[] words = line.Split(' ');
@@ -875,7 +874,7 @@ class Report
         {
             if (paragraph is ParagraphText)
             {
-                Text(doc, paragraph.Data, "Simple");
+                Text(doc, paragraph.Data, "Текст");
             }
             else if (paragraph is ParagraphH1)
             {
@@ -893,7 +892,7 @@ class Report
                         h1++;
                     }
                 }
-                Text(doc, text, "H1");
+                Text(doc, text, "Раздел");
                 h2 = 1;
             }
             else if (paragraph is ParagraphH2)
@@ -905,7 +904,7 @@ class Report
                 }
 
                 text += paragraph.Data;
-                Text(doc, "\n" + text, "H2");
+                Text(doc, "\n" + text, "Подраздел");
                 h2all++;
                 h2++;
             }
@@ -917,21 +916,21 @@ class Report
             else if (paragraph is ParagraphPicture picture)
             {
                 Picture(doc, picture);
-                Text(doc, "Рисунок " + p + " – " + paragraph.Description, "Picture");
+                Text(doc, "Рисунок " + p + " – " + paragraph.Description, "Картинка");
                 p++;
             }
             else if (paragraph is ParagraphTable)
             {
                 ParagraphTable paragraphTable = paragraph as ParagraphTable;
-                Text(doc, "Таблица " + t + " – " + paragraphTable.Description, "TableText");
+                Text(doc, "Таблица " + t + " – " + paragraphTable.Description, "ТекстКТаблице");
                 Table(doc, paragraphTable.TableData);
                 t++;
             }
             else if (paragraph is ParagraphCode)
             {
-                Text(doc, paragraph.Description, "H1");
+                Text(doc, paragraph.Description, "РазделПриложение");
 
-                Text(doc, paragraph.Data, "Code");
+                Text(doc, paragraph.Data, "Код");
                 c++;
             }
         }
@@ -999,7 +998,7 @@ class Report
             {
                 ParagraphProperties = new ParagraphProperties()
                 {
-                    ParagraphStyleId = new ParagraphStyleId() { Val = "Table" }
+                    ParagraphStyleId = new ParagraphStyleId() { Val = "Таблица" }
                 }
             });
             tc.Append(new TableCellProperties());
@@ -1096,7 +1095,7 @@ class Report
                     new NumberingProperties(
                         new NumberingLevelReference() { Val = Level(items[i]) },
                         new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "ListM" }
+                    new ParagraphStyleId() { Val = "Список" }
                     );
 
                 Run run = paragraph.AppendChild(new Run());
@@ -1236,7 +1235,7 @@ class Report
                     new NumberingProperties(
                         new NumberingLevelReference() { Val = Level(items[i]) },
                         new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "ListM" }
+                    new ParagraphStyleId() { Val = "Список" }
                     );
 
                 Run run = paragraph.AppendChild(new Run());
@@ -1322,7 +1321,7 @@ class Report
                      new DW.DocProperties()
                      {
                          Id = (UInt32Value)1U,
-                         Name = "Picture 1"
+                         Name = "Рисунок 1"
                      },
                      new DW.NonVisualGraphicFrameDrawingProperties(
                          new A.GraphicFrameLocks() { NoChangeAspect = true }),
@@ -1372,7 +1371,7 @@ class Report
         Paragraph paragraph = new()
         {
             ParagraphProperties = new ParagraphProperties(
-                new ParagraphStyleId() { Val = "Picture" })
+                new ParagraphStyleId() { Val = "Картинка" })
         };
         paragraph.AppendChild(new Run(element));
         wordDoc.MainDocumentPart.Document.Body.AppendChild(paragraph);

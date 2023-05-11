@@ -8,11 +8,14 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:WordKiller.ViewModels"
         xmlns:gu="https://github.com/GuOrg/Gu.Wpf.FlipView"
+        xmlns:t="clr-namespace:WordKiller.Models.Template"
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
         xmlns:rtb="clr-namespace:WordKiller.Scripts"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=Document.WinTitle}" Height="480" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True">
+        Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">
             <i:InvokeCommandAction Command="{Binding Path=Document.Closed}"/>
@@ -41,6 +44,14 @@
     <Window.CommandBindings>
         <CommandBinding Command="Undo" Executed="WindowBinding_Unselect"/>
     </Window.CommandBindings>
+    <Window.Resources>
+        <ObjectDataProvider x:Key="typeDocument" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="td:JustificationValues"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid x:Name="root" Background="{Binding Path=Settings.Personalization.MainColor}">
         <Grid Visibility="{Binding Path=VisibilityMainPanel}">
             <Grid.RowDefinitions>
@@ -124,7 +135,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90*"/>
-                    <RowDefinition Height="10*" MaxHeight="50" MinHeight="30"/>
+                    <RowDefinition Height="10*" MaxHeight="120" MinHeight="30"/>
                 </Grid.RowDefinitions>
                 <typeXaml:StretchingTreeView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Document.Data.Paragraphs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree">
                     <i:Interaction.Behaviors>
@@ -890,7 +901,7 @@
                 <RadioButton Style="{StaticResource RadioButton}" IsChecked="True" Grid.Column="0" Margin="2,0,2,0" Content="{DynamicResource GeneralSettings}" Command="{Binding Path=Settings.OpenGeneral}"/>
                 <RadioButton Style="{StaticResource RadioButton}" Grid.Column="1" Margin="2,0,2,0" Content="{DynamicResource PersonalizationSettings}" Command="{Binding Path=Settings.OpenPersonalization}"/>
                 <RadioButton Style="{StaticResource RadioButton}" Grid.Column="2" Margin="2,0,2,0" Content="{DynamicResource ProfileSettings}" Command="{Binding Path=Settings.OpenProfile}"/>
-                <Button Grid.Column="3" Margin="2,0,2,0" Content="{DynamicResource Styles}"/>
+                <RadioButton Style="{StaticResource RadioButton}" Grid.Column="3" Margin="2,0,2,0" Content="{DynamicResource Styles}" Command="{Binding Path=Settings.OpenTemplates}"/>
                 <Button Grid.Column="4" Margin="2,0,2,0" Content="{DynamicResource BackSettings}" Command="{Binding Path=ExitSettings}"/>
             </Grid>
             <ScrollViewer Grid.Row="1" Visibility="{Binding Path=Settings.VisibilityGeneral}">
@@ -1355,6 +1366,40 @@
                         </Grid>
                     </Grid>
                 </GroupBox>
+            </Grid>
+            <Grid Grid.Row="1" Visibility="{Binding Path=Settings.VisibilityTemplates}">
+                <gu:FlipView Margin="0 0 0 0" ArrowPlacement="InsideTop" ItemsSource="{Binding Settings.Template.TemplateType}">
+                    <gu:FlipView.Resources>
+                        <DataTemplate DataType="{x:Type t:TemplateType}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Margin="0 0 0 10" Text="{Binding Path=Type, Converter={StaticResource dtl}}" Style="{StaticResource TextBlock}"/>
+                                <DataGrid Grid.Row="1" ItemsSource="{Binding Templates}" Style="{StaticResource DGStandart}" CanUserDeleteRows="False">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="CellEditEnding">
+                                            <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.Settings.Template.EditPartnersCell}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" Header="{DynamicResource Name}" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource FontSize}" Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridComboBoxColumn Header="{DynamicResource Alignment}"  ItemsSource="{Binding Source={StaticResource typeDocument}}" SelectedItemBinding="{Binding Justify, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridCheckBoxColumn Header="{DynamicResource Bold}" Binding="{Binding Bold, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource BeforeS}" Binding="{Binding Before, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource AfterS}" Binding="{Binding After, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource LineSpacing}" Binding="{Binding LineSpacing, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource Left}" Binding="{Binding Left, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource Right}" Binding="{Binding Right, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridTextColumn Header="{DynamicResource FirstLine}" Binding="{Binding FirstLine, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </DataTemplate>
+                    </gu:FlipView.Resources>
+                </gu:FlipView>
             </Grid>
         </Grid>
     </Grid>

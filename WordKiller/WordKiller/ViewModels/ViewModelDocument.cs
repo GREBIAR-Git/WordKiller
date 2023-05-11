@@ -774,7 +774,7 @@ public class ViewModelDocument : ViewModelBase
                     Data.Title.VisibitityProfessor = Visibility.Collapsed;
                     Data.Title.VisibitityRank = Visibility.Collapsed;
                     Data.Title.VisibitityType = Visibility.Collapsed;
-                    Data.Type = TypeDocument.DefaultDocument;
+                    Data.Type = DocumentType.DefaultDocument;
                 }
             }
             else if (defaultDocument)
@@ -801,7 +801,7 @@ public class ViewModelDocument : ViewModelBase
                     AddTaskSheet();
                     AddListOfReferences();
                     AddAppendix();
-                    Data.Type = TypeDocument.Coursework;
+                    Data.Type = DocumentType.Coursework;
                     TextHeader("Coursework");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
@@ -835,7 +835,7 @@ public class ViewModelDocument : ViewModelBase
 
                     NoDefaultDocument();
 
-                    Data.Type = TypeDocument.LaboratoryWork;
+                    Data.Type = DocumentType.LaboratoryWork;
                     TextHeader("LaboratoryWork");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
@@ -869,7 +869,7 @@ public class ViewModelDocument : ViewModelBase
 
                     NoDefaultDocument();
 
-                    Data.Type = TypeDocument.PracticeWork;
+                    Data.Type = DocumentType.PracticeWork;
                     TextHeader("PracticeWork");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
@@ -903,7 +903,7 @@ public class ViewModelDocument : ViewModelBase
 
                     NoDefaultDocument();
 
-                    Data.Type = TypeDocument.ControlWork;
+                    Data.Type = DocumentType.ControlWork;
                     TextHeader("ControlWork");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
@@ -937,7 +937,7 @@ public class ViewModelDocument : ViewModelBase
 
                     NoDefaultDocument();
                     AddListOfReferences();
-                    Data.Type = TypeDocument.Referat;
+                    Data.Type = DocumentType.Referat;
                     TextHeader("Referat");
                     Data.Title.VisibitityFaculty = Visibility.Visible;
                     Data.Title.VisibitityPerformed = Visibility.Visible;
@@ -972,7 +972,7 @@ public class ViewModelDocument : ViewModelBase
                     NoDefaultDocument();
                     AddListOfReferences();
                     AddAppendix();
-                    Data.Type = TypeDocument.VKR;
+                    Data.Type = DocumentType.VKR;
                     TextHeader("VKR");
                     Data.Title.VisibitityFaculty = Visibility.Collapsed;
                     Data.Title.VisibitityPerformed = Visibility.Collapsed;
@@ -1013,25 +1013,25 @@ public class ViewModelDocument : ViewModelBase
     {
         switch (Data.Type)
         {
-            case TypeDocument.DefaultDocument:
+            case DocumentType.DefaultDocument:
                 DefaultDocument = true;
                 break;
-            case TypeDocument.LaboratoryWork:
+            case DocumentType.LaboratoryWork:
                 LaboratoryWork = true;
                 break;
-            case TypeDocument.PracticeWork:
+            case DocumentType.PracticeWork:
                 PracticeWork = true;
                 break;
-            case TypeDocument.Coursework:
+            case DocumentType.Coursework:
                 Coursework = true;
                 break;
-            case TypeDocument.ControlWork:
+            case DocumentType.ControlWork:
                 ControlWork = true;
                 break;
-            case TypeDocument.Referat:
+            case DocumentType.Referat:
                 Referat = true;
                 break;
-            case TypeDocument.VKR:
+            case DocumentType.VKR:
                 VKR = true;
                 break;
         }
@@ -1149,25 +1149,25 @@ public class ViewModelDocument : ViewModelBase
     {
         switch (Data.Type)
         {
-            case TypeDocument.DefaultDocument:
+            case DocumentType.DefaultDocument:
                 TextHeader("DefaultDocument");
                 break;
-            case TypeDocument.LaboratoryWork:
+            case DocumentType.LaboratoryWork:
                 TextHeader("LaboratoryWork");
                 break;
-            case TypeDocument.PracticeWork:
+            case DocumentType.PracticeWork:
                 TextHeader("PracticeWork");
                 break;
-            case TypeDocument.Coursework:
+            case DocumentType.Coursework:
                 TextHeader("Coursework");
                 break;
-            case TypeDocument.ControlWork:
+            case DocumentType.ControlWork:
                 TextHeader("ControlWork");
                 break;
-            case TypeDocument.Referat:
+            case DocumentType.Referat:
                 TextHeader("Referat");
                 break;
-            case TypeDocument.VKR:
+            case DocumentType.VKR:
                 TextHeader("VKR");
                 break;
         }

@@ -144,6 +144,15 @@
     <system:String x:Key="Users">用户</system:String>
     <system:String x:Key="AutoPerformed">已执行(自动)</system:String>
 
+    <system:String x:Key="Alignment">统一口径</system:String>
+    <system:String x:Key="Bold">大胆</system:String>
+    <system:String x:Key="BeforeS">前</system:String>
+    <system:String x:Key="AfterS">后</system:String>
+    <system:String x:Key="LineSpacing">隔行扫描</system:String>
+    <system:String x:Key="Left">左边</system:String>
+    <system:String x:Key="Right">右边</system:String>
+    <system:String x:Key="FirstLine">第一叠</system:String>
+    
     <system:String x:Key="Settings">设置</system:String>
     <system:String x:Key="Saved">已保存</system:String>
     <system:String x:Key="OpensFolder">在资源管理器中打开带有应用程序设置文件的文件夹</system:String>

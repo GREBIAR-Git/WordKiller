@@ -29,13 +29,14 @@ public partial class MainWindow : Window
     {
         if (sender is TextBox textBox)
         {
-            if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+            if (viewModel.Document.Selected is ParagraphTable paragraphTable)
             {
                 int rows = paragraphTable.TableData.Rows;
                 CountRowOrColumn(textBox, ref rows);
-                gridTable.RowDefinitions.Clear();
+                gridTable.RowDefinitions.Clear();//tyt
                 for (int i = 0; i < rows; i++)
                 {
+                    //tyt
                     gridTable.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100 / rows, type: GridUnitType.Star) });
                 }
                 paragraphTable.TableData.Rows = rows;
@@ -48,13 +49,14 @@ public partial class MainWindow : Window
     {
         if (sender is TextBox textBox)
         {
-            if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+            if (viewModel.Document.Selected is ParagraphTable paragraphTable)
             {
                 int columns = paragraphTable.TableData.Columns;
                 CountRowOrColumn(textBox, ref columns);
-                gridTable.ColumnDefinitions.Clear();
+                gridTable.ColumnDefinitions.Clear();//tyt
                 for (int i = 0; i < columns; i++)
                 {
+                    //tyt
                     gridTable.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / columns, type: GridUnitType.Star) });
                 }
                 paragraphTable.TableData.Columns = columns;
@@ -102,9 +104,9 @@ public partial class MainWindow : Window
 
     void UpdateTable()
     {
-        if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+        if (viewModel.Document.Selected is ParagraphTable paragraphTable)
         {
-            gridTable.Children.Clear();
+            gridTable.Children.Clear();//tyt
             for (int i = 0; i < paragraphTable.TableData.Rows; i++)
             {
                 for (int f = 0; f < paragraphTable.TableData.Columns; f++)
@@ -115,7 +117,7 @@ public partial class MainWindow : Window
                         FontSize = viewModel.Settings.Personalization.FontSizeRTB,
                     };
                     textBox.TextChanged += Cell_TextChanged;
-                    gridTable.Children.Add(textBox);
+                    gridTable.Children.Add(textBox);//tyt
                     Grid.SetColumn(textBox, f);
                     Grid.SetRow(textBox, i);
                 }

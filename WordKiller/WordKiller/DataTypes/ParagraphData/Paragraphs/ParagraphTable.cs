@@ -9,13 +9,13 @@ public class ParagraphTable : ViewModelBase, IParagraphData
 {
     public string Type { get => "Table"; }
 
-    public string Data { get => description; set => SetProperty(ref description, value, "Description"); }
+    public string Data { get => description; set => SetProperty(ref description, value); }
 
     string description;
 
     public TableData TableData { get; set; }
 
-    public string Description { get => description; set => SetProperty(ref description, value, "Data"); }
+    public string Description { get => description; set => SetProperty(ref description, value); }
 
     public Visibility DescriptionVisibility
     {

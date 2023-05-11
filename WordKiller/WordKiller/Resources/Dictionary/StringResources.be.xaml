@@ -144,6 +144,15 @@
     <system:String x:Key="Users">Карыстальнік</system:String>
     <system:String x:Key="AutoPerformed">Выконваў (Аўта)</system:String>
 
+    <system:String x:Key="Alignment">Выраўноўванне</system:String>
+    <system:String x:Key="Bold">Тлусты</system:String>
+    <system:String x:Key="BeforeS">Да</system:String>
+    <system:String x:Key="AfterS">Пасля</system:String>
+    <system:String x:Key="LineSpacing">Міжрадковы</system:String>
+    <system:String x:Key="Left">Злева</system:String>
+    <system:String x:Key="Right">Справа</system:String>
+    <system:String x:Key="FirstLine">Першы радок</system:String>
+    
     <system:String x:Key="Settings">Наладжваньне</system:String>
     <system:String x:Key="Saved">Захавана</system:String>
     <system:String x:Key="OpensFolder">Адкрывае тэчку з файлам налад прыкладання ў правадыру</system:String>

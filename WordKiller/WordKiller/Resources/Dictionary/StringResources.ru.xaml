@@ -144,6 +144,15 @@
     <system:String x:Key="Users">Пользователи</system:String>
     <system:String x:Key="AutoPerformed">Выполнял (авто)</system:String>
 
+    <system:String x:Key="Alignment">Выравнивание</system:String>
+    <system:String x:Key="Bold">Жирный</system:String>
+    <system:String x:Key="BeforeS">До</system:String>
+    <system:String x:Key="AfterS">После</system:String>
+    <system:String x:Key="LineSpacing">Межстрочный</system:String>
+    <system:String x:Key="Left">Слева</system:String>
+    <system:String x:Key="Right">Справа</system:String>
+    <system:String x:Key="FirstLine">Первая стока</system:String>
+    
     <system:String x:Key="Settings">Настройки</system:String>
     <system:String x:Key="Saved">Сохранено</system:String>
     <system:String x:Key="OpensFolder">Открывает папку с файлом настроек приложения в проводнике</system:String>

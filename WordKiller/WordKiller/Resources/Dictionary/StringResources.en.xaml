@@ -144,6 +144,15 @@
     <system:String x:Key="Users">Users</system:String>
     <system:String x:Key="AutoPerformed">Performed (auto)</system:String>
 
+    <system:String x:Key="Alignment">Alignment</system:String>
+    <system:String x:Key="Bold">Bold</system:String>
+    <system:String x:Key="BeforeS">Before</system:String>
+    <system:String x:Key="AfterS">After</system:String>
+    <system:String x:Key="LineSpacing">Interline</system:String>
+    <system:String x:Key="Left">Left</system:String>
+    <system:String x:Key="Right">Right</system:String>
+    <system:String x:Key="FirstLine">First line</system:String>
+    
     <system:String x:Key="Settings">Settings</system:String>
     <system:String x:Key="Saved">Saved</system:String>
     <system:String x:Key="OpensFolder">Opens the folder with the application settings file in Explorer</system:String>
