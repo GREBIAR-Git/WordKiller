@@ -5,17 +5,17 @@ using WordKiller.ViewModels;
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphTable : ViewModelBase, IParagraphData
+public class ParagraphTable : ViewModelDocumentChanges, IParagraphData
 {
     public string Type { get => "Table"; }
 
-    public string Data { get => description; set => SetProperty(ref description, value); }
+    public string Data { get => description; set => SetPropertyDocument(ref description, value); }
 
     string description;
 
     public TableData TableData { get; set; }
 
-    public string Description { get => description; set => SetProperty(ref description, value); }
+    public string Description { get => description; set => SetPropertyDocument(ref description, value); }
 
     public Visibility DescriptionVisibility
     {

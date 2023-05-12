@@ -4,11 +4,12 @@ using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.Models;
+using WordKiller.Scripts;
 
 namespace WordKiller.ViewModels
 {
     [Serializable]
-    public class ViewModelListOfReferences : ViewModelBase
+    public class ViewModelListOfReferences : ViewModelDocumentChanges
     {
         public ObservableCollection<Book> Books { get; set; }
 
@@ -20,7 +21,7 @@ namespace WordKiller.ViewModels
             get => listSourcesUsed;
             set
             {
-                SetProperty(ref listSourcesUsed, value);
+                SetPropertyDocument(ref listSourcesUsed, value);
             }
         }
 
@@ -30,7 +31,7 @@ namespace WordKiller.ViewModels
             get => bibliography;
             set
             {
-                SetProperty(ref bibliography, value);
+                SetPropertyDocument(ref bibliography, value);
             }
         }
 
@@ -91,6 +92,19 @@ namespace WordKiller.ViewModels
                     {
                         ElectronicResources.Add(new ElectronicResource());
                     }
+                    SaveHelper.NeedSave = true;
+                });
+            }
+        }
+        [NonSerialized]
+        ICommand? editCell;
+        public ICommand EditCell
+        {
+            get
+            {
+                return editCell ??= new RelayCommand(obj =>
+                {
+                    SaveHelper.NeedSave = true;
                 });
             }
         }
@@ -99,10 +113,12 @@ namespace WordKiller.ViewModels
         {
             Books = new();
             ElectronicResources = new();
-            Bibliography = true;
-            ListSourcesUsed = false;
-            OpenBooks = true;
-            OpenElectronicResources = false;
+            bibliography = true;
+            listSourcesUsed = false;
+            openBooks = true;
+            openElectronicResources = false;
+            visibilityElectronicResources = Visibility.Collapsed;
+            visibilityBooks = Visibility.Visible;
         }
     }
 }

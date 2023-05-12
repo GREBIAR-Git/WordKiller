@@ -9,6 +9,7 @@ using WordKiller.DataTypes;
 using WordKiller.Scripts.File.Encryption;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
+using WordKiller.Views;
 
 namespace WordKiller.Scripts.ImportExport;
 
@@ -20,9 +21,26 @@ public class WordKillerFile : ViewModelBase
     Visibility visibilitySaveLogo;
     public Visibility VisibilitySaveLogo { get => visibilitySaveLogo; set => SetProperty(ref visibilitySaveLogo, value); }
 
+    Visibility visibilityNeedSaveLogo;
+    public Visibility VisibilityNeedSaveLogo { get => visibilityNeedSaveLogo; set => SetProperty(ref visibilityNeedSaveLogo, value); }
+
     public WordKillerFile()
     {
+        SaveHelper.Change += UpdateNeedSave;
         VisibilitySaveLogo = Visibility.Collapsed;
+        VisibilityNeedSaveLogo = Visibility.Collapsed;
+    }
+
+    void UpdateNeedSave()
+    {
+        if (SaveHelper.NeedSave)
+        {
+            VisibilityNeedSaveLogo = Visibility.Visible;
+        }
+        else
+        {
+            VisibilityNeedSaveLogo = Visibility.Collapsed;
+        }
     }
 
     public bool SavePathExists()
@@ -78,6 +96,7 @@ public class WordKillerFile : ViewModelBase
                 serString = encryption.Encrypt(serString);
             }
             GenerateStreamFromString(nameFile, Properties.Settings.Default.NumberEncryption + serString);
+            SaveHelper.NeedSave = false;
             Thread.Sleep(3000);
             VisibilitySaveLogo = Visibility.Collapsed;
         });
@@ -128,22 +147,37 @@ public class WordKillerFile : ViewModelBase
         return data;
     }
 
-    public DocumentData NewFile(DocumentData data)
+    public DocumentData? NewFile(DocumentData data)
     {
-        NeedSave(data);
+        if (SaveHelper.NeedSave)
+        {
+            if (!NeedSave(data))
+            {
+                return null;
+            }
+        }
         savePath = string.Empty;
         data = new();
+        SaveHelper.NeedSave = true;
         return data;
     }
 
     public bool NeedSave(DocumentData data)
     {
-        MessageBoxResult result = MessageBox.Show(UIHelper.FindResourse("Question1"), UIHelper.FindResourse("Question1"), MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
-        if (result == MessageBoxResult.Yes)
+        MessageNeedSave mns = new();
+        mns.ShowDialog();
+        if (mns.ViewModel.Number == 0)
         {
             Save(data);
             return true;
         }
-        return false;
+        else if (mns.ViewModel.Number == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

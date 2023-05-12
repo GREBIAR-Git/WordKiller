@@ -11,19 +11,19 @@ public class DocumentData : MainSection
     public DocumentType Type { get; set; }
 
     ViewModelProperties properties;
-    public ViewModelProperties Properties { get => properties; set => SetProperty(ref properties, value); }
+    public ViewModelProperties Properties { get => properties; set => SetPropertyDocument(ref properties, value); }
 
     ViewModelTitle title;
-    public ViewModelTitle Title { get => title; set => SetProperty(ref title, value); }
+    public ViewModelTitle Title { get => title; set => SetPropertyDocument(ref title, value); }
 
     ViewModelTaskSheet taskSheet;
-    public ViewModelTaskSheet TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
+    public ViewModelTaskSheet TaskSheet { get => taskSheet; set => SetPropertyDocument(ref taskSheet, value); }
 
     ViewModelListOfReferences listOfReferences;
-    public ViewModelListOfReferences ListOfReferences { get => listOfReferences; set => SetProperty(ref listOfReferences, value); }
+    public ViewModelListOfReferences ListOfReferences { get => listOfReferences; set => SetPropertyDocument(ref listOfReferences, value); }
 
     ViewModelAppendix appendix;
-    public ViewModelAppendix Appendix { get => appendix; set => SetProperty(ref appendix, value); }
+    public ViewModelAppendix Appendix { get => appendix; set => SetPropertyDocument(ref appendix, value); }
 
     public DocumentData() : base()
     {

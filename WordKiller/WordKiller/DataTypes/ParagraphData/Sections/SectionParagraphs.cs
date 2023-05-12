@@ -6,10 +6,10 @@ using WordKiller.ViewModels;
 namespace WordKiller.DataTypes.ParagraphData.Sections;
 
 [Serializable]
-public abstract class SectionParagraphs : ViewModelBase
+public abstract class SectionParagraphs : ViewModelDocumentChanges
 {
     ObservableCollection<IParagraphData> paragraphs;
-    public ObservableCollection<IParagraphData> Paragraphs { get => paragraphs; set => SetProperty(ref paragraphs, value); }
+    public ObservableCollection<IParagraphData> Paragraphs { get => paragraphs; set => SetPropertyDocument(ref paragraphs, value); }
     protected IParagraphData? First { get => Paragraphs.FirstOrDefault(); }
 
     protected IParagraphData? Last { get => Paragraphs.LastOrDefault(); }
@@ -59,6 +59,6 @@ public abstract class SectionParagraphs : ViewModelBase
 
     public SectionParagraphs()
     {
-        Paragraphs = new ObservableCollection<IParagraphData>();
+        paragraphs = new ObservableCollection<IParagraphData>();
     }
 }

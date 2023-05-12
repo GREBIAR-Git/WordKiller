@@ -15,11 +15,8 @@
         xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
         mc:Ignorable="d"
         Name="win"
-        Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True">
+        Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" Closing="Win_Closing">
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closed">
-            <i:InvokeCommandAction Command="{Binding Path=Document.Closed}"/>
-        </i:EventTrigger>
         <i:EventTrigger EventName="DragEnter">
             <i:InvokeCommandAction Command="{Binding Path=AllowDrop}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
@@ -126,6 +123,7 @@
                     <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
                 <Image Width="20" Height="20" Margin="0,0,28,0" ToolTip="{DynamicResource Saved}" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilitySaveLogo}"/>
+                <TextBlock Width="20" Height="20" Margin="0,0,28,0" ToolTip="{DynamicResource ChangesMade}" Text="*" HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilityNeedSaveLogo}" Style="{StaticResource TextBlock}"/>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor}">
                 <Grid.ColumnDefinitions>
@@ -579,7 +577,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{DynamicResource Lecturer}" Margin="0 0 10 0"  Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
+                                        <Button Width="20" Height="20" Grid.Column="1" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}" Command="{Binding Document.Data.Title.UpdateProfessor}">
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
@@ -772,6 +770,11 @@
                                 </Grid>
                             </Grid>
                             <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.Books}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityBooks}" Style="{StaticResource DGStandart}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="CellEditEnding">
+                                        <i:InvokeCommandAction Command="{Binding Path=Document.Data.ListOfReferences.EditCell}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="{DynamicResource Autors}" Binding="{Binding Autors}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Name}" Binding="{Binding Name}" Width="20*"/>
@@ -781,6 +784,11 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.ElectronicResources}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityElectronicResources}" Style="{StaticResource DGStandart}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="CellEditEnding">
+                                        <i:InvokeCommandAction Command="{Binding Path=Document.Data.ListOfReferences.EditCell}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="{DynamicResource Name}" Binding="{Binding Name}" Width="33*"/>
                                     <DataGridTextColumn Header="{DynamicResource Url}" Binding="{Binding Url}" Width="33*"/>

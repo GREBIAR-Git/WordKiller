@@ -179,4 +179,10 @@
     <system:String x:Key="Cancel">Адмяніць</system:String>
     <system:String x:Key="DragDrop1">Што вы хочаце зрабіць?</system:String>
     <system:String x:Key="DragDrop2">Гэтага зрабіць немагчыма</system:String>
+
+    <system:String x:Key="TitleNeedSave">Ці трэба захаваць?</system:String>
+    <system:String x:Key="ContentNeedSave">Былі ўнесены змены ў дакумент, ці трэба іх захоўваць?</system:String>
+    <system:String x:Key="Yes">Так</system:String>
+    <system:String x:Key="Not">Не</system:String>
+    <system:String x:Key="ChangesMade">У дакумент былі ўнесены змены</system:String>
 </ResourceDictionary>

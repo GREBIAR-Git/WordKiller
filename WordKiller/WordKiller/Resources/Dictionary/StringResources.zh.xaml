@@ -179,4 +179,10 @@
     <system:String x:Key="Cancel">撤销</system:String>
     <system:String x:Key="DragDrop1">你想做什么？</system:String>
     <system:String x:Key="DragDrop2">不能做</system:String>
+
+    <system:String x:Key="TitleNeedSave">我需要保留它吗？</system:String>
+    <system:String x:Key="ContentNeedSave">对文件进行了修改，是否需要保存？</system:String>
+    <system:String x:Key="Yes">需要</system:String>
+    <system:String x:Key="Not">不需要</system:String>
+    <system:String x:Key="ChangesMade">已对该文件进行了修改</system:String>
 </ResourceDictionary>

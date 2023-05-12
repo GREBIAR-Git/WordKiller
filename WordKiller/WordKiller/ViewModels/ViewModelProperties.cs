@@ -3,29 +3,29 @@
 namespace WordKiller.ViewModels;
 
 [Serializable]
-public class ViewModelProperties : ViewModelBase
+public class ViewModelProperties : ViewModelDocumentChanges
 {
     bool title;
 
-    public bool Title { get => title; set => SetProperty(ref title, value); }
+    public bool Title { get => title; set => SetPropertyDocument(ref title, value); }
 
     bool tableOfContents;
 
-    public bool TableOfContents { get => tableOfContents; set => SetProperty(ref tableOfContents, value); }
+    public bool TableOfContents { get => tableOfContents; set => SetPropertyDocument(ref tableOfContents, value); }
 
     bool pageNumbers;
 
-    public bool PageNumbers { get => pageNumbers; set => SetProperty(ref pageNumbers, value); }
+    public bool PageNumbers { get => pageNumbers; set => SetPropertyDocument(ref pageNumbers, value); }
 
     bool numberHeading;
-    public bool NumberHeading { get => numberHeading; set => SetProperty(ref numberHeading, value); }
+    public bool NumberHeading { get => numberHeading; set => SetPropertyDocument(ref numberHeading, value); }
 
     bool listOfReferences;
-    public bool ListOfReferences { get => listOfReferences; set => SetProperty(ref listOfReferences, value); }
+    public bool ListOfReferences { get => listOfReferences; set => SetPropertyDocument(ref listOfReferences, value); }
 
     bool taskSheet;
-    public bool TaskSheet { get => taskSheet; set => SetProperty(ref taskSheet, value); }
+    public bool TaskSheet { get => taskSheet; set => SetPropertyDocument(ref taskSheet, value); }
 
     bool appendix;
-    public bool Appendix { get => appendix; set => SetProperty(ref appendix, value); }
+    public bool Appendix { get => appendix; set => SetPropertyDocument(ref appendix, value); }
 }

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
 
-namespace WordKiller.ViewModels
+namespace WordKiller.ViewModels.DialogMessage
 {
     public class ViewModelMessageDragDrop : ViewModelBase
     {
@@ -118,10 +118,10 @@ namespace WordKiller.ViewModels
 
         public ViewModelMessageDragDrop(Visibility insert, Visibility before, Visibility after, Visibility swap)
         {
-            mainColor = WordKiller.Properties.Settings.Default.MainColor;
-            additionalColor = WordKiller.Properties.Settings.Default.AdditionalColor;
-            alternativeColor = WordKiller.Properties.Settings.Default.AlternativeColor;
-            hoverColor = WordKiller.Properties.Settings.Default.HoverColor;
+            mainColor = Properties.Settings.Default.MainColor;
+            additionalColor = Properties.Settings.Default.AdditionalColor;
+            alternativeColor = Properties.Settings.Default.AlternativeColor;
+            hoverColor = Properties.Settings.Default.HoverColor;
             Number = -1;
             VisibilityInsert = insert;
             VisibilityBefore = before;

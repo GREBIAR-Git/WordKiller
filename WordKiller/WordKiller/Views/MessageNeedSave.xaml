@@ -1,11 +1,11 @@
-﻿<Window x:Class="WordKiller.Views.MessageDragDrop"
+﻿<Window x:Class="WordKiller.Views.MessageNeedSave"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordKiller.Views"
         mc:Ignorable="d"
-        Title="DRAG DROP" Height="120" Width="230" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{DynamicResource TitleNeedSave}" Height="130" Width="280" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
             <Style.Resources>
@@ -52,22 +52,18 @@
     <Grid Background="{Binding Path=MainColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="32*"/>
+            <ColumnDefinition Width="32*"/>
+            <ColumnDefinition Width="32*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="33*"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="33*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{DynamicResource DragDrop1}" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" Style="{StaticResource TextBlock}"/>
-        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" Content="*" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}"/>
-        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" Content="↑" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}"/>
-        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" Content="↓" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}"/>
-        <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" Content="**" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}"/>
-        <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" MinWidth="100" Margin="0 0 0 3" Content="{DynamicResource Cancel}" Command="{Binding Exit}"/>
+        <TextBlock Text="{DynamicResource ContentNeedSave}" TextWrapping="Wrap" FontSize="15" Grid.ColumnSpan="4" Style="{StaticResource TextBlock}" Margin="0 10 0 10"/>
+        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="70" Content="{DynamicResource Yes}" Command="{Binding Yes}"/>
+        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="70" Content="{DynamicResource Not}" Command="{Binding Not}"/>
+        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="70" Content="{DynamicResource Cancel}" Command="{Binding Exit}"/>
     </Grid>
 </Window>

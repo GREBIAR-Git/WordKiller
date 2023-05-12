@@ -6,6 +6,7 @@ using System.Windows.Input;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 
@@ -207,5 +208,16 @@ public partial class MainWindow : Window
     void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         richTextBox.KeyProcessing(e);
+    }
+
+    void Win_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (SaveHelper.NeedSave)
+        {
+            if (!viewModel.Document.File.NeedSave(viewModel.Document.Data))
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

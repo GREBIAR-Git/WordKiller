@@ -5,7 +5,7 @@ using WordKiller.ViewModels;
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphCode : ViewModelBase, IParagraphData
+public class ParagraphCode : ViewModelDocumentChanges, IParagraphData
 {
     public string Type { get => "Code"; }
 
@@ -14,12 +14,12 @@ public class ParagraphCode : ViewModelBase, IParagraphData
     public string Data
     {
         get => data;
-        set => SetProperty(ref data, value);
+        set => SetPropertyDocument(ref data, value);
     }
 
     string description;
 
-    public string Description { get => description; set => SetProperty(ref description, value); }
+    public string Description { get => description; set => SetPropertyDocument(ref description, value); }
 
     public Visibility DescriptionVisibility
     {

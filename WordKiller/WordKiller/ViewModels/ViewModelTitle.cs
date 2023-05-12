@@ -11,7 +11,7 @@ using WordKiller.Models;
 namespace WordKiller.ViewModels;
 
 [Serializable]
-public class ViewModelTitle : ViewModelBase
+public class ViewModelTitle : ViewModelDocumentChanges
 {
     ObservableCollection<User> performed;
     public ObservableCollection<User> Performed
@@ -19,7 +19,7 @@ public class ViewModelTitle : ViewModelBase
         get => performed;
         set
         {
-            SetProperty(ref performed, value);
+            SetPropertyDocument(ref performed, value);
         }
     }
 
@@ -267,7 +267,7 @@ public class ViewModelTitle : ViewModelBase
         get => faculty;
         set
         {
-            SetProperty(ref faculty, value);
+            SetPropertyDocument(ref faculty, value);
             UpdateCathedra.Execute(null);
         }
     }
@@ -279,7 +279,7 @@ public class ViewModelTitle : ViewModelBase
         get => cathedra;
         set
         {
-            SetProperty(ref cathedra, value);
+            SetPropertyDocument(ref cathedra, value);
             UpdateProfessor.Execute(null);
         }
     }
@@ -290,7 +290,7 @@ public class ViewModelTitle : ViewModelBase
         get => number;
         set
         {
-            SetProperty(ref number, value);
+            SetPropertyDocument(ref number, value);
         }
     }
 
@@ -300,7 +300,7 @@ public class ViewModelTitle : ViewModelBase
         get => theme;
         set
         {
-            SetProperty(ref theme, value[..1].ToUpper() + value[1..].ToLower());
+            SetPropertyDocument(ref theme, value[..1].ToUpper() + value[1..].ToLower());
         }
     }
 
@@ -310,15 +310,15 @@ public class ViewModelTitle : ViewModelBase
         get => discipline;
         set
         {
-            SetProperty(ref discipline, value[..1].ToUpper() + value[1..].ToLower());
+            SetPropertyDocument(ref discipline, value[..1].ToUpper() + value[1..].ToLower());
         }
     }
 
     string professor;
-    public string Professor { get => professor; set => SetProperty(ref professor, value); }
+    public string Professor { get => professor; set => SetPropertyDocument(ref professor, value); }
 
     string rank;
-    public string Rank { get => rank; set => SetProperty(ref rank, value); }
+    public string Rank { get => rank; set => SetPropertyDocument(ref rank, value); }
 
     bool project;
     public bool Project
@@ -326,7 +326,7 @@ public class ViewModelTitle : ViewModelBase
         get => project;
         set
         {
-            SetProperty(ref project, value);
+            SetPropertyDocument(ref project, value);
         }
     }
 
@@ -336,7 +336,7 @@ public class ViewModelTitle : ViewModelBase
         get => work;
         set
         {
-            SetProperty(ref work, value);
+            SetPropertyDocument(ref work, value);
         }
     }
 
@@ -410,7 +410,7 @@ public class ViewModelTitle : ViewModelBase
         get => photo;
         set
         {
-            SetProperty(ref photo, value);
+            SetPropertyDocument(ref photo, value);
             if (photo)
             {
                 VisibitityTitleText = Visibility.Collapsed;
@@ -430,7 +430,7 @@ public class ViewModelTitle : ViewModelBase
         get => picture;
         set
         {
-            SetProperty(ref picture, value);
+            SetPropertyDocument(ref picture, value);
         }
     }
 
@@ -446,10 +446,14 @@ public class ViewModelTitle : ViewModelBase
         discipline = string.Empty;
         professor = string.Empty;
         rank = string.Empty;
-        Photo = false;
-        AutoInput = false;
-        Project = false;
-        Work = true;
+        project = false;
+        work = true;
+        autoInput = false;
+        photo = false;
+        visibitityTitleText = Visibility.Visible;
+        visibitityPhoto = Visibility.Collapsed;
+        visibitityManualInput = Visibility.Collapsed;
+        visibitityAutoInput = Visibility.Visible;
         UpdateFaculty.Execute(null);
     }
 }

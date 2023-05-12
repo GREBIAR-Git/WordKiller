@@ -168,6 +168,7 @@ public class ViewModelDocument : ViewModelBase
                     return;
                 }
                 ParagraphToTreeView(dataToAdd, Selected);
+                SaveHelper.NeedSave = true;
             });
         }
     }
@@ -372,6 +373,11 @@ public class ViewModelDocument : ViewModelBase
         {
             Data.SwapParagraphs(sourceItem, targetItem);
         }
+        else
+        {
+            return;
+        }
+        SaveHelper.NeedSave = true;
     }
 
     public delegate void Insert(IParagraphData into, IParagraphData insert);
@@ -463,6 +469,7 @@ public class ViewModelDocument : ViewModelBase
         {
             InsertToTreeView(dataToAdd, Data.InsertBefore, Selected);
         }
+        SaveHelper.NeedSave = true;
     }
 
     void InsetAfter(IParagraphData dataToAdd)
@@ -479,6 +486,7 @@ public class ViewModelDocument : ViewModelBase
         {
             InsertToTreeView(dataToAdd, Data.InsertAfter, Selected);
         }
+        SaveHelper.NeedSave = true;
     }
 
     ICommand insertTextBefore;
@@ -698,6 +706,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 Data.RemoveParagraph(paragraph);
             }
+            SaveHelper.NeedSave = true;
         }
     }
 
@@ -1014,26 +1023,64 @@ public class ViewModelDocument : ViewModelBase
         switch (Data.Type)
         {
             case DocumentType.DefaultDocument:
-                DefaultDocument = true;
+                defaultDocument = true;
+                NotifyPropertyChanged("DefaultDocument");
+                VisibilitY.TitleMI = Visibility.Collapsed;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.LaboratoryWork:
-                LaboratoryWork = true;
+                laboratoryWork = true;
+                NotifyPropertyChanged("LaboratoryWork");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.PracticeWork:
-                PracticeWork = true;
+                practiceWork = true;
+                NotifyPropertyChanged("PracticeWork");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.Coursework:
-                Coursework = true;
+                coursework = true;
+                NotifyPropertyChanged("Coursework");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Visible;
                 break;
             case DocumentType.ControlWork:
-                ControlWork = true;
+                controlWork = true;
+                NotifyPropertyChanged("ControlWork");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.Referat:
-                Referat = true;
+                referat = true;
+                NotifyPropertyChanged("Referat");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.VKR:
-                VKR = true;
+                vkr = true;
+                NotifyPropertyChanged("VKR");
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
+        }
+        TextHeader(Data.Type.ToString());
+        if (Data.Properties.Title)
+        {
+            AddTitle();
+        }
+        if (Data.Properties.TaskSheet)
+        {
+            AddTaskSheet();
+        }
+        if (Data.Properties.ListOfReferences)
+        {
+            AddListOfReferences();
+        }
+        if (Data.Properties.Appendix)
+        {
+            AddAppendix();
         }
     }
 
@@ -1248,13 +1295,23 @@ public class ViewModelDocument : ViewModelBase
         Data.Properties.TaskSheet = true;
         if (Data.Paragraphs.Count > 0)
         {
-            if (Data.Paragraphs[0] is not ParagraphTitle)
+            if (Data.Paragraphs[0] is not ParagraphTitle && Data.Paragraphs[0] is not ParagraphTaskSheet)
             {
                 Data.InsertBefore(Data.Paragraphs[0], new ParagraphTaskSheet());
             }
-            else
+            else if (Data.Paragraphs[0] is ParagraphTitle)
             {
-                Data.InsertAfter(Data.Paragraphs[0], new ParagraphTaskSheet());
+                if (Data.Paragraphs.Count > 1)
+                {
+                    if (Data.Paragraphs[1] is not ParagraphTaskSheet)
+                    {
+                        Data.InsertAfter(Data.Paragraphs[0], new ParagraphTaskSheet());
+                    }
+                }
+                else
+                {
+                    Data.InsertAfter(Data.Paragraphs[0], new ParagraphTaskSheet());
+                }
             }
         }
         else
@@ -1596,22 +1653,6 @@ public class ViewModelDocument : ViewModelBase
 
     bool allowDropRTB;
     public bool AllowDropRTB { get => allowDropRTB; set => SetProperty(ref allowDropRTB, value); }
-
-    ICommand? closed;
-    public ICommand Closed
-    {
-        get
-        {
-            return closed ??= new RelayCommand(
-            obj =>
-            {
-                if (false)
-                {
-                    File.NeedSave(Data);
-                }
-            });
-        }
-    }
 
     public ViewModelDocument()
     {

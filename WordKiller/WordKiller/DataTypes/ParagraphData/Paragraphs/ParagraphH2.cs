@@ -11,9 +11,9 @@ public class ParagraphH2 : SectionH2, IParagraphData
 
     string data;
 
-    public string Data { get => data; set => SetProperty(ref data, value, "Description"); }
+    public string Data { get => data; set => SetPropertyDocument(ref data, value, "Description"); }
 
-    public string Description { get => data.Replace("\r\n", " "); set => SetProperty(ref data, value, "Data"); }
+    public string Description { get => data.Replace("\r\n", " "); set => SetPropertyDocument(ref data, value, "Data"); }
 
     public Visibility DescriptionVisibility
     {

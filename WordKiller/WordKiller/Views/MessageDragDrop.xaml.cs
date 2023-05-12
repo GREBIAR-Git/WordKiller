@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using WordKiller.ViewModels;
+using WordKiller.ViewModels.DialogMessage;
 
 namespace WordKiller.Views
 {

@@ -179,4 +179,10 @@
     <system:String x:Key="Cancel">Отмена</system:String>
     <system:String x:Key="DragDrop1">Что вы хотите сделать?</system:String>
     <system:String x:Key="DragDrop2">Это сделать невозможно</system:String>
+
+    <system:String x:Key="TitleNeedSave">Нужно ли сохранить?</system:String>
+    <system:String x:Key="ContentNeedSave">Были внесены изменения в документ, нужно ли их сохранить?</system:String>
+    <system:String x:Key="Yes">Да</system:String>
+    <system:String x:Key="Not">Нет</system:String>
+    <system:String x:Key="ChangesMade">В документ были внесены изменения</system:String>
 </ResourceDictionary>

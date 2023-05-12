@@ -5,7 +5,7 @@ using WordKiller.DataTypes.ParagraphData.Paragraphs;
 namespace WordKiller.ViewModels
 {
     [Serializable]
-    public class ViewModelTaskSheet : ViewModelBase
+    public class ViewModelTaskSheet : ViewModelDocumentChanges
     {
         string sourceData;
 
@@ -14,7 +14,7 @@ namespace WordKiller.ViewModels
             get => sourceData;
             set
             {
-                SetProperty(ref sourceData, value);
+                SetPropertyDocument(ref sourceData, value);
             }
         }
 
@@ -25,7 +25,7 @@ namespace WordKiller.ViewModels
             get => toc;
             set
             {
-                SetProperty(ref toc, value);
+                SetPropertyDocument(ref toc, value);
             }
         }
 
@@ -36,15 +36,15 @@ namespace WordKiller.ViewModels
             get => reportingMaterial;
             set
             {
-                SetProperty(ref reportingMaterial, value);
+                SetPropertyDocument(ref reportingMaterial, value);
             }
         }
 
         Visibility visibitityPhoto;
-        public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetProperty(ref visibitityPhoto, value); }
+        public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetPropertyDocument(ref visibitityPhoto, value); }
 
         Visibility visibitityTitleText;
-        public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetProperty(ref visibitityTitleText, value); }
+        public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetPropertyDocument(ref visibitityTitleText, value); }
 
         bool photo;
         public bool Photo
@@ -52,7 +52,7 @@ namespace WordKiller.ViewModels
             get => photo;
             set
             {
-                SetProperty(ref photo, value);
+                SetPropertyDocument(ref photo, value);
                 if (photo)
                 {
                     VisibitityTitleText = Visibility.Collapsed;
@@ -72,7 +72,7 @@ namespace WordKiller.ViewModels
             get => firstPicture;
             set
             {
-                SetProperty(ref firstPicture, value);
+                SetPropertyDocument(ref firstPicture, value);
             }
         }
 
@@ -82,18 +82,20 @@ namespace WordKiller.ViewModels
             get => secondPicture;
             set
             {
-                SetProperty(ref secondPicture, value);
+                SetPropertyDocument(ref secondPicture, value);
             }
         }
 
         public ViewModelTaskSheet()
         {
-            FirstPicture = new();
-            SecondPicture = new();
-            ReportingMaterial = string.Empty;
-            TOC = string.Empty;
-            SourceData = string.Empty;
-            Photo = false;
+            firstPicture = new();
+            secondPicture = new();
+            reportingMaterial = string.Empty;
+            toc = string.Empty;
+            sourceData = string.Empty;
+            photo = false;
+            visibitityTitleText = Visibility.Visible;
+            visibitityPhoto = Visibility.Collapsed;
         }
     }
 }

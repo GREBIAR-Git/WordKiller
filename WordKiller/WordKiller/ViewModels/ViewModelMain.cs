@@ -5,6 +5,7 @@ using WordKiller.Commands;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.Scripts;
 using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels.Settings;
 
@@ -399,6 +400,7 @@ public class ViewModelMain : ViewModelBase
                                 string data1 = reader.ReadToEnd();
                                 Document.ParagraphToTreeView(new ParagraphCode(nameFile, data1), Document.Selected);
                             }
+                            SaveHelper.NeedSave = true;
                         }
                     }
                 }

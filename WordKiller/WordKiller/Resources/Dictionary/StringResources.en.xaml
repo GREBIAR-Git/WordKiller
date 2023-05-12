@@ -179,4 +179,10 @@
     <system:String x:Key="Cancel">Cancel</system:String>
     <system:String x:Key="DragDrop1">What do you want to do?</system:String>
     <system:String x:Key="DragDrop2">Can't do it</system:String>
+
+    <system:String x:Key="TitleNeedSave">Do I need to keep it?</system:String>
+    <system:String x:Key="ContentNeedSave">Changes have been made to the document, do I need to keep them?</system:String>
+    <system:String x:Key="Yes">Yes</system:String>
+    <system:String x:Key="Not">No</system:String>
+    <system:String x:Key="ChangesMade">Changes have been made to the document</system:String>
 </ResourceDictionary>

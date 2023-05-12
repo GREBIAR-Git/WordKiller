@@ -179,4 +179,10 @@
     <system:String x:Key="Cancel">Rückgängig machen</system:String>
     <system:String x:Key="DragDrop1">Was möchten Sie tun?</system:String>
     <system:String x:Key="DragDrop2">Es kann nicht gemacht werden</system:String>
+
+    <system:String x:Key="TitleNeedSave">Muss ich es aufbewahren?</system:String>
+    <system:String x:Key="ContentNeedSave">Es wurden Änderungen an dem Dokument vorgenommen. Müssen diese gespeichert werden?</system:String>
+    <system:String x:Key="Yes">Ja</system:String>
+    <system:String x:Key="Not">Nein</system:String>
+    <system:String x:Key="ChangesMade">Es wurden Änderungen an dem Dokument vorgenommen</system:String>
 </ResourceDictionary>

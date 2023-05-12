@@ -8,15 +8,15 @@ using WordKiller.DataTypes.ParagraphData.Paragraphs;
 namespace WordKiller.ViewModels;
 
 [Serializable]
-public class ViewModelAppendix : ViewModelBase
+public class ViewModelAppendix : ViewModelDocumentChanges
 {
     public ObservableCollection<IParagraphData> Appendix { get; set; }
 
     IParagraphData? selected;
-    public IParagraphData? Selected { get => selected; set => SetProperty(ref selected, value); }
+    public IParagraphData? Selected { get => selected; set => SetPropertyDocument(ref selected, value); }
 
     int addIndex;
-    public int AddIndex { get => addIndex; set => SetProperty(ref addIndex, value); }
+    public int AddIndex { get => addIndex; set => SetPropertyDocument(ref addIndex, value); }
 
     [NonSerialized]
     ICommand? add;
@@ -72,7 +72,7 @@ public class ViewModelAppendix : ViewModelBase
 
     public ViewModelAppendix()
     {
-        AddIndex = -1;
+        addIndex = -1;
         Appendix = new();
     }
 }
