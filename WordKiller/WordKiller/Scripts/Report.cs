@@ -148,19 +148,30 @@ class Report
             int p = 1;
             int t = 1;
             int c = 1;
+            int te = 1;
             Section(data);
             ReportExtras.PageBreak(doc);
 
             void Paragraph(IParagraphData paragraph)
             {
+                string data;
+                if (paragraph.Data.Length > 1)
+                {
+                    data = paragraph.Data.Remove(paragraph.Data.Length - 2, 2);
+                }
+                else
+                {
+                    data = paragraph.Data;
+                }
                 if (paragraph is ParagraphText)
                 {
-                    ReportText.Text(doc, paragraph.Data, "Текст");
+                    ReportText.Text(doc, data, "Текст");
+                    te++;
                 }
                 else if (paragraph is ParagraphH1)
                 {
-                    string text = paragraph.Data.ToUpper();
-                    if (h1 != 1)
+                    string text = data.ToUpper();
+                    if (h1 != 1 || h2 != 1 || t != 1 || te != 1 || l != 1 || p != 1 || c != 1)
                     {
                         ReportExtras.PageBreak(doc);
                     }
@@ -170,8 +181,8 @@ class Report
                         if (numberHeading && text.ToUpper() != "ЗАКЛЮЧЕНИЕ")
                         {
                             text = h1.ToString() + " " + text;
-                            h1++;
                         }
+                        h1++;
                     }
                     ReportText.Text(doc, text, "Раздел");
                     h2 = 1;
@@ -184,14 +195,14 @@ class Report
                         text += (h1 - 1).ToString() + "." + h2.ToString() + " ";
                     }
 
-                    text += paragraph.Data;
+                    text += data;
                     ReportText.Text(doc, "\n" + text, "Подраздел");
                     h2all++;
                     h2++;
                 }
                 else if (paragraph is ParagraphList)
                 {
-                    ReportList.Create(doc, paragraph.Data);
+                    ReportList.Create(doc, data);
                     l++;
                 }
                 else if (paragraph is ParagraphPicture picture)
@@ -215,7 +226,7 @@ class Report
                 {
                     ReportText.Text(doc, paragraph.Description, "РазделПриложение");
 
-                    ReportText.Text(doc, paragraph.Data, "Код");
+                    ReportText.Text(doc, data, "Код");
                     c++;
                 }
             }
@@ -231,7 +242,10 @@ class Report
                     }
                     else
                     {
-                        Paragraph(paragraph);
+                        if (paragraph is not ParagraphTitle && paragraph is not ParagraphTaskSheet && paragraph is not ParagraphListOfReferences && paragraph is not ParagraphAppendix)
+                        {
+                            Paragraph(paragraph);
+                        }
                     }
                 }
             }
