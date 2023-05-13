@@ -230,7 +230,7 @@ public class ViewModelMain : ViewModelBase
                             return;
                         }
                         paragraphPicture.Bitmap = bitmap;
-                        Document.MainImage = paragraphPicture.BitmapImage;
+                        paragraphPicture.UpdateBitmapImage();
                         paragraphPicture.Description = nameFile;
                     }
                     else if (selected is ParagraphCode paragraphCode)

@@ -25,115 +25,58 @@ public partial class MainWindow : Window
         viewModel.Document = document;
     }
 
-    // Таблица
-    void CountRows_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (sender is TextBox textBox)
-        {
-            if (viewModel.Document.Selected is ParagraphTable paragraphTable)
-            {
-                int rows = paragraphTable.TableData.Rows;
-                CountRowOrColumn(textBox, ref rows);
-                gridTable.RowDefinitions.Clear();//tyt
-                for (int i = 0; i < rows; i++)
-                {
-                    //tyt
-                    gridTable.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100 / rows, type: GridUnitType.Star) });
-                }
-                paragraphTable.TableData.Rows = rows;
-                UpdateTable();
-            }
-        }
-    }
-
-    void CountColumns_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (sender is TextBox textBox)
-        {
-            if (viewModel.Document.Selected is ParagraphTable paragraphTable)
-            {
-                int columns = paragraphTable.TableData.Columns;
-                CountRowOrColumn(textBox, ref columns);
-                gridTable.ColumnDefinitions.Clear();//tyt
-                for (int i = 0; i < columns; i++)
-                {
-                    //tyt
-                    gridTable.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(100 / columns, type: GridUnitType.Star) });
-                }
-                paragraphTable.TableData.Columns = columns;
-                UpdateTable();
-            }
-        }
-    }
-
-    static void CountRowOrColumn(TextBox textBox, ref int count)
-    {
-        int beginningNumber = 0;
-        foreach (char number in textBox.Text)
-        {
-            if (number == '0')
-            {
-                beginningNumber++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        textBox.Text = textBox.Text[beginningNumber..];
-        if (!string.IsNullOrEmpty(textBox.Text))
-        {
-            count = int.Parse(textBox.Text);
-            if (count > Properties.Settings.Default.MaxRowAndColumn)
-            {
-                count = Properties.Settings.Default.MaxRowAndColumn;
-                textBox.Text = count.ToString();
-            }
-        }
-        else
-        {
-            count = 0;
-        }
-        textBox.SelectionStart = textBox.Text.Length;
-    }
-
     void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
         Regex regex = new("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
-    }
-
-    void UpdateTable()
-    {
-        if (viewModel.Document.Selected is ParagraphTable paragraphTable)
+        if (!e.Handled)
         {
-            gridTable.Children.Clear();//tyt
-            for (int i = 0; i < paragraphTable.TableData.Rows; i++)
+            TextBox textBox = (TextBox)sender;
+            textBox.SelectedText = e.Text;
+            string text = textBox.Text;
+            int beginningNumber = 0;
+            foreach (char number in text)
             {
-                for (int f = 0; f < paragraphTable.TableData.Columns; f++)
+                if (number == '0')
                 {
-                    TextBox textBox = new()
-                    {
-                        Text = paragraphTable.TableData.DataTable[i, f],
-                        FontSize = viewModel.Settings.Personalization.FontSizeRTB,
-                    };
-                    textBox.TextChanged += Cell_TextChanged;
-                    gridTable.Children.Add(textBox);//tyt
-                    Grid.SetColumn(textBox, f);
-                    Grid.SetRow(textBox, i);
+                    beginningNumber++;
                 }
+                else
+                {
+                    break;
+                }
+            }
+            if (beginningNumber > 0)
+            {
+                text = text[beginningNumber..];
+                e.Handled = true;
+            }
+            if (!string.IsNullOrEmpty(text))
+            {
+                int count = int.Parse(text);
+                if (count > Properties.Settings.Default.MaxRowAndColumn)
+                {
+                    count = Properties.Settings.Default.MaxRowAndColumn;
+                    text = count.ToString();
+                    e.Handled = true;
+                }
+            }
+            if (e.Handled)
+            {
+
+                textBox.Text = text;
+                textBox.SelectionStart = textBox.Text.Length;
             }
         }
     }
 
-    void Cell_TextChanged(object sender, TextChangedEventArgs e)
+    private void textBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (paragraphTree.SelectedItem is ParagraphTable paragraphTable)
+        if (e.Command == ApplicationCommands.Copy ||
+            e.Command == ApplicationCommands.Cut ||
+            e.Command == ApplicationCommands.Paste)
         {
-            TextBox textBox = (TextBox)sender;
-            int row = Grid.GetRow(textBox);
-            int column = Grid.GetColumn(textBox);
-            paragraphTable.TableData.DataTable[row, column] = textBox.Text;
+            e.Handled = true;
         }
     }
 

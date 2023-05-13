@@ -13,7 +13,9 @@ public class ParagraphTable : ViewModelDocumentChanges, IParagraphData
 
     string description;
 
-    public TableData TableData { get; set; }
+    TableData tableData;
+
+    public TableData TableData { get => tableData; set => SetPropertyDocument(ref tableData, value); }
 
     public string Description { get => description; set => SetPropertyDocument(ref description, value); }
 

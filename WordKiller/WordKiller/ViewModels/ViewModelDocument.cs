@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using WordKiller.Commands;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
@@ -89,7 +88,6 @@ public class ViewModelDocument : ViewModelBase
                     {
                         VisibilitY.RTBPanel = Visibility.Collapsed;
                         VisibilitY.ImagePanel = Visibility.Visible;
-                        MainImage = paragraphPicture.BitmapImage;
                         VisibilitY.TablePanel = Visibility.Collapsed;
                     }
                     else if (selected is ParagraphTable)
@@ -97,9 +95,6 @@ public class ViewModelDocument : ViewModelBase
                         VisibilitY.RTBPanel = Visibility.Collapsed;
                         VisibilitY.ImagePanel = Visibility.Collapsed;
                         VisibilitY.TablePanel = Visibility.Visible;
-                        //countRows.Text = paragraphTable.TableData.Rows.ToString();
-                        //countColumns.Text = paragraphTable.TableData.Columns.ToString();
-                        //UpdateTable();
                     }
                     else
                     {
@@ -708,13 +703,6 @@ public class ViewModelDocument : ViewModelBase
             }
             SaveHelper.NeedSave = true;
         }
-    }
-
-    ImageSource? mainImage;
-    public ImageSource? MainImage
-    {
-        get => mainImage;
-        set => SetProperty(ref mainImage, value);
     }
 
     readonly Timer timer;

@@ -1,4 +1,5 @@
 ﻿using System;
+using WordKiller.Scripts;
 
 namespace WordKiller.DataTypes.ParagraphData;
 
@@ -10,11 +11,29 @@ public class TableData
     public void SetCell(int row, int column, string data)
     {
         DataTable[row, column] = data;
+        SaveHelper.NeedSave = true;
+    }
+    int rows;
+    public int Rows
+    {
+        get => rows;
+        set
+        {
+            rows = value;
+            SaveHelper.NeedSave = true;
+        }
     }
 
-    public int Rows { get; set; }
-
-    public int Columns { get; set; }
+    int columns;
+    public int Columns
+    {
+        get => columns;
+        set
+        {
+            columns = value;
+            SaveHelper.NeedSave = true;
+        }
+    }
 
     public TableData(int row = 1, int column = 1)
     {

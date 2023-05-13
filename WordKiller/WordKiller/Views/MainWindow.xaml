@@ -13,6 +13,7 @@
         xmlns:rtb="clr-namespace:WordKiller.Scripts"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
+        xmlns:local="clr-namespace:WordKiller"
         mc:Ignorable="d"
         Name="win"
         Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" Closing="Win_Closing">
@@ -42,6 +43,11 @@
         <CommandBinding Command="Undo" Executed="WindowBinding_Unselect"/>
     </Window.CommandBindings>
     <Window.Resources>
+        <DataTemplate x:Key="CustomTemplate">
+            <Border Padding="3" Background="Purple">
+                <TextBox Text="{Binding Path=Value}" />
+            </Border>
+        </DataTemplate>
         <ObjectDataProvider x:Key="typeDocument" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -373,11 +379,11 @@
                                     <RowDefinition Height="100*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" x:Name="countRows" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" Text="{Binding Document.Selected.TableData.Rows, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="textBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                                 <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" x:Name="countColumns" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" Text="{Binding Document.Selected.TableData.Columns, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="textBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                             </Grid>
-                            <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
+                            <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" typeXaml:GridHelpers.Selected="{Binding Document.Selected.TableData}" typeXaml:GridHelpers.RowCount="{Binding Document.Selected.TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding Document.Selected.TableData.Columns}" />
                         </Grid>
                         <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.RTBPanel}">
                             <typeXaml:RTBox x:Name="richTextBox" Style="{StaticResource RichTextBox}" Text="{Binding Document.Selected.Data, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="{Binding Document.AllowDropRTB, Mode=TwoWay}">
@@ -415,7 +421,7 @@
                                 </i:Interaction.Triggers>
                                 <Border BorderThickness="4" BorderBrush="{Binding Path=Settings.Personalization.AlternativeColor}">
                                     <Grid Background="{Binding Path=Settings.Personalization.AdditionalColor}" ToolTip="{DynamicResource DaDImage}">
-                                        <Image Source="{Binding Document.MainImage}" Stretch="Fill" />
+                                        <Image Source="{Binding Document.Selected.BitmapImage}" Stretch="Fill" />
                                         <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource TheAwesomeXAMLimage}" />
                                     </Grid>
                                 </Border>
@@ -817,7 +823,7 @@
                                 <ComboBoxItem Content="{DynamicResource Table}"/>
                                 <ComboBoxItem Content="{DynamicResource Code}"/>
                             </ComboBox>
-                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" ItemsSource="{Binding Document.Data.Appendix.Appendix}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
+                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" x:Name="test4" ItemsSource="{Binding Document.Data.Appendix.Appendix}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
                                 <gu:FlipView.Resources>
                                     <DataTemplate DataType="{x:Type tp:ParagraphCode}">
                                         <Grid>
@@ -919,11 +925,11 @@
                                                         <RowDefinition Height="100*"/>
                                                     </Grid.RowDefinitions>
                                                     <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" x:Name="countRows" TextChanged="CountRows_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" Text="{Binding TableData.Rows, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                                                     <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
-                                                    <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" x:Name="countColumns" TextChanged="CountColumns_TextChanged" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
+                                                    <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" Text="{Binding TableData.Columns, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                                                 </Grid>
-                                                <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" x:Name="gridTable"/>
+                                                <Grid typeXaml:GridHelpers.Selected="{Binding TableData}" typeXaml:GridHelpers.RowCount="{Binding TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding TableData.Columns}" Grid.Row="1" Grid.Column="0"/>
                                             </Grid>
                                         </Grid>
                                     </DataTemplate>
