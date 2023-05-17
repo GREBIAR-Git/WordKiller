@@ -89,6 +89,7 @@
                     <MenuItem Header="{DynamicResource ControlWork}" IsChecked="{Binding Path=Document.ControlWork}" Command="{Binding Document.ControlWork_Click}"/>
                     <MenuItem Header="{DynamicResource Referat}" IsChecked="{Binding Path=Document.Referat}" Command="{Binding Document.Referat_Click}"/>
                     <Separator/>
+                    <MenuItem Header="{DynamicResource ProductionPractice}" IsChecked="{Binding Path=Document.ProductionPractice}" Command="{Binding Document.ProductionPractice_Click}"/>
                     <MenuItem Header="{DynamicResource VKR}" IsChecked="{Binding Path=Document.VKR}" Command="{Binding Document.VKR_Click}"/>
                 </MenuItem>
                 <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
@@ -397,7 +398,7 @@
                             <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" typeXaml:GridHelpers.Selected="{Binding Document.Selected.TableData}" typeXaml:GridHelpers.RowCount="{Binding Document.Selected.TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding Document.Selected.TableData.Columns}" />
                         </Grid>
                         <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.RTBPanel}">
-                            <typeXaml:RTBox x:Name="richTextBox" Style="{StaticResource RichTextBox}" Text="{Binding Document.Selected.Data, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="{Binding Document.AllowDropRTB, Mode=TwoWay}" LostFocus="RichTextBox_LostFocus">
+                            <typeXaml:RTBox x:Name="richTextBox" Language="ru-RU" Style="{StaticResource RichTextBox}" Text="{Binding Document.Selected.Data, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="{Binding Document.AllowDropRTB, Mode=TwoWay}" LostFocus="RichTextBox_LostFocus">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="PreviewDragEnter">
                                         <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
@@ -485,6 +486,11 @@
                         <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityTitleText}">
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -634,6 +640,70 @@
                                         <RadioButton Grid.Column="1" IsChecked="{Binding Path=Document.Data.Title.Work}" Margin="2,0,0,0" Content="{DynamicResource Coursework}" Style="{StaticResource RadioButton}"/>
                                         <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.Title.Project}" Margin="2,0,2,0" Content="{DynamicResource CourseProject}" Style="{StaticResource RadioButton}"/>
                                     </Grid>
+                                </Grid>
+                                <Grid Grid.Row="8" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPracticeType}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Type}" Style="{StaticResource TextBlockTitle}"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="15*"/>
+                                            <ColumnDefinition Width="35*"/>
+                                            <ColumnDefinition Width="35*"/>
+                                            <ColumnDefinition Width="15*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <RadioButton Grid.Column="1" IsChecked="{Binding Path=Document.Data.Title.Production}" Margin="2,0,0,0" Content="{DynamicResource Production}" Style="{StaticResource RadioButton}"/>
+                                        <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.Title.Educational}" Margin="2,0,2,0" Content="{DynamicResource Educational}" Style="{StaticResource RadioButton}"/>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Row="9" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPracticeLocation}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource PracticeLocation}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.PracticeLocation}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="10" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityDirection}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource DirectionP}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Direction}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="11" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityNormocontrol}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource Normocontrol}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Normocontrol}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="12" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityHeadCathedra}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{DynamicResource HeadCathedra}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.HeadCathedra}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                </Grid>
+                                <Grid Grid.Row="13" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganization}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{DynamicResource HeadOrganization}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
+                                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Document.Data.Title.OnHeadOrganization}"/>
+                                    </Grid>
+                                    <TextBox Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganizationT}" Text="{Binding Path=Document.Data.Title.HeadOrganization}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
                                 </Grid>
                             </Grid>
                         </ScrollViewer>
@@ -845,7 +915,7 @@
                                             </Grid.RowDefinitions>
                                             <TextBox Grid.Row="0" Style="{StaticResource TextBox}" Text="{Binding Description}" AllowDrop="True"/>
                                             <TextBlock Grid.Row="1" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                                            <typeXaml:RTBox Grid.Row="2" Style="{StaticResource RichTextBox}" Text="{Binding Data}" SpellCheck.IsEnabled="False" AllowDrop="True">
+                                            <typeXaml:RTBox Grid.Row="2" Language="ru-RU" Style="{StaticResource RichTextBox}" Text="{Binding Data}" SpellCheck.IsEnabled="False" AllowDrop="True">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="PreviewDragEnter">
                                                         <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDropImage}" PassEventArgsToCommand="True"/>

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
+using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Models;
 
@@ -340,6 +341,59 @@ public class ViewModelTitle : ViewModelDocumentChanges
         }
     }
 
+    bool educational;
+    public bool Educational
+    {
+        get => educational;
+        set
+        {
+            SetPropertyDocument(ref educational, value);
+        }
+    }
+
+    bool production;
+    public bool Production
+    {
+        get => production;
+        set
+        {
+            SetPropertyDocument(ref production, value);
+        }
+    }
+
+    string practiceLocation;
+    public string PracticeLocation { get => practiceLocation; set => SetPropertyDocument(ref practiceLocation, value); }
+
+    string direction;
+    public string Direction { get => direction; set => SetPropertyDocument(ref direction, value); }
+
+    string normocontrol;
+    public string Normocontrol { get => normocontrol; set => SetPropertyDocument(ref normocontrol, value); }
+
+    string headCathedra;
+    public string HeadCathedra { get => headCathedra; set => SetPropertyDocument(ref headCathedra, value); }
+
+    string headOrganization;
+    public string HeadOrganization { get => headOrganization; set => SetPropertyDocument(ref headOrganization, value); }
+
+    bool onHeadOrganization;
+    public bool OnHeadOrganization
+    {
+        get => onHeadOrganization;
+        set
+        {
+            SetPropertyDocument(ref onHeadOrganization, value);
+            if (onHeadOrganization)
+            {
+                VisibitityHeadOrganizationT = Visibility.Visible;
+            }
+            else
+            {
+                VisibitityHeadOrganizationT = Visibility.Collapsed;
+            }
+        }
+    }
+
     [NonSerialized]
     Visibility visibitityFaculty;
     public Visibility VisibitityFaculty { get => visibitityFaculty; set => SetProperty(ref visibitityFaculty, value); }
@@ -372,6 +426,34 @@ public class ViewModelTitle : ViewModelDocumentChanges
     Visibility visibitityType;
     public Visibility VisibitityType { get => visibitityType; set => SetProperty(ref visibitityType, value); }
 
+    [NonSerialized]
+    Visibility visibitityPracticeType;
+    public Visibility VisibitityPracticeType { get => visibitityPracticeType; set => SetProperty(ref visibitityPracticeType, value); }
+
+    [NonSerialized]
+    Visibility visibitityPracticeLocation;
+    public Visibility VisibitityPracticeLocation { get => visibitityPracticeLocation; set => SetProperty(ref visibitityPracticeLocation, value); }
+
+    [NonSerialized]
+    Visibility visibitityDirection;
+    public Visibility VisibitityDirection { get => visibitityDirection; set => SetProperty(ref visibitityDirection, value); }
+
+    [NonSerialized]
+    Visibility visibitityNormocontrol;
+    public Visibility VisibitityNormocontrol { get => visibitityNormocontrol; set => SetProperty(ref visibitityNormocontrol, value); }
+
+    [NonSerialized]
+    Visibility visibitityHeadCathedra;
+    public Visibility VisibitityHeadCathedra { get => visibitityHeadCathedra; set => SetProperty(ref visibitityHeadCathedra, value); }
+
+    [NonSerialized]
+    Visibility visibitityHeadOrganization;
+    public Visibility VisibitityHeadOrganization { get => visibitityHeadOrganization; set => SetProperty(ref visibitityHeadOrganization, value); }
+
+    [NonSerialized]
+    Visibility visibitityHeadOrganizationT;
+    public Visibility VisibitityHeadOrganizationT { get => visibitityHeadOrganizationT; set => SetProperty(ref visibitityHeadOrganizationT, value); }
+
     Visibility visibitityManualInput;
     public Visibility VisibitityManualInput { get => visibitityManualInput; set => SetProperty(ref visibitityManualInput, value); }
 
@@ -383,6 +465,142 @@ public class ViewModelTitle : ViewModelDocumentChanges
 
     Visibility visibitityTitleText;
     public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetProperty(ref visibitityTitleText, value); }
+
+    public void UpdateTitleItems(DocumentType documentType)
+    {
+        switch (documentType)
+        {
+            case DocumentType.DefaultDocument:
+                VisibitityFaculty = Visibility.Collapsed;
+                VisibitityPerformed = Visibility.Collapsed;
+                VisibitityNumber = Visibility.Collapsed;
+                VisibitityTheme = Visibility.Collapsed;
+                VisibitityDiscipline = Visibility.Collapsed;
+                VisibitityProfessor = Visibility.Collapsed;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.LaboratoryWork:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Visible;
+                VisibitityTheme = Visibility.Visible;
+                VisibitityDiscipline = Visibility.Visible;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+
+                break;
+            case DocumentType.PracticeWork:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Visible;
+                VisibitityTheme = Visibility.Visible;
+                VisibitityDiscipline = Visibility.Visible;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.Coursework:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Collapsed;
+                VisibitityTheme = Visibility.Visible;
+                VisibitityDiscipline = Visibility.Visible;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Visible;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.ControlWork:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Visible;
+                VisibitityTheme = Visibility.Collapsed;
+                VisibitityDiscipline = Visibility.Visible;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.Referat:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Visible;
+                VisibitityTheme = Visibility.Visible;
+                VisibitityDiscipline = Visibility.Visible;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Visible;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.ProductionPractice:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Collapsed;
+                VisibitityTheme = Visibility.Collapsed;
+                VisibitityDiscipline = Visibility.Collapsed;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Visible;//loc
+                VisibitityPracticeLocation = Visibility.Visible;//loc
+                VisibitityHeadOrganization = Visibility.Visible; //loc
+                VisibitityDirection = Visibility.Collapsed;
+                VisibitityNormocontrol = Visibility.Collapsed;
+                VisibitityHeadCathedra = Visibility.Collapsed;
+                break;
+            case DocumentType.VKR:
+                VisibitityFaculty = Visibility.Visible;
+                VisibitityPerformed = Visibility.Visible;
+                VisibitityNumber = Visibility.Collapsed;
+                VisibitityTheme = Visibility.Visible;
+                VisibitityDiscipline = Visibility.Collapsed;
+                VisibitityProfessor = Visibility.Visible;
+                VisibitityRank = Visibility.Collapsed;
+                VisibitityType = Visibility.Collapsed;
+                VisibitityPracticeType = Visibility.Collapsed;
+                VisibitityPracticeLocation = Visibility.Collapsed;
+                VisibitityHeadOrganization = Visibility.Collapsed;
+                VisibitityDirection = Visibility.Visible;// loc
+                VisibitityNormocontrol = Visibility.Visible;// loc
+                VisibitityHeadCathedra = Visibility.Visible;//+ update mb loc
+                break;
+        }
+    }
 
     bool autoInput;
     public bool AutoInput
@@ -440,6 +658,12 @@ public class ViewModelTitle : ViewModelDocumentChanges
         CathedraItems = new();
         ProfessorItems = new();
         picture = new();
+        faculty = string.Empty;
+        direction = string.Empty;
+        practiceLocation = string.Empty;
+        normocontrol = string.Empty;
+        headCathedra = string.Empty;
+        headOrganization = string.Empty;
         cathedra = string.Empty;
         number = string.Empty;
         theme = string.Empty;
@@ -450,10 +674,14 @@ public class ViewModelTitle : ViewModelDocumentChanges
         work = true;
         autoInput = false;
         photo = false;
+        production = true;
+        educational = false;
+        onHeadOrganization = true;
         visibitityTitleText = Visibility.Visible;
         visibitityPhoto = Visibility.Collapsed;
         visibitityManualInput = Visibility.Collapsed;
         visibitityAutoInput = Visibility.Visible;
+        VisibitityHeadOrganizationT = Visibility.Visible;
         UpdateFaculty.Execute(null);
     }
 }

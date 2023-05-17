@@ -62,6 +62,9 @@ public class ViewModelTemplatesSettings : ViewModelBase
             template = new TemplateType(DocumentType.Referat);
             TemplateType.Add(template);
 
+            template = new TemplateType(DocumentType.ProductionPractice);
+            TemplateType.Add(template);
+
             template = new TemplateType(DocumentType.VKR);
             TemplateType.Add(template);
             Properties.Settings.Default.TemplateTypes = TemplateType;

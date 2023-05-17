@@ -20,6 +20,7 @@
     <system:String x:Key="PracticeWork">實際工作</system:String>
     <system:String x:Key="ControlWork">測試</system:String>
     <system:String x:Key="Referat">抽象的</system:String>
+    <system:String x:Key="ProductionPractice">工业实践</system:String>
     <system:String x:Key="VKR">VKR</system:String>
     
     <system:String x:Key="Document">文檔</system:String>
@@ -62,7 +63,14 @@
     <system:String x:Key="SourceData">输入数据</system:String>
     <system:String x:Key="ReportingMaterial">报告材料</system:String>
     <system:String x:Key="Direction">目的地</system:String>
-
+    <system:String x:Key="Production">生产</system:String>
+    <system:String x:Key="Educational">培训</system:String>
+    <system:String x:Key="PracticeLocation">培训地点</system:String>
+    <system:String x:Key="DirectionP">重点(简介)</system:String>
+    <system:String x:Key="Normocontrol">控制</system:String>
+    <system:String x:Key="HeadCathedra">部门主管</system:String>
+    <system:String x:Key="HeadOrganization">本组织的经理</system:String>
+    
     <system:String x:Key="Bibliography">参考资料清单</system:String>
     <system:String x:Key="ListSourcesUsed">所用资料来源清单</system:String>
     <system:String x:Key="Book">书籍</system:String>

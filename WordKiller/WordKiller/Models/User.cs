@@ -6,6 +6,9 @@ namespace WordKiller.Models;
 public class User
 {
     public string Full => string.Concat(LastName, " ", string.IsNullOrEmpty(FirstName) ? "" : char.ToUpper(FirstName[0]) + ".", string.IsNullOrEmpty(MiddleName) ? "" : char.ToUpper(MiddleName[0]) + ".");
+
+    public string AlternateFull => string.Concat(string.IsNullOrEmpty(FirstName) ? "" : char.ToUpper(FirstName[0]) + ".", string.IsNullOrEmpty(MiddleName) ? "" : char.ToUpper(MiddleName[0]) + ".", LastName, " ");
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string MiddleName { get; set; }

@@ -23,26 +23,34 @@ public static class ReportComplexObjects
         }
         else
         {
-            Ministry(doc, title.Cathedra);
-            switch (typeDocument)
+            if(typeDocument == DataTypes.Enums.DocumentType.ProductionPractice)
             {
-                case DataTypes.Enums.DocumentType.LaboratoryWork:
-                    LabPra(doc, "лабораторной", title);
-                    break;
-                case DataTypes.Enums.DocumentType.PracticeWork:
-                    LabPra(doc, "практической", title);
-                    break;
-                case DataTypes.Enums.DocumentType.Coursework:
-                    Coursework(doc, title);
-                    break;
-                case DataTypes.Enums.DocumentType.ControlWork:
-                    ControlWork(doc, title);
-                    break;
-                case DataTypes.Enums.DocumentType.Referat:
-                    Referat(doc, title);
-                    break;
-                case DataTypes.Enums.DocumentType.VKR:
-                    break;
+                ProductionPractice(doc, title);
+            }
+            else
+            {
+                Ministry(doc, title.Cathedra);
+                switch (typeDocument)
+                {
+                    case DataTypes.Enums.DocumentType.LaboratoryWork:
+                        LabPra(doc, "лабораторной", title);
+                        break;
+                    case DataTypes.Enums.DocumentType.PracticeWork:
+                        LabPra(doc, "практической", title);
+                        break;
+                    case DataTypes.Enums.DocumentType.Coursework:
+                        Coursework(doc, title);
+                        break;
+                    case DataTypes.Enums.DocumentType.ControlWork:
+                        ControlWork(doc, title);
+                        break;
+                    case DataTypes.Enums.DocumentType.Referat:
+                        Referat(doc, title);
+                        break;
+                    case DataTypes.Enums.DocumentType.VKR:
+                        VKR(doc, title);
+                        break;
+                }
             }
             Orel(doc);
         }
@@ -230,6 +238,170 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, justify: JustificationValues.Right);
 
         ReportExtras.EmptyLines(doc, 6);
+    }
+
+    static void ProductionPractice(WordprocessingDocument doc, ViewModelTitle title)
+    {
+        string text = "Федеральное государственное бюджетное образовательное учреждение высшего образования";
+        ReportText.Text(doc, text, size:12, justify: JustificationValues.Center, bold: true);
+        
+        ReportExtras.EmptyLines(doc, 1);
+        
+        text = "«ОРЛОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ИМЕНИ И.С. ТУРГЕНЕВА»";
+        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true, caps:true);
+
+        ReportExtras.EmptyLines(doc, 1);
+
+        text = title.Faculty;
+        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+
+        ReportExtras.EmptyLines(doc, 1);
+        
+        text = title.Cathedra;
+        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+
+        ReportExtras.EmptyLines(doc, 6);
+
+        text = "ОТЧЁТ";
+        ReportText.Text(doc, text, 14, JustificationValues.Center, true);
+
+        string type = string.Empty;
+        if(title.Production)
+        {
+            type = "производственной";
+        }
+        else
+        {
+            type = "учебной";
+        }
+
+        text = "по "+ type+ " практике";
+        ReportText.Text(doc, text, 14, JustificationValues.Center);
+        
+        ReportExtras.EmptyLines(doc, 3);
+
+        text = "На материалах " + title.PracticeLocation;
+        ReportText.Text(doc, text, 14, multiplier:1.5f);
+
+        ReportExtras.EmptyLines(doc, 4);
+
+        User performed = title.FirstPerformed();
+
+        text = "Студент     _________________ " + performed.Full;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        text = "Группа " + Properties.Settings.Default.Group;
+        ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
+
+        text = "Направление " + Properties.Settings.Default.Direction;
+        ReportText.Text(doc, text, before:6, multiplier: 1.5f);
+
+        ReportExtras.EmptyLines(doc, 1);
+
+        text = "Руководитель практики";
+        ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
+
+        text = "от университета \t\t\t\t\t________________ " + title.Professor;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        text = "Руководитель практики";
+        ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
+
+        text = "от профильной организации \t\t\t________________ " + title.HeadOrganization;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        ReportExtras.EmptyLines(doc, 1);
+
+        text = "Оценка защиты: ________________";
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        ReportExtras.EmptyLines(doc, 1);
+    }
+
+    static void VKR(WordprocessingDocument doc, ViewModelTitle title)
+    {
+        ReportExtras.EmptyLines(doc, 2);
+        string text = "ВЫПУСКНАЯ КВАЛИФИКАЦИОННАЯ РАБОТА";
+        ReportText.Text(doc, text, justify: JustificationValues.Center, caps: true, multiplier: 1.5f);
+
+        text = "по направлению подготовки ";
+        ReportText.Text(doc, text, justify: JustificationValues.Center);
+
+        text = Properties.Settings.Default.Direction;
+        ReportText.Text(doc, text, justify: JustificationValues.Center);
+
+        text = "Направленность (профиль) " + title.Direction;
+        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportExtras.EmptyLines(doc, 1);
+
+        User performed = title.FirstPerformed();
+
+        text = "Студента " + performed.LastName + " " + performed.FirstName + " " + performed.MiddleName + "                   шифр" + " " + performed.Shifr;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        text = title.Faculty;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        text = title.Cathedra;
+        ReportText.Text(doc, text, multiplier: 1.5f);
+
+        ReportExtras.EmptyLines(doc, 2);
+
+        text = "Тема выпускной квалификационной работы";
+        ReportText.Text(doc, text, justify: JustificationValues.Center, after: 10);
+
+        text = "«" + title.Theme + "»";
+        ReportText.Text(doc, text, justify: JustificationValues.Center, after: 10);
+
+        ReportExtras.EmptyLines(doc, 2);
+
+        text = "Студент \t" + performed.AlternateFull;
+        ReportText.Text(doc, text);
+        ReportExtras.EmptyLines(doc, 1);
+
+        text = "Руководитель \t" + title.Professor;
+        ReportText.Text(doc, text);
+        ReportExtras.EmptyLines(doc, 2);
+
+        text = "Нормоконтроль  \t" + title.Normocontrol;
+        ReportText.Text(doc, text);
+        ReportExtras.EmptyLines(doc, 2);
+
+        text = "И.о. зав. кафедрой";
+        ReportText.Text(doc, text);
+        if (title.Cathedra.Length > 25)
+        {
+            int index = -1;
+            for (int i = 0; i < title.Cathedra.Length; i++)
+            {
+                if (title.Cathedra.Length > 24)
+                {
+                    if (title.Cathedra[i] == ' ')
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            if (index != -1)
+            {
+                text = title.Cathedra.Substring(0, index);
+                ReportText.Text(doc, text);
+                text = title.Cathedra.Substring(index) + "\t" + title.HeadCathedra;
+                ReportText.Text(doc, text);
+            }
+            else
+            {
+                text = title.Cathedra + "\t" + title.HeadCathedra;
+                ReportText.Text(doc, text);
+            }
+        }
+        else
+        {
+            text = title.Cathedra + "\t" + title.HeadCathedra;
+            ReportText.Text(doc, text);
+        }
+        ReportExtras.EmptyLines(doc, 1);
     }
 
     static void Ministry(WordprocessingDocument doc, string faculty)

@@ -11,5 +11,6 @@ public enum DocumentType
     Coursework,
     ControlWork,
     Referat,
+    ProductionPractice,
     VKR
 }

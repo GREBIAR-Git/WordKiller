@@ -20,6 +20,7 @@
     <system:String x:Key="PracticeWork">Praktische Arbeit</system:String>
     <system:String x:Key="ControlWork">Prüfung</system:String>
     <system:String x:Key="Referat">Abstrakt</system:String>
+    <system:String x:Key="ProductionPractice">Industrielle Praxis</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
     <system:String x:Key="Document">Dokumentieren</system:String>
@@ -62,7 +63,14 @@
     <system:String x:Key="SourceData">Eingabedaten</system:String>
     <system:String x:Key="ReportingMaterial">Berichtsmaterial</system:String>
     <system:String x:Key="Direction">Reiseziel</system:String>
-
+    <system:String x:Key="Production">Produktion</system:String>
+    <system:String x:Key="Educational">Ausbildung</system:String>
+    <system:String x:Key="PracticeLocation">Ort der Ausbildung</system:String>
+    <system:String x:Key="DirectionP">Schwerpunkt (Profil)</system:String>
+    <system:String x:Key="Normocontrol">Kontrolle</system:String>
+    <system:String x:Key="HeadCathedra">Leiter der Abteilung</system:String>
+    <system:String x:Key="HeadOrganization">Manager aus der Organisation</system:String>
+    
     <system:String x:Key="Bibliography">Liste der Referenzen</system:String>
     <system:String x:Key="ListSourcesUsed">Liste der verwendeten Quellen</system:String>
     <system:String x:Key="Book">Buch</system:String>

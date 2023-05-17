@@ -20,6 +20,7 @@
     <system:String x:Key="PracticeWork">Практическая работа</system:String>
     <system:String x:Key="ControlWork">Контрольная работа</system:String>
     <system:String x:Key="Referat">Реферат</system:String>
+    <system:String x:Key="ProductionPractice">Производственная практика</system:String>
     <system:String x:Key="VKR">ВКР</system:String>
 
     <system:String x:Key="Document">Документ</system:String>
@@ -62,6 +63,13 @@
     <system:String x:Key="SourceData">Исходные данные</system:String>
     <system:String x:Key="ReportingMaterial">Отчетный материал</system:String>
     <system:String x:Key="Direction">Направление</system:String>
+    <system:String x:Key="Production">Производственная</system:String>
+    <system:String x:Key="Educational">Учебная</system:String>
+    <system:String x:Key="PracticeLocation">Место прохождения</system:String>
+    <system:String x:Key="DirectionP">Направленность (профиль)</system:String>
+    <system:String x:Key="Normocontrol">Нормоконтроль</system:String>
+    <system:String x:Key="HeadCathedra">Зав. кафедрой</system:String>
+    <system:String x:Key="HeadOrganization">Руководитель от организации</system:String>
 
     <system:String x:Key="Bibliography">Список литературы</system:String>
     <system:String x:Key="ListSourcesUsed">Список использованных источников</system:String>

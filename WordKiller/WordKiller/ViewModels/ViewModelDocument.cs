@@ -774,17 +774,9 @@ public class ViewModelDocument : ViewModelBase
                     DeleteTitle();
                     VisibilitY.TaskSheetMI = Visibility.Collapsed;
                     DeleteTaskSheet();
-
-                    TextHeader("DefaultDocument");
-                    Data.Title.VisibitityFaculty = Visibility.Collapsed;
-                    Data.Title.VisibitityPerformed = Visibility.Collapsed;
-                    Data.Title.VisibitityNumber = Visibility.Collapsed;
-                    Data.Title.VisibitityTheme = Visibility.Collapsed;
-                    Data.Title.VisibitityDiscipline = Visibility.Collapsed;
-                    Data.Title.VisibitityProfessor = Visibility.Collapsed;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
                     Data.Type = DocumentType.DefaultDocument;
+                    TextHeader("DefaultDocument");
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (defaultDocument)
@@ -813,14 +805,7 @@ public class ViewModelDocument : ViewModelBase
                     AddAppendix();
                     Data.Type = DocumentType.Coursework;
                     TextHeader("Coursework");
-                    Data.Title.VisibitityFaculty = Visibility.Visible;
-                    Data.Title.VisibitityPerformed = Visibility.Visible;
-                    Data.Title.VisibitityNumber = Visibility.Collapsed;
-                    Data.Title.VisibitityTheme = Visibility.Visible;
-                    Data.Title.VisibitityDiscipline = Visibility.Visible;
-                    Data.Title.VisibitityProfessor = Visibility.Visible;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Visible;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (coursework)
@@ -847,14 +832,7 @@ public class ViewModelDocument : ViewModelBase
 
                     Data.Type = DocumentType.LaboratoryWork;
                     TextHeader("LaboratoryWork");
-                    Data.Title.VisibitityFaculty = Visibility.Visible;
-                    Data.Title.VisibitityPerformed = Visibility.Visible;
-                    Data.Title.VisibitityNumber = Visibility.Visible;
-                    Data.Title.VisibitityTheme = Visibility.Visible;
-                    Data.Title.VisibitityDiscipline = Visibility.Visible;
-                    Data.Title.VisibitityProfessor = Visibility.Visible;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (laboratoryWork)
@@ -881,14 +859,7 @@ public class ViewModelDocument : ViewModelBase
 
                     Data.Type = DocumentType.PracticeWork;
                     TextHeader("PracticeWork");
-                    Data.Title.VisibitityFaculty = Visibility.Visible;
-                    Data.Title.VisibitityPerformed = Visibility.Visible;
-                    Data.Title.VisibitityNumber = Visibility.Visible;
-                    Data.Title.VisibitityTheme = Visibility.Visible;
-                    Data.Title.VisibitityDiscipline = Visibility.Visible;
-                    Data.Title.VisibitityProfessor = Visibility.Visible;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (practiceWork)
@@ -915,14 +886,7 @@ public class ViewModelDocument : ViewModelBase
 
                     Data.Type = DocumentType.ControlWork;
                     TextHeader("ControlWork");
-                    Data.Title.VisibitityFaculty = Visibility.Visible;
-                    Data.Title.VisibitityPerformed = Visibility.Visible;
-                    Data.Title.VisibitityNumber = Visibility.Visible;
-                    Data.Title.VisibitityTheme = Visibility.Collapsed;
-                    Data.Title.VisibitityDiscipline = Visibility.Visible;
-                    Data.Title.VisibitityProfessor = Visibility.Visible;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (controlWork)
@@ -949,14 +913,7 @@ public class ViewModelDocument : ViewModelBase
                     AddListOfReferences();
                     Data.Type = DocumentType.Referat;
                     TextHeader("Referat");
-                    Data.Title.VisibitityFaculty = Visibility.Visible;
-                    Data.Title.VisibitityPerformed = Visibility.Visible;
-                    Data.Title.VisibitityNumber = Visibility.Visible;
-                    Data.Title.VisibitityTheme = Visibility.Visible;
-                    Data.Title.VisibitityDiscipline = Visibility.Visible;
-                    Data.Title.VisibitityProfessor = Visibility.Visible;
-                    Data.Title.VisibitityRank = Visibility.Visible;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (referat)
@@ -965,6 +922,35 @@ public class ViewModelDocument : ViewModelBase
             }
         }
     }
+
+    bool productionPractice;
+    public bool ProductionPractice
+    {
+        get => productionPractice;
+        set
+        {
+            if (value)
+            {
+                if (!productionPractice)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref productionPractice, value);
+
+                    NoDefaultDocument();
+                    AddListOfReferences();
+                    AddAppendix();
+                    Data.Type = DocumentType.ProductionPractice;
+                    TextHeader("ProductionPractice");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (productionPractice)
+            {
+                SetProperty(ref productionPractice, value);
+            }
+        }
+    }
+
 
     bool vkr;
     public bool VKR
@@ -984,14 +970,7 @@ public class ViewModelDocument : ViewModelBase
                     AddAppendix();
                     Data.Type = DocumentType.VKR;
                     TextHeader("VKR");
-                    Data.Title.VisibitityFaculty = Visibility.Collapsed;
-                    Data.Title.VisibitityPerformed = Visibility.Collapsed;
-                    Data.Title.VisibitityNumber = Visibility.Collapsed;
-                    Data.Title.VisibitityTheme = Visibility.Collapsed;
-                    Data.Title.VisibitityDiscipline = Visibility.Collapsed;
-                    Data.Title.VisibitityProfessor = Visibility.Collapsed;
-                    Data.Title.VisibitityRank = Visibility.Collapsed;
-                    Data.Title.VisibitityType = Visibility.Collapsed;
+                    Data.Title.UpdateTitleItems(Data.Type);
                 }
             }
             else if (vkr)
@@ -1009,6 +988,7 @@ public class ViewModelDocument : ViewModelBase
         PracticeWork = false;
         ControlWork = false;
         Referat = false;
+        ProductionPractice = false;
         VKR = false;
     }
 
@@ -1059,6 +1039,12 @@ public class ViewModelDocument : ViewModelBase
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
+            case DocumentType.ProductionPractice:
+                productionPractice = true;
+                NotifyPropertyChanged(nameof(ProductionPractice));
+                VisibilitY.TitleMI = Visibility.Visible;
+                VisibilitY.TaskSheetMI = Visibility.Collapsed;
+                break;
             case DocumentType.VKR:
                 vkr = true;
                 NotifyPropertyChanged(nameof(VKR));
@@ -1066,6 +1052,7 @@ public class ViewModelDocument : ViewModelBase
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
         }
+        Data.Title.UpdateTitleItems(Data.Type);
         TextHeader(Data.Type.ToString());
         if (Data.Properties.Title)
         {
@@ -1214,6 +1201,9 @@ public class ViewModelDocument : ViewModelBase
                 break;
             case DocumentType.Referat:
                 TextHeader("Referat");
+                break;
+            case DocumentType.ProductionPractice:
+                TextHeader("ProductionPractice");
                 break;
             case DocumentType.VKR:
                 TextHeader("VKR");
@@ -1539,6 +1529,22 @@ public class ViewModelDocument : ViewModelBase
                 if (!Referat)
                 {
                     Referat = true;
+                }
+            });
+        }
+    }
+
+    ICommand? productionPractice_Click;
+    public ICommand ProductionPractice_Click
+    {
+        get
+        {
+            return productionPractice_Click ??= new RelayCommand(
+            obj =>
+            {
+                if (!ProductionPractice)
+                {
+                    ProductionPractice = true;
                 }
             });
         }

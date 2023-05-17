@@ -20,6 +20,7 @@
     <system:String x:Key="PracticeWork">Practice work</system:String>
     <system:String x:Key="ControlWork">Control work</system:String>
     <system:String x:Key="Referat">Referat</system:String>
+    <system:String x:Key="ProductionPractice">Production practice</system:String>
     <system:String x:Key="VKR">VKR</system:String>
 
     <system:String x:Key="Document">Document</system:String>
@@ -62,7 +63,14 @@
     <system:String x:Key="SourceData">Source data</system:String>
     <system:String x:Key="ReportingMaterial">Reporting material</system:String>
     <system:String x:Key="Direction">Direction</system:String>
-
+    <system:String x:Key="Production">Production</system:String>
+    <system:String x:Key="Educational">Educational</system:String>
+    <system:String x:Key="PracticeLocation">Practice location</system:String>
+    <system:String x:Key="DirectionP">Focus (profile)</system:String>
+    <system:String x:Key="Normocontrol">Normocontrol</system:String>
+    <system:String x:Key="HeadCathedra">Head cathedra</system:String>
+    <system:String x:Key="HeadOrganization">Head organization</system:String>
+    
     <system:String x:Key="Bibliography">List of references</system:String>
     <system:String x:Key="ListSourcesUsed">List sources used</system:String>
     <system:String x:Key="Book">Book</system:String>
