@@ -60,7 +60,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Menu Grid.Row="0" Grid.Column="0" Style="{StaticResource Menu}">
-                <MenuItem ItemContainerStyle="{StaticResource MenuItem}">
+                <MenuItem ItemContainerStyle="{StaticResource MenuItem}" x:Name="menu">
                     <MenuItem.Header>
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
@@ -124,11 +124,18 @@
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="0" Grid.Column="0">
-                <Button Margin="0,0,3,0" HorizontalAlignment="Right" ToolTip="{DynamicResource Settings}" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
-                    <Image Width="20" Height="20" Source="/Resources/Pictures/Settings.png"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{Binding ActualHeight, ElementName=menu}"/>
+                </Grid.RowDefinitions>
+                <Button HorizontalAlignment="Right" ToolTip="{DynamicResource Settings}" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
+                    <Image Margin="4" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
-                <Image Width="20" Height="20" Margin="0,0,28,0" ToolTip="{DynamicResource Saved}" Source="/Resources/Pictures/512x512.png" HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilitySaveLogo}"/>
-                <TextBlock Width="20" Height="20" Margin="0,0,28,0" ToolTip="{DynamicResource ChangesMade}" Text="*" HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilityNeedSaveLogo}" Style="{StaticResource TextBlock}"/>
+                <Grid Margin="0 0 44 0"  HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilitySaveLogo}">
+                    <Image Margin="6" ToolTip="{DynamicResource Saved}" Source="/Resources/Pictures/512x512.png"/>
+                </Grid>
+                <Viewbox Margin="0 10 48 0" Visibility="{Binding Document.File.VisibilityNeedSaveLogo}"  HorizontalAlignment="Right" >
+                    <TextBlock ToolTip="{DynamicResource ChangesMade}" Text="*" Style="{StaticResource TextBlock}"/>
+                </Viewbox>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor}">
                 <Grid.ColumnDefinitions>
@@ -139,8 +146,8 @@
                 <Grid Grid.Column="0" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="91*"/>
-                        <RowDefinition Height="9*" MaxHeight="120" MinHeight="30"/>
+                        <RowDefinition Height="90*"/>
+                        <RowDefinition Height="10*" MaxHeight="65" MinHeight="30"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Visibility="{Binding Document.VisibilitY.FF}">
                         <Grid.ColumnDefinitions>
@@ -345,8 +352,8 @@
                     <Grid Visibility="{Binding Path=Document.VisibilitY.NotComplexObjects}" Margin="2 3 3 3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="100*"/>
+                            <RowDefinition Height="10*" MaxHeight="45" MinHeight="30"/>
+                            <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
@@ -369,8 +376,10 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
-                            <Button Grid.Column="1" Width="30" Height="30" Content="A" ToolTip="{DynamicResource DeleteNumbering}" Margin="5 0 0 0" Visibility="{Binding Document.VisibilitY.AutoList}" Command="{Binding Document.AutoList}"/>
+                            <Viewbox>
+                                <TextBlock Text="{DynamicResource Content}" Style="{StaticResource TextBlock}"/>
+                            </Viewbox>
+                            <Button Grid.Column="1" Width="30" Height="30" Content="A" ToolTip="{DynamicResource DeleteNumbering}" FontSize="26" Margin="10 0 0 0" Visibility="{Binding Document.VisibilitY.AutoList}" Command="{Binding Document.AutoList}"/>
                         </Grid>
                         <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.TablePanel}" Background="{Binding Path=Settings.Personalization.MainColor}">
                             <Grid.ColumnDefinitions>
@@ -517,7 +526,7 @@
                                         </Button>
                                     </Grid>
                                     <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Faculty}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
                                     <Grid.RowDefinitions>
@@ -535,7 +544,7 @@
                                         </Button>
                                     </Grid>
                                     <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra}" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.Data.Title.VisibitityAutoInput}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Cathedra}" Visibility="{Binding Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="2" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityPerformed}">
                                     <Grid.RowDefinitions>
@@ -571,7 +580,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="№" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Number}" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Number}" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="4" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityTheme}">
                                     <Grid.RowDefinitions>
@@ -579,7 +588,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource Theme}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Theme}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Theme}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="5" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityDiscipline}">
                                     <Grid.RowDefinitions>
@@ -587,7 +596,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource Discipline}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Discipline}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Discipline}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="6" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityProfessor}">
                                     <Grid.RowDefinitions>
@@ -605,7 +614,7 @@
                                         </Button>
                                     </Grid>
                                     <ComboBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor}" Visibility="{Binding Path=Document.Data.Title.VisibitityAutoInput, Mode=TwoWay}"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Professor,Mode=TwoWay}" Visibility="{Binding Path=Document.Data.Title.VisibitityManualInput}" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="7" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityRank}">
                                     <Grid.RowDefinitions>
@@ -622,7 +631,7 @@
                                             <Image Source="/Resources/Pictures/Update.png"/>
                                         </Button>
                                     </Grid>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Rank}" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Rank}" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="8" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityType}">
                                     <Grid.RowDefinitions>
@@ -664,7 +673,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource PracticeLocation}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.PracticeLocation}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.PracticeLocation}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="10" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityDirection}">
                                     <Grid.RowDefinitions>
@@ -672,7 +681,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource DirectionP}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Direction}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Direction}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="11" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityNormocontrol}">
                                     <Grid.RowDefinitions>
@@ -680,7 +689,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource Normocontrol}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Normocontrol}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Normocontrol}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="12" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityHeadCathedra}">
                                     <Grid.RowDefinitions>
@@ -688,7 +697,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource HeadCathedra}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
-                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.HeadCathedra}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.HeadCathedra}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="13" Margin="0 0 0 15" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganization}">
                                     <Grid.RowDefinitions>
@@ -703,7 +712,7 @@
                                         <TextBlock Grid.Column="0" Text="{DynamicResource HeadOrganization}" Style="{StaticResource TextBlockTitle}" HorizontalAlignment="Center"/>
                                         <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Document.Data.Title.OnHeadOrganization}"/>
                                     </Grid>
-                                    <TextBox Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganizationT}" Text="{Binding Path=Document.Data.Title.HeadOrganization}" Grid.ColumnSpan="3" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganizationT}" Text="{Binding Path=Document.Data.Title.HeadOrganization}" Grid.ColumnSpan="3" Style="{StaticResource TextBox}"/>
                                 </Grid>
                             </Grid>
                         </ScrollViewer>
@@ -790,7 +799,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource SourceData}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.SourceData}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.SourceData}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="1" Margin="0 0 0 15">
                                     <Grid.RowDefinitions>
@@ -798,7 +807,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Text="{DynamicResource TOC}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.TOC}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.TOC}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBox}"/>
                                 </Grid>
                                 <Grid Grid.Row="2" Margin="0 0 0 15">
                                     <Grid.RowDefinitions>
@@ -806,7 +815,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource ReportingMaterial}" TextWrapping="Wrap" Style="{StaticResource TextBlockTitle}"/>
-                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.ReportingMaterial}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBoxRounded}"/>
+                                    <TextBox TextWrapping="Wrap" Text="{Binding Path=Document.Data.TaskSheet.ReportingMaterial}" AcceptsReturn="True" Grid.Row="1" Style="{StaticResource TextBox}"/>
                                 </Grid>
                             </Grid>
                         </ScrollViewer>
@@ -1005,12 +1014,12 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="100*"/>
                                                     </Grid.RowDefinitions>
-                                                    <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
                                                     <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" Text="{Binding TableData.Rows, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
-                                                    <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
+                                                    <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlock}"/>
                                                     <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" Text="{Binding TableData.Columns, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBox}"/>
                                                 </Grid>
-                                                <Grid typeXaml:GridHelpers.Selected="{Binding TableData}" typeXaml:GridHelpers.RowCount="{Binding TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding TableData.Columns}" Grid.Row="1" Grid.Column="0"/>
+                                                <Grid Margin="0 3 0 0" typeXaml:GridHelpers.Selected="{Binding TableData}" typeXaml:GridHelpers.RowCount="{Binding TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding TableData.Columns}" Grid.Row="1" Grid.Column="0"/>
                                             </Grid>
                                         </Grid>
                                     </DataTemplate>
@@ -1024,7 +1033,7 @@
         </Grid>
         <Grid Visibility="{Binding Path=VisibilitySettingsPanel}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*" MinHeight="45"/>
+                <RowDefinition Height="10*" MinHeight="45" MaxHeight="80"/>
                 <RowDefinition Height="90*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="2 5 2 5">
@@ -1390,7 +1399,7 @@
                                             <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
                                         </Grid>
                                         <ComboBox Grid.Row="1" ItemsSource="{Binding Path=Settings.Profile.UniversitetItems}" SelectedValue="{Binding Path=Settings.Profile.Universitet}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Universitet}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Universitet}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="1" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1408,7 +1417,7 @@
                                             </Button>
                                         </Grid>
                                         <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.FacultyItems}" SelectedValue="{Binding Path=Settings.Profile.Faculty}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Faculty}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Faculty}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="2" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1426,7 +1435,7 @@
                                             </Button>
                                         </Grid>
                                         <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.CoursItems}" SelectedValue="{Binding Path=Settings.Profile.Cours}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Cours}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Cours}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="3" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1444,7 +1453,7 @@
                                             </Button>
                                         </Grid>
                                         <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.GroupItems}" SelectedValue="{Binding Path=Settings.Profile.Group}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Group}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Group}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="4" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1458,7 +1467,7 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Direction}" Style="{StaticResource TextBlock}"/>
                                         </Grid>
-                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Settings.Profile.Direction}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Settings.Profile.Direction}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="5" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1475,7 +1484,7 @@
                                                 <Image Source="/Resources/Pictures/Update.png"/>
                                             </Button>
                                         </Grid>
-                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Year}" Style="{StaticResource TextBoxRounded}"/>
+                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Year}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                 </Grid>
                             </ScrollViewer>

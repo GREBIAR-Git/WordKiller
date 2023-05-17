@@ -117,7 +117,9 @@ public class GridHelpers
                     TextBox textBox = new()
                     {
                         Text = tableData.DataTable[i, f],
-                        FontSize = 14,
+                        TextWrapping = TextWrapping.Wrap,
+                        AcceptsReturn = true,
+                        Style = Application.Current.FindResource("TextBoxTable") as Style,
                     };
                     textBox.TextChanged += Cell_TextChanged;
                     grid.Children.Add(textBox);

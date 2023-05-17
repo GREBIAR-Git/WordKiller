@@ -106,7 +106,26 @@
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="White"/>
             </Style>
-            
+
+            <Style x:Key="TextBlockSize" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Serif"/>
+                <Setter Property="FontSize">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource multiTBConverter}" ConverterParameter="16">
+                            <Binding RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="Text" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="Settings.Personalization.FontSize" Mode="TwoWay"/>
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style>
+
             <Style x:Key="TextBlockTitle" TargetType="{x:Type TextBlock}">
                 <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -142,16 +161,17 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="LightGray"/>
                 <Setter Property="Background" Value="White"/>
-                <Setter Property="MinWidth" Value="300"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
             </Style>
-            
-            <Style x:Key="TextBoxRounded" TargetType="{x:Type TextBox}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
+
+            <Style x:Key="TextBoxTable" TargetType="{x:Type TextBox}">
                 <Setter Property="TextAlignment" Value="Left"/>
-                <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="FontFamily" Value="Serif"/>
                 <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=18}"/>
-                <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="LightGray"/>
                 <Setter Property="Background" Value="White"/>
@@ -311,7 +331,9 @@
                                         </ControlTemplate>
                                     </ToggleButton.Template>
                                 </ToggleButton>
-                                <TextBlock IsHitTestVisible="False" Text="{DynamicResource Add}" Style="{StaticResource TextBlock}"/>
+                                <Viewbox>
+                                    <TextBlock IsHitTestVisible="False" Margin="2 2 2 2" Text="{DynamicResource Add}" Style="{StaticResource TextBlock}"/>
+                                </Viewbox>
                                 <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                                     <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                         <Border x:Name="DropDownBorder" Background="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AdditionalColor}" />
