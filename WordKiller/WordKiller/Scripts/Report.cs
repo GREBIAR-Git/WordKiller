@@ -7,7 +7,6 @@ using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
-using WordKiller.Scripts.ForUI;
 using WordKiller.Scripts.ReportHelper;
 
 namespace WordKiller.Scripts;

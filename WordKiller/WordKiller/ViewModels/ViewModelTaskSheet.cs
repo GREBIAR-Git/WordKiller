@@ -2,100 +2,99 @@
 using System.Windows;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 
-namespace WordKiller.ViewModels
+namespace WordKiller.ViewModels;
+
+[Serializable]
+public class ViewModelTaskSheet : ViewModelDocumentChanges
 {
-    [Serializable]
-    public class ViewModelTaskSheet : ViewModelDocumentChanges
+    string sourceData;
+
+    public string SourceData
     {
-        string sourceData;
-
-        public string SourceData
+        get => sourceData;
+        set
         {
-            get => sourceData;
-            set
+            SetPropertyDocument(ref sourceData, value);
+        }
+    }
+
+    string toc;
+
+    public string TOC
+    {
+        get => toc;
+        set
+        {
+            SetPropertyDocument(ref toc, value);
+        }
+    }
+
+    string reportingMaterial;
+
+    public string ReportingMaterial
+    {
+        get => reportingMaterial;
+        set
+        {
+            SetPropertyDocument(ref reportingMaterial, value);
+        }
+    }
+
+    Visibility visibitityPhoto;
+    public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetPropertyDocument(ref visibitityPhoto, value); }
+
+    Visibility visibitityTitleText;
+    public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetPropertyDocument(ref visibitityTitleText, value); }
+
+    bool photo;
+    public bool Photo
+    {
+        get => photo;
+        set
+        {
+            SetPropertyDocument(ref photo, value);
+            if (photo)
             {
-                SetPropertyDocument(ref sourceData, value);
+                VisibitityTitleText = Visibility.Collapsed;
+                VisibitityPhoto = Visibility.Visible;
+            }
+            else
+            {
+                VisibitityTitleText = Visibility.Visible;
+                VisibitityPhoto = Visibility.Collapsed;
             }
         }
+    }
 
-        string toc;
-
-        public string TOC
+    ParagraphPicture firstPicture;
+    public ParagraphPicture FirstPicture
+    {
+        get => firstPicture;
+        set
         {
-            get => toc;
-            set
-            {
-                SetPropertyDocument(ref toc, value);
-            }
+            SetPropertyDocument(ref firstPicture, value);
         }
+    }
 
-        string reportingMaterial;
-
-        public string ReportingMaterial
+    ParagraphPicture secondPicture;
+    public ParagraphPicture SecondPicture
+    {
+        get => secondPicture;
+        set
         {
-            get => reportingMaterial;
-            set
-            {
-                SetPropertyDocument(ref reportingMaterial, value);
-            }
+            SetPropertyDocument(ref secondPicture, value);
         }
+    }
 
-        Visibility visibitityPhoto;
-        public Visibility VisibitityPhoto { get => visibitityPhoto; set => SetPropertyDocument(ref visibitityPhoto, value); }
-
-        Visibility visibitityTitleText;
-        public Visibility VisibitityTitleText { get => visibitityTitleText; set => SetPropertyDocument(ref visibitityTitleText, value); }
-
-        bool photo;
-        public bool Photo
-        {
-            get => photo;
-            set
-            {
-                SetPropertyDocument(ref photo, value);
-                if (photo)
-                {
-                    VisibitityTitleText = Visibility.Collapsed;
-                    VisibitityPhoto = Visibility.Visible;
-                }
-                else
-                {
-                    VisibitityTitleText = Visibility.Visible;
-                    VisibitityPhoto = Visibility.Collapsed;
-                }
-            }
-        }
-
-        ParagraphPicture firstPicture;
-        public ParagraphPicture FirstPicture
-        {
-            get => firstPicture;
-            set
-            {
-                SetPropertyDocument(ref firstPicture, value);
-            }
-        }
-
-        ParagraphPicture secondPicture;
-        public ParagraphPicture SecondPicture
-        {
-            get => secondPicture;
-            set
-            {
-                SetPropertyDocument(ref secondPicture, value);
-            }
-        }
-
-        public ViewModelTaskSheet()
-        {
-            firstPicture = new();
-            secondPicture = new();
-            reportingMaterial = string.Empty;
-            toc = string.Empty;
-            sourceData = string.Empty;
-            photo = false;
-            visibitityTitleText = Visibility.Visible;
-            visibitityPhoto = Visibility.Collapsed;
-        }
+    public ViewModelTaskSheet()
+    {
+        firstPicture = new();
+        secondPicture = new();
+        reportingMaterial = string.Empty;
+        toc = string.Empty;
+        sourceData = string.Empty;
+        photo = false;
+        visibitityTitleText = Visibility.Visible;
+        visibitityPhoto = Visibility.Collapsed;
     }
 }

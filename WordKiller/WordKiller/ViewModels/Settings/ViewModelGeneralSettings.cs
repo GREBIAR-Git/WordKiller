@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using WordKiller.Commands.Settings;
 using WordKiller.Scripts;
-using WordKiller.Scripts.ForUI;
 
 namespace WordKiller.ViewModels.Settings;
 

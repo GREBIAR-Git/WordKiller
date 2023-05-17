@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using WordKiller.DataTypes;
 using WordKiller.Scripts.File.Encryption;
-using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 using WordKiller.Views;
 

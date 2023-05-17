@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using System.Windows;
-using System.Windows.Controls;
+using WordKiller.DataTypes.TypeXAML;
 
 namespace WordKiller.Scripts;
 
-public class BindableSelectedItemBehavior : Behavior<TreeView>
+public class BindableSelectedItemBehavior : Behavior<StretchingTreeView>
 {
     #region SelectedItem Property
 
@@ -19,8 +19,23 @@ public class BindableSelectedItemBehavior : Behavior<TreeView>
 
     private static void OnSelectedItemChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
-        var item = e.NewValue as TreeViewItem;
-        item?.SetValue(TreeViewItem.IsSelectedProperty, true);
+        var tv = sender as BindableSelectedItemBehavior;
+        if (e.NewValue == null)
+        {
+            var tvi = UIHelper.FindTviFromObjectRecursive(tv.AssociatedObject, e.OldValue);
+            if (tvi != null)
+            {
+                tvi.IsSelected = false;
+            }
+        }
+        else
+        {
+            var tvi = UIHelper.FindTviFromObjectRecursive(tv.AssociatedObject, e.NewValue);
+            if (tvi != null)
+            {
+                tvi.IsSelected = true;
+            }
+        }
     }
 
     #endregion

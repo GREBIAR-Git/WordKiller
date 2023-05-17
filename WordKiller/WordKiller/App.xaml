@@ -477,6 +477,9 @@
                     <Style TargetType="{x:Type Paragraph}">
                         <Setter Property="Margin" Value="0,0,0,10"/>
                     </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="4"/>
+                    </Style>
                 </Style.Resources>
             </Style>
             

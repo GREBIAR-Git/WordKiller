@@ -4,6 +4,9 @@ namespace WordKiller.ViewModels;
 
 public class ViewModelVisibility : ViewModelBase
 {
+    Visibility ff;
+    public Visibility FF { get => ff; set => SetProperty(ref ff, value); }
+
     Visibility titleMI;
     public Visibility TitleMI { get => titleMI; set => SetProperty(ref titleMI, value); }
 
@@ -118,6 +121,7 @@ public class ViewModelVisibility : ViewModelBase
 
     public ViewModelVisibility()
     {
+        FF = Visibility.Collapsed;
         autoList = Visibility.Collapsed;
         notComplexObjects = Visibility.Collapsed;
         titlePanel = Visibility.Collapsed;

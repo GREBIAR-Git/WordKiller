@@ -6,7 +6,6 @@ using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Scripts;
-using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels.Settings;
 
 namespace WordKiller.ViewModels;
@@ -270,7 +269,6 @@ public class ViewModelMain : ViewModelBase
                 string path = (data as string[])[0];
                 if (path.Length > 0)
                 {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
                     System.Drawing.Bitmap bitmap;
                     try
                     {
@@ -311,7 +309,6 @@ public class ViewModelMain : ViewModelBase
                 string path = (data as string[])[0];
                 if (path.Length > 0)
                 {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
                     System.Drawing.Bitmap bitmap;
                     try
                     {
@@ -352,7 +349,6 @@ public class ViewModelMain : ViewModelBase
                 string path = (data as string[])[0];
                 if (path.Length > 0)
                 {
-                    string nameFile = Path.GetFileNameWithoutExtension(path);
                     System.Drawing.Bitmap bitmap;
                     try
                     {
@@ -428,6 +424,39 @@ public class ViewModelMain : ViewModelBase
                     e.Effects = DragDropEffects.None;
                 }
                 e.Handled = true;
+            });
+        }
+    }
+
+    ICommand? keyDownEvent;
+    public ICommand KeyDownEvent
+    {
+        get
+        {
+            return keyDownEvent ??= new RelayCommand(
+            obj =>
+            {
+                KeyEventArgs e = (KeyEventArgs)obj;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    if (e.Key == Key.F)
+                    {
+                        Document.VisibilitY.FF = Visibility.Visible;
+                    }
+                }
+            });
+        }
+    }
+
+    ICommand? hideFF;
+    public ICommand HideFF
+    {
+        get
+        {
+            return hideFF ??= new RelayCommand(
+            obj =>
+            {
+                Document.VisibilitY.FF = Visibility.Collapsed;
             });
         }
     }

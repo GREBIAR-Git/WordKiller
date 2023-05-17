@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using WordKiller.Scripts;
-using WordKiller.Scripts.ForUI;
 using WordKiller.ViewModels;
 
 namespace WordKiller;

@@ -1,30 +1,30 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace WordKiller.Scripts.ReportHelper
+namespace WordKiller.Scripts.ReportHelper;
+
+public static class ReportTOC
 {
-    public static class ReportTOC
+    public static void Create(WordprocessingDocument doc)
     {
-        public static void Create(WordprocessingDocument doc)
+        ReportPageSettings.PageSetup(doc.MainDocumentPart.Document.Body, title: true);
+        var sdtBlock = new SdtBlock
         {
-            ReportPageSettings.PageSetup(doc.MainDocumentPart.Document.Body, title: true);
-            var sdtBlock = new SdtBlock
-            {
-                InnerXml = GetTOC("Содержание", 14)
-            };
-            doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
+            InnerXml = GetTOC("Содержание", 14)
+        };
+        doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
 
-            var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
-            settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
+        var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
+        settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
 
-            settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
+        settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
 
-            ReportExtras.SectionBreak(doc);
-        }
+        ReportExtras.SectionBreak(doc);
+    }
 
-        static string GetTOC(string title, int titleFontSize)
-        {
-            return $@"
+    static string GetTOC(string title, int titleFontSize)
+    {
+        return $@"
             <w:sdt>
                 <w:sdtPr>
                     <w:id w:val=""-493258456"" />
@@ -96,6 +96,5 @@ namespace WordKiller.Scripts.ReportHelper
                 </w:sdtContent>
             </w:sdt>
                 ";
-        }
     }
 }

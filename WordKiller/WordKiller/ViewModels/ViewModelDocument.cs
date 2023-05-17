@@ -11,7 +11,6 @@ using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Scripts;
-using WordKiller.Scripts.ForUI;
 using WordKiller.Scripts.ImportExport;
 using WordKiller.Views;
 
@@ -31,91 +30,105 @@ public class ViewModelDocument : ViewModelBase
         get => selected;
         set
         {
-            SetProperty(ref selected, value);
-            if (selected == null)
+            if (SetProperty(ref selected, value))
             {
-                VisibilitY.NotComplexObjects = Visibility.Collapsed;
-                VisibilitY.TitlePanel = Visibility.Collapsed;
-                VisibilitY.TaskSheetPanel = Visibility.Collapsed;
-                VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
-                VisibilitY.AppendixPanel = Visibility.Collapsed;
-                VisibilitY.UnselectInfo = Visibility.Visible;
-            }
-            else
-            {
-                VisibilitY.UnselectInfo = Visibility.Collapsed;
-                if (selected is ParagraphTitle)
-                {
-                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
-                    VisibilitY.TitlePanel = Visibility.Visible;
-                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
-                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
-                    VisibilitY.AppendixPanel = Visibility.Collapsed;
-                }
-                else if (selected is ParagraphTaskSheet)
-                {
-                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
-                    VisibilitY.TitlePanel = Visibility.Collapsed;
-                    VisibilitY.TaskSheetPanel = Visibility.Visible;
-                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
-                    VisibilitY.AppendixPanel = Visibility.Collapsed;
-                }
-                else if (selected is ParagraphListOfReferences)
-                {
-                    VisibilitY.NotComplexObjects = Visibility.Collapsed;
-                    VisibilitY.TitlePanel = Visibility.Collapsed;
-                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
-                    VisibilitY.ListOfReferencesPanel = Visibility.Visible;
-                    VisibilitY.AppendixPanel = Visibility.Collapsed;
-                }
-                else if (selected is ParagraphAppendix)
+                if (selected == null)
                 {
                     VisibilitY.NotComplexObjects = Visibility.Collapsed;
                     VisibilitY.TitlePanel = Visibility.Collapsed;
                     VisibilitY.TaskSheetPanel = Visibility.Collapsed;
                     VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
-                    VisibilitY.AppendixPanel = Visibility.Visible;
+                    VisibilitY.AppendixPanel = Visibility.Collapsed;
+                    VisibilitY.UnselectInfo = Visibility.Visible;
                 }
                 else
                 {
-                    VisibilitY.NotComplexObjects = Visibility.Visible;
-                    VisibilitY.TitlePanel = Visibility.Collapsed;
-                    VisibilitY.TaskSheetPanel = Visibility.Collapsed;
-                    VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
-                    VisibilitY.AppendixPanel = Visibility.Collapsed;
-                    VisibilitY.AutoList = Visibility.Collapsed;
-                    if (selected is ParagraphPicture paragraphPicture)
+                    VisibilitY.UnselectInfo = Visibility.Collapsed;
+                    if (selected is ParagraphTitle)
                     {
-                        VisibilitY.RTBPanel = Visibility.Collapsed;
-                        VisibilitY.ImagePanel = Visibility.Visible;
-                        VisibilitY.TablePanel = Visibility.Collapsed;
+                        VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                        VisibilitY.TitlePanel = Visibility.Visible;
+                        VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                        VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                        VisibilitY.AppendixPanel = Visibility.Collapsed;
                     }
-                    else if (selected is ParagraphTable)
+                    else if (selected is ParagraphTaskSheet)
                     {
-                        VisibilitY.RTBPanel = Visibility.Collapsed;
-                        VisibilitY.ImagePanel = Visibility.Collapsed;
-                        VisibilitY.TablePanel = Visibility.Visible;
+                        VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                        VisibilitY.TitlePanel = Visibility.Collapsed;
+                        VisibilitY.TaskSheetPanel = Visibility.Visible;
+                        VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                        VisibilitY.AppendixPanel = Visibility.Collapsed;
+                    }
+                    else if (selected is ParagraphListOfReferences)
+                    {
+                        VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                        VisibilitY.TitlePanel = Visibility.Collapsed;
+                        VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                        VisibilitY.ListOfReferencesPanel = Visibility.Visible;
+                        VisibilitY.AppendixPanel = Visibility.Collapsed;
+                    }
+                    else if (selected is ParagraphAppendix)
+                    {
+                        VisibilitY.NotComplexObjects = Visibility.Collapsed;
+                        VisibilitY.TitlePanel = Visibility.Collapsed;
+                        VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                        VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                        VisibilitY.AppendixPanel = Visibility.Visible;
                     }
                     else
                     {
-                        VisibilitY.RTBPanel = Visibility.Visible;
-                        VisibilitY.ImagePanel = Visibility.Collapsed;
-                        VisibilitY.TablePanel = Visibility.Collapsed;
-                        if (selected is ParagraphCode)
+                        VisibilitY.NotComplexObjects = Visibility.Visible;
+                        VisibilitY.TitlePanel = Visibility.Collapsed;
+                        VisibilitY.TaskSheetPanel = Visibility.Collapsed;
+                        VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
+                        VisibilitY.AppendixPanel = Visibility.Collapsed;
+                        VisibilitY.AutoList = Visibility.Collapsed;
+                        if (selected is ParagraphPicture)
                         {
-                            AllowDropRTB = true;
+                            VisibilitY.RTBPanel = Visibility.Collapsed;
+                            VisibilitY.ImagePanel = Visibility.Visible;
+                            VisibilitY.TablePanel = Visibility.Collapsed;
+                        }
+                        else if (selected is ParagraphTable)
+                        {
+                            VisibilitY.RTBPanel = Visibility.Collapsed;
+                            VisibilitY.ImagePanel = Visibility.Collapsed;
+                            VisibilitY.TablePanel = Visibility.Visible;
                         }
                         else
                         {
-                            AllowDropRTB = false;
-                            if (selected is ParagraphList)
+                            VisibilitY.RTBPanel = Visibility.Visible;
+                            VisibilitY.ImagePanel = Visibility.Collapsed;
+                            VisibilitY.TablePanel = Visibility.Collapsed;
+                            if (selected is ParagraphCode)
                             {
-                                VisibilitY.AutoList = Visibility.Visible;
+                                AllowDropRTB = true;
+                            }
+                            else
+                            {
+                                AllowDropRTB = false;
+                                if (selected is ParagraphList)
+                                {
+                                    VisibilitY.AutoList = Visibility.Visible;
+                                }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    ICommand? deselect;
+    public ICommand Deselect
+    {
+        get
+        {
+            return deselect ??= new RelayCommand(obj =>
+            {
+                Selected = null;
+            });
         }
     }
 
@@ -1012,43 +1025,43 @@ public class ViewModelDocument : ViewModelBase
         {
             case DocumentType.DefaultDocument:
                 defaultDocument = true;
-                NotifyPropertyChanged("DefaultDocument");
+                NotifyPropertyChanged(nameof(DefaultDocument));
                 VisibilitY.TitleMI = Visibility.Collapsed;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.LaboratoryWork:
                 laboratoryWork = true;
-                NotifyPropertyChanged("LaboratoryWork");
+                NotifyPropertyChanged(nameof(LaboratoryWork));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.PracticeWork:
                 practiceWork = true;
-                NotifyPropertyChanged("PracticeWork");
+                NotifyPropertyChanged(nameof(PracticeWork));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.Coursework:
                 coursework = true;
-                NotifyPropertyChanged("Coursework");
+                NotifyPropertyChanged(nameof(Coursework));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Visible;
                 break;
             case DocumentType.ControlWork:
                 controlWork = true;
-                NotifyPropertyChanged("ControlWork");
+                NotifyPropertyChanged(nameof(ControlWork));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.Referat:
                 referat = true;
-                NotifyPropertyChanged("Referat");
+                NotifyPropertyChanged(nameof(Referat));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
             case DocumentType.VKR:
                 vkr = true;
-                NotifyPropertyChanged("VKR");
+                NotifyPropertyChanged(nameof(VKR));
                 VisibilitY.TitleMI = Visibility.Visible;
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;

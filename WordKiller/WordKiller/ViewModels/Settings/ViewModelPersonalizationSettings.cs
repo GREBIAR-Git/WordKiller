@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 using WordKiller.Commands;
-using WordKiller.Scripts.ForUI;
+using WordKiller.Scripts;
 
 namespace WordKiller.ViewModels.Settings;
 
