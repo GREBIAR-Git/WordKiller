@@ -20,6 +20,9 @@ public class ViewModelMain : ViewModelBase
     ViewModelResizing resizing;
     public ViewModelResizing Resizing { get => resizing; set => SetProperty(ref resizing, value); }
 
+    ViewModelExport export;
+    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
+
     public NetworkCommans NetworkCommans { get; set; }
 
     public HelpCommands HelpCommands { get; set; }
@@ -246,6 +249,7 @@ public class ViewModelMain : ViewModelBase
         }
     }
 
+
     ICommand? dropTitle;
     public ICommand DropTitle
     {
@@ -464,6 +468,7 @@ public class ViewModelMain : ViewModelBase
     public ViewModelMain()
     {
         Document = new();
+        export = new();
         HelpCommands = new();
         NetworkCommans = new();
         settings = new();

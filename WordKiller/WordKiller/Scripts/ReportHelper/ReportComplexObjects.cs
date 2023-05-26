@@ -551,11 +551,11 @@ public static class ReportComplexObjects
         {
             if (listOfReferences.ListSourcesUsed)
             {
-                ReportText.Text(doc, "Список использованных источников", "Раздел");
+                ReportText.Text(doc, "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ", "Раздел");
             }
             else if (listOfReferences.Bibliography)
             {
-                ReportText.Text(doc, "Список литературы", "Раздел");
+                ReportText.Text(doc, "СПИСОК ЛИТЕРАТУРЫ", "Раздел");
             }
             List<string> resours = new();
             foreach (Book book in listOfReferences.Books)
@@ -600,7 +600,16 @@ public static class ReportComplexObjects
                 }
                 else if (appendix is ParagraphCode code)
                 {
-                    ReportText.Text(doc, code.Data, "Код");
+                    string data;
+                    if (appendix.Data.Length > 1)
+                    {
+                        data = appendix.Data.Remove(appendix.Data.Length - 2, 2);
+                    }
+                    else
+                    {
+                        data = appendix.Data;
+                    }
+                    ReportText.Text(doc, data, "Код");
                 }
                 ReportExtras.PageBreak(doc);
                 letter++;

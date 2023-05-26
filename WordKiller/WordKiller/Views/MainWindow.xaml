@@ -65,8 +65,8 @@
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
                     <MenuItem Header="{DynamicResource Export}" Command="{Binding Document.ExportFile}"/>
-                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportPDF}" Visibility="{Binding Path=Document.Export.VisibilityExportPDF}"/>
-                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Document.Export.ExportHTML}" Visibility="{Binding Path=Document.Export.VisibilityExportHTML}"/>
+                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportPDF}" Visibility="{Binding Path=Document.Export.VisibilityExportPDF}"/>
+                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportHTML}" Visibility="{Binding Path=Document.Export.VisibilityExportHTML}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Create}" Command="{Binding Document.NewFile}" InputGestureText="Ctrl+N"/>
                     <MenuItem Header="{DynamicResource Open}" Command="{Binding Document.OpenFile}" InputGestureText="Ctrl+O"/>
@@ -161,7 +161,7 @@
                     </Grid>
                     <typeXaml:StretchingTreeView Grid.Row="1" ItemsSource="{Binding Path=Document.Data.Paragraphs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="ParagraphTree_SelectedItemChanged">
                         <i:Interaction.Behaviors>
-                            <rtb:BindableSelectedItemBehavior SelectedItem="{Binding Document.Selected, Mode=TwoWay}" />
+                            <typeXaml:BindableSelectedItemBehavior SelectedItem="{Binding Document.Selected, Mode=TwoWay}" />
                         </i:Interaction.Behaviors>
                         <TreeView.Resources>
                             <SolidColorBrush
@@ -358,7 +358,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Grid.Row="0" Text="{Binding Document.Selected.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Document.Selected.DescriptionVisibility}" AllowDrop="True" Style="{StaticResource TextBox}">
+                        <TextBox Grid.Row="0" Language="ru-RU" Text="{Binding Document.Selected.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" Visibility="{Binding Document.Selected.DescriptionVisibility}" AllowDrop="True" Style="{StaticResource TextBox}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewDragEnter">
                                     <i:InvokeCommandAction Command="{Binding Path=AllowDrop}" PassEventArgsToCommand="True"/>

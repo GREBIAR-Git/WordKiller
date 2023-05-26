@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 using WordKiller.DataTypes.ParagraphData;
 
 namespace WordKiller.DataTypes.TypeXAML;
@@ -121,6 +122,8 @@ public class GridHelpers
                         AcceptsReturn = true,
                         Style = Application.Current.FindResource("TextBoxTable") as Style,
                     };
+                    textBox.Language = XmlLanguage.GetLanguage("ru-RU");
+                    textBox.SpellCheck.IsEnabled = Properties.Settings.Default.SyntaxChecking;
                     textBox.TextChanged += Cell_TextChanged;
                     grid.Children.Add(textBox);
                     Grid.SetColumn(textBox, f);

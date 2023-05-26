@@ -748,9 +748,6 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ViewModelExport export;
-    public ViewModelExport Export { get => export; set => SetProperty(ref export, value); }
-
     ViewModelVisibility visibility;
     public ViewModelVisibility VisibilitY { get => visibility; set => SetProperty(ref visibility, value); }
 
@@ -1095,7 +1092,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 Report report = new();
                 await Task.Run(() =>
-                    Report.Create(Data, Export.ExportPDF, Export.ExportHTML));
+                    Report.Create(Data, Properties.Settings.Default.ExportPDF, Properties.Settings.Default.ExportHTML));
                 if (Properties.Settings.Default.CloseWindow)
                 {
                     UIHelper.WindowClose();
@@ -1670,7 +1667,6 @@ public class ViewModelDocument : ViewModelBase
         autoSave = Properties.Settings.Default.AutoSave;
         data = new();
         file = new();
-        export = new();
         DefaultDocument = true;
     }
 }

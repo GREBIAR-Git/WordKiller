@@ -13,7 +13,7 @@ using WordKiller.DataTypes.TypeXAML;
 
 namespace WordKiller.Scripts;
 
-public class UIHelper
+class UIHelper
 {
     public static void ShowError(string number)
     {

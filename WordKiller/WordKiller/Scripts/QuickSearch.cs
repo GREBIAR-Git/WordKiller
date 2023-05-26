@@ -10,7 +10,7 @@ using WordKiller.ViewModels;
 
 namespace WordKiller.Scripts
 {
-    internal class QuickSearch
+    class QuickSearch
     {
         static readonly List<FoundItem> foundItems = new();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using WordKiller.Scripts;
 using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
@@ -29,7 +30,14 @@ public class ParagraphList : ViewModelDocumentChanges, IParagraphData
 
     public ParagraphList()
     {
-        description = string.Empty;
+        if(Properties.Settings.Default.AutoHeader)
+        {
+            description = UIHelper.FindResourse(Type);
+        }
+        else
+        {
+            description = string.Empty;
+        }
         data = string.Empty;
     }
 }

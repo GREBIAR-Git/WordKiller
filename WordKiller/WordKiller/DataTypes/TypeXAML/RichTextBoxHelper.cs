@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
 
-namespace WordKiller.Scripts;
+namespace WordKiller.DataTypes.TypeXAML;
 
 public class RichTextBoxHelper : DependencyObject
 {

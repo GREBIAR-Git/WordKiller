@@ -52,7 +52,7 @@ public static class ReportText
         return;
     }
 
-    public static void TextIntoParagraph(WordprocessingDocument doc, string word, Paragraph paragraph, bool bold, int size, bool caps)
+    static void TextIntoParagraph(WordprocessingDocument doc, string word, Paragraph paragraph, bool bold, int size, bool caps)
     {
         Run run;
         Hyperlink hyperlink;

@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Linq;
 
 namespace WordKiller.Scripts.ReportHelper;
 
@@ -16,9 +17,10 @@ internal class ReportExtras
 
     public static void PageBreak(WordprocessingDocument doc)
     {
-        MainDocumentPart mainPart = doc.MainDocumentPart;
-        Body body = mainPart.Document.Body;
-        body.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+        Body body = doc.MainDocumentPart.Document.GetFirstChild<Body>();
+        var paras = body.Elements<Paragraph>();
+        var paras1 = paras.Last().Elements<Run>().Last();
+        paras1.AppendChild(new Break() { Type = BreakValues.Page });
     }
 
     public static void NewLine(Paragraph paragraph)

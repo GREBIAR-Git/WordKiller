@@ -1,8 +1,11 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
@@ -149,7 +152,6 @@ class Report
             int c = 1;
             int te = 1;
             Section(data);
-            ReportExtras.PageBreak(doc);
 
             void Paragraph(IParagraphData paragraph)
             {
@@ -170,10 +172,6 @@ class Report
                 else if (paragraph is ParagraphH1)
                 {
                     string text = data.ToUpper();
-                    if (h1 != 1 || h2 != 1 || t != 1 || te != 1 || l != 1 || p != 1 || c != 1)
-                    {
-                        ReportExtras.PageBreak(doc);
-                    }
                     if (text.ToUpper() != "ВВЕДЕНИЕ")
                     {
 
@@ -230,9 +228,10 @@ class Report
                 }
             }
 
-            void Section(SectionParagraphs sectionParagraphs)
+
+            void Section(SectionParagraphs section)
             {
-                foreach (IParagraphData paragraph in sectionParagraphs.Paragraphs)
+                foreach (IParagraphData paragraph in section.Paragraphs)
                 {
                     if (paragraph is SectionParagraphs)
                     {
@@ -246,6 +245,10 @@ class Report
                             Paragraph(paragraph);
                         }
                     }
+                }
+                if (section is ParagraphH1)
+                {
+                    ReportExtras.PageBreak(doc);
                 }
             }
         }
