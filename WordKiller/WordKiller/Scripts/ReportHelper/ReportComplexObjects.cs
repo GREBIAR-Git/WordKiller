@@ -23,7 +23,7 @@ public static class ReportComplexObjects
         }
         else
         {
-            if(typeDocument == DataTypes.Enums.DocumentType.ProductionPractice)
+            if (typeDocument == DataTypes.Enums.DocumentType.ProductionPractice)
             {
                 ProductionPractice(doc, title);
             }
@@ -243,12 +243,12 @@ public static class ReportComplexObjects
     static void ProductionPractice(WordprocessingDocument doc, ViewModelTitle title)
     {
         string text = "Федеральное государственное бюджетное образовательное учреждение высшего образования";
-        ReportText.Text(doc, text, size:12, justify: JustificationValues.Center, bold: true);
-        
+        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+
         ReportExtras.EmptyLines(doc, 1);
-        
+
         text = "«ОРЛОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ИМЕНИ И.С. ТУРГЕНЕВА»";
-        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true, caps:true);
+        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true, caps: true);
 
         ReportExtras.EmptyLines(doc, 1);
 
@@ -256,7 +256,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
 
         ReportExtras.EmptyLines(doc, 1);
-        
+
         text = title.Cathedra;
         ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
 
@@ -266,7 +266,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, 14, JustificationValues.Center, true);
 
         string type = string.Empty;
-        if(title.Production)
+        if (title.Production)
         {
             type = "производственной";
         }
@@ -275,13 +275,13 @@ public static class ReportComplexObjects
             type = "учебной";
         }
 
-        text = "по "+ type+ " практике";
+        text = "по " + type + " практике";
         ReportText.Text(doc, text, 14, JustificationValues.Center);
-        
+
         ReportExtras.EmptyLines(doc, 3);
 
         text = "На материалах " + title.PracticeLocation;
-        ReportText.Text(doc, text, 14, multiplier:1.5f);
+        ReportText.Text(doc, text, 14, multiplier: 1.5f);
 
         ReportExtras.EmptyLines(doc, 4);
 
@@ -294,7 +294,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
         text = "Направление " + Properties.Settings.Default.Direction;
-        ReportText.Text(doc, text, before:6, multiplier: 1.5f);
+        ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
         ReportExtras.EmptyLines(doc, 1);
 
@@ -302,13 +302,13 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
         text = "от университета \t\t\t\t\t________________ " + title.Professor;
-        ReportText.Text(doc, text, multiplier: 1.5f);
+        ReportText.Text(doc, text, multiplier: 1.5f, tabs: true);
 
         text = "Руководитель практики";
         ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
         text = "от профильной организации \t\t\t________________ " + title.HeadOrganization;
-        ReportText.Text(doc, text, multiplier: 1.5f);
+        ReportText.Text(doc, text, multiplier: 1.5f, tabs: true);
 
         ReportExtras.EmptyLines(doc, 1);
 
@@ -336,7 +336,7 @@ public static class ReportComplexObjects
 
         User performed = title.FirstPerformed();
 
-        text = "Студента " + performed.LastName + " " + performed.FirstName + " " + performed.MiddleName + "                   шифр" + " " + performed.Shifr;
+        text = "Студента " + performed.LastName + " " + performed.FirstName + " " + performed.MiddleName + "\t шифр" + " " + performed.Shifr;
         ReportText.Text(doc, text, multiplier: 1.5f);
 
         text = title.Faculty;
@@ -356,15 +356,15 @@ public static class ReportComplexObjects
         ReportExtras.EmptyLines(doc, 2);
 
         text = "Студент \t" + performed.AlternateFull;
-        ReportText.Text(doc, text);
+        ReportText.Text(doc, text, tabs: true);
         ReportExtras.EmptyLines(doc, 1);
 
         text = "Руководитель \t" + title.Professor;
-        ReportText.Text(doc, text);
+        ReportText.Text(doc, text, tabs: true);
         ReportExtras.EmptyLines(doc, 2);
 
         text = "Нормоконтроль  \t" + title.Normocontrol;
-        ReportText.Text(doc, text);
+        ReportText.Text(doc, text, tabs: true);
         ReportExtras.EmptyLines(doc, 2);
 
         text = "И.о. зав. кафедрой";
@@ -388,18 +388,18 @@ public static class ReportComplexObjects
                 text = title.Cathedra.Substring(0, index);
                 ReportText.Text(doc, text);
                 text = title.Cathedra.Substring(index) + "\t" + title.HeadCathedra;
-                ReportText.Text(doc, text);
+                ReportText.Text(doc, text, tabs: true);
             }
             else
             {
                 text = title.Cathedra + "\t" + title.HeadCathedra;
-                ReportText.Text(doc, text);
+                ReportText.Text(doc, text, tabs: true);
             }
         }
         else
         {
             text = title.Cathedra + "\t" + title.HeadCathedra;
-            ReportText.Text(doc, text);
+            ReportText.Text(doc, text, tabs: true);
         }
         ReportExtras.EmptyLines(doc, 1);
     }
@@ -566,53 +566,94 @@ public static class ReportComplexObjects
             {
                 resours.Add(electronicResource.Name + " [Электронный ресурс]. URL: " + electronicResource.Url + " (дата обращения: " + electronicResource.CirculationDate + ").");
             }
-            resours = resours.OrderBy(x => x).ToList();
+            if (listOfReferences.AlphabeticalOrder)
+            {
+                resours = resours.OrderBy(x => x).ToList();
+            }
             ReportList.ListOfReferences(doc, string.Join("\r\n", resours));
             ReportExtras.PageBreak(doc);
         }
     }
 
-    public static void AppendixPart(WordprocessingDocument doc, ViewModelAppendix viewModelAppendix, bool on)
+    public static void AppendixPart(WordprocessingDocument doc, ViewModelAppendix viewModelAppendix, bool on, DataTypes.Enums.DocumentType type)
     {
         if (on)
         {
-            char letter = 'А';
-            foreach (IParagraphData appendix in viewModelAppendix.Appendix)
+            if (type != DataTypes.Enums.DocumentType.VKR)
             {
-                string name = "«";
-                if (appendix != null)
+                char letter = 'А';
+                foreach (IParagraphData appendix in viewModelAppendix.Paragraphs)
                 {
-                    name += appendix.Description;
-                }
-                name += "»";
-                TitleAppendix(doc, "ПРИЛОЖЕНИЕ " + letter + "\n(обязательное)\n" + name);
-                if (appendix is ParagraphPicture picture)
-                {
-                    string id = ReportImage.Registration(doc, picture);
-                    if (id != null && picture.Bitmap != null)
+                    string name = "«";
+                    if (appendix != null)
                     {
-                        ReportImage.Create(doc, id, picture.Bitmap);
+                        name += appendix.Description;
                     }
-                }
-                else if (appendix is ParagraphTable table)
-                {
-                    ReportTable.Create(doc, table.TableData);
-                }
-                else if (appendix is ParagraphCode code)
-                {
-                    string data;
-                    if (appendix.Data.Length > 1)
+                    name += "»";
+                    TitleAppendix(doc, "ПРИЛОЖЕНИЕ " + letter + "\n(обязательное)\n" + name);
+                    if (appendix is ParagraphPicture picture)
                     {
-                        data = appendix.Data.Remove(appendix.Data.Length - 2, 2);
+                        string id = ReportImage.Registration(doc, picture);
+                        if (id != null && picture.Bitmap != null)
+                        {
+                            ReportImage.Create(doc, id, picture.Bitmap);
+                        }
                     }
-                    else
+                    else if (appendix is ParagraphTable table)
                     {
-                        data = appendix.Data;
+                        ReportTable.Create(doc, table.TableData);
                     }
-                    ReportText.Text(doc, data, "Код");
+                    else if (appendix is ParagraphCode code)
+                    {
+                        string data;
+                        if (appendix.Data.Length > 1)
+                        {
+                            data = appendix.Data.Remove(appendix.Data.Length - 2, 2);
+                        }
+                        else
+                        {
+                            data = appendix.Data;
+                        }
+                        ReportText.Text(doc, data, "Код");
+                    }
+                    ReportExtras.PageBreak(doc);
+                    letter++;
                 }
-                ReportExtras.PageBreak(doc);
-                letter++;
+            }
+            else
+            {
+                int number = 1;
+                foreach (IParagraphData appendix in viewModelAppendix.Paragraphs)
+                {
+                    TitleAppendixVKR(doc, "Приложение " + number, appendix.Description);
+                    if (appendix is ParagraphPicture picture)
+                    {
+                        string id = ReportImage.Registration(doc, picture);
+                        if (id != null && picture.Bitmap != null)
+                        {
+                            ReportImage.Create(doc, id, picture.Bitmap);
+                        }
+                    }
+                    else if (appendix is ParagraphTable table)
+                    {
+                        ReportTable.Create(doc, table.TableData);
+                    }
+                    else if (appendix is ParagraphCode code)
+                    {
+                        string data;
+                        if (appendix.Data.Length > 1)
+                        {
+                            data = appendix.Data.Remove(appendix.Data.Length - 2, 2);
+                        }
+                        else
+                        {
+                            data = appendix.Data;
+                        }
+                        ReportText.Text(doc, data, "Код");
+                    }
+                    ReportExtras.PageBreak(doc);
+                    number++;
+                }
             }
         }
     }
@@ -638,5 +679,16 @@ public static class ReportComplexObjects
             }
             ReportExtras.NewLine(paragraph);
         }
+    }
+
+    static void TitleAppendixVKR(WordprocessingDocument doc, string main, string description)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+
+        ReportText.Text(doc, main, "РазделПриложениеВКР");
+        ReportExtras.EmptyLines(doc, 1);
+        ReportText.Text(doc, "Листинг файла «" +description+ "»", "РазделПриложениеВКРНазвание");
+        ReportExtras.EmptyLines(doc, 1);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class SelectionBindingTextBox : TextBox
 {
@@ -23,19 +23,19 @@ public class SelectionBindingTextBox : TextBox
 
     public SelectionBindingTextBox() : base()
     {
-        this.SelectionChanged += this.OnSelectionChanged;
+        SelectionChanged += OnSelectionChanged;
     }
 
     public int BindableSelectionStart
     {
         get
         {
-            return (int)this.GetValue(BindableSelectionStartProperty);
+            return (int)GetValue(BindableSelectionStartProperty);
         }
 
         set
         {
-            this.SetValue(BindableSelectionStartProperty, value);
+            SetValue(BindableSelectionStartProperty, value);
         }
     }
 
@@ -43,12 +43,12 @@ public class SelectionBindingTextBox : TextBox
     {
         get
         {
-            return (int)this.GetValue(BindableSelectionLengthProperty);
+            return (int)GetValue(BindableSelectionLengthProperty);
         }
 
         set
         {
-            this.SetValue(BindableSelectionLengthProperty, value);
+            SetValue(BindableSelectionLengthProperty, value);
         }
     }
 
@@ -84,16 +84,16 @@ public class SelectionBindingTextBox : TextBox
 
     private void OnSelectionChanged(object sender, RoutedEventArgs e)
     {
-        if (this.BindableSelectionStart != this.SelectionStart)
+        if (BindableSelectionStart != SelectionStart)
         {
-            this.changeFromUI = true;
-            this.BindableSelectionStart = this.SelectionStart;
+            changeFromUI = true;
+            BindableSelectionStart = SelectionStart;
         }
 
-        if (this.BindableSelectionLength != this.SelectionLength)
+        if (BindableSelectionLength != SelectionLength)
         {
-            this.changeFromUI = true;
-            this.BindableSelectionLength = this.SelectionLength;
+            changeFromUI = true;
+            BindableSelectionLength = SelectionLength;
         }
     }
 }

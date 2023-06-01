@@ -9,7 +9,7 @@ public static class ReportText
 {
     public static void Text(WordprocessingDocument doc, string text, int size = 14,
     JustificationValues justify = JustificationValues.Left, bool bold = false,
-    int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false)
+    int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, bool tabs = false)
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -24,6 +24,15 @@ public static class ReportText
             {
                 Val = justify
             });
+
+            if (text.Contains("\t") && tabs)
+            {
+                paragraph.ParagraphProperties.AddChild(new Tabs(new TabStop()
+                {
+                    Val = TabStopValues.Right,
+                    Position = 8600
+                }));
+            }
 
             paragraph.ParagraphProperties.AddChild(new SpacingBetweenLines()
             {

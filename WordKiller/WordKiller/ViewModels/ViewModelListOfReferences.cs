@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.Models;
 using WordKiller.Scripts;
+using WordKiller.Scripts.ReportHelper;
 
 namespace WordKiller.ViewModels;
 
@@ -96,6 +100,50 @@ public class ViewModelListOfReferences : ViewModelDocumentChanges
             });
         }
     }
+
+    bool alphabeticalOrder;
+    public bool AlphabeticalOrder
+    {
+        get => alphabeticalOrder;
+        set
+        {
+            SetProperty(ref alphabeticalOrder, value);
+            if (alphabeticalOrder) 
+            { 
+                List<ListOfReferencesResources> resours = new();
+                foreach (Book book in Books)
+                {
+                    resours.Add(book);
+                }
+                foreach (ElectronicResource electronicResource in ElectronicResources)
+                {
+                    resours.Add(electronicResource);
+                }
+                resours = resours.OrderBy(x => x.Full).ToList();
+                for (int i = 0; i < resours.Count; i++)
+                {
+                    resours[i].Id = (i + 1).ToString();
+                }
+            }
+            else
+            {
+                List<ListOfReferencesResources> resours = new();
+                foreach (Book book in Books)
+                {
+                    resours.Add(book);
+                }
+                foreach (ElectronicResource electronicResource in ElectronicResources)
+                {
+                    resours.Add(electronicResource);
+                }
+                for (int i = 0; i < resours.Count; i++)
+                {
+                    resours[i].Id = (i + 1).ToString();
+                }
+            }
+        }
+    }
+
     [NonSerialized]
     ICommand? editCell;
     public ICommand EditCell

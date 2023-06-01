@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WordKiller.DataTypes.TypeXAML
+namespace WordKiller.XAMLHelper
 {
     public static class FocusHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class StretchingTreeView : TreeView
 {

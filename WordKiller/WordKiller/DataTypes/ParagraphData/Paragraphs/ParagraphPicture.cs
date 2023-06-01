@@ -5,12 +5,11 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphPicture : ViewModelDocumentChanges, IParagraphData
+public class ParagraphPicture : Numbered, IParagraphData
 {
     public string Type { get => "Picture"; }
 

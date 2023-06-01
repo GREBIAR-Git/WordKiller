@@ -4,14 +4,13 @@ using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
+using WordKiller.DataTypes.ParagraphData.Sections;
 
 namespace WordKiller.ViewModels;
 
 [Serializable]
-public class ViewModelAppendix : ViewModelDocumentChanges
+public class ViewModelAppendix : MainSection
 {
-    public ObservableCollection<IParagraphData> Appendix { get; set; }
-
     IParagraphData? selected;
     public IParagraphData? Selected { get => selected; set => SetPropertyDocument(ref selected, value); }
 
@@ -28,15 +27,15 @@ public class ViewModelAppendix : ViewModelDocumentChanges
             {
                 if (AddIndex == 0)
                 {
-                    Appendix.Add(new ParagraphPicture());
+                    Paragraphs.Add(new ParagraphPicture());
                 }
                 else if (AddIndex == 1)
                 {
-                    Appendix.Add(new ParagraphTable());
+                    Paragraphs.Add(new ParagraphTable());
                 }
                 else if (AddIndex == 2)
                 {
-                    Appendix.Add(new ParagraphCode());
+                    Paragraphs.Add(new ParagraphCode());
                 }
             });
         }
@@ -65,7 +64,7 @@ public class ViewModelAppendix : ViewModelDocumentChanges
         {
             return delete ??= new RelayCommand(obj =>
             {
-                Appendix.Remove(Selected);
+                Paragraphs.Remove(Selected);
             });
         }
     }
@@ -73,6 +72,5 @@ public class ViewModelAppendix : ViewModelDocumentChanges
     public ViewModelAppendix()
     {
         addIndex = -1;
-        Appendix = new();
     }
 }

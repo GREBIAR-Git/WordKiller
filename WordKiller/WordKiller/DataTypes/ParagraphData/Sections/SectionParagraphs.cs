@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Sections;
 
 [Serializable]
-public abstract class SectionParagraphs : ViewModelDocumentChanges
+public abstract class SectionParagraphs : Numbered
 {
     ObservableCollection<IParagraphData> paragraphs;
     public ObservableCollection<IParagraphData> Paragraphs { get => paragraphs; set => SetPropertyDocument(ref paragraphs, value); }

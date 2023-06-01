@@ -19,6 +19,7 @@
             <mConverter:AdaptiveFontSizeControl x:Key="multiConverter"/>
             <mConverter:AdaptiveFontSizeTextBlock x:Key="multiTBConverter"/>
             <iConverter:DocumentTypeLanguage x:Key="dtl"/>
+            <iConverter:BoolToVisibility x:Key="btv"/>
             <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
                 <Setter Property="Template">
                     <Setter.Value>

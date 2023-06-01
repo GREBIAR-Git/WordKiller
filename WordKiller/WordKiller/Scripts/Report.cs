@@ -1,15 +1,13 @@
 ﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.Models.Template;
 using WordKiller.Scripts.ReportHelper;
 
 namespace WordKiller.Scripts;
@@ -107,7 +105,7 @@ class Report
 
                     try
                     {
-                        ReportComplexObjects.AppendixPart(doc, data.Appendix, data.Properties.Appendix);
+                        ReportComplexObjects.AppendixPart(doc, data.Appendix, data.Properties.Appendix, data.Type);
                     }
                     catch
                     {
@@ -117,7 +115,20 @@ class Report
 
                     if (data.Properties.PageNumbers)
                     {
-                        ReportPageSettings.PageNumber(doc, pageStartNumber);
+                        foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+                        {
+                            if (templateType.Type == data.Type)
+                            {
+                                if (templateType.ManualPageNumbering)
+                                {
+                                    ReportPageSettings.PageNumber(doc, templateType.StartPageNumber);
+                                }
+                                else
+                                {
+                                    ReportPageSettings.PageNumber(doc, pageStartNumber);
+                                }
+                            }
+                        }
                     }
                 }
                 if (exportHTML)
@@ -143,100 +154,85 @@ class Report
     {
         if (data != null)
         {
-            int h1 = 1;
-            int h2 = 1;
-            int h2all = 1;
-            int l = 1;
-            int p = 1;
-            int t = 1;
-            int c = 1;
-            int te = 1;
             Section(data);
 
             void Paragraph(IParagraphData paragraph)
             {
-                string data;
+                string text;
                 if (paragraph.Data.Length > 1)
                 {
-                    data = paragraph.Data.Remove(paragraph.Data.Length - 2, 2);
+                    text = paragraph.Data.Remove(paragraph.Data.Length - 2, 2);
                 }
                 else
                 {
-                    data = paragraph.Data;
+                    text = paragraph.Data;
                 }
                 if (paragraph is ParagraphText)
                 {
-                    ReportText.Text(doc, data, "Текст");
-                    te++;
-                }
-                else if (paragraph is ParagraphH1)
-                {
-                    string text = data.ToUpper();
-                    if (text.ToUpper() != "ВВЕДЕНИЕ")
-                    {
-
-                        if (numberHeading && text.ToUpper() != "ЗАКЛЮЧЕНИЕ")
-                        {
-                            text = h1.ToString() + " " + text;
-                        }
-                        h1++;
-                    }
-                    ReportText.Text(doc, text, "Раздел");
-                    h2 = 1;
-                }
-                else if (paragraph is ParagraphH2)
-                {
-                    string text = string.Empty;
-                    if (numberHeading)
-                    {
-                        text += (h1 - 1).ToString() + "." + h2.ToString() + " ";
-                    }
-
-                    text += data;
-                    ReportText.Text(doc, "\n" + text, "Подраздел");
-                    h2all++;
-                    h2++;
+                    ReportText.Text(doc, text, "Текст");
                 }
                 else if (paragraph is ParagraphList)
                 {
-                    ReportList.Create(doc, data);
-                    l++;
-                }
-                else if (paragraph is ParagraphPicture picture)
-                {
-                    string id = ReportImage.Registration(doc, picture);
-                    if (id != null && picture.Bitmap != null)
+                    if(DataTypes.Enums.DocumentType.VKR == data.Type)
                     {
-                        ReportImage.Create(doc, id, picture.Bitmap);
+                        ReportList.CreateVKR(doc, text);
                     }
-                    ReportText.Text(doc, "Рисунок " + p + " – " + paragraph.Description, "Картинка");
-                    p++;
-                }
-                else if (paragraph is ParagraphTable)
-                {
-                    ParagraphTable paragraphTable = paragraph as ParagraphTable;
-                    ReportText.Text(doc, "Таблица " + t + " – " + paragraphTable.Description, "ТекстКТаблице");
-                    ReportTable.Create(doc, paragraphTable.TableData);
-                    t++;
+                    else
+                    {
+                        ReportList.Create(doc, text);
+                    }
                 }
                 else if (paragraph is ParagraphCode)
                 {
                     ReportText.Text(doc, paragraph.Description, "РазделПриложение");
+                    ReportText.Text(doc, text, "Код");
+                }
+                else if (paragraph is Numbered numbered)
+                {
+                    if (paragraph is ParagraphH1)
+                    {
+                        if (numberHeading)
+                        {
+                            text = numbered.Number + text;
+                        }
+                        ReportText.Text(doc, text, "Раздел");
+                    }
+                    else if (paragraph is ParagraphH2)
+                    {
+                        if (numberHeading)
+                        {
+                            text = numbered.Number + text;
+                        }
+                        ReportText.Text(doc, "\n" + text, "Подраздел");
+                    }
 
-                    ReportText.Text(doc, data, "Код");
-                    c++;
+                    else if (paragraph is ParagraphPicture picture)
+                    {
+                        string id = ReportImage.Registration(doc, picture);
+                        if (id != null && picture.Bitmap != null)
+                        {
+                            ReportImage.Create(doc, id, picture.Bitmap);
+                        }
+                        text = "Рисунок " + numbered.Number + " – " + paragraph.Description;
+                        ReportText.Text(doc, text, "Картинка");
+                    }
+                    else if (paragraph is ParagraphTable paragraphTable)
+                    {
+                        text = "Таблица " + numbered.Number + " – " + paragraphTable.Description;
+                        ReportText.Text(doc, text, "ТекстКТаблице");
+                        ReportTable.Create(doc, paragraphTable.TableData);
+                    }
                 }
             }
-
 
             void Section(SectionParagraphs section)
             {
                 foreach (IParagraphData paragraph in section.Paragraphs)
                 {
-                    if (paragraph is SectionParagraphs)
+                    if (paragraph is SectionParagraphs internalSection)
                     {
                         Paragraph(paragraph);
-                        Section(paragraph as SectionParagraphs);
+                        Section(internalSection);
                     }
                     else
                     {

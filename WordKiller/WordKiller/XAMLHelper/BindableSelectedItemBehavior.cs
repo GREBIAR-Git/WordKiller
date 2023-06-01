@@ -2,7 +2,7 @@
 using System.Windows;
 using WordKiller.Scripts;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class BindableSelectedItemBehavior : Behavior<StretchingTreeView>
 {

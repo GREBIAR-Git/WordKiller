@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using WordKiller.DataTypes.ParagraphData;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class GridHelpers
 {

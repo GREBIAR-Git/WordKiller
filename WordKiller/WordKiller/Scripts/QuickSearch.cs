@@ -5,8 +5,8 @@ using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
-using WordKiller.DataTypes.TypeXAML;
 using WordKiller.ViewModels;
+using WordKiller.XAMLHelper;
 
 namespace WordKiller.Scripts
 {

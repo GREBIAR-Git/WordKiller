@@ -193,4 +193,8 @@
     <system:String x:Key="Yes">Так</system:String>
     <system:String x:Key="Not">Не</system:String>
     <system:String x:Key="ChangesMade">У дакумент былі ўнесены змены</system:String>
+
+    <system:String x:Key="AlphabeticalOrder">Уключыць або адключыць алфавітны парадак</system:String>
+    <system:String x:Key="ManualPageNumbering">Ручная Нумарацыя старонак</system:String>
+    <system:String x:Key="StartsWith">Пачатак з</system:String>
 </ResourceDictionary>

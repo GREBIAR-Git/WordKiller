@@ -177,6 +177,7 @@ public class ViewModelDocument : ViewModelBase
                 }
                 ParagraphToTreeView(dataToAdd, Selected);
                 SaveHelper.NeedSave = true;
+                UpdatingObjectNumbering();
             });
         }
     }
@@ -268,7 +269,58 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    public void DragDrop(IParagraphData targetItem, IParagraphData sourceItem)//target - выбран source - отпущен в 
+    void UpdatingObjectNumbering()
+    {
+        int h1 = 1, h2 = 1, p = 1, t = 1;
+        UpdatingObjectNumbering(Data, ref h1, ref h2, ref p, ref t);
+    }
+
+    void UpdatingObjectNumbering(SectionParagraphs section, ref int h1, ref int h2, ref int p, ref int t)
+    {
+        foreach (IParagraphData paragraph in section.Paragraphs)
+        {
+            if (paragraph is Numbered numbered)
+            {
+                if (paragraph is ParagraphH1 paragraphH1)
+                {
+                    string data;
+                    if (paragraph.Data.Length > 1)
+                    {
+                        data = paragraph.Data.Remove(paragraph.Data.Length - 2, 2);
+                    }
+                    else
+                    {
+                        data = paragraph.Data;
+                    }
+                    UpdatingObjectNumbering(paragraphH1, ref h1, ref h2, ref p, ref t);
+                    if (data.ToUpper() != "ВВЕДЕНИЕ" && data.ToUpper() != "ЗАКЛЮЧЕНИЕ")
+                    {
+                        numbered.Number = (h1++).ToString() + " ";
+                    }
+                    else
+                    {
+                        numbered.Number = string.Empty;
+                    }
+                    h2 = 1;
+                }
+                else if (paragraph is ParagraphH2 paragraphH2)
+                {
+                    UpdatingObjectNumbering(paragraphH2, ref h1, ref h2, ref p, ref t);
+                    numbered.Number = h1.ToString() + "." + (h2++).ToString() + " ";
+                }
+                else if (paragraph is ParagraphPicture)
+                {
+                    numbered.Number = (p++).ToString();
+                }
+                else if (paragraph is ParagraphTable)
+                {
+                    numbered.Number = (t++).ToString();
+                }
+            }
+        }
+    }
+
+    public void DragDrop(IParagraphData targetItem, IParagraphData sourceItem)
     {
         MessageDragDrop mgg;
         if (sourceItem is ParagraphH1)
@@ -386,6 +438,7 @@ public class ViewModelDocument : ViewModelBase
             return;
         }
         SaveHelper.NeedSave = true;
+        UpdatingObjectNumbering();
     }
 
     public delegate void Insert(IParagraphData into, IParagraphData insert);
@@ -478,6 +531,7 @@ public class ViewModelDocument : ViewModelBase
             InsertToTreeView(dataToAdd, Data.InsertBefore, Selected);
         }
         SaveHelper.NeedSave = true;
+        UpdatingObjectNumbering();
     }
 
     void InsetAfter(IParagraphData dataToAdd)
@@ -495,6 +549,7 @@ public class ViewModelDocument : ViewModelBase
             InsertToTreeView(dataToAdd, Data.InsertAfter, Selected);
         }
         SaveHelper.NeedSave = true;
+        UpdatingObjectNumbering();
     }
 
     ICommand insertTextBefore;
@@ -690,10 +745,43 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
+    bool Prev(SectionParagraphs section, IParagraphData paragraph, ref IParagraphData? prev)
+    {
+        if (section.Paragraphs.Count > 0 && prev == null)
+        {
+            if (section.Paragraphs[0] != paragraph)
+            {
+                for (int i = 0; i < section.Paragraphs.Count - 1; i++)
+                {
+                    if (section.Paragraphs[i + 1] == paragraph)
+                    {
+                        prev = section.Paragraphs[i];
+                        return true;
+                    }
+                    if (section.Paragraphs[i + 1] is SectionParagraphs section1)
+                    {
+                        if (Prev(section1, paragraph, ref prev))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void Delete(IParagraphData paragraph)
     {
         if (paragraph != null)
         {
+            bool t = false;
+            IParagraphData? prev = null;
+            if (paragraph == Selected)
+            {
+                t = Prev(Data, paragraph, ref prev);
+            }
+
             if (paragraph is ParagraphTitle)
             {
                 DeleteTitle();
@@ -714,7 +802,12 @@ public class ViewModelDocument : ViewModelBase
             {
                 Data.RemoveParagraph(paragraph);
             }
+            if (t)
+            {
+                Selected = prev;
+            }
             SaveHelper.NeedSave = true;
+            UpdatingObjectNumbering();
         }
     }
 
@@ -1090,6 +1183,7 @@ public class ViewModelDocument : ViewModelBase
             return exportFile ??= new RelayCommand(
             async obj =>
             {
+                UpdatingObjectNumbering();
                 Report report = new();
                 await Task.Run(() =>
                     Report.Create(Data, Properties.Settings.Default.ExportPDF, Properties.Settings.Default.ExportHTML));

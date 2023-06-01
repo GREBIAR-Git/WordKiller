@@ -8,7 +8,7 @@ using System.Windows.Markup;
 using Xceed.Wpf.Toolkit;
 using RichTextBox = Xceed.Wpf.Toolkit.RichTextBox;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class RTBox : RichTextBox
 {
@@ -135,7 +135,14 @@ public class RTBox : RichTextBox
         }
         else
         {
-            CaretPosition = textStart.GetPositionAtOffset(position);
+            try
+            {
+                CaretPosition = textStart.GetPositionAtOffset(position);
+            }
+            catch
+            {
+                CaretPosition = CaretPosition.DocumentEnd;
+            }
         }
     }
 
@@ -158,27 +165,49 @@ public class RTBox : RichTextBox
         return intPosition;
     }
 
+    int GetIntPosition(TextPointer pointerPosition)
+    {
+        int intPosition = 0;
+
+        TextPointer currentPosition = Document.ContentStart;
+
+        while (currentPosition.CompareTo(CaretPosition) != 0)
+        {
+            intPosition++;
+
+            currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+        }
+
+        return intPosition;
+    }
+
+    /// <summary>
+    /// Converts an int position back into a TextPointer position and places the caret there.
+    /// </summary>
     void SetIntPosition(int intPosition)
     {
         TextPointer currentPosition = Document.ContentStart;
-
-        for (int i = 1; i <= intPosition; i++)
+        try
         {
+            for (int i = 1; i <= intPosition; i++)
+            {
+                currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            }
             if (currentPosition == null)
             {
-                break;
+                CaretPosition = CaretPosition.DocumentEnd;
             }
-            currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
+            else
+            {
+                CaretPosition = currentPosition;
+            }
         }
-        if (currentPosition == null)
+        catch
         {
             CaretPosition = CaretPosition.DocumentEnd;
         }
-        else
-        {
-            CaretPosition = currentPosition;
-        }
     }
+
 
     public void KeyProcessing(KeyEventArgs e)
     {
@@ -188,9 +217,8 @@ public class RTBox : RichTextBox
             {
                 using (DeclareChangeBlock())
                 {
-                    int i = GetIntPosition();
-                    i += Clipboard.GetText().Length;
                     Paste();
+                    int i = GetIntPosition();
                     PerformSpellCheck();
                     SetIntPosition(i);
                 }
@@ -211,10 +239,7 @@ public class RTBox : RichTextBox
 
                     string text = string.Empty;
 
-                    foreach (string line in lines)
-                    {
-                        text += line + "\r\n";
-                    }
+                    text = string.Join("\r\n", lines);
                     PerformSpellCheck(text);
                     SetIntPosition(i);
                 }

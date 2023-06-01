@@ -1,14 +1,19 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.DataTypes.Enums;
 using WordKiller.Models.Template;
+using WordKiller.Scripts;
 
 namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelTemplatesSettings : ViewModelBase
 {
+    
+
+
     ObservableCollection<TemplateType> templateType;
     public ObservableCollection<TemplateType> TemplateType
     {
@@ -32,7 +37,13 @@ public class ViewModelTemplatesSettings : ViewModelBase
         }
     }
 
-    void DataGrid_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    void DataGrid_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        Properties.Settings.Default.TemplateTypes = TemplateType;
+        Properties.Settings.Default.Save();
+    }
+
+    void UpdateCollection()
     {
         Properties.Settings.Default.TemplateTypes = TemplateType;
         Properties.Settings.Default.Save();
@@ -40,13 +51,14 @@ public class ViewModelTemplatesSettings : ViewModelBase
 
     public ViewModelTemplatesSettings()
     {
+        TemplateHelper.Change += UpdateCollection;
         if (Properties.Settings.Default.TemplateTypes.Count == 0)
         {
             TemplateType = new ObservableCollection<TemplateType>();
 
             TemplateType template = new TemplateType(DocumentType.DefaultDocument);
             TemplateType.Add(template);
-
+            
             template = new TemplateType(DocumentType.LaboratoryWork);
             TemplateType.Add(template);
 
@@ -74,7 +86,6 @@ public class ViewModelTemplatesSettings : ViewModelBase
         {
             TemplateType = Properties.Settings.Default.TemplateTypes;
         }
-
         TemplateType.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
     }
 }

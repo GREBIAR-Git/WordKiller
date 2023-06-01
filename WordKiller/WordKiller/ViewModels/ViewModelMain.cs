@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
@@ -407,6 +408,90 @@ public class ViewModelMain : ViewModelBase
                 VisibilityDrag = Visibility.Collapsed;
             });
         }
+    }
+
+    ICommand? dropNotComplexObjectsAppendix;
+    public ICommand DropNotComplexObjectsAppendix
+    {
+        get
+        {
+            return dropNotComplexObjectsAppendix ??= new RelayCommand(
+            obj =>
+            {
+                DragEventArgs e = (DragEventArgs)obj;
+                var data = e.Data.GetData(DataFormats.FileDrop);
+                if (data != null)
+                {
+                    foreach (string path in data as string[])
+                    {
+                        if (path.Length > 0)
+                        {
+                            string nameFile = Path.GetFileNameWithoutExtension(path);
+                            System.Drawing.Bitmap bitmap;
+                            try
+                            {
+                                bitmap = new(path);
+                                if(Document.Data.Appendix.Selected == null)
+                                {
+                                    Document.Data.Appendix.Paragraphs.Add(new ParagraphPicture(nameFile, bitmap));
+                                }
+                                else
+                                {
+                                    Document.Data.Appendix.InsertAfter(Document.Data.Appendix.Selected, new ParagraphPicture(nameFile, bitmap));
+                                }
+                            }
+                            catch
+                            {
+                                FileStream file = new(path, FileMode.Open);
+                                StreamReader reader = new(file);
+                                string data1 = reader.ReadToEnd();
+                                if (Document.Data.Appendix.Selected == null)
+                                {
+                                    Document.Data.Appendix.Paragraphs.Add(new ParagraphCode(nameFile, data1));
+                                }
+                                else
+                                {
+                                    Document.Data.Appendix.InsertAfter(Document.Data.Appendix.Selected, new ParagraphCode(nameFile, data1));
+                                }
+                            }
+                            SaveHelper.NeedSave = true;
+                        }
+                    }
+                }
+                VisibilityDrag = Visibility.Collapsed;
+            });
+        }
+    }
+
+
+    void SecondDrop(DragEventArgs e, ObservableCollection<IParagraphData> section)
+    {
+        var data = e.Data.GetData(DataFormats.FileDrop);
+        if (data != null)
+        {
+            foreach (string path in data as string[])
+            {
+                if (path.Length > 0)
+                {
+                    string nameFile = Path.GetFileNameWithoutExtension(path);
+                    System.Drawing.Bitmap bitmap;
+                    try
+                    {
+                        bitmap = new(path);
+                        Document.ParagraphToTreeView(new ParagraphPicture(nameFile, bitmap), Document.Selected);
+                    }
+                    catch
+                    {
+                        FileStream file = new(path, FileMode.Open);
+                        StreamReader reader = new(file);
+                        string data1 = reader.ReadToEnd();
+                        Document.ParagraphToTreeView(new ParagraphCode(nameFile, data1), Document.Selected);
+                    }
+                    SaveHelper.NeedSave = true;
+                }
+            }
+        }
+        VisibilityDrag = Visibility.Collapsed;
     }
 
     ICommand? allowDropNotComplexObjects;

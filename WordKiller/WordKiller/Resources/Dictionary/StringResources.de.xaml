@@ -193,4 +193,8 @@
     <system:String x:Key="Yes">Ja</system:String>
     <system:String x:Key="Not">Nein</system:String>
     <system:String x:Key="ChangesMade">Es wurden Änderungen an dem Dokument vorgenommen</system:String>
+
+    <system:String x:Key="AlphabeticalOrder">Alphabetische Reihenfolge aktivieren oder deaktivieren</system:String>
+    <system:String x:Key="ManualPageNumbering">Manuelle Seitennummerierung</system:String>
+    <system:String x:Key="StartsWith">Beginnt mit</system:String>
 </ResourceDictionary>

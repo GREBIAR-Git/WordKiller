@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Windows;
-using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
 [Serializable]
-public class ParagraphTable : ViewModelDocumentChanges, IParagraphData
+public class ParagraphTable : Numbered, IParagraphData
 {
     public string Type { get => "Table"; }
 

@@ -193,4 +193,8 @@
     <system:String x:Key="Yes">需要</system:String>
     <system:String x:Key="Not">不需要</system:String>
     <system:String x:Key="ChangesMade">已对该文件进行了修改</system:String>
+
+    <system:String x:Key="AlphabeticalOrder">启用或禁用按字母顺序排列</system:String>
+    <system:String x:Key="ManualPageNumbering">手动编页码</system:String>
+    <system:String x:Key="StartsWith">开始于</system:String>
 </ResourceDictionary>

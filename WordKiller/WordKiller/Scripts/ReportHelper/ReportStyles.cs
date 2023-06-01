@@ -30,6 +30,8 @@ public static class ReportStyles
                     {
                         styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, true, outlineLevel: 1));
                         styles.Append(Init(template.Name + "Приложение", template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, true, outlineLevel: 1));
+                        styles.Append(Init(template.Name + "ПриложениеВКР", template.Size, JustificationValues.Right, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, false, outlineLevel: 1));
+                        styles.Append(Init(template.Name + "ПриложениеВКРНазвание", template.Size, JustificationValues.Left, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, false));
                     }
                     else if (template.Name == "Подраздел")
                     {

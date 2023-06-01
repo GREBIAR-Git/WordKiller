@@ -1,20 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace WordKiller.DataTypes.TypeXAML;
+namespace WordKiller.XAMLHelper;
 
 public class StretchingTreeViewItem : TreeViewItem
 {
     public StretchingTreeViewItem()
     {
-        this.Loaded += new RoutedEventHandler(StretchingTreeViewItem_Loaded);
+        Loaded += new RoutedEventHandler(StretchingTreeViewItem_Loaded);
     }
 
     private void StretchingTreeViewItem_Loaded(object sender, RoutedEventArgs e)
     {
-        if (this.VisualChildrenCount > 0)
+        if (VisualChildrenCount > 0)
         {
-            Grid grid = this.GetVisualChild(0) as Grid;
+            Grid grid = GetVisualChild(0) as Grid;
             if (grid != null && grid.ColumnDefinitions.Count == 3)
             {
                 grid.ColumnDefinitions.RemoveAt(2);

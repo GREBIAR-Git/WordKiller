@@ -9,15 +9,7 @@ public static class ReportList
 {
     public static void ListOfReferences(WordprocessingDocument doc, string list)
     {
-        NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
-        if (numberingPart == null)
-        {
-            numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
-            Numbering element = new();
-            element.Save(numberingPart);
-        }
 
-        int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
         Level[] levels = new Level[9];
         string levelText = string.Empty;
 
@@ -42,31 +34,8 @@ public static class ReportList
             }
         };
 
-        AbstractNum abstractNum1 = new(levels) { AbstractNumberId = abstractNumberId, MultiLevelType = new MultiLevelType() { Val = MultiLevelValues.HybridMultilevel } };
-        if (abstractNumberId == 1)
-        {
-            numberingPart.Numbering.Append(abstractNum1);
-        }
-        else
-        {
-            AbstractNum lastAbstractNum = numberingPart.Numbering.Elements<AbstractNum>().Last();
-            numberingPart.Numbering.InsertAfter(abstractNum1, lastAbstractNum);
-        }
+        int numberId = Registration(levels, doc);
 
-        int numberId = numberingPart.Numbering.Elements<NumberingInstance>().Count() + 1;
-        NumberingInstance numberingInstance1 = new() { NumberID = numberId };
-        AbstractNumId abstractNumId1 = new() { Val = abstractNumberId };
-        numberingInstance1.Append(abstractNumId1);
-
-        if (numberId == 1)
-        {
-            numberingPart.Numbering.Append(numberingInstance1);
-        }
-        else
-        {
-            var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
-            numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
-        }
         Body body = doc.MainDocumentPart.Document.Body;
 
         string[] items = list.Split('\n').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
@@ -94,7 +63,7 @@ public static class ReportList
 
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
-                        new NumberingLevelReference() { Val = Level(items[i]) },
+                new NumberingLevelReference() { Val = Level(items[i]) },
                         new NumberingId() { Val = numberId }),
                     new ParagraphStyleId() { Val = "Список" }
                     );
@@ -107,19 +76,12 @@ public static class ReportList
 
     public static void Create(WordprocessingDocument doc, string list)
     {
-        NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
-        if (numberingPart == null)
-        {
-            numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
-            Numbering element = new();
-            element.Save(numberingPart);
-        }
 
-        int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
         Level[] levels = new Level[9];
         string levelText = string.Empty;
 
         levelText += "%" + (1);
+
         levels[0] = new()
         {
             NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
@@ -166,6 +128,95 @@ public static class ReportList
             levelText += ".";
         }
 
+        List(doc, list, Registration(levels, doc));
+    }
+
+    public static void CreateVKR(WordprocessingDocument doc, string list)
+    {
+        Level[] levels = new Level[9];
+
+        levels[0] = new()
+        {
+            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet },
+            LevelText = new LevelText() { Val = "\u2013" },
+            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            LevelIndex = 0,
+            LevelSuffix = new LevelSuffix()
+            {
+                Val = LevelSuffixValues.Space
+            },
+            PreviousParagraphProperties = new PreviousParagraphProperties()
+            {
+                Indentation = new Indentation()
+                {
+                    Start = (0).ToString(),
+                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                }
+            }
+        };
+
+        string levelText = string.Empty;
+        levelText = "%" + (2);
+
+        levels[1] = new()
+        {
+            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.RussianLower },
+            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            LevelText = new LevelText() { Val = levelText + ")" },
+            LevelIndex = 1,
+            LevelSuffix = new LevelSuffix()
+            {
+                Val = LevelSuffixValues.Space
+            },
+            PreviousParagraphProperties = new PreviousParagraphProperties()
+            {
+                Indentation = new Indentation()
+                {
+                    Start = ((int)(0.63f * (1) * 2 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                }
+            }
+        };
+        levelText = string.Empty;
+        for (int i = 2; i < 9; i++)
+        {
+            levelText += "%" + (i + 1);
+            levels[i] = new()
+            {
+                NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
+                StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                LevelText = new LevelText() { Val = levelText + ")" },
+                LevelIndex = i,
+                LevelSuffix = new LevelSuffix()
+                {
+                    Val = LevelSuffixValues.Space
+                },
+                PreviousParagraphProperties = new PreviousParagraphProperties()
+                {
+                    Indentation = new Indentation()
+                    {
+                        Start = ((int)(0.63f * (i) * 2 * ReportPageSettings.cm_to_pt)).ToString(),
+                        Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                    }
+                }
+            };
+            levelText += ".";
+        }
+
+        List(doc, list, Registration(levels, doc));
+    }
+
+    static int Registration(Level[] levels, WordprocessingDocument doc)
+    {
+        NumberingDefinitionsPart numberingPart = doc.MainDocumentPart.NumberingDefinitionsPart;
+        if (numberingPart == null)
+        {
+            numberingPart = doc.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("NumberingDefinitionsPart001");
+            Numbering element = new();
+            element.Save(numberingPart);
+        }
+
+        int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
         AbstractNum abstractNum1 = new(levels) { AbstractNumberId = abstractNumberId, MultiLevelType = new MultiLevelType() { Val = MultiLevelValues.HybridMultilevel } };
         if (abstractNumberId == 1)
         {
@@ -191,6 +242,11 @@ public static class ReportList
             var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
             numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
         }
+        return numberId;
+    }
+
+    static void List(WordprocessingDocument doc, string list, int numberId)
+    {
         Body body = doc.MainDocumentPart.Document.Body;
 
         string[] items = list.Split('\n').Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
@@ -234,7 +290,7 @@ public static class ReportList
 
                 paragraph.ParagraphProperties = new ParagraphProperties(
                     new NumberingProperties(
-                        new NumberingLevelReference() { Val = Level(items[i]) },
+                new NumberingLevelReference() { Val = Level(items[i]) },
                         new NumberingId() { Val = numberId }),
                     new ParagraphStyleId() { Val = "Список" }
                     );

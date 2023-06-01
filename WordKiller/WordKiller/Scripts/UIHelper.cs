@@ -9,7 +9,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using WordKiller.DataTypes.TypeXAML;
+using WordKiller.XAMLHelper;
 
 namespace WordKiller.Scripts;
 
@@ -222,46 +222,49 @@ where T : DependencyObject
         }
     }
 
-    public static void TableValidation(TextCompositionEventArgs e, TextBox textBox)
+    public static void TableValidation(TextCompositionEventArgs e, TextBox textBox, bool max = false)
     {
         Regex regex = new("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
-        if (!e.Handled)
+        if (max)
         {
-            textBox.SelectedText = e.Text;
-            string text = textBox.Text;
-            int beginningNumber = 0;
-            foreach (char number in text)
+            if (!e.Handled)
             {
-                if (number == '0')
+                textBox.SelectedText = e.Text;
+                string text = textBox.Text;
+                int beginningNumber = 0;
+                foreach (char number in text)
                 {
-                    beginningNumber++;
+                    if (number == '0')
+                    {
+                        beginningNumber++;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+                if (beginningNumber > 0)
                 {
-                    break;
-                }
-            }
-            if (beginningNumber > 0)
-            {
-                text = text[beginningNumber..];
-                e.Handled = true;
-            }
-            if (!string.IsNullOrEmpty(text))
-            {
-                int count = int.Parse(text);
-                if (count > Properties.Settings.Default.MaxRowAndColumn)
-                {
-                    count = Properties.Settings.Default.MaxRowAndColumn;
-                    text = count.ToString();
+                    text = text[beginningNumber..];
                     e.Handled = true;
                 }
-            }
-            if (e.Handled)
-            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    int count = int.Parse(text);
+                    if (count > Properties.Settings.Default.MaxRowAndColumn)
+                    {
+                        count = Properties.Settings.Default.MaxRowAndColumn;
+                        text = count.ToString();
+                        e.Handled = true;
+                    }
+                }
+                if (e.Handled)
+                {
 
-                textBox.Text = text;
-                textBox.SelectionStart = textBox.Text.Length;
+                    textBox.Text = text;
+                    textBox.SelectionStart = textBox.Text.Length;
+                }
             }
         }
     }

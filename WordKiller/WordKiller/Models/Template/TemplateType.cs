@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.ObjectModel;
-using WordKiller.ViewModels;
+using WordKiller.Scripts;
 
 namespace WordKiller.Models.Template;
 
@@ -10,9 +10,34 @@ public class TemplateType
 {
     public DataTypes.Enums.DocumentType Type { get; set; }
 
+
+    bool manualPageNumbering;
+    public bool ManualPageNumbering
+    {
+        get => manualPageNumbering;
+        set
+        {
+            manualPageNumbering = value;
+            TemplateHelper.NeedSave = true;
+        }
+    }
+
+    int startPageNumber;
+    public int StartPageNumber
+    {
+        get => startPageNumber;
+        set
+        {
+            startPageNumber = value;
+            TemplateHelper.NeedSave = true;
+        }
+    }
+
     public ObservableCollection<Template> Templates { get; set; }
     public TemplateType(DataTypes.Enums.DocumentType type)
     {
+        ManualPageNumbering = false;
+        StartPageNumber = 0;
         Type = type;
         Templates = new()
         {
@@ -29,6 +54,8 @@ public class TemplateType
 
     public TemplateType()
     {
+        manualPageNumbering = false;
+        startPageNumber = 0;
         Templates = new();
     }
 }

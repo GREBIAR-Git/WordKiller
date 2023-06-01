@@ -93,8 +93,8 @@
     <system:String x:Key="ForPicture">Для картинки</system:String>
     <system:String x:Key="ForСode">Для кода</system:String>
 
-    <system:String x:Key="Columns">Строки: </system:String>
-    <system:String x:Key="Rows">Столбцы: </system:String>
+    <system:String x:Key="Columns">Столбцы:</system:String>
+    <system:String x:Key="Rows">Строки:</system:String>
     
     <system:String x:Key="Error">Ошибка</system:String>
     <system:String x:Key="Error1">Ошибка открытия файла: файл не найден или формат не поддерживается</system:String>
@@ -193,4 +193,9 @@
     <system:String x:Key="Yes">Да</system:String>
     <system:String x:Key="Not">Нет</system:String>
     <system:String x:Key="ChangesMade">В документ были внесены изменения</system:String>
+
+    <system:String x:Key="AlphabeticalOrder">Включить или отключить алфавитный порядок</system:String>
+    <system:String x:Key="ManualPageNumbering">Ручная нумерация страниц</system:String>
+    <system:String x:Key="StartsWith">Начало с</system:String>
+    
 </ResourceDictionary>

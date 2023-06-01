@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:typeXaml="clr-namespace:WordKiller.DataTypes.TypeXAML"
+        xmlns:typeXaml="clr-namespace:WordKiller.XAMLHelper"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:WordKiller.ViewModels"
         xmlns:gu="https://github.com/GuOrg/Gu.Wpf.FlipView"
@@ -159,7 +159,7 @@
                         <Button Grid.Column="1" Content="→" Click="Button_Next"/>
                         <Button Grid.Column="2" Content="x" Command="{Binding HideFF}"/>
                     </Grid>
-                    <typeXaml:StretchingTreeView Grid.Row="1" ItemsSource="{Binding Path=Document.Data.Paragraphs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="ParagraphTree_SelectedItemChanged">
+                    <typeXaml:StretchingTreeView Grid.Row="1" typeXaml:DragDropExtension.ScrollOnDragDrop="True" ItemsSource="{Binding Path=Document.Data.Paragraphs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="ParagraphTree_SelectedItemChanged">
                         <i:Interaction.Behaviors>
                             <typeXaml:BindableSelectedItemBehavior SelectedItem="{Binding Document.Selected, Mode=TwoWay}" />
                         </i:Interaction.Behaviors>
@@ -179,7 +179,14 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource Header}" />
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="18" Visibility="{Binding ElementName=root, Path=DataContext.Document.Data.Properties.NumberHeading, Converter={StaticResource btv}}" FontWeight="Bold" Text="{Binding Number}" />
+                                        <TextBlock Grid.Column="1" FontSize="18" FontWeight="Bold" Text="{DynamicResource Header}" />
+                                    </Grid>
                                     <TextBlock Grid.Row="1" FontSize="17" Text="{Binding Description}" />
                                 </Grid>
                             </HierarchicalDataTemplate>
@@ -189,7 +196,14 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource SubHeader}" />
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="18" Visibility="{Binding ElementName=root, Path=DataContext.Document.Data.Properties.NumberHeading, Converter={StaticResource btv}}" FontWeight="Bold" Text="{Binding Number}" />
+                                        <TextBlock Grid.Column="1" FontSize="18" FontWeight="Bold" Text="{DynamicResource SubHeader}" />
+                                    </Grid>
                                     <TextBlock Grid.Row="1" FontSize="17" Text="{Binding Description}" />
                                 </Grid>
                             </HierarchicalDataTemplate>
@@ -209,7 +223,16 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource Picture}" />
+                                    <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="20"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource Picture}" />
+                                        <TextBlock Grid.Column="1" FontSize="18" FontWeight="Bold" Text=" №"/>
+                                        <TextBlock Grid.Column="2" FontSize="18" FontWeight="Bold" Text="{Binding Number}" />
+                                    </Grid>
                                     <TextBlock Grid.Row="1" FontSize="17" Text="{Binding Description}" />
                                 </Grid>
                             </HierarchicalDataTemplate>
@@ -219,7 +242,16 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource Table}" />
+                                    <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="20"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" FontSize="18" FontWeight="Bold" Text="{DynamicResource Table}" />
+                                        <TextBlock Grid.Column="1" FontSize="18" FontWeight="Bold" Text=" №"/>
+                                        <TextBlock Grid.Column="2" FontSize="18" FontWeight="Bold" Text="{Binding Number}" />
+                                    </Grid>
                                     <TextBlock Grid.Row="1" FontSize="17" Text="{Binding Description}" />
                                 </Grid>
                             </HierarchicalDataTemplate>
@@ -838,12 +870,14 @@
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="15*"/>
-                                        <ColumnDefinition Width="35*"/>
-                                        <ColumnDefinition Width="35*"/>
+                                        <ColumnDefinition Width="30*"/>
+                                        <ColumnDefinition Width="10*"/>
+                                        <ColumnDefinition Width="30*"/>
                                         <ColumnDefinition Width="15*"/>
                                     </Grid.ColumnDefinitions>
                                     <RadioButton Grid.Column="1" IsChecked="{Binding Path=Document.Data.ListOfReferences.Bibliography}" Margin="2,0,0,0" Content="{DynamicResource Bibliography}" Style="{StaticResource RadioButton}"/>
-                                    <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.ListOfReferences.ListSourcesUsed}" Margin="2,0,2,0" Content="{DynamicResource ListSourcesUsed}" Style="{StaticResource RadioButton}"/>
+                                    <CheckBox Grid.Column="2" Margin="2,0,0,0" Content="A" ToolTip="{DynamicResource AlphabeticalOrder}" IsChecked="{Binding Document.Data.ListOfReferences.AlphabeticalOrder}" Click="Button_Click" Style="{StaticResource RadioButton}"/>
+                                    <RadioButton Grid.Column="3" IsChecked="{Binding Path=Document.Data.ListOfReferences.ListSourcesUsed}" Margin="2,0,2,0" Content="{DynamicResource ListSourcesUsed}" Style="{StaticResource RadioButton}"/>
                                 </Grid>
                             </Grid>
                             <Grid Grid.Row="1" Margin="0 0 0 15">
@@ -865,13 +899,14 @@
                                     <RadioButton Grid.Column="3" IsChecked="{Binding Document.Data.ListOfReferences.OpenElectronicResources}" Margin="2,0,2,0" Content="{DynamicResource ElectronicResources}" Style="{StaticResource RadioButton}"/>
                                 </Grid>
                             </Grid>
-                            <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.Books}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityBooks}" Style="{StaticResource DGStandart}" >
+                            <DataGrid x:Name="books" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.Books}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityBooks}" Style="{StaticResource DGStandart}" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="CellEditEnding">
                                         <i:InvokeCommandAction Command="{Binding Path=Document.Data.ListOfReferences.EditCell}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn IsReadOnly="True" Header="№" Binding="{Binding Id}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Autors}" Binding="{Binding Autors}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Name}" Binding="{Binding Name}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Publication}" Binding="{Binding Publication}" Width="20*"/>
@@ -879,13 +914,14 @@
                                     <DataGridTextColumn Header="{DynamicResource Page}" Binding="{Binding Page}" Width="20*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.ElectronicResources}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityElectronicResources}" Style="{StaticResource DGStandart}" >
+                            <DataGrid x:Name="electronicResources" Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Document.Data.ListOfReferences.ElectronicResources}" Visibility="{Binding Document.Data.ListOfReferences.VisibilityElectronicResources}" Style="{StaticResource DGStandart}" >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="CellEditEnding">
                                         <i:InvokeCommandAction Command="{Binding Path=Document.Data.ListOfReferences.EditCell}"/>
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn IsReadOnly="True" Header="№" Binding="{Binding Id}" Width="33*"/>
                                     <DataGridTextColumn Header="{DynamicResource Name}" Binding="{Binding Name}" Width="33*"/>
                                     <DataGridTextColumn Header="{DynamicResource Url}" Binding="{Binding Url}" Width="33*"/>
                                     <DataGridTextColumn Header="{DynamicResource CirculationDate}" Binding="{Binding CirculationDate}" Width="33*"/>
@@ -900,7 +936,7 @@
                                 <RowDefinition Height="100*"/>
                                 <RowDefinition Height="30"/>
                             </Grid.RowDefinitions>
-                            <ComboBox Grid.Row="0" Style="{StaticResource ComboBox1}" SelectedIndex="{Binding Document.Data.Appendix.AddIndex}">
+                            <ComboBox Grid.Row="0" Style="{StaticResource ComboBox1}" SelectedIndex="{Binding Document.Data.Appendix.AddIndex}" AllowDrop="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="SelectionChanged">
                                         <i:InvokeCommandAction Command="{Binding Path=Document.Data.Appendix.Add}"/>
@@ -908,12 +944,18 @@
                                     <i:EventTrigger EventName="DropDownClosed">
                                         <i:InvokeCommandAction Command="{Binding Path=Document.Data.Appendix.ResetAddIndex}"/>
                                     </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=DropNotComplexObjectsAppendix}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="DragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropNotComplexObjects}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <ComboBoxItem Content="{DynamicResource Picture}"/>
                                 <ComboBoxItem Content="{DynamicResource Table}"/>
                                 <ComboBoxItem Content="{DynamicResource Code}"/>
                             </ComboBox>
-                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" ItemsSource="{Binding Document.Data.Appendix.Appendix}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
+                            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" ItemsSource="{Binding Document.Data.Appendix.Paragraphs}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
                                 <gu:FlipView.Resources>
                                     <DataTemplate DataType="{x:Type tp:ParagraphCode}">
                                         <Grid>
@@ -1520,10 +1562,23 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Margin="0 0 0 10" Text="{Binding Path=Type, Converter={StaticResource dtl}}" Style="{StaticResource TextBlock}"/>
-                                <DataGrid Grid.Row="1" ItemsSource="{Binding Templates}" Style="{StaticResource DGStandart}" CanUserDeleteRows="False">
+                                <Grid Grid.Row="1" Margin="0 0 0 10" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource ManualPageNumbering}" Style="{StaticResource TextBlock}"/>
+                                    <CheckBox Grid.Column="1" Margin="5 0 0 0" Content="A" IsChecked="{Binding Path=ManualPageNumbering}" Style="{StaticResource RadioButton}"/>
+                                    <TextBlock Grid.Column="2" Margin="5 0 5 0" Visibility="{Binding ManualPageNumbering,Converter={StaticResource btv}}" Text="{DynamicResource StartsWith}" Style="{StaticResource TextBlock}"/>
+                                    <TextBox Grid.Column="3" MinWidth="100" Visibility="{Binding ManualPageNumbering,Converter={StaticResource btv}}" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewTextInput="NumberValidationTextBoxTemplate" Text="{Binding StartPageNumber}" Style="{StaticResource TextBox}"/>
+                                </Grid>
+                                <DataGrid Grid.Row="2" ItemsSource="{Binding Templates}" Style="{StaticResource DGStandart}" CanUserDeleteRows="False">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="CellEditEnding">
                                             <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.Settings.Template.EditPartnersCell}"/>

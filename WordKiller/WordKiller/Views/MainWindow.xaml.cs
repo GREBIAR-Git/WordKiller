@@ -19,6 +19,16 @@ public partial class MainWindow : Window
 
     void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
     {
+        UIHelper.TableValidation(e, (TextBox)sender, true);
+    }
+    void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Space)
+            e.Handled = true;
+    }
+
+    void NumberValidationTextBoxTemplate(object sender, TextCompositionEventArgs e)
+    {
         UIHelper.TableValidation(e, (TextBox)sender);
     }
 
@@ -82,5 +92,11 @@ public partial class MainWindow : Window
     void ParagraphTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
         QuickSearch.SelectedItemChanged(e, viewModel.Document, richTextBox, paragraphTree);
+    }
+
+    void Button_Click(object sender, RoutedEventArgs e)
+    {
+        books.Items.Refresh();
+        electronicResources.Items.Refresh();
     }
 }
