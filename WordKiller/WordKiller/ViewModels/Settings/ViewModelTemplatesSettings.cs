@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.DataTypes.Enums;
@@ -11,9 +10,6 @@ namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelTemplatesSettings : ViewModelBase
 {
-    
-
-
     ObservableCollection<TemplateType> templateType;
     public ObservableCollection<TemplateType> TemplateType
     {
@@ -56,9 +52,9 @@ public class ViewModelTemplatesSettings : ViewModelBase
         {
             TemplateType = new ObservableCollection<TemplateType>();
 
-            TemplateType template = new TemplateType(DocumentType.DefaultDocument);
+            TemplateType template = new(DocumentType.DefaultDocument);
             TemplateType.Add(template);
-            
+
             template = new TemplateType(DocumentType.LaboratoryWork);
             TemplateType.Add(template);
 

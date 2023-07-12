@@ -65,8 +65,8 @@
                         <TextBlock Text="{DynamicResource File}" Style="{StaticResource TextBlockMI}"/>
                     </MenuItem.Header>
                     <MenuItem Header="{DynamicResource Export}" Command="{Binding Document.ExportFile}"/>
-                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportPDF}" Visibility="{Binding Path=Document.Export.VisibilityExportPDF}"/>
-                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportHTML}" Visibility="{Binding Path=Document.Export.VisibilityExportHTML}"/>
+                    <MenuItem Header="{DynamicResource PDF}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportPDF}" Visibility="{Binding Path=Export.VisibilityExportPDF}"/>
+                    <MenuItem Header="{DynamicResource HTML}" IsCheckable="True" IsChecked="{Binding Path=Export.ExportHTML}" Visibility="{Binding Path=Export.VisibilityExportHTML}"/>
                     <Separator/>
                     <MenuItem Header="{DynamicResource Create}" Command="{Binding Document.NewFile}" InputGestureText="Ctrl+N"/>
                     <MenuItem Header="{DynamicResource Open}" Command="{Binding Document.OpenFile}" InputGestureText="Ctrl+O"/>
@@ -1563,6 +1563,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Margin="0 0 0 10" Text="{Binding Path=Type, Converter={StaticResource dtl}}" Style="{StaticResource TextBlock}"/>
@@ -1597,6 +1598,52 @@
                                         <DataGridTextColumn Header="{DynamicResource FirstLine}" Binding="{Binding FirstLine, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
+                                <Grid Grid.Row="3" Margin="0 10 0 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Content="Заменить титульник" Margin="0 0 0 10" IsChecked="{Binding NonStandard}" Width="300" Style="{StaticResource RadioButton}"/>
+                                    <ListBox Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding YellowFragment}" HorizontalContentAlignment="Center" Background="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Text}" Style="{StaticResource TextBlock}"/>
+                                                    <ComboBox SelectedIndex="{Binding Index}">
+                                                        <ComboBoxItem Content="Факультет"/>
+                                                        <ComboBoxItem Content="Кафедра"/>
+                                                        <ComboBoxItem Content="Фамилия Имя Отчество"/>
+                                                        <ComboBoxItem Content="Фамилия И.О."/>
+                                                        <ComboBoxItem Content="И.О. Фамилия"/>
+                                                        <ComboBoxItem Content="Преподаватель(Фамилия Имя Отчество)"/>
+                                                        <ComboBoxItem Content="Преподаватель(Фамилия И.О.)"/>
+                                                        <ComboBoxItem Content="Преподаватель(И.О. Фамилия)"/>
+                                                        <ComboBoxItem Content="Шифр"/>
+                                                        <ComboBoxItem Content="Номер"/>
+                                                        <ComboBoxItem Content="Тема"/>
+                                                        <ComboBoxItem Content="Курс"/>
+                                                        <ComboBoxItem Content="Группа"/>
+                                                        <ComboBoxItem Content="Направление"/>
+                                                        <ComboBoxItem Content="Напрваление(профиль)"/>
+                                                        <ComboBoxItem Content="Год"/>
+                                                        <ComboBoxItem Content="Дисциплина"/>
+                                                        <ComboBoxItem Content="Позиция на кафедре"/>
+                                                        <ComboBoxItem Content="Тип(работа или проект)"/>
+                                                        <ComboBoxItem Content="Место практики"/>
+                                                        <ComboBoxItem Content="Нормконтроль"/>
+                                                        <ComboBoxItem Content="Заведующий кафедры"/>
+                                                        <ComboBoxItem Content="Глава организации"/>
+                                                    </ComboBox>
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="SelectionChanged">
+                                                            <i:InvokeCommandAction Command="{Binding Path=Update}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
                             </Grid>
                         </DataTemplate>
                     </gu:FlipView.Resources>

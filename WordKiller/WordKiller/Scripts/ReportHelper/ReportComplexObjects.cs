@@ -2,9 +2,11 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
+using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Models;
+using WordKiller.Models.Template;
 using WordKiller.ViewModels;
 
 namespace WordKiller.Scripts.ReportHelper;
@@ -56,6 +58,67 @@ public static class ReportComplexObjects
         }
         ReportExtras.SectionBreak(doc);
     }
+
+    public static void Text(WordprocessingDocument doc, List<Line> lines, DocumentData data)
+    {
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        Body body = mainPart.Document.Body;
+        Paragraph paragraph = new();
+        int i1 = 0;
+        TemplateType templateType = null;
+        foreach (var item in Properties.Settings.Default.TemplateTypes)
+        {
+            if (data.Type == item.Type)
+            {
+                templateType = item;
+                break;
+            }
+        }
+        int g = 0;
+        foreach (Line line in lines)
+        {
+            g++;
+            if (line.newPara)
+            {
+
+                if (line.ParagraphProperties != null)
+                {
+                    paragraph = body.AppendChild(new Paragraph());
+                    paragraph.AppendChild(new ParagraphProperties(line.ParagraphProperties));
+                }
+                else
+                {
+                    paragraph = body.AppendChild(new Paragraph());
+                }
+            }
+            else
+            {
+                string text = line.Text;
+
+                Run run = paragraph.AppendChild(new Run());
+                if (line.RunProperties != null)
+                {
+                    RunProperties runProperties = new(line.RunProperties);
+                    if (runProperties.Highlight != null && runProperties.Highlight.Val == HighlightColorValues.Yellow && !string.IsNullOrEmpty(line.Text) && line.Text != "\n")
+                    {
+                        text = data.Title.GetData(templateType.YellowFragment[i1].Index);
+                        runProperties.Highlight = new Highlight() { Val = HighlightColorValues.None };
+                        run.PrependChild(runProperties);
+                        ReportText.TextToRun(run, text);
+                        i1++;
+                    }
+                    else
+                    {
+                        run.PrependChild(runProperties);
+                        ReportText.TextToRun(run, line.Text);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+
 
     static void LabPra(WordprocessingDocument doc, string type, ViewModelTitle title)
     {
@@ -265,7 +328,7 @@ public static class ReportComplexObjects
         text = "ОТЧЁТ";
         ReportText.Text(doc, text, 14, JustificationValues.Center, true);
 
-        string type = string.Empty;
+        string type;
         if (title.Production)
         {
             type = "производственной";
@@ -385,9 +448,9 @@ public static class ReportComplexObjects
             }
             if (index != -1)
             {
-                text = title.Cathedra.Substring(0, index);
+                text = title.Cathedra[..index];
                 ReportText.Text(doc, text);
-                text = title.Cathedra.Substring(index) + "\t" + title.HeadCathedra;
+                text = title.Cathedra[index..] + "\t" + title.HeadCathedra;
                 ReportText.Text(doc, text, tabs: true);
             }
             else
@@ -683,12 +746,9 @@ public static class ReportComplexObjects
 
     static void TitleAppendixVKR(WordprocessingDocument doc, string main, string description)
     {
-        MainDocumentPart mainPart = doc.MainDocumentPart;
-        Body body = mainPart.Document.Body;
-
         ReportText.Text(doc, main, "РазделПриложениеВКР");
         ReportExtras.EmptyLines(doc, 1);
-        ReportText.Text(doc, "Листинг файла «" +description+ "»", "РазделПриложениеВКРНазвание");
+        ReportText.Text(doc, "Листинг файла «" + description + "»", "РазделПриложениеВКРНазвание");
         ReportExtras.EmptyLines(doc, 1);
     }
 }

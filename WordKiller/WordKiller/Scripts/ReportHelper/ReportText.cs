@@ -25,7 +25,7 @@ public static class ReportText
                 Val = justify
             });
 
-            if (text.Contains("\t") && tabs)
+            if (text.Contains('\t') && tabs)
             {
                 paragraph.ParagraphProperties.AddChild(new Tabs(new TabStop()
                 {
@@ -59,6 +59,40 @@ public static class ReportText
             }
         }
         return;
+    }
+
+    public static void TextToRun(Run run, string text)
+    {
+        if (text.Contains('\t'))
+        {
+            string[] strings = text.Split('\t');
+            if (strings.Length > 0)
+            {
+                for (int i = 0; i < strings.Length - 1; i++)
+                {
+                    run.AppendChild(new Text() { Text = strings[i], Space = SpaceProcessingModeValues.Preserve });
+                    run.AppendChild(new TabChar());
+                }
+                run.AppendChild(new Text() { Text = strings[^1], Space = SpaceProcessingModeValues.Preserve });
+            }
+            else
+            {
+                run.AppendChild(new TabChar());
+            }
+        }
+        else if (text.Contains("\r\n"))
+        {
+            run.AppendChild(new Break() { Type = BreakValues.Page });
+        }
+        else if (text.Contains('\n'))
+        {
+            run.AppendChild(new Break() { Type = BreakValues.TextWrapping });
+        }
+        else
+        {
+            text ??= " ";
+            run.AppendChild(new Text() { Text = text, Space = SpaceProcessingModeValues.Preserve });
+        }
     }
 
     static void TextIntoParagraph(WordprocessingDocument doc, string word, Paragraph paragraph, bool bold, int size, bool caps)

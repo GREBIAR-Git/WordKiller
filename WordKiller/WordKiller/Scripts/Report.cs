@@ -40,8 +40,21 @@ class Report
                     {
                         if (data.Type != DataTypes.Enums.DocumentType.DefaultDocument && data.Properties.Title)
                         {
-                            ReportPageSettings.PageSetup(body, title: true);
-                            ReportComplexObjects.TitlePart(doc, data.Type, data.Title);
+                            foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+                            {
+                                if (templateType.Type == data.Type)
+                                {
+                                    if (templateType.NonStandard)
+                                    {
+                                        ReportComplexObjects.Text(doc, templateType.Lines, data);
+                                    }
+                                    else
+                                    {
+                                        ReportPageSettings.PageSetup(body, title: true);
+                                        ReportComplexObjects.TitlePart(doc, data.Type, data.Title);
+                                    }
+                                }
+                            }
                             pageStartNumber++;
                         }
                         else
@@ -173,7 +186,7 @@ class Report
                 }
                 else if (paragraph is ParagraphList)
                 {
-                    if(DataTypes.Enums.DocumentType.VKR == data.Type)
+                    if (DataTypes.Enums.DocumentType.VKR == data.Type)
                     {
                         ReportList.CreateVKR(doc, text);
                     }

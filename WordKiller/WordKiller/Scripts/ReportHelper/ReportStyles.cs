@@ -59,7 +59,7 @@ public static class ReportStyles
             Type = StyleValues.Paragraph,
             StyleId = name,
             CustomStyle = true,
-            Default = false
+            Default = false,
         };
 
 

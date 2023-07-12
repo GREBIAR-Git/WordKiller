@@ -10,6 +10,7 @@ using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.Models.Template;
 using WordKiller.Scripts;
 using WordKiller.Scripts.ImportExport;
 using WordKiller.Views;
@@ -51,6 +52,7 @@ public class ViewModelDocument : ViewModelBase
                         VisibilitY.TaskSheetPanel = Visibility.Collapsed;
                         VisibilitY.ListOfReferencesPanel = Visibility.Collapsed;
                         VisibilitY.AppendixPanel = Visibility.Collapsed;
+                        Data.Title.UpdateTitleItems(Data.Type);
                     }
                     else if (selected is ParagraphTaskSheet)
                     {
