@@ -8,11 +8,17 @@ public class ParagraphListOfReferences : IParagraphData
 {
     public string Type => "ListOfReferences";
 
-    public string Data { get => "ListOfReferences"; set => throw new NotImplementedException(); }
-    public string Description { get => "ListOfReferences"; set => throw new NotImplementedException(); }
-
-    public Visibility DescriptionVisibility
+    public string Data
     {
-        get => Visibility.Collapsed;
+        get => "ListOfReferences";
+        set => throw new NotImplementedException();
     }
+
+    public string Description
+    {
+        get => "ListOfReferences";
+        set => throw new NotImplementedException();
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Collapsed;
 }

@@ -8,10 +8,22 @@ namespace WordKiller.DataTypes.ParagraphData.Sections;
 public abstract class SectionParagraphs : Numbered
 {
     ObservableCollection<IParagraphData> paragraphs;
-    public ObservableCollection<IParagraphData> Paragraphs { get => paragraphs; set => SetPropertyDocument(ref paragraphs, value); }
-    protected IParagraphData? First { get => Paragraphs.FirstOrDefault(); }
 
-    protected IParagraphData? Last { get => Paragraphs.LastOrDefault(); }
+
+    public SectionParagraphs()
+    {
+        paragraphs = [];
+    }
+
+    public ObservableCollection<IParagraphData> Paragraphs
+    {
+        get => paragraphs;
+        set => SetPropertyDocument(ref paragraphs, value);
+    }
+
+    protected IParagraphData? First => Paragraphs.FirstOrDefault();
+
+    protected IParagraphData? Last => Paragraphs.LastOrDefault();
 
     public abstract SectionParagraphs? Current(IParagraphData data);
 
@@ -37,6 +49,7 @@ public abstract class SectionParagraphs : Numbered
                 paragraphs.Remove(data1);
                 return true;
             }
+
             if (paragraphData is SectionH1 sectionH1)
             {
                 if (sectionH1.RemoveParagraph(data1))
@@ -52,12 +65,7 @@ public abstract class SectionParagraphs : Numbered
                 }
             }
         }
+
         return false;
-    }
-
-
-    public SectionParagraphs()
-    {
-        paragraphs = new ObservableCollection<IParagraphData>();
     }
 }

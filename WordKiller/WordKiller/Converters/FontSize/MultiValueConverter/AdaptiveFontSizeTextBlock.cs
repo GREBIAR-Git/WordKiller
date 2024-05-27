@@ -18,16 +18,17 @@ public class AdaptiveFontSizeTextBlock : IMultiValueConverter
         {
             return double.NaN;
         }
+
         var dpiX = 96.0 * VisualTreeHelper.GetDpi(control).DpiScaleX;
         FormattedText formattedText;
         try
         {
             formattedText =
-                new FormattedText(
+                new(
                     values[1].ToString(),
                     CultureInfo.InvariantCulture,
                     control.FlowDirection,
-                    new Typeface(
+                    new(
                         control.FontFamily,
                         control.FontStyle,
                         control.FontWeight,
@@ -45,7 +46,7 @@ public class AdaptiveFontSizeTextBlock : IMultiValueConverter
 
         double fontSize1 = (control.ActualHeight - 3) / formattedText.Height;
 
-        fontSize = (control.FontSize) * Math.Min(fontSize, fontSize1);
+        fontSize = control.FontSize * Math.Min(fontSize, fontSize1);
 
         if (values[2] == null) return ScalingFontSize.Scale(parameter.ToString(), fontSize);
         var maxSize = double.Parse(values[2].ToString());
@@ -53,7 +54,8 @@ public class AdaptiveFontSizeTextBlock : IMultiValueConverter
     }
 
 
-
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException();
+    }
 }

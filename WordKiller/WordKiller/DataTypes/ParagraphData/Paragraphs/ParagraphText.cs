@@ -7,18 +7,7 @@ namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 [Serializable]
 internal class ParagraphText : ViewModelDocumentChanges, IParagraphData
 {
-    public string Type { get => "Text"; }
-
     string data;
-
-    public string Data { get => data; set => SetPropertyDocument(ref data, value, "Description"); }
-
-    public string Description { get => data.Replace("\r\n", " "); set => SetPropertyDocument(ref data, value, "Data"); }
-
-    public Visibility DescriptionVisibility
-    {
-        get => Visibility.Collapsed;
-    }
 
     public ParagraphText()
     {
@@ -29,4 +18,20 @@ internal class ParagraphText : ViewModelDocumentChanges, IParagraphData
     {
         this.data = data;
     }
+
+    public string Type => "Text";
+
+    public string Data
+    {
+        get => data;
+        set => SetPropertyDocument(ref data, value, "Description");
+    }
+
+    public string Description
+    {
+        get => data.Replace("\r\n", " ");
+        set => SetPropertyDocument(ref data, value, "Data");
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Collapsed;
 }

@@ -7,114 +7,31 @@ namespace WordKiller.ViewModels.DialogMessage;
 
 public class ViewModelMessageDragDrop : ViewModelBase
 {
-    public int Number { get; set; }
-
-    Visibility visibilityInsert;
-    public Visibility VisibilityInsert { get => visibilityInsert; set => SetProperty(ref visibilityInsert, value); }
-
-    Visibility visibilityBefore;
-    public Visibility VisibilityBefore { get => visibilityBefore; set => SetProperty(ref visibilityBefore, value); }
-
-    Visibility visibilityAfter;
-    public Visibility VisibilityAfter { get => visibilityAfter; set => SetProperty(ref visibilityAfter, value); }
-
-    Visibility visibilitySwap;
-    public Visibility VisibilitySwap { get => visibilitySwap; set => SetProperty(ref visibilitySwap, value); }
-
-    string mainColor;
-
-    public string MainColor
-    {
-        get => mainColor;
-        set
-        {
-            SetProperty(ref mainColor, value);
-        }
-    }
-
     string additionalColor;
 
-    public string AdditionalColor { get => additionalColor; set => SetProperty(ref additionalColor, value); }
+    ICommand? after;
 
     string alternativeColor;
 
-    public string AlternativeColor { get => alternativeColor; set => SetProperty(ref alternativeColor, value); }
+    ICommand? before;
+
+    ICommand? exit;
 
     string hoverColor;
 
-    public string HoverColor { get => hoverColor; set => SetProperty(ref hoverColor, value); }
-
-    public Action CloseAction { get; set; }
-
-    ICommand? exit;
-    public ICommand Exit
-    {
-        get
-        {
-            return exit ??= new RelayCommand(
-            obj =>
-            {
-                Number = -1;
-                CloseAction();
-            });
-        }
-    }
-
     ICommand? insert;
-    public ICommand Insert
-    {
-        get
-        {
-            return insert ??= new RelayCommand(
-            obj =>
-            {
-                Number = 0;
-                CloseAction();
-            });
-        }
-    }
 
-    ICommand? before;
-    public ICommand Before
-    {
-        get
-        {
-            return before ??= new RelayCommand(
-            obj =>
-            {
-                Number = 1;
-                CloseAction();
-            });
-        }
-    }
-
-    ICommand? after;
-    public ICommand After
-    {
-        get
-        {
-            return after ??= new RelayCommand(
-            obj =>
-            {
-                Number = 2;
-                CloseAction();
-            });
-        }
-    }
+    string mainColor;
 
     ICommand? swap;
-    public ICommand Swap
-    {
-        get
-        {
-            return swap ??= new RelayCommand(
-            obj =>
-            {
-                Number = 3;
-                CloseAction();
-            });
-        }
-    }
+
+    Visibility visibilityAfter;
+
+    Visibility visibilityBefore;
+
+    Visibility visibilityInsert;
+
+    Visibility visibilitySwap;
 
     public ViewModelMessageDragDrop(Visibility insert, Visibility before, Visibility after, Visibility swap)
     {
@@ -127,5 +44,122 @@ public class ViewModelMessageDragDrop : ViewModelBase
         VisibilityBefore = before;
         VisibilityAfter = after;
         VisibilitySwap = swap;
+    }
+
+    public int Number { get; set; }
+
+    public Visibility VisibilityInsert
+    {
+        get => visibilityInsert;
+        set => SetProperty(ref visibilityInsert, value);
+    }
+
+    public Visibility VisibilityBefore
+    {
+        get => visibilityBefore;
+        set => SetProperty(ref visibilityBefore, value);
+    }
+
+    public Visibility VisibilityAfter
+    {
+        get => visibilityAfter;
+        set => SetProperty(ref visibilityAfter, value);
+    }
+
+    public Visibility VisibilitySwap
+    {
+        get => visibilitySwap;
+        set => SetProperty(ref visibilitySwap, value);
+    }
+
+    public string MainColor
+    {
+        get => mainColor;
+        set => SetProperty(ref mainColor, value);
+    }
+
+    public string AdditionalColor
+    {
+        get => additionalColor;
+        set => SetProperty(ref additionalColor, value);
+    }
+
+    public string AlternativeColor
+    {
+        get => alternativeColor;
+        set => SetProperty(ref alternativeColor, value);
+    }
+
+    public string HoverColor
+    {
+        get => hoverColor;
+        set => SetProperty(ref hoverColor, value);
+    }
+
+    public Action CloseAction { get; set; }
+
+    public ICommand Exit
+    {
+        get
+        {
+            return exit ??= new RelayCommand(
+                obj =>
+                {
+                    Number = -1;
+                    CloseAction();
+                });
+        }
+    }
+
+    public ICommand Insert
+    {
+        get
+        {
+            return insert ??= new RelayCommand(
+                obj =>
+                {
+                    Number = 0;
+                    CloseAction();
+                });
+        }
+    }
+
+    public ICommand Before
+    {
+        get
+        {
+            return before ??= new RelayCommand(
+                obj =>
+                {
+                    Number = 1;
+                    CloseAction();
+                });
+        }
+    }
+
+    public ICommand After
+    {
+        get
+        {
+            return after ??= new RelayCommand(
+                obj =>
+                {
+                    Number = 2;
+                    CloseAction();
+                });
+        }
+    }
+
+    public ICommand Swap
+    {
+        get
+        {
+            return swap ??= new RelayCommand(
+                obj =>
+                {
+                    Number = 3;
+                    CloseAction();
+                });
+        }
     }
 }

@@ -1,31 +1,156 @@
-﻿using Microsoft.Win32;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using WordKiller.Commands;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
-using WordKiller.Models.Template;
 using WordKiller.Scripts;
-using WordKiller.Scripts.ImportExport;
+using WordKiller.Scripts.File;
 using WordKiller.Views;
 
 namespace WordKiller.ViewModels;
 
 public class ViewModelDocument : ViewModelBase
 {
-    DocumentData data;
-    public DocumentData Data { get => data; set => SetProperty(ref data, value); }
+    public delegate void Insert(IParagraphData into, IParagraphData insert);
 
     readonly WordKillerFile file;
-    public WordKillerFile File { get => file; init => SetProperty(ref file, value); }
+
+    readonly Timer timer;
+
+    ICommand? add;
+
+    int addIndex;
+
+    bool allowDropRTB;
+
+    ICommand? appendixMI;
+
+    ICommand? autoList;
+
+    bool autoSave;
+
+    bool controlWork;
+
+    ICommand? controlWork_Click;
+
+    bool coursework;
+
+    ICommand? coursework_Click;
+    DocumentData data;
+
+    bool defaultDocument;
+
+    ICommand? defaultDocument_Click;
+
+    ICommand? deleteSelected;
+
+    ICommand? deselect;
+
+    ICommand? exportFile;
+
+    ICommand insertCodeAfter;
+
+    ICommand insertCodeBefore;
+
+    ICommand insertHeaderAfter;
+
+    ICommand insertHeaderBefore;
+
+    ICommand insertListAfter;
+
+    ICommand insertListBefore;
+
+    ICommand insertPictureAfter;
+
+    ICommand insertPictureBefore;
+
+    ICommand insertSubHeaderAfter;
+
+    ICommand insertSubHeaderBefore;
+
+    ICommand insertTableAfter;
+
+    ICommand insertTableBefore;
+
+    ICommand insertTextAfter;
+
+    ICommand insertTextBefore;
+
+    bool laboratoryWork;
+
+    ICommand? laboratoryWork_Click;
+
+    ICommand? listOfReferencesMI;
+
+    ICommand? newFile;
+
+
+    ICommand? openFile;
+
+    bool practiceWork;
+
+    ICommand? practiceWork_Click;
+
+    bool productionPractice;
+
+    ICommand? productionPractice_Click;
+
+    bool referat;
+
+    ICommand? referat_Click;
+
+    ICommand? resetAddIndex;
+
+    ICommand? saveAsFile;
+
+    ICommand? saveFile;
 
     IParagraphData? selected;
+
+    ICommand? taskSheetMI;
+
+    ICommand? titleMI;
+
+    ViewModelVisibility visibility;
+
+
+    bool vkr;
+
+    ICommand? vkr_Click;
+
+    string? winTitle;
+
+    public ViewModelDocument()
+    {
+        timer = new(AutoSaveFile);
+        AddIndex = -1;
+        visibility = new();
+        AllowDropRTB = false;
+        autoSave = Properties.Settings.Default.AutoSave;
+        data = new();
+        file = new();
+        DefaultDocument = true;
+    }
+
+    public DocumentData Data
+    {
+        get => data;
+        set => SetProperty(ref data, value);
+    }
+
+    public WordKillerFile File
+    {
+        get => file;
+        init => SetProperty(ref file, value);
+    }
+
     public IParagraphData? Selected
     {
         get => selected;
@@ -122,22 +247,17 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ICommand? deselect;
     public ICommand Deselect
     {
-        get
-        {
-            return deselect ??= new RelayCommand(obj =>
-            {
-                Selected = null;
-            });
-        }
+        get { return deselect ??= new RelayCommand(obj => { Selected = null; }); }
     }
 
-    int addIndex;
-    public int AddIndex { get => addIndex; set => SetProperty(ref addIndex, value); }
+    public int AddIndex
+    {
+        get => addIndex;
+        set => SetProperty(ref addIndex, value);
+    }
 
-    ICommand? add;
     public ICommand Add
     {
         get
@@ -177,11 +297,714 @@ public class ViewModelDocument : ViewModelBase
                 {
                     return;
                 }
+
                 ParagraphToTreeView(dataToAdd, Selected);
                 SaveHelper.NeedSave = true;
                 UpdatingObjectNumbering();
             });
         }
+    }
+
+    public ICommand InsertTextBefore
+    {
+        get { return insertTextBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphText()); }); }
+    }
+
+    public ICommand InsertTextAfter
+    {
+        get { return insertTextAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphText()); }); }
+    }
+
+    public ICommand InsertHeaderBefore
+    {
+        get { return insertHeaderBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphH1()); }); }
+    }
+
+    public ICommand InsertHeaderAfter
+    {
+        get { return insertHeaderAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphH1()); }); }
+    }
+
+    public ICommand InsertSubHeaderBefore
+    {
+        get { return insertSubHeaderBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphH2()); }); }
+    }
+
+    public ICommand InsertSubHeaderAfter
+    {
+        get { return insertSubHeaderAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphH2()); }); }
+    }
+
+    public ICommand InsertListBefore
+    {
+        get { return insertListBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphList()); }); }
+    }
+
+    public ICommand InsertListAfter
+    {
+        get { return insertListAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphList()); }); }
+    }
+
+    public ICommand InsertPictureBefore
+    {
+        get { return insertPictureBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphPicture()); }); }
+    }
+
+    public ICommand InsertPictureAfter
+    {
+        get { return insertPictureAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphPicture()); }); }
+    }
+
+    public ICommand InsertTableBefore
+    {
+        get { return insertTableBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphTable()); }); }
+    }
+
+    public ICommand InsertTableAfter
+    {
+        get { return insertTableAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphTable()); }); }
+    }
+
+    public ICommand InsertCodeBefore
+    {
+        get { return insertCodeBefore ??= new RelayCommand(obj => { InsetBefore(new ParagraphCode()); }); }
+    }
+
+    public ICommand InsertCodeAfter
+    {
+        get { return insertCodeAfter ??= new RelayCommand(obj => { InsetAfter(new ParagraphCode()); }); }
+    }
+
+    public ICommand ResetAddIndex
+    {
+        get { return resetAddIndex ??= new RelayCommand(obj => { AddIndex = -1; }); }
+    }
+
+    public ICommand DeleteSelected
+    {
+        get
+        {
+            return deleteSelected ??= new RelayCommand(
+                obj => { Delete(Selected); });
+        }
+    }
+
+    public bool AutoSave
+    {
+        get => autoSave;
+        set
+        {
+            SetProperty(ref autoSave, value);
+            Properties.Settings.Default.AutoSave = autoSave;
+            Properties.Settings.Default.Save();
+            if (autoSave)
+            {
+                timer.Change(300000, 300000);
+            }
+            else
+            {
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+    }
+
+    public ViewModelVisibility VisibilitY
+    {
+        get => visibility;
+        set => SetProperty(ref visibility, value);
+    }
+
+    public string? WinTitle
+    {
+        get => winTitle;
+        set => SetProperty(ref winTitle, value);
+    }
+
+    public bool DefaultDocument
+    {
+        get => defaultDocument;
+        set
+        {
+            if (value)
+            {
+                if (!defaultDocument)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref defaultDocument, value);
+
+                    VisibilitY.TitleMI = Visibility.Collapsed;
+                    DeleteTitle();
+                    VisibilitY.TaskSheetMI = Visibility.Collapsed;
+                    DeleteTaskSheet();
+                    Data.Type = DocumentType.DefaultDocument;
+                    TextHeader("DefaultDocument");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (defaultDocument)
+            {
+                SetProperty(ref defaultDocument, value);
+            }
+        }
+    }
+
+    public bool Coursework
+    {
+        get => coursework;
+        set
+        {
+            if (value)
+            {
+                if (!coursework)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref coursework, value);
+
+                    NoDefaultDocument();
+                    AddTaskSheet();
+                    AddListOfReferences();
+                    AddAppendix();
+                    Data.Type = DocumentType.Coursework;
+                    TextHeader("Coursework");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (coursework)
+            {
+                SetProperty(ref coursework, value);
+            }
+        }
+    }
+
+    public bool LaboratoryWork
+    {
+        get => laboratoryWork;
+        set
+        {
+            if (value)
+            {
+                if (!laboratoryWork)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref laboratoryWork, value);
+
+                    NoDefaultDocument();
+
+                    Data.Type = DocumentType.LaboratoryWork;
+                    TextHeader("LaboratoryWork");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (laboratoryWork)
+            {
+                SetProperty(ref laboratoryWork, value);
+            }
+        }
+    }
+
+    public bool PracticeWork
+    {
+        get => practiceWork;
+        set
+        {
+            if (value)
+            {
+                if (!practiceWork)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref practiceWork, value);
+
+                    NoDefaultDocument();
+
+                    Data.Type = DocumentType.PracticeWork;
+                    TextHeader("PracticeWork");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (practiceWork)
+            {
+                SetProperty(ref practiceWork, value);
+            }
+        }
+    }
+
+    public bool ControlWork
+    {
+        get => controlWork;
+        set
+        {
+            if (value)
+            {
+                if (!controlWork)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref controlWork, value);
+
+                    NoDefaultDocument();
+
+                    Data.Type = DocumentType.ControlWork;
+                    TextHeader("ControlWork");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (controlWork)
+            {
+                SetProperty(ref controlWork, value);
+            }
+        }
+    }
+
+    public bool Referat
+    {
+        get => referat;
+        set
+        {
+            if (value)
+            {
+                if (!referat)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref referat, value);
+
+                    NoDefaultDocument();
+                    AddListOfReferences();
+                    Data.Type = DocumentType.Referat;
+                    TextHeader("Referat");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (referat)
+            {
+                SetProperty(ref referat, value);
+            }
+        }
+    }
+
+    public bool ProductionPractice
+    {
+        get => productionPractice;
+        set
+        {
+            if (value)
+            {
+                if (!productionPractice)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref productionPractice, value);
+
+                    NoDefaultDocument();
+                    AddListOfReferences();
+                    AddAppendix();
+                    Data.Type = DocumentType.ProductionPractice;
+                    TextHeader("ProductionPractice");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (productionPractice)
+            {
+                SetProperty(ref productionPractice, value);
+            }
+        }
+    }
+
+    public bool VKR
+    {
+        get => vkr;
+        set
+        {
+            if (value)
+            {
+                if (!vkr)
+                {
+                    DocumentTypeFalse();
+                    SetProperty(ref vkr, value);
+
+                    NoDefaultDocument();
+                    AddListOfReferences();
+                    AddAppendix();
+                    Data.Type = DocumentType.VKR;
+                    TextHeader("VKR");
+                    Data.Title.UpdateTitleItems(Data.Type);
+                }
+            }
+            else if (vkr)
+            {
+                SetProperty(ref vkr, value);
+            }
+        }
+    }
+
+    public ICommand ExportFile
+    {
+        get
+        {
+            return exportFile ??= new RelayCommand(
+                async obj =>
+                {
+                    UpdatingObjectNumbering();
+                    Report report = new();
+                    await Task.Run(() =>
+                        Report.Create(Data, Properties.Settings.Default.ExportPDF,
+                            Properties.Settings.Default.ExportHTML));
+                    if (Properties.Settings.Default.CloseWindow)
+                    {
+                        UIHelper.WindowClose();
+                    }
+                });
+        }
+    }
+
+    public ICommand NewFile
+    {
+        get
+        {
+            return newFile ??= new RelayCommand(
+                obj =>
+                {
+                    Data = file.NewFile(Data);
+                    HeaderUpdateSave();
+                });
+        }
+    }
+
+    public ICommand OpenFile
+    {
+        get
+        {
+            return openFile ??= new RelayCommand(
+                async obj =>
+                {
+                    OpenFileDialog openFileDialog = new()
+                    {
+                        Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" +
+                                 Properties.Settings.Default.Extension + "|All files (*.*)|*.*"
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        await OpenAsync(openFileDialog.FileName);
+                    }
+                });
+        }
+    }
+
+    public ICommand SaveFile
+    {
+        get
+        {
+            return saveFile ??= new RelayCommand(
+                obj =>
+                {
+                    file.Save(Data);
+                    HeaderUpdateSave();
+                });
+        }
+    }
+
+    public ICommand SaveAsFile
+    {
+        get
+        {
+            return saveAsFile ??= new RelayCommand(
+                obj =>
+                {
+                    file.SaveAs(Data);
+                    HeaderUpdateSave();
+                });
+        }
+    }
+
+    public ICommand TitleMI
+    {
+        get
+        {
+            return titleMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.Title)
+                {
+                    AddTitle();
+                }
+                else
+                {
+                    DeleteTitle();
+                }
+            });
+        }
+    }
+
+    public ICommand TaskSheetMI
+    {
+        get
+        {
+            return taskSheetMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.TaskSheet)
+                {
+                    AddTaskSheet();
+                }
+                else
+                {
+                    DeleteTaskSheet();
+                }
+            });
+        }
+    }
+
+    public ICommand ListOfReferencesMI
+    {
+        get
+        {
+            return listOfReferencesMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.ListOfReferences)
+                {
+                    AddListOfReferences();
+                }
+                else
+                {
+                    DeleteListOfReferences();
+                }
+            });
+        }
+    }
+
+    public ICommand AppendixMI
+    {
+        get
+        {
+            return appendixMI ??= new RelayCommand(obj =>
+            {
+                if (Data.Properties.Appendix)
+                {
+                    AddAppendix();
+                }
+                else
+                {
+                    DeleteAppendix();
+                }
+            });
+        }
+    }
+
+    public ICommand DefaultDocument_Click
+    {
+        get
+        {
+            return defaultDocument_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!DefaultDocument)
+                    {
+                        DefaultDocument = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand Coursework_Click
+    {
+        get
+        {
+            return coursework_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!Coursework)
+                    {
+                        Coursework = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand LaboratoryWork_Click
+    {
+        get
+        {
+            return laboratoryWork_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!LaboratoryWork)
+                    {
+                        LaboratoryWork = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand PracticeWork_Click
+    {
+        get
+        {
+            return practiceWork_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!PracticeWork)
+                    {
+                        PracticeWork = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand ControlWork_Click
+    {
+        get
+        {
+            return controlWork_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!ControlWork)
+                    {
+                        ControlWork = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand Referat_Click
+    {
+        get
+        {
+            return referat_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!Referat)
+                    {
+                        Referat = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand ProductionPractice_Click
+    {
+        get
+        {
+            return productionPractice_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!ProductionPractice)
+                    {
+                        ProductionPractice = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand VKR_Click
+    {
+        get
+        {
+            return vkr_Click ??= new RelayCommand(
+                obj =>
+                {
+                    if (!VKR)
+                    {
+                        VKR = true;
+                    }
+                });
+        }
+    }
+
+    public ICommand AutoList
+    {
+        get
+        {
+            return autoList ??= new RelayCommand(
+                obj =>
+                {
+                    if (Selected != null)
+                    {
+                        string tt = Selected.Data;
+                        string[] lines = tt.Split("\r\n");
+                        for (int j = 0; j < lines.Length; j++)
+                        {
+                            string[] words = lines[j].Split(' ');
+                            if (words.Length > 0)
+                            {
+                                int after = words[0].IndexOf(')');
+                                bool before = words[0].Contains('(');
+                                int numberSeparators = 0;
+                                if (after != -1 && !before)
+                                {
+                                    if (words[0].Length == after + 1)
+                                    {
+                                        int separator = -1;
+                                        for (int i = 0; i < words[0].Length; i++)
+                                        {
+                                            separator = words[0].IndexOf('.', separator + 1);
+                                            if (separator != -1)
+                                            {
+                                                numberSeparators++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        if (numberSeparators > 0)
+                                        {
+                                            string sep = "";
+                                            for (int f = 0; f < numberSeparators; f++)
+                                            {
+                                                sep += "!";
+                                            }
+
+                                            words[0] = sep;
+                                        }
+                                        else
+                                        {
+                                            words = words.Skip(1).ToArray();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        string txt = words[0][(after + 1)..];
+                                        int separator = -1;
+                                        for (int i = 0; i < words[0].Length; i++)
+                                        {
+                                            separator = words[0].IndexOf('.', separator + 1);
+                                            if (separator != -1)
+                                            {
+                                                numberSeparators++;
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        if (numberSeparators > 0)
+                                        {
+                                            string sep = "";
+                                            for (int f = 0; f < numberSeparators; f++)
+                                            {
+                                                sep += "!";
+                                            }
+
+                                            words[0] = sep + " " + txt;
+                                        }
+                                        else
+                                        {
+                                            words[0] = txt;
+                                        }
+                                    }
+                                }
+                            }
+
+                            lines[j] = string.Join(" ", words);
+                        }
+
+                        Selected.Data = string.Join("\n", lines);
+                    }
+                });
+        }
+    }
+
+    public bool AllowDropRTB
+    {
+        get => allowDropRTB;
+        set => SetProperty(ref allowDropRTB, value);
     }
 
     public void ParagraphToTreeView(IParagraphData dataToAdd, IParagraphData? Selected)
@@ -277,7 +1100,7 @@ public class ViewModelDocument : ViewModelBase
         UpdatingObjectNumbering(Data, ref h1, ref h2, ref p, ref t);
     }
 
-    void UpdatingObjectNumbering(SectionParagraphs section, ref int h1, ref int h2, ref int p, ref int t)
+    static void UpdatingObjectNumbering(SectionParagraphs section, ref int h1, ref int h2, ref int p, ref int t)
     {
         foreach (IParagraphData paragraph in section.Paragraphs)
         {
@@ -294,21 +1117,23 @@ public class ViewModelDocument : ViewModelBase
                     {
                         data = paragraph.Data;
                     }
+
                     UpdatingObjectNumbering(paragraphH1, ref h1, ref h2, ref p, ref t);
                     if (data.ToUpper() != "ВВЕДЕНИЕ" && data.ToUpper() != "ЗАКЛЮЧЕНИЕ")
                     {
-                        numbered.Number = (h1++).ToString() + " ";
+                        numbered.Number = h1++ + " ";
                     }
                     else
                     {
                         numbered.Number = string.Empty;
                     }
+
                     h2 = 1;
                 }
                 else if (paragraph is ParagraphH2 paragraphH2)
                 {
                     UpdatingObjectNumbering(paragraphH2, ref h1, ref h2, ref p, ref t);
-                    numbered.Number = h1.ToString() + "." + (h2++).ToString() + " ";
+                    numbered.Number = h1 + "." + h2++ + " ";
                 }
                 else if (paragraph is ParagraphPicture)
                 {
@@ -329,7 +1154,7 @@ public class ViewModelDocument : ViewModelBase
         {
             if (targetItem is ParagraphH1)
             {
-                mgg = new(insert: Visibility.Collapsed);
+                mgg = new(Visibility.Collapsed);
             }
             else if (targetItem is ParagraphH2)
             {
@@ -364,12 +1189,12 @@ public class ViewModelDocument : ViewModelBase
                 }
                 else
                 {
-                    mgg = new(insert: Visibility.Collapsed);
+                    mgg = new(Visibility.Collapsed);
                 }
             }
             else if (targetItem is ParagraphH2)
             {
-                mgg = new(insert: Visibility.Collapsed);
+                mgg = new(Visibility.Collapsed);
             }
             else
             {
@@ -394,7 +1219,7 @@ public class ViewModelDocument : ViewModelBase
                 }
                 else
                 {
-                    mgg = new(insert: Visibility.Collapsed);
+                    mgg = new(Visibility.Collapsed);
                 }
             }
             else if (targetItem is ParagraphH2)
@@ -402,7 +1227,7 @@ public class ViewModelDocument : ViewModelBase
                 IParagraphData? paragraphData = Data.PrevLevel(Data, sourceItem);
                 if (paragraphData is SectionH1 || paragraphData is null)
                 {
-                    mgg = new(insert: Visibility.Collapsed);
+                    mgg = new(Visibility.Collapsed);
                 }
                 else
                 {
@@ -411,9 +1236,10 @@ public class ViewModelDocument : ViewModelBase
             }
             else
             {
-                mgg = new(insert: Visibility.Collapsed);
+                mgg = new(Visibility.Collapsed);
             }
         }
+
         mgg.ShowDialog();
         int i = mgg.ViewModel.Number;
         if (i == 0)
@@ -439,11 +1265,10 @@ public class ViewModelDocument : ViewModelBase
         {
             return;
         }
+
         SaveHelper.NeedSave = true;
         UpdatingObjectNumbering();
     }
-
-    public delegate void Insert(IParagraphData into, IParagraphData insert);
 
     public void InsertToTreeView(IParagraphData dataToAdd, Insert insert, IParagraphData? Selected)
     {
@@ -532,6 +1357,7 @@ public class ViewModelDocument : ViewModelBase
         {
             InsertToTreeView(dataToAdd, Data.InsertBefore, Selected);
         }
+
         SaveHelper.NeedSave = true;
         UpdatingObjectNumbering();
     }
@@ -550,204 +1376,12 @@ public class ViewModelDocument : ViewModelBase
         {
             InsertToTreeView(dataToAdd, Data.InsertAfter, Selected);
         }
+
         SaveHelper.NeedSave = true;
         UpdatingObjectNumbering();
     }
 
-    ICommand insertTextBefore;
-    public ICommand InsertTextBefore
-    {
-        get
-        {
-            return insertTextBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphText());
-            });
-        }
-    }
-
-    ICommand insertTextAfter;
-    public ICommand InsertTextAfter
-    {
-        get
-        {
-            return insertTextAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphText());
-            });
-        }
-    }
-
-    ICommand insertHeaderBefore;
-    public ICommand InsertHeaderBefore
-    {
-        get
-        {
-            return insertHeaderBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphH1());
-            });
-        }
-    }
-
-    ICommand insertHeaderAfter;
-    public ICommand InsertHeaderAfter
-    {
-        get
-        {
-            return insertHeaderAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphH1());
-            });
-        }
-    }
-
-    ICommand insertSubHeaderBefore;
-    public ICommand InsertSubHeaderBefore
-    {
-        get
-        {
-            return insertSubHeaderBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphH2());
-            });
-        }
-    }
-
-    ICommand insertSubHeaderAfter;
-    public ICommand InsertSubHeaderAfter
-    {
-        get
-        {
-            return insertSubHeaderAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphH2());
-            });
-        }
-    }
-
-    ICommand insertListBefore;
-    public ICommand InsertListBefore
-    {
-        get
-        {
-            return insertListBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphList());
-            });
-        }
-    }
-
-    ICommand insertListAfter;
-    public ICommand InsertListAfter
-    {
-        get
-        {
-            return insertListAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphList());
-            });
-        }
-    }
-
-    ICommand insertPictureBefore;
-    public ICommand InsertPictureBefore
-    {
-        get
-        {
-            return insertPictureBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphPicture());
-            });
-        }
-    }
-
-    ICommand insertPictureAfter;
-    public ICommand InsertPictureAfter
-    {
-        get
-        {
-            return insertPictureAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphPicture());
-            });
-        }
-    }
-
-    ICommand insertTableBefore;
-    public ICommand InsertTableBefore
-    {
-        get
-        {
-            return insertTableBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphTable());
-            });
-        }
-    }
-
-    ICommand insertTableAfter;
-    public ICommand InsertTableAfter
-    {
-        get
-        {
-            return insertTableAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphTable());
-            });
-        }
-    }
-
-    ICommand insertCodeBefore;
-    public ICommand InsertCodeBefore
-    {
-        get
-        {
-            return insertCodeBefore ??= new RelayCommand(obj =>
-            {
-                InsetBefore(new ParagraphCode());
-            });
-        }
-    }
-
-    ICommand insertCodeAfter;
-    public ICommand InsertCodeAfter
-    {
-        get
-        {
-            return insertCodeAfter ??= new RelayCommand(obj =>
-            {
-                InsetAfter(new ParagraphCode());
-            });
-        }
-    }
-
-    ICommand? resetAddIndex;
-    public ICommand ResetAddIndex
-    {
-        get
-        {
-            return resetAddIndex ??= new RelayCommand(obj =>
-            {
-                AddIndex = -1;
-            });
-        }
-    }
-
-    ICommand? deleteSelected;
-    public ICommand DeleteSelected
-    {
-        get
-        {
-            return deleteSelected ??= new RelayCommand(
-            obj =>
-            {
-                Delete(Selected);
-            });
-        }
-    }
-
-    bool Prev(SectionParagraphs section, IParagraphData paragraph, ref IParagraphData? prev)
+    static bool Prev(SectionParagraphs section, IParagraphData paragraph, ref IParagraphData? prev)
     {
         if (section.Paragraphs.Count > 0 && prev == null)
         {
@@ -760,6 +1394,7 @@ public class ViewModelDocument : ViewModelBase
                         prev = section.Paragraphs[i];
                         return true;
                     }
+
                     if (section.Paragraphs[i + 1] is SectionParagraphs section1)
                     {
                         if (Prev(section1, paragraph, ref prev))
@@ -770,6 +1405,7 @@ public class ViewModelDocument : ViewModelBase
                 }
             }
         }
+
         return false;
     }
 
@@ -804,34 +1440,14 @@ public class ViewModelDocument : ViewModelBase
             {
                 Data.RemoveParagraph(paragraph);
             }
+
             if (t)
             {
                 Selected = prev;
             }
+
             SaveHelper.NeedSave = true;
             UpdatingObjectNumbering();
-        }
-    }
-
-    readonly Timer timer;
-
-    bool autoSave;
-    public bool AutoSave
-    {
-        get => autoSave;
-        set
-        {
-            SetProperty(ref autoSave, value);
-            Properties.Settings.Default.AutoSave = autoSave;
-            Properties.Settings.Default.Save();
-            if (autoSave)
-            {
-                timer.Change(300000, 300000);
-            }
-            else
-            {
-                timer.Change(Timeout.Infinite, Timeout.Infinite);
-            }
         }
     }
 
@@ -840,235 +1456,6 @@ public class ViewModelDocument : ViewModelBase
         if (!string.IsNullOrEmpty(File.SavePath))
         {
             File.Save(Data);
-        }
-    }
-
-    ViewModelVisibility visibility;
-    public ViewModelVisibility VisibilitY { get => visibility; set => SetProperty(ref visibility, value); }
-
-    string? winTitle;
-    public string? WinTitle { get => winTitle; set => SetProperty(ref winTitle, value); }
-
-    bool defaultDocument;
-    public bool DefaultDocument
-    {
-        get => defaultDocument;
-        set
-        {
-            if (value)
-            {
-                if (!defaultDocument)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref defaultDocument, value);
-
-                    VisibilitY.TitleMI = Visibility.Collapsed;
-                    DeleteTitle();
-                    VisibilitY.TaskSheetMI = Visibility.Collapsed;
-                    DeleteTaskSheet();
-                    Data.Type = DocumentType.DefaultDocument;
-                    TextHeader("DefaultDocument");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (defaultDocument)
-            {
-                SetProperty(ref defaultDocument, value);
-            }
-        }
-    }
-
-    bool coursework;
-    public bool Coursework
-    {
-        get => coursework;
-        set
-        {
-            if (value)
-            {
-                if (!coursework)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref coursework, value);
-
-                    NoDefaultDocument();
-                    AddTaskSheet();
-                    AddListOfReferences();
-                    AddAppendix();
-                    Data.Type = DocumentType.Coursework;
-                    TextHeader("Coursework");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (coursework)
-            {
-                SetProperty(ref coursework, value);
-            }
-        }
-    }
-
-    bool laboratoryWork;
-    public bool LaboratoryWork
-    {
-        get => laboratoryWork;
-        set
-        {
-            if (value)
-            {
-                if (!laboratoryWork)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref laboratoryWork, value);
-
-                    NoDefaultDocument();
-
-                    Data.Type = DocumentType.LaboratoryWork;
-                    TextHeader("LaboratoryWork");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (laboratoryWork)
-            {
-                SetProperty(ref laboratoryWork, value);
-            }
-        }
-    }
-
-    bool practiceWork;
-    public bool PracticeWork
-    {
-        get => practiceWork;
-        set
-        {
-            if (value)
-            {
-                if (!practiceWork)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref practiceWork, value);
-
-                    NoDefaultDocument();
-
-                    Data.Type = DocumentType.PracticeWork;
-                    TextHeader("PracticeWork");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (practiceWork)
-            {
-                SetProperty(ref practiceWork, value);
-            }
-        }
-    }
-
-    bool controlWork;
-    public bool ControlWork
-    {
-        get => controlWork;
-        set
-        {
-            if (value)
-            {
-                if (!controlWork)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref controlWork, value);
-
-                    NoDefaultDocument();
-
-                    Data.Type = DocumentType.ControlWork;
-                    TextHeader("ControlWork");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (controlWork)
-            {
-                SetProperty(ref controlWork, value);
-            }
-        }
-    }
-
-    bool referat;
-    public bool Referat
-    {
-        get => referat;
-        set
-        {
-            if (value)
-            {
-                if (!referat)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref referat, value);
-
-                    NoDefaultDocument();
-                    AddListOfReferences();
-                    Data.Type = DocumentType.Referat;
-                    TextHeader("Referat");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (referat)
-            {
-                SetProperty(ref referat, value);
-            }
-        }
-    }
-
-    bool productionPractice;
-    public bool ProductionPractice
-    {
-        get => productionPractice;
-        set
-        {
-            if (value)
-            {
-                if (!productionPractice)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref productionPractice, value);
-
-                    NoDefaultDocument();
-                    AddListOfReferences();
-                    AddAppendix();
-                    Data.Type = DocumentType.ProductionPractice;
-                    TextHeader("ProductionPractice");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (productionPractice)
-            {
-                SetProperty(ref productionPractice, value);
-            }
-        }
-    }
-
-
-    bool vkr;
-    public bool VKR
-    {
-        get => vkr;
-        set
-        {
-            if (value)
-            {
-                if (!vkr)
-                {
-                    DocumentTypeFalse();
-                    SetProperty(ref vkr, value);
-
-                    NoDefaultDocument();
-                    AddListOfReferences();
-                    AddAppendix();
-                    Data.Type = DocumentType.VKR;
-                    TextHeader("VKR");
-                    Data.Title.UpdateTitleItems(Data.Type);
-                }
-            }
-            else if (vkr)
-            {
-                SetProperty(ref vkr, value);
-            }
         }
     }
 
@@ -1144,20 +1531,24 @@ public class ViewModelDocument : ViewModelBase
                 VisibilitY.TaskSheetMI = Visibility.Collapsed;
                 break;
         }
+
         Data.Title.UpdateTitleItems(Data.Type);
         TextHeader(Data.Type.ToString());
         if (Data.Properties.Title)
         {
             AddTitle();
         }
+
         if (Data.Properties.TaskSheet)
         {
             AddTaskSheet();
         }
+
         if (Data.Properties.ListOfReferences)
         {
             AddListOfReferences();
         }
+
         if (Data.Properties.Appendix)
         {
             AddAppendix();
@@ -1177,100 +1568,17 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ICommand? exportFile;
-    public ICommand ExportFile
-    {
-        get
-        {
-            return exportFile ??= new RelayCommand(
-            async obj =>
-            {
-                UpdatingObjectNumbering();
-                Report report = new();
-                await Task.Run(() =>
-                    Report.Create(Data, Properties.Settings.Default.ExportPDF, Properties.Settings.Default.ExportHTML));
-                if (Properties.Settings.Default.CloseWindow)
-                {
-                    UIHelper.WindowClose();
-                }
-            });
-        }
-    }
-
-    ICommand? newFile;
-    public ICommand NewFile
-    {
-        get
-        {
-            return newFile ??= new RelayCommand(
-            obj =>
-            {
-                Data = file.NewFile(Data);
-                HeaderUpdateSave();
-            });
-        }
-    }
-
-
-    ICommand? openFile;
-    public ICommand OpenFile
-    {
-        get
-        {
-            return openFile ??= new RelayCommand(
-            async obj =>
-            {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" + Properties.Settings.Default.Extension + "|All files (*.*)|*.*"
-                };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    await OpenAsync(openFileDialog.FileName);
-                }
-            });
-        }
-    }
-
     public async Task OpenAsync(string fileName)
     {
         DocumentTypeFalse();
         Data = await file.OpenFile(fileName);
         HeaderUpdate();
-        Data.Title.FacultyItems = new();
-        Data.Title.CathedraItems = new();
-        Data.Title.ProfessorItems = new();
+        Data.Title.FacultyItems = [];
+        Data.Title.CathedraItems = [];
+        Data.Title.ProfessorItems = [];
         Data.Title.UpdateFaculty.Execute(null);
         Data.Title.UpdateCathedra.Execute(null);
         Data.Title.UpdateProfessor.Execute(null);
-    }
-
-    ICommand? saveFile;
-    public ICommand SaveFile
-    {
-        get
-        {
-            return saveFile ??= new RelayCommand(
-            obj =>
-            {
-                file.Save(Data);
-                HeaderUpdateSave();
-            });
-        }
-    }
-
-    ICommand? saveAsFile;
-    public ICommand SaveAsFile
-    {
-        get
-        {
-            return saveAsFile ??= new RelayCommand(
-            obj =>
-            {
-                file.SaveAs(Data);
-                HeaderUpdateSave();
-            });
-        }
     }
 
     void HeaderUpdateSave()
@@ -1304,25 +1612,6 @@ public class ViewModelDocument : ViewModelBase
         }
     }
 
-    ICommand? titleMI;
-    public ICommand TitleMI
-    {
-        get
-        {
-            return titleMI ??= new RelayCommand(obj =>
-            {
-                if (Data.Properties.Title)
-                {
-                    AddTitle();
-                }
-                else
-                {
-                    DeleteTitle();
-                }
-            });
-        }
-    }
-
     void AddTitle()
     {
         VisibilitY.TitleMI = Visibility.Visible;
@@ -1348,28 +1637,10 @@ public class ViewModelDocument : ViewModelBase
         {
             Data.Paragraphs.RemoveAt(0);
         }
+
         if (Data.Paragraphs.Count == 0)
         {
             VisibilitY.NotComplexObjects = Visibility.Collapsed;
-        }
-    }
-
-    ICommand? taskSheetMI;
-    public ICommand TaskSheetMI
-    {
-        get
-        {
-            return taskSheetMI ??= new RelayCommand(obj =>
-            {
-                if (Data.Properties.TaskSheet)
-                {
-                    AddTaskSheet();
-                }
-                else
-                {
-                    DeleteTaskSheet();
-                }
-            });
         }
     }
 
@@ -1407,7 +1678,8 @@ public class ViewModelDocument : ViewModelBase
     void DeleteTaskSheet()
     {
         Data.Properties.TaskSheet = false;
-        if (Data.Paragraphs.Count > 1 && Data.Paragraphs[0] is ParagraphTitle && Data.Paragraphs[1] is ParagraphTaskSheet)
+        if (Data.Paragraphs.Count > 1 && Data.Paragraphs[0] is ParagraphTitle &&
+            Data.Paragraphs[1] is ParagraphTaskSheet)
         {
             Data.Paragraphs.RemoveAt(1);
         }
@@ -1415,28 +1687,10 @@ public class ViewModelDocument : ViewModelBase
         {
             Data.Paragraphs.RemoveAt(0);
         }
+
         if (Data.Paragraphs.Count == 0)
         {
             VisibilitY.NotComplexObjects = Visibility.Collapsed;
-        }
-    }
-
-    ICommand? listOfReferencesMI;
-    public ICommand ListOfReferencesMI
-    {
-        get
-        {
-            return listOfReferencesMI ??= new RelayCommand(obj =>
-            {
-                if (Data.Properties.ListOfReferences)
-                {
-                    AddListOfReferences();
-                }
-                else
-                {
-                    DeleteListOfReferences();
-                }
-            });
         }
     }
 
@@ -1445,11 +1699,13 @@ public class ViewModelDocument : ViewModelBase
         Data.Properties.ListOfReferences = true;
         if (Data.Paragraphs.Count > 0)
         {
-            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix && Data.Paragraphs[^2] is not ParagraphListOfReferences)
+            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix &&
+                Data.Paragraphs[^2] is not ParagraphListOfReferences)
             {
                 Data.InsertBefore(Data.Paragraphs[^1], new ParagraphListOfReferences());
             }
-            else if (Data.Paragraphs[^1] is not ParagraphListOfReferences && Data.Paragraphs[^1] is not ParagraphAppendix)
+            else if (Data.Paragraphs[^1] is not ParagraphListOfReferences &&
+                     Data.Paragraphs[^1] is not ParagraphAppendix)
             {
                 Data.InsertAfter(Data.Paragraphs[^1], new ParagraphListOfReferences());
             }
@@ -1465,7 +1721,8 @@ public class ViewModelDocument : ViewModelBase
         Data.Properties.ListOfReferences = false;
         if (Data.Paragraphs.Count > 0)
         {
-            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix && Data.Paragraphs[^2] is ParagraphListOfReferences)
+            if (Data.Paragraphs.Count > 1 && Data.Paragraphs[^1] is ParagraphAppendix &&
+                Data.Paragraphs[^2] is ParagraphListOfReferences)
             {
                 Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 2);
             }
@@ -1474,28 +1731,10 @@ public class ViewModelDocument : ViewModelBase
                 Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 1);
             }
         }
+
         if (Data.Paragraphs.Count == 0)
         {
             VisibilitY.NotComplexObjects = Visibility.Collapsed;
-        }
-    }
-
-    ICommand? appendixMI;
-    public ICommand AppendixMI
-    {
-        get
-        {
-            return appendixMI ??= new RelayCommand(obj =>
-            {
-                if (Data.Properties.Appendix)
-                {
-                    AddAppendix();
-                }
-                else
-                {
-                    DeleteAppendix();
-                }
-            });
         }
     }
 
@@ -1525,244 +1764,10 @@ public class ViewModelDocument : ViewModelBase
                 Data.Paragraphs.RemoveAt(Data.Paragraphs.Count - 1);
             }
         }
+
         if (Data.Paragraphs.Count == 0)
         {
             VisibilitY.NotComplexObjects = Visibility.Collapsed;
         }
-    }
-
-    ICommand? defaultDocument_Click;
-    public ICommand DefaultDocument_Click
-    {
-        get
-        {
-            return defaultDocument_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!DefaultDocument)
-                {
-                    DefaultDocument = true;
-                }
-            });
-        }
-    }
-
-    ICommand? coursework_Click;
-    public ICommand Coursework_Click
-    {
-        get
-        {
-            return coursework_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!Coursework)
-                {
-                    Coursework = true;
-                }
-            });
-        }
-    }
-
-    ICommand? laboratoryWork_Click;
-    public ICommand LaboratoryWork_Click
-    {
-        get
-        {
-            return laboratoryWork_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!LaboratoryWork)
-                {
-                    LaboratoryWork = true;
-                }
-            });
-        }
-    }
-
-    ICommand? practiceWork_Click;
-    public ICommand PracticeWork_Click
-    {
-        get
-        {
-            return practiceWork_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!PracticeWork)
-                {
-                    PracticeWork = true;
-                }
-            });
-        }
-    }
-
-    ICommand? controlWork_Click;
-    public ICommand ControlWork_Click
-    {
-        get
-        {
-            return controlWork_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!ControlWork)
-                {
-                    ControlWork = true;
-                }
-            });
-        }
-    }
-
-    ICommand? referat_Click;
-    public ICommand Referat_Click
-    {
-        get
-        {
-            return referat_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!Referat)
-                {
-                    Referat = true;
-                }
-            });
-        }
-    }
-
-    ICommand? productionPractice_Click;
-    public ICommand ProductionPractice_Click
-    {
-        get
-        {
-            return productionPractice_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!ProductionPractice)
-                {
-                    ProductionPractice = true;
-                }
-            });
-        }
-    }
-
-    ICommand? vkr_Click;
-    public ICommand VKR_Click
-    {
-        get
-        {
-            return vkr_Click ??= new RelayCommand(
-            obj =>
-            {
-                if (!VKR)
-                {
-                    VKR = true;
-                }
-            });
-        }
-    }
-
-    ICommand? autoList;
-    public ICommand AutoList
-    {
-        get
-        {
-            return autoList ??= new RelayCommand(
-            obj =>
-            {
-                if (Selected != null)
-                {
-
-                    string tt = Selected.Data;
-                    string[] lines = tt.Split("\r\n");
-                    for (int j = 0; j < lines.Length; j++)
-                    {
-                        string[] words = lines[j].Split(' ');
-                        if (words.Length > 0)
-                        {
-                            int after = words[0].IndexOf(')');
-                            bool before = words[0].Contains('(');
-                            int numberSeparators = 0;
-                            if (after != -1 && !before)
-                            {
-                                if (words[0].Length == after + 1)
-                                {
-                                    int separator = -1;
-                                    for (int i = 0; i < words[0].Length; i++)
-                                    {
-                                        separator = words[0].IndexOf('.', separator + 1);
-                                        if (separator != -1)
-                                        {
-                                            numberSeparators++;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    if (numberSeparators > 0)
-                                    {
-                                        string sep = "";
-                                        for (int f = 0; f < numberSeparators; f++)
-                                        {
-                                            sep += "!";
-                                        }
-                                        words[0] = sep;
-                                    }
-                                    else
-                                    {
-                                        words = words.Skip(1).ToArray();
-                                    }
-                                }
-                                else
-                                {
-                                    string txt = words[0][(after + 1)..];
-                                    int separator = -1;
-                                    for (int i = 0; i < words[0].Length; i++)
-                                    {
-                                        separator = words[0].IndexOf('.', separator + 1);
-                                        if (separator != -1)
-                                        {
-                                            numberSeparators++;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    if (numberSeparators > 0)
-                                    {
-                                        string sep = "";
-                                        for (int f = 0; f < numberSeparators; f++)
-                                        {
-                                            sep += "!";
-                                        }
-                                        words[0] = sep + " " + txt;
-                                    }
-                                    else
-                                    {
-                                        words[0] = txt;
-                                    }
-                                }
-                            }
-                        }
-                        lines[j] = string.Join(" ", words);
-                    }
-                    Selected.Data = string.Join("\n", lines);
-                }
-            });
-        }
-    }
-
-    bool allowDropRTB;
-    public bool AllowDropRTB { get => allowDropRTB; set => SetProperty(ref allowDropRTB, value); }
-
-    public ViewModelDocument()
-    {
-        timer = new Timer(new TimerCallback(AutoSaveFile));
-        AddIndex = -1;
-        visibility = new();
-        AllowDropRTB = false;
-        autoSave = Properties.Settings.Default.AutoSave;
-        data = new();
-        file = new();
-        DefaultDocument = true;
     }
 }

@@ -12,19 +12,7 @@ namespace WordKiller.XAMLHelper;
 
 public class RichTextBoxHelper : DependencyObject
 {
-    private static HashSet<Thread> _recursionProtection = new HashSet<Thread>();
-
-    public static string GetDocumentXaml(DependencyObject obj)
-    {
-        return (string)obj.GetValue(DocumentXamlProperty);
-    }
-
-    public static void SetDocumentXaml(DependencyObject obj, string value)
-    {
-        _recursionProtection.Add(Thread.CurrentThread);
-        obj.SetValue(DocumentXamlProperty, value);
-        _recursionProtection.Remove(Thread.CurrentThread);
-    }
+    static readonly HashSet<Thread> _recursionProtection = [];
 
     public static readonly DependencyProperty DocumentXamlProperty = DependencyProperty.RegisterAttached(
         "DocumentXaml",
@@ -48,13 +36,12 @@ public class RichTextBoxHelper : DependencyObject
                 }
                 catch (Exception)
                 {
-                    richTextBox.Document = new FlowDocument();
+                    richTextBox.Document = new();
                 }
 
                 richTextBox.TextChanged += (obj2, e2) =>
                 {
-                    RichTextBox richTextBox2 = obj2 as RichTextBox;
-                    if (richTextBox2 != null)
+                    if (obj2 is RichTextBox richTextBox2)
                     {
                         SetDocumentXaml(richTextBox, XamlWriter.Save(richTextBox2.Document));
                     }
@@ -62,4 +49,16 @@ public class RichTextBoxHelper : DependencyObject
             }
         )
     );
+
+    public static string GetDocumentXaml(DependencyObject obj)
+    {
+        return (string)obj.GetValue(DocumentXamlProperty);
+    }
+
+    public static void SetDocumentXaml(DependencyObject obj, string value)
+    {
+        _recursionProtection.Add(Thread.CurrentThread);
+        obj.SetValue(DocumentXamlProperty, value);
+        _recursionProtection.Remove(Thread.CurrentThread);
+    }
 }

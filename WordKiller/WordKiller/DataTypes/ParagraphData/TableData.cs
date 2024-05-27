@@ -1,19 +1,24 @@
 ﻿using System;
-using WordKiller.Scripts;
+using WordKiller.Properties;
+using WordKiller.Scripts.File;
 
 namespace WordKiller.DataTypes.ParagraphData;
 
 [Serializable]
 public class TableData
 {
+    int columns;
+    int rows;
+
+    public TableData(int row = 1, int column = 1)
+    {
+        Rows = row;
+        Columns = column;
+        DataTable = new string[Settings.Default.MaxRowAndColumn, Settings.Default.MaxRowAndColumn];
+    }
+
     public string[,] DataTable { get; set; }
 
-    public void SetCell(int row, int column, string data)
-    {
-        DataTable[row, column] = data;
-        SaveHelper.NeedSave = true;
-    }
-    int rows;
     public int Rows
     {
         get => rows;
@@ -24,7 +29,6 @@ public class TableData
         }
     }
 
-    int columns;
     public int Columns
     {
         get => columns;
@@ -35,10 +39,9 @@ public class TableData
         }
     }
 
-    public TableData(int row = 1, int column = 1)
+    public void SetCell(int row, int column, string data)
     {
-        Rows = row;
-        Columns = column;
-        DataTable = new string[Properties.Settings.Default.MaxRowAndColumn, Properties.Settings.Default.MaxRowAndColumn];
+        DataTable[row, column] = data;
+        SaveHelper.NeedSave = true;
     }
 }

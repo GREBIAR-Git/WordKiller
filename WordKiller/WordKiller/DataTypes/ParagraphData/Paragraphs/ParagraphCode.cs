@@ -7,24 +7,9 @@ namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 [Serializable]
 public class ParagraphCode : ViewModelDocumentChanges, IParagraphData
 {
-    public string Type { get => "Code"; }
-
     string data;
 
-    public string Data
-    {
-        get => data;
-        set => SetPropertyDocument(ref data, value);
-    }
-
     string description;
-
-    public string Description { get => description; set => SetPropertyDocument(ref description, value); }
-
-    public Visibility DescriptionVisibility
-    {
-        get => Visibility.Visible;
-    }
 
     public ParagraphCode(string description, string data)
     {
@@ -37,4 +22,20 @@ public class ParagraphCode : ViewModelDocumentChanges, IParagraphData
         description = string.Empty;
         data = string.Empty;
     }
+
+    public string Type => "Code";
+
+    public string Data
+    {
+        get => data;
+        set => SetPropertyDocument(ref data, value);
+    }
+
+    public string Description
+    {
+        get => description;
+        set => SetPropertyDocument(ref description, value);
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Visible;
 }

@@ -1,6 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using System.Linq;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using System.Linq;
 
 namespace WordKiller.Scripts.ReportHelper;
 
@@ -11,7 +11,8 @@ internal class ReportExtras
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
         Paragraph paragraph = body.AppendChild(new Paragraph());
-        paragraph.AppendChild(new ParagraphProperties(new SectionProperties(new SectionType() { Val = SectionMarkValues.NextPage })));
+        paragraph.AppendChild(
+            new ParagraphProperties(new SectionProperties(new SectionType { Val = SectionMarkValues.NextPage })));
         ReportPageSettings.PageSetup(body, title: title);
     }
 
@@ -20,7 +21,7 @@ internal class ReportExtras
         Body body = doc.MainDocumentPart.Document.GetFirstChild<Body>();
         var paras = body.Elements<Paragraph>();
         var paras1 = paras.Last().Elements<Run>().Last();
-        paras1.AppendChild(new Break() { Type = BreakValues.Page });
+        paras1.AppendChild(new Break { Type = BreakValues.Page });
     }
 
     public static void NewLine(Paragraph paragraph)
@@ -37,8 +38,8 @@ internal class ReportExtras
         Paragraph paragraph = body.AppendChild(new Paragraph());
         paragraph.AppendChild(new ParagraphProperties());
 
-        paragraph.ParagraphProperties = new ParagraphProperties(
-            new ParagraphStyleId() { Val = "EmptyLines" });
+        paragraph.ParagraphProperties = new(
+            new ParagraphStyleId { Val = "EmptyLines" });
 
         Run run = paragraph.AppendChild(new Run());
 

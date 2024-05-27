@@ -15,9 +15,9 @@ public static class ReportTOC
         doc.MainDocumentPart.Document.Body.AppendChild(sdtBlock);
 
         var settingsPart = doc.MainDocumentPart.AddNewPart<DocumentSettingsPart>();
-        settingsPart.Settings = new Settings { BordersDoNotSurroundFooter = new BordersDoNotSurroundFooter() { Val = true } };
+        settingsPart.Settings = new() { BordersDoNotSurroundFooter = new() { Val = true } };
 
-        settingsPart.Settings.Append(new UpdateFieldsOnOpen() { Val = true });
+        settingsPart.Settings.Append(new UpdateFieldsOnOpen { Val = true });
 
         ReportExtras.SectionBreak(doc);
     }

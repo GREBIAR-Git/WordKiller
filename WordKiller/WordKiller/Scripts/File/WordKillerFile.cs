@@ -1,33 +1,45 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Win32;
 using WordKiller.DataTypes;
+using WordKiller.Properties;
 using WordKiller.Scripts.File.Encryption;
 using WordKiller.ViewModels;
 using WordKiller.Views;
 
-namespace WordKiller.Scripts.ImportExport;
+namespace WordKiller.Scripts.File;
 
 public class WordKillerFile : ViewModelBase
 {
     string? savePath;
-    public string? SavePath { get => savePath; }
-
-    Visibility visibilitySaveLogo;
-    public Visibility VisibilitySaveLogo { get => visibilitySaveLogo; set => SetProperty(ref visibilitySaveLogo, value); }
 
     Visibility visibilityNeedSaveLogo;
-    public Visibility VisibilityNeedSaveLogo { get => visibilityNeedSaveLogo; set => SetProperty(ref visibilityNeedSaveLogo, value); }
+
+    Visibility visibilitySaveLogo;
 
     public WordKillerFile()
     {
         SaveHelper.Change += UpdateNeedSave;
         VisibilitySaveLogo = Visibility.Collapsed;
         VisibilityNeedSaveLogo = Visibility.Collapsed;
+    }
+
+    public string? SavePath => savePath;
+
+    public Visibility VisibilitySaveLogo
+    {
+        get => visibilitySaveLogo;
+        set => SetProperty(ref visibilitySaveLogo, value);
+    }
+
+    public Visibility VisibilityNeedSaveLogo
+    {
+        get => visibilityNeedSaveLogo;
+        set => SetProperty(ref visibilityNeedSaveLogo, value);
     }
 
     void UpdateNeedSave()
@@ -64,7 +76,8 @@ public class WordKillerFile : ViewModelBase
         SaveFileDialog saveFileDialog = new()
         {
             OverwritePrompt = true,
-            Filter = "wordkiller file (*" + Properties.Settings.Default.Extension + ")|*" + Properties.Settings.Default.Extension + "|All files (*.*)|*.*",
+            Filter = "wordkiller file (*" + Settings.Default.Extension + ")|*" + Settings.Default.Extension +
+                     "|All files (*.*)|*.*",
             FileName = "1"
         };
         if (saveFileDialog.ShowDialog() == true)
@@ -73,9 +86,11 @@ public class WordKillerFile : ViewModelBase
             SaveFile(savePath, data);
             return true;
         }
+
         return false;
     }
 
+    [Obsolete("Obsolete")]
     async void SaveFile(string nameFile, DocumentData data)
     {
         VisibilitySaveLogo = Visibility.Visible;
@@ -89,12 +104,13 @@ public class WordKillerFile : ViewModelBase
             BinaryFormatter binaryFormatter = new();
             binaryFormatter.Serialize(stream, data);
             string serString = Convert.ToBase64String(stream.ToArray());
-            if (Properties.Settings.Default.NumberEncryption != 0)
+            if (Settings.Default.NumberEncryption != 0)
             {
                 IEncryption encryption = new RLEEncryption();
                 serString = encryption.Encrypt(serString);
             }
-            GenerateStreamFromString(nameFile, Properties.Settings.Default.NumberEncryption + serString);
+
+            GenerateStreamFromString(nameFile, Settings.Default.NumberEncryption + serString);
             SaveHelper.NeedSave = false;
             Thread.Sleep(3000);
             VisibilitySaveLogo = Visibility.Collapsed;
@@ -111,6 +127,7 @@ public class WordKillerFile : ViewModelBase
         stream.Position = 0;
     }
 
+    [Obsolete("Obsolete")]
     public async Task<DocumentData> OpenFile(string fileName)
     {
         DocumentData data = new();
@@ -132,10 +149,12 @@ public class WordKillerFile : ViewModelBase
                             IEncryption encryption = new RLEEncryption();
                             fileContents = encryption.Decrypt(fileContents);
                         }
+
                         MemoryStream stream1 = new(Convert.FromBase64String(fileContents));
                         data = (DocumentData)binaryFormatter.Deserialize(stream1);
                     }
                 }
+
                 savePath = fileName;
             });
         }
@@ -143,6 +162,7 @@ public class WordKillerFile : ViewModelBase
         {
             UIHelper.ShowError("10");
         }
+
         return data;
     }
 
@@ -155,6 +175,7 @@ public class WordKillerFile : ViewModelBase
                 return null;
             }
         }
+
         savePath = string.Empty;
         data = new();
         SaveHelper.NeedSave = true;

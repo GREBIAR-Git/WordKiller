@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace WordKiller.Scripts;
 
-static class WkrExport
+internal static class WkrExport
 {
     public static bool IsWordInstall()
     {
@@ -23,7 +25,7 @@ static class WkrExport
     //только при наличии ворда
     public static void ToPDF(string path)
     {
-        object misValue = System.Reflection.Missing.Value;
+        object misValue = Missing.Value;
         string PDFFilePath = Path.ChangeExtension(path, ".pdf");
 
         Word.Application WORD = new();
@@ -32,7 +34,7 @@ static class WkrExport
         doc.Activate();
 
         doc.SaveAs2(PDFFilePath, Word.WdSaveFormat.wdFormatPDF, misValue, misValue, misValue,
-        misValue, misValue, misValue, misValue, misValue, misValue, misValue);
+            misValue, misValue, misValue, misValue, misValue, misValue, misValue);
 
         doc.Close();
         WORD.Quit();
@@ -49,20 +51,19 @@ static class WkrExport
         object Unknown = Type.Missing;
         object HTMLFilePath = Path.ChangeExtension((string)path, ".html");
         Word.Document od = doc.Open(ref path, ref Unknown,
-                                 ref Unknown, ref Unknown, ref Unknown,
-                                 ref Unknown, ref Unknown, ref Unknown,
-                                 ref Unknown, ref Unknown, ref Unknown,
-                                 ref Unknown, ref Unknown, ref Unknown, ref Unknown);
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown, ref Unknown);
         object format = Word.WdSaveFormat.wdFormatHTML;
 
 
-
         WORD.ActiveDocument.SaveAs(ref HTMLFilePath, ref format,
-                    ref Unknown, ref Unknown, ref Unknown,
-                    ref Unknown, ref Unknown, ref Unknown,
-                    ref Unknown, ref Unknown, ref Unknown,
-                    ref Unknown, ref Unknown, ref Unknown,
-                    ref Unknown, ref Unknown);
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown, ref Unknown,
+            ref Unknown, ref Unknown);
 
         WORD.Documents.Close(Word.WdSaveOptions.wdDoNotSaveChanges);
 
@@ -76,7 +77,7 @@ static class WkrExport
         {
             if (obj != null)
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                Marshal.ReleaseComObject(obj);
                 obj = null;
             }
         }

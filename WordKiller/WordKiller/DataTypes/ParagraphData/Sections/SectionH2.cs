@@ -19,6 +19,7 @@ public class SectionH2 : SectionParagraphs
                 return sectionParagraphs1;
             }
         }
+
         return null;
     }
 }

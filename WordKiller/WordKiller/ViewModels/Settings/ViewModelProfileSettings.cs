@@ -1,9 +1,9 @@
-﻿using OrelUniverEmbeddedAPI;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
+using OrelUniverEmbeddedAPI;
 using WordKiller.Commands;
 using WordKiller.Models;
 
@@ -11,7 +11,69 @@ namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelProfileSettings : ViewModelBase
 {
+    ICommand? add;
+
+    bool autoInput;
+
+    string cours;
+
+    ObservableCollection<string> coursItems;
+
+    string direction;
+
+    ICommand? editPartnersCell;
+
+    string faculty;
+
+    ObservableCollection<string> facultyItems;
+
+    string group;
+
+    ObservableCollection<string> groupItems;
     int selectedCategory;
+
+    string universitet;
+
+    ObservableCollection<string> universitetItems;
+
+    ICommand? updateCours;
+
+    ICommand? updateFaculty;
+
+    ICommand? updateGroup;
+
+    ICommand? updateYear;
+
+    ObservableCollection<User> users;
+
+    Visibility visibilityAutoInput;
+
+    Visibility visibilityManualInput;
+
+    Visibility visibitityCategoryGeneral;
+
+    Visibility visibitityCategoryUsers;
+
+    string year;
+
+    public ViewModelProfileSettings()
+    {
+        UniversitetItems = [];
+        FacultyItems = [];
+        CoursItems = [];
+        GroupItems = [];
+        AutoInput = Properties.Settings.Default.AutoInput;
+        VisibitityCategoryUsers = Visibility.Collapsed;
+        Users = Properties.Settings.Default.Users;
+        Users.CollectionChanged += DataGrid_CollectionChanged;
+        Year = Properties.Settings.Default.Year;
+        UniversitetItems.Add("Орловский Государственный университет имени И.С. Тургенева");
+        Universitet = Properties.Settings.Default.Universitet;
+        Faculty = Properties.Settings.Default.Faculty;
+        Cours = Properties.Settings.Default.Course;
+        Group = Properties.Settings.Default.Group;
+        Direction = Properties.Settings.Default.Direction;
+    }
 
     public int SelectedCategory
     {
@@ -32,23 +94,24 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    Visibility visibitityCategoryGeneral;
-    public Visibility VisibitityCategoryGeneral { get => visibitityCategoryGeneral; set => SetProperty(ref visibitityCategoryGeneral, value); }
+    public Visibility VisibitityCategoryGeneral
+    {
+        get => visibitityCategoryGeneral;
+        set => SetProperty(ref visibitityCategoryGeneral, value);
+    }
 
-    Visibility visibitityCategoryUsers;
-    public Visibility VisibitityCategoryUsers { get => visibitityCategoryUsers; set => SetProperty(ref visibitityCategoryUsers, value); }
+    public Visibility VisibitityCategoryUsers
+    {
+        get => visibitityCategoryUsers;
+        set => SetProperty(ref visibitityCategoryUsers, value);
+    }
 
-    ObservableCollection<User> users;
     public ObservableCollection<User> Users
     {
         get => users;
-        set
-        {
-            SetProperty(ref users, value);
-        }
+        set => SetProperty(ref users, value);
     }
 
-    ICommand? editPartnersCell;
     public ICommand EditPartnersCell
     {
         get
@@ -61,20 +124,10 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    ICommand? add;
-
     public ICommand Add
     {
-        get
-        {
-            return add ??= new RelayCommand(obj =>
-            {
-                Users.Add(new());
-            });
-        }
+        get { return add ??= new RelayCommand(obj => { Users.Add(new()); }); }
     }
-
-    string group;
 
     public string Group
     {
@@ -88,7 +141,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    string year;
     public string Year
     {
         get => year;
@@ -100,13 +152,18 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    Visibility visibilityManualInput;
-    public Visibility VisibilityManualInput { get => visibilityManualInput; set => SetProperty(ref visibilityManualInput, value); }
+    public Visibility VisibilityManualInput
+    {
+        get => visibilityManualInput;
+        set => SetProperty(ref visibilityManualInput, value);
+    }
 
-    Visibility visibilityAutoInput;
-    public Visibility VisibilityAutoInput { get => visibilityAutoInput; set => SetProperty(ref visibilityAutoInput, value); }
+    public Visibility VisibilityAutoInput
+    {
+        get => visibilityAutoInput;
+        set => SetProperty(ref visibilityAutoInput, value);
+    }
 
-    bool autoInput;
     public bool AutoInput
     {
         get => autoInput;
@@ -123,12 +180,11 @@ public class ViewModelProfileSettings : ViewModelBase
                 VisibilityManualInput = Visibility.Collapsed;
                 VisibilityAutoInput = Visibility.Visible;
             }
+
             Properties.Settings.Default.AutoInput = autoInput;
             Properties.Settings.Default.Save();
         }
     }
-
-    string direction;
 
     public string Direction
     {
@@ -141,8 +197,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    string universitet;
-
     public string Universitet
     {
         get => universitet;
@@ -153,12 +207,11 @@ public class ViewModelProfileSettings : ViewModelBase
             {
                 UpdateFaculty.Execute(null);
             }
+
             Properties.Settings.Default.Universitet = universitet;
             Properties.Settings.Default.Save();
         }
     }
-
-    string faculty;
 
     public string Faculty
     {
@@ -170,12 +223,11 @@ public class ViewModelProfileSettings : ViewModelBase
             {
                 UpdateCours.Execute(null);
             }
+
             Properties.Settings.Default.Faculty = faculty;
             Properties.Settings.Default.Save();
         }
     }
-
-    string cours;
 
     public string Cours
     {
@@ -187,37 +239,40 @@ public class ViewModelProfileSettings : ViewModelBase
             {
                 UpdateGroup.Execute(null);
             }
+
             Properties.Settings.Default.Course = cours;
             Properties.Settings.Default.Save();
         }
     }
 
-    ICommand? updateYear;
-
     public ICommand UpdateYear
     {
-        get
-        {
-            return updateYear ??= new RelayCommand(obj =>
-            {
-                Year = DateTime.Today.Year.ToString();
-            });
-        }
+        get { return updateYear ??= new RelayCommand(obj => { Year = DateTime.Today.Year.ToString(); }); }
     }
 
-    ObservableCollection<string> universitetItems;
-    public ObservableCollection<string> UniversitetItems { get => universitetItems; set => SetProperty(ref universitetItems, value); }
+    public ObservableCollection<string> UniversitetItems
+    {
+        get => universitetItems;
+        set => SetProperty(ref universitetItems, value);
+    }
 
-    ObservableCollection<string> facultyItems;
-    public ObservableCollection<string> FacultyItems { get => facultyItems; set => SetProperty(ref facultyItems, value); }
+    public ObservableCollection<string> FacultyItems
+    {
+        get => facultyItems;
+        set => SetProperty(ref facultyItems, value);
+    }
 
-    ObservableCollection<string> coursItems;
-    public ObservableCollection<string> CoursItems { get => coursItems; set => SetProperty(ref coursItems, value); }
+    public ObservableCollection<string> CoursItems
+    {
+        get => coursItems;
+        set => SetProperty(ref coursItems, value);
+    }
 
-    ObservableCollection<string> groupItems;
-    public ObservableCollection<string> GroupItems { get => groupItems; set => SetProperty(ref groupItems, value); }
-
-    ICommand? updateFaculty;
+    public ObservableCollection<string> GroupItems
+    {
+        get => groupItems;
+        set => SetProperty(ref groupItems, value);
+    }
 
     public ICommand UpdateFaculty
     {
@@ -240,7 +295,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    ICommand? updateCours;
     public ICommand UpdateCours
     {
         get
@@ -256,11 +310,13 @@ public class ViewModelProfileSettings : ViewModelBase
                     {
                         if (division.Title == faculty)
                         {
-                            OrelUniverAPI.Result<Cours>? result = await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());//
+                            OrelUniverAPI.Result<Cours>? result =
+                                await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString()); //
                             foreach (Cours cours in result.Response)
                             {
                                 CoursItems.Add(cours.Course);
                             }
+
                             break;
                         }
                     }
@@ -269,7 +325,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    ICommand? updateGroup;
     public ICommand UpdateGroup
     {
         get
@@ -284,19 +339,24 @@ public class ViewModelProfileSettings : ViewModelBase
                     {
                         if (division.Title == faculty)
                         {
-                            OrelUniverAPI.Result<Cours>? result = await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());
+                            OrelUniverAPI.Result<Cours>? result =
+                                await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());
                             foreach (Cours cours in result.Response)
                             {
                                 if (cours.Course == Cours)
                                 {
-                                    OrelUniverAPI.Result<Group>? groups = await OrelUniverAPI.ScheduleGetGroupsAsync(division.Id.ToString(), cours.Course.ToString());
+                                    OrelUniverAPI.Result<Group>? groups =
+                                        await OrelUniverAPI.ScheduleGetGroupsAsync(division.Id.ToString(),
+                                            cours.Course);
                                     foreach (Group group in groups.Response)
                                     {
                                         GroupItems.Add(group.Title);
                                     }
+
                                     break;
                                 }
                             }
+
                             break;
                         }
                     }
@@ -305,12 +365,13 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    bool GoodResponse<T>(OrelUniverAPI.Result<T>? result)
+    static bool GoodResponse<T>(OrelUniverAPI.Result<T>? result)
     {
         if (result != null && result.Code == 1 && result.Response != null && result.Response.Count > 0)
         {
             return true;
         }
+
         return false;
     }
 
@@ -318,25 +379,6 @@ public class ViewModelProfileSettings : ViewModelBase
     {
         Properties.Settings.Default.Users = Users;
         Properties.Settings.Default.Save();
-    }
-
-    public ViewModelProfileSettings()
-    {
-        UniversitetItems = new();
-        FacultyItems = new();
-        CoursItems = new();
-        GroupItems = new();
-        AutoInput = Properties.Settings.Default.AutoInput;
-        VisibitityCategoryUsers = Visibility.Collapsed;
-        Users = Properties.Settings.Default.Users;
-        Users.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
-        Year = Properties.Settings.Default.Year;
-        UniversitetItems.Add("Орловский Государственный университет имени И.С. Тургенева");
-        Universitet = Properties.Settings.Default.Universitet;
-        Faculty = Properties.Settings.Default.Faculty;
-        Cours = Properties.Settings.Default.Course;
-        Group = Properties.Settings.Default.Group;
-        Direction = Properties.Settings.Default.Direction;
     }
 }
 

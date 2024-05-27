@@ -7,18 +7,17 @@ public class StretchingTreeViewItem : TreeViewItem
 {
     public StretchingTreeViewItem()
     {
-        Loaded += new RoutedEventHandler(StretchingTreeViewItem_Loaded);
+        Loaded += StretchingTreeViewItem_Loaded;
     }
 
-    private void StretchingTreeViewItem_Loaded(object sender, RoutedEventArgs e)
+    void StretchingTreeViewItem_Loaded(object sender, RoutedEventArgs e)
     {
         if (VisualChildrenCount > 0)
         {
-            Grid grid = GetVisualChild(0) as Grid;
-            if (grid != null && grid.ColumnDefinitions.Count == 3)
+            if (GetVisualChild(0) is Grid grid && grid.ColumnDefinitions.Count == 3)
             {
                 grid.ColumnDefinitions.RemoveAt(2);
-                grid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+                grid.ColumnDefinitions[1].Width = new(1, GridUnitType.Star);
             }
         }
     }

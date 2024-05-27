@@ -1,6 +1,6 @@
 ﻿namespace WordKiller.Converters;
 
-static class ScalingFontSize
+internal static class ScalingFontSize
 {
     public static double Scale(string parameter, double fontSize)
     {
@@ -8,6 +8,7 @@ static class ScalingFontSize
         {
             return fontSize;
         }
+
         return double.Parse(parameter) / 16 * fontSize;
     }
 }

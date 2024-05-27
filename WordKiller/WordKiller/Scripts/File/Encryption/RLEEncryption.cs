@@ -4,13 +4,21 @@ using System.Text;
 
 namespace WordKiller.Scripts.File.Encryption;
 
-class RLEEncryption : IEncryption
+internal class RLEEncryption : IEncryption
 {
     public string Encrypt(string text)
     {
         StringToBinaryString(ref text);
         text = RepeatEncodingBinary(text);
         DigitsToAbc(ref text);
+        return text;
+    }
+
+    public string Decrypt(string text)
+    {
+        AbcToDigits(ref text);
+        text = RepeatDecodingBinary(text);
+        text = BinaryStringToString(text);
         return text;
     }
 
@@ -39,8 +47,10 @@ class RLEEncryption : IEncryption
                     count = 1;
                 }
             }
+
             Repeat(ref output, currentSybmol, count);
         }
+
         return output.ToString();
     }
 
@@ -52,6 +62,7 @@ class RLEEncryption : IEncryption
             output.Append(9);
             output.Append(currentSybmol);
         }
+
         if (count > 9 * f)
         {
             int c = count - 9 * f;
@@ -62,22 +73,14 @@ class RLEEncryption : IEncryption
 
     static void DigitsToAbc(ref string digits)
     {
-        string dictionary = "abcdefghij";
-        digits = new string(digits.Select(x => dictionary[x - 48]).ToArray());
-    }
-
-    public string Decrypt(string text)
-    {
-        AbcToDigits(ref text);
-        text = RepeatDecodingBinary(text);
-        text = BinaryStringToString(text);
-        return text;
+        const string dictionary = "abcdefghij";
+        digits = new(digits.Select(x => dictionary[x - 48]).ToArray());
     }
 
     static void AbcToDigits(ref string abc)
     {
-        string dictionary = "abcdefghij";
-        abc = new string(abc.Select(x => dictionary.IndexOf(x).ToString()[0]).ToArray());
+        const string dictionary = "abcdefghij";
+        abc = new(abc.Select(x => dictionary.IndexOf(x).ToString()[0]).ToArray());
     }
 
     static string RepeatDecodingBinary(string repeated_digit)
@@ -88,12 +91,14 @@ class RLEEncryption : IEncryption
         {
             decoded.Append(new string(str[index], str[index - 1] - 48));
         }
+
         return decoded.ToString();
     }
 
     static string BinaryStringToString(string binary)
     {
-        string normal = Encoding.UTF8.GetString(Enumerable.Range(0, binary.Length / 8).Select(i => Convert.ToByte(binary.Substring(i * 8, 8), 2)).ToArray());
+        string normal = Encoding.UTF8.GetString(Enumerable.Range(0, binary.Length / 8)
+            .Select(i => Convert.ToByte(binary.Substring(i * 8, 8), 2)).ToArray());
         return normal;
     }
 }

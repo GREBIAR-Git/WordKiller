@@ -2,12 +2,7 @@
 
 namespace WordKiller.DataTypes;
 
-public class DragDropInfo
+public class DragDropInfo(IParagraphData paragraphData)
 {
-    public IParagraphData ParagraphData { get; private set; }
-
-    public DragDropInfo(IParagraphData paragraphData)
-    {
-        ParagraphData = paragraphData;
-    }
+    public IParagraphData ParagraphData { get; private set; } = paragraphData;
 }

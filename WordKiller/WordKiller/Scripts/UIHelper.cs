@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -9,15 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WordKiller.Properties;
 using WordKiller.XAMLHelper;
 
 namespace WordKiller.Scripts;
 
-class UIHelper
+internal class UIHelper
 {
     public static void ShowError(string number)
     {
-        MessageBox.Show(FindResourse("Error" + number), FindResourse("Error"), MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
+        MessageBox.Show(FindResourse("Error" + number), FindResourse("Error"), MessageBoxButton.OK,
+            MessageBoxImage.Error, MessageBoxResult.Yes, MessageBoxOptions.DefaultDesktopOnly);
     }
 
     public static string FindResourse(string key)
@@ -52,6 +53,7 @@ class UIHelper
         {
             name = "zh";
         }
+
         if (Thread.CurrentThread.CurrentCulture.Name != name)
         {
             SelectCulture(name);
@@ -60,21 +62,18 @@ class UIHelper
 
     static void SelectCulture(string culture)
     {
-
-        if (String.IsNullOrEmpty(culture))
+        if (string.IsNullOrEmpty(culture))
             return;
 
         var dictionaryList = Application.Current.Resources.MergedDictionaries.ToList();
 
         string requestedCulture = string.Format("Resources/Dictionary/StringResources.{0}.xaml", culture);
-        var resourceDictionary = dictionaryList.
-            FirstOrDefault(d => d.Source.OriginalString == requestedCulture);
+        var resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString == requestedCulture);
 
         if (resourceDictionary == null)
         {
             requestedCulture = "StringResources.xaml";
-            resourceDictionary = dictionaryList.
-                FirstOrDefault(d => d.Source.OriginalString == requestedCulture);
+            resourceDictionary = dictionaryList.FirstOrDefault(d => d.Source.OriginalString == requestedCulture);
         }
 
         if (resourceDictionary != null)
@@ -83,16 +82,15 @@ class UIHelper
             Application.Current.Resources.MergedDictionaries.Add(resourceDictionary);
         }
 
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
-
+        Thread.CurrentThread.CurrentCulture = new(culture);
+        Thread.CurrentThread.CurrentUICulture = new(culture);
     }
 
     public static BitmapImage GetImage(string imageUri)
     {
         var bitmapImage = new BitmapImage();
         bitmapImage.BeginInit();
-        bitmapImage.UriSource = new Uri("pack://siteoforigin:,,,/" + imageUri, UriKind.RelativeOrAbsolute);
+        bitmapImage.UriSource = new("pack://siteoforigin:,,,/" + imageUri, UriKind.RelativeOrAbsolute);
         bitmapImage.EndInit();
         return bitmapImage;
     }
@@ -100,17 +98,18 @@ class UIHelper
     public static TreeViewItem GetNearestContainer(UIElement element)
     {
         TreeViewItem? container = element as TreeViewItem;
-        while ((container == null) && (element != null))
+        while (container == null && element != null)
         {
             element = VisualTreeHelper.GetParent(element) as UIElement;
             container = element as TreeViewItem;
         }
+
         return container;
     }
 
 
     public static T FindChild<T>(DependencyObject parent, string childName)
-where T : DependencyObject
+        where T : DependencyObject
     {
         if (parent == null) return null;
 
@@ -156,6 +155,7 @@ where T : DependencyObject
             tvi = FindTviFromObjectRecursive(tvi2, o);
             if (tvi != null) return tvi;
         }
+
         return null;
     }
 
@@ -185,6 +185,7 @@ where T : DependencyObject
                 current = current.GetNextContextPosition(LogicalDirection.Forward);
             }
         }
+
         if (charsToGo == 0 && !seekStart)
             return end;
         return null;
@@ -198,18 +199,19 @@ where T : DependencyObject
 
         var flowDocument = richTextBox.Document;
         TextPointer start = FindPointerAtTextOffset(
-                flowDocument.ContentStart, startposition, seekStart: true);
+            flowDocument.ContentStart, startposition, true);
         if (start == null)
         {
             return;
         }
 
         TextPointer end = FindPointerAtTextOffset(
-                start, endposition - startposition, seekStart: false);
+            start, endposition - startposition, false);
         if (end == null)
         {
             return;
         }
+
         richTextBox.Selection.Select(start, end);
     }
 
@@ -244,24 +246,26 @@ where T : DependencyObject
                         break;
                     }
                 }
+
                 if (beginningNumber > 0)
                 {
                     text = text[beginningNumber..];
                     e.Handled = true;
                 }
+
                 if (!string.IsNullOrEmpty(text))
                 {
                     int count = int.Parse(text);
-                    if (count > Properties.Settings.Default.MaxRowAndColumn)
+                    if (count > Settings.Default.MaxRowAndColumn)
                     {
-                        count = Properties.Settings.Default.MaxRowAndColumn;
+                        count = Settings.Default.MaxRowAndColumn;
                         text = count.ToString();
                         e.Handled = true;
                     }
                 }
+
                 if (e.Handled)
                 {
-
                     textBox.Text = text;
                     textBox.SelectionStart = textBox.Text.Length;
                 }

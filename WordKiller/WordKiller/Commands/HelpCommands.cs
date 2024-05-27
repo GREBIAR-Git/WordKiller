@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 
 namespace WordKiller.Commands;
 
@@ -6,20 +7,20 @@ public class HelpCommands
 {
     ICommand aboutProgram;
 
+    ICommand documentation;
+
     public ICommand AboutProgram
     {
         get
         {
             return aboutProgram ??= new RelayCommand(
-            obj =>
-            {
-                AboutProgram aboutProgram = new();
-                aboutProgram.Show();
-            });
+                obj =>
+                {
+                    AboutProgram aboutProgram = new();
+                    aboutProgram.Show();
+                });
         }
     }
-
-    ICommand documentation;
 
     public ICommand Documentation
     {
@@ -27,8 +28,9 @@ public class HelpCommands
         {
             return documentation ??= new RelayCommand(obj =>
             {
-                Documentation documentation = new();
-                documentation.Show();
+                Process.Start(
+                    new ProcessStartInfo("https://github.com/GREBIAR-Git/WordKiller/blob/master/README.md")
+                        { UseShellExecute = true });
             });
         }
     }

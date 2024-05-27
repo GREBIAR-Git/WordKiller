@@ -1,12 +1,16 @@
 ﻿using System;
 using WordKiller.ViewModels;
 
-namespace WordKiller.DataTypes.ParagraphData
+namespace WordKiller.DataTypes.ParagraphData;
+
+[Serializable]
+public class Numbered : ViewModelDocumentChanges
 {
-    [Serializable]
-    public class Numbered : ViewModelDocumentChanges
+    string number = string.Empty;
+
+    public string Number
     {
-        string number = string.Empty;
-        public string Number { get => number; set => SetPropertyDocument(ref number, value); }
+        get => number;
+        set => SetPropertyDocument(ref number, value);
     }
 }

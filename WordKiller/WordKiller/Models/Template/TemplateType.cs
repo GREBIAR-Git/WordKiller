@@ -1,28 +1,58 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Xml.Serialization;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Win32;
 using WordKiller.DataTypes;
 using WordKiller.Scripts;
+using DocumentType = WordKiller.DataTypes.Enums.DocumentType;
 
 namespace WordKiller.Models.Template;
 
 [Serializable]
 public class TemplateType
 {
-    public DataTypes.Enums.DocumentType Type { get; set; }
+    public TemplateType(DocumentType type)
+    {
+        manualPageNumbering = false;
+        startPageNumber = 0;
+        Type = type;
+        Templates =
+        [
+            new("Текст", justify: JustificationValues.Both, lineSpacing: 1.5f, firstLine: 1.25f),
+            new("Раздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f,
+                firstLine: 1.5f),
+
+            new("Подраздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f,
+                firstLine: 1.5f),
+
+            new("Список", justify: JustificationValues.Both, lineSpacing: 1.5f, left: 1.25f),
+            new("Картинка", justify: JustificationValues.Center, after: 8, lineSpacing: 1.5f),
+            new("ТекстКТаблице", justify: JustificationValues.Both, before: 8, lineSpacing: 1.5f),
+            new("Таблица", justify: JustificationValues.Both, after: 6, lineSpacing: 1f),
+            new("Код", 12)
+        ];
+    }
+
+    public TemplateType()
+    {
+        manualPageNumbering = false;
+        startPageNumber = 0;
+        Templates = [];
+    }
+
+    public DocumentType Type { get; set; }
 
     public List<Line> Lines { get; set; }
 
-    public List<Visibility> Visibilities { get; set; } = new List<Visibility>(); //14
+    public List<Visibility> Visibilities { get; set; } = []; //14
 
-    public List<YellowFragment> YellowFragment { get; set; } = new List<YellowFragment>();
+    public List<YellowFragment> YellowFragment { get; set; } = [];
 
 
     public bool nonStandard { get; set; }
@@ -43,6 +73,7 @@ public class TemplateType
                         nonStandard = false;
                     }
                 }
+
                 Update();
                 TemplateHelper.NeedSave = true;
                 if (!nonStandard)
@@ -101,21 +132,24 @@ public class TemplateType
             string fileName = openFileDialog.FileName;
             //string fileName = @"C:\Users\nikit\OneDrive\Рабочий стол\1.docx";
 
-            List<Line> lines = new();
+            List<Line> lines = [];
             using (WordprocessingDocument myDoc = WordprocessingDocument.Open(fileName, true))
             {
-                IEnumerable<Paragraph> paragraphList = myDoc.MainDocumentPart.Document.Body.Elements().Where(c => c is Paragraph).Cast<Paragraph>();
-                IEnumerable<SectionProperties> sectionProperties = myDoc.MainDocumentPart.Document.Body.ChildElements.Where(c => c is SectionProperties).Cast<SectionProperties>();
+                IEnumerable<Paragraph> paragraphList = myDoc.MainDocumentPart.Document.Body.Elements()
+                    .Where(c => c is Paragraph).Cast<Paragraph>();
+                IEnumerable<SectionProperties> sectionProperties = myDoc.MainDocumentPart.Document.Body.ChildElements
+                    .Where(c => c is SectionProperties).Cast<SectionProperties>();
                 SectionProperties section = null;
                 foreach (SectionProperties section1 in sectionProperties)
                 {
                     section = section1;
                 }
+
                 foreach (Paragraph p in paragraphList)
                 {
                     string paragraphInnerText = p.InnerText;
                     IEnumerable<Run> runList = p.ChildElements.Where(c => c is Run).Cast<Run>();
-                    List<Line> lines1 = new();
+                    List<Line> lines1 = [];
                     if (runList.Any())
                     {
                         string? runProperties1 = null;
@@ -129,10 +163,11 @@ public class TemplateType
                             {
                                 if (!string.IsNullOrEmpty(runtext))
                                 {
-                                    lines1.Add(new Line(runtext, runProperties1));
+                                    lines1.Add(new(runtext, runProperties1));
                                     runProperties1 = null;
                                     runtext = string.Empty;
                                 }
+
                                 if (twaab3.Type == null || twaab3.Type == BreakValues.TextWrapping)
                                 {
                                     runInnerText += "\n";
@@ -142,6 +177,7 @@ public class TemplateType
                                     runInnerText += "\r\n";
                                 }
                             }
+
                             foreach (TabChar twaab2 in twaab)
                             {
                                 runInnerText += "\t";
@@ -149,7 +185,8 @@ public class TemplateType
 
                             //lines1.Add(new Line(runInnerText));
 
-                            IEnumerable<RunProperties> runPropertiesList = r.ChildElements.Where(c => c is RunProperties).Cast<RunProperties>();
+                            IEnumerable<RunProperties> runPropertiesList =
+                                r.ChildElements.Where(c => c is RunProperties).Cast<RunProperties>();
                             string? current = string.Empty;
                             foreach (RunProperties runProperties in runPropertiesList)
                             {
@@ -157,9 +194,11 @@ public class TemplateType
                                 current = Regex.Replace(current, @"<w:lang.*?\/>", "");
                                 //lines1.Last().RunProperties = runProperties.OuterXml;
                             }
+
                             if (current != null && current == "")
                             {
-                                current = "<w:rPr xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"></w:rPr>";
+                                current =
+                                    "<w:rPr xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"></w:rPr>";
                             }
 
                             if (runProperties1 == current)
@@ -171,27 +210,32 @@ public class TemplateType
                             {
                                 if (!string.IsNullOrEmpty(runtext))
                                 {
-                                    lines1.Add(new Line(runtext, runProperties1));
+                                    lines1.Add(new(runtext, runProperties1));
                                 }
                                 else if (runInnerText == "\n" || runInnerText == "\r\n" || runInnerText.Contains('\t'))
                                 {
-                                    lines1.Add(new Line(runInnerText, current));
+                                    lines1.Add(new(runInnerText, current));
                                     runInnerText = string.Empty;
                                     runProperties1 = null;
                                 }
+
                                 runInnerText += r.InnerText;
                                 runtext = runInnerText;
                                 runProperties1 = current;
                             }
                         }
-                        lines1.Add(new Line(runtext, runProperties1));
+
+                        lines1.Add(new(runtext, runProperties1));
                     }
+
                     ParagraphProperties main = null;
-                    IEnumerable<ParagraphProperties> paragraphPropertiesList = p.ChildElements.Where(r => r is ParagraphProperties).Cast<ParagraphProperties>();
+                    IEnumerable<ParagraphProperties> paragraphPropertiesList =
+                        p.ChildElements.Where(r => r is ParagraphProperties).Cast<ParagraphProperties>();
                     foreach (ParagraphProperties paragraphProperties in paragraphPropertiesList)
                     {
                         main = paragraphProperties;
                     }
+
                     foreach (Line line1 in lines1)
                     {
                         if (section != null)
@@ -199,17 +243,21 @@ public class TemplateType
                             line1.sectionProperties = section.OuterXml;
                         }
                     }
-                    lines.Add(new Line(true));
+
+                    lines.Add(new(true));
                     if (main != null)
                     {
                         lines.Last().ParagraphProperties = main.OuterXml;
                     }
+
                     lines.AddRange(lines1);
                 }
             }
+
             Lines = lines;
             InitYellowFragments(lines);
         }
+
         return (bool)result;
     }
 
@@ -220,7 +268,8 @@ public class TemplateType
         foreach (Line line in lines)
         {
             RunProperties runProperties = new(line.RunProperties);
-            if (runProperties.Highlight != null && runProperties.Highlight.Val == HighlightColorValues.Yellow && !string.IsNullOrEmpty(line.Text) && line.Text != "\n")
+            if (runProperties.Highlight != null && runProperties.Highlight.Val == HighlightColorValues.Yellow &&
+                !string.IsNullOrEmpty(line.Text) && line.Text != "\n")
             {
                 str += line.Text;
             }
@@ -228,7 +277,7 @@ public class TemplateType
             {
                 if (!string.IsNullOrEmpty(str))
                 {
-                    YellowFragment.Add(new YellowFragment() { Text = str });
+                    YellowFragment.Add(new() { Text = str });
                     str = string.Empty;
                 }
             }
@@ -242,6 +291,7 @@ public class TemplateType
         {
             Visibilities.Add(Visibility.Collapsed);
         }
+
         for (int i = 0; i < YellowFragment.Count; i++)
         {
             if (YellowFragment[i].Index == 0)
@@ -281,30 +331,5 @@ public class TemplateType
                 Visibilities[6] = Visibility.Visible;
             }
         }
-    }
-
-    public TemplateType(DataTypes.Enums.DocumentType type)
-    {
-        manualPageNumbering = false;
-        startPageNumber = 0;
-        Type = type;
-        Templates = new()
-        {
-            new Template("Текст", justify: JustificationValues.Both, lineSpacing: 1.5f, firstLine: 1.25f),
-            new Template("Раздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f, firstLine: 1.5f),
-            new Template("Подраздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f, firstLine: 1.5f),
-            new Template("Список", justify: JustificationValues.Both, lineSpacing: 1.5f, left: 1.25f),
-            new Template("Картинка", justify: JustificationValues.Center, after: 8, lineSpacing: 1.5f),
-            new Template("ТекстКТаблице", justify: JustificationValues.Both, before: 8, lineSpacing: 1.5f),
-            new Template("Таблица", justify: JustificationValues.Both, after: 6, lineSpacing: 1f),
-            new Template("Код", 12, JustificationValues.Left)
-        };
-    }
-
-    public TemplateType()
-    {
-        manualPageNumbering = false;
-        startPageNumber = 0;
-        Templates = new();
     }
 }

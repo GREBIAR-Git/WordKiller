@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace WordKiller.Converters.MultiValueConverter;
 
-class AdaptiveFontSizeControl : IMultiValueConverter
+internal class AdaptiveFontSizeControl : IMultiValueConverter
 {
     // values[0] - Control; values[1] - Text/Content; values[2] - currentFontSize;
     // values[3] - ActualWidth; values[4] - ActualHeight
@@ -24,11 +24,11 @@ class AdaptiveFontSizeControl : IMultiValueConverter
         try
         {
             formattedText =
-                new FormattedText(
+                new(
                     values[1].ToString(),
                     CultureInfo.InvariantCulture,
                     control.FlowDirection,
-                    new Typeface(
+                    new(
                         control.FontFamily,
                         control.FontStyle,
                         control.FontWeight,
@@ -46,18 +46,21 @@ class AdaptiveFontSizeControl : IMultiValueConverter
 
         double fontSize1 = (control.ActualHeight - 3) / formattedText.Height;
 
-        fontSize = (control.FontSize) * Math.Min(fontSize, fontSize1);
+        fontSize = control.FontSize * Math.Min(fontSize, fontSize1);
 
         if (fontSize < 0)
         {
             fontSize = 0;
         }
 
-        if (values[2] == null || values[2] == DependencyProperty.UnsetValue) return ScalingFontSize.Scale(parameter.ToString(), fontSize);
+        if (values[2] == null || values[2] == DependencyProperty.UnsetValue)
+            return ScalingFontSize.Scale(parameter.ToString(), fontSize);
         var maxSize = double.Parse(values[2].ToString());
         return ScalingFontSize.Scale(parameter.ToString(), Math.Min(fontSize, maxSize));
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException();
+    }
 }

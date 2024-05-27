@@ -10,17 +10,56 @@ namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelTemplatesSettings : ViewModelBase
 {
+    ICommand? editPartnersCell;
     ObservableCollection<TemplateType> templateType;
+
+    public ViewModelTemplatesSettings()
+    {
+        TemplateHelper.Change += UpdateCollection;
+        if (Properties.Settings.Default.TemplateTypes.Count == 0)
+        {
+            TemplateType = [];
+
+            TemplateType template = new(DocumentType.DefaultDocument);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.LaboratoryWork);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.PracticeWork);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.Coursework);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.ControlWork);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.Referat);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.ProductionPractice);
+            TemplateType.Add(template);
+
+            template = new(DocumentType.VKR);
+            TemplateType.Add(template);
+            Properties.Settings.Default.TemplateTypes = TemplateType;
+            Properties.Settings.Default.Save();
+        }
+        else
+        {
+            TemplateType = Properties.Settings.Default.TemplateTypes;
+        }
+
+        TemplateType.CollectionChanged += DataGrid_CollectionChanged;
+    }
+
     public ObservableCollection<TemplateType> TemplateType
     {
         get => templateType;
-        set
-        {
-            SetProperty(ref templateType, value);
-        }
+        set => SetProperty(ref templateType, value);
     }
 
-    ICommand? editPartnersCell;
     public ICommand EditPartnersCell
     {
         get
@@ -43,45 +82,5 @@ public class ViewModelTemplatesSettings : ViewModelBase
     {
         Properties.Settings.Default.TemplateTypes = TemplateType;
         Properties.Settings.Default.Save();
-    }
-
-    public ViewModelTemplatesSettings()
-    {
-        TemplateHelper.Change += UpdateCollection;
-        if (Properties.Settings.Default.TemplateTypes.Count == 0)
-        {
-            TemplateType = new ObservableCollection<TemplateType>();
-
-            TemplateType template = new(DocumentType.DefaultDocument);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.LaboratoryWork);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.PracticeWork);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.Coursework);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.ControlWork);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.Referat);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.ProductionPractice);
-            TemplateType.Add(template);
-
-            template = new TemplateType(DocumentType.VKR);
-            TemplateType.Add(template);
-            Properties.Settings.Default.TemplateTypes = TemplateType;
-            Properties.Settings.Default.Save();
-        }
-        else
-        {
-            TemplateType = Properties.Settings.Default.TemplateTypes;
-        }
-        TemplateType.CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
     }
 }

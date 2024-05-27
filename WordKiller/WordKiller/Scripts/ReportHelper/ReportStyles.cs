@@ -1,13 +1,16 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using WordKiller.Models.Template;
+using DocumentType = WordKiller.DataTypes.Enums.DocumentType;
+using Settings = WordKiller.Properties.Settings;
 
 namespace WordKiller.Scripts.ReportHelper;
 
 public static class ReportStyles
 {
     public const byte pt_to_halfpt = 2;
-    public static void Init(WordprocessingDocument doc, DataTypes.Enums.DocumentType typeDocument)
+
+    public static void Init(WordprocessingDocument doc, DocumentType typeDocument)
     {
         StyleDefinitionsPart styleDefinitions = doc.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
 
@@ -20,7 +23,7 @@ public static class ReportStyles
         styles.Append(
             Init("EmptyLines", justify: JustificationValues.Center));
 
-        foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+        foreach (TemplateType templateType in Settings.Default.TemplateTypes)
         {
             if (templateType.Type == typeDocument)
             {
@@ -28,22 +31,36 @@ public static class ReportStyles
                 {
                     if (template.Name == "Раздел")
                     {
-                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, true, outlineLevel: 1));
-                        styles.Append(Init(template.Name + "Приложение", template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, true, outlineLevel: 1));
-                        styles.Append(Init(template.Name + "ПриложениеВКР", template.Size, JustificationValues.Right, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, false, outlineLevel: 1));
-                        styles.Append(Init(template.Name + "ПриложениеВКРНазвание", template.Size, JustificationValues.Left, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f, false));
+                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold,
+                            template.Before, template.After, template.LineSpacing, template.Left, template.Right,
+                            template.FirstLine, true, outlineLevel: 1));
+                        styles.Append(Init(template.Name + "Приложение", template.Size, template.Justify, template.Bold,
+                            template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f,
+                            true, outlineLevel: 1));
+                        styles.Append(Init(template.Name + "ПриложениеВКР", template.Size, JustificationValues.Right,
+                            template.Bold, template.Before, template.After, template.LineSpacing, template.Left,
+                            template.Right, outlineLevel: 1));
+                        styles.Append(Init(template.Name + "ПриложениеВКРНазвание", template.Size,
+                            JustificationValues.Left, template.Bold, template.Before, template.After,
+                            template.LineSpacing, template.Left, template.Right));
                     }
                     else if (template.Name == "Подраздел")
                     {
-                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, outlineLevel: 2));
+                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold,
+                            template.Before, template.After, template.LineSpacing, template.Left, template.Right,
+                            template.FirstLine, outlineLevel: 2));
                     }
                     else if (template.Name == "Список")
                     {
-                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine, hanging: 0.63f));
+                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold,
+                            template.Before, template.After, template.LineSpacing, template.Left, template.Right,
+                            template.FirstLine, hanging: 0.63f));
                     }
                     else
                     {
-                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold, template.Before, template.After, template.LineSpacing, template.Left, template.Right, template.FirstLine));
+                        styles.Append(Init(template.Name, template.Size, template.Justify, template.Bold,
+                            template.Before, template.After, template.LineSpacing, template.Left, template.Right,
+                            template.FirstLine));
                     }
                 }
             }
@@ -52,34 +69,34 @@ public static class ReportStyles
 
     public static Style Init(string name, int size = 14,
         JustificationValues justify = JustificationValues.Left, bool bold = false,
-        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0, bool caps = false, float hanging = 0, int outlineLevel = 0)
+        int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0,
+        bool caps = false, float hanging = 0, int outlineLevel = 0)
     {
-        var style = new Style()
+        var style = new Style
         {
             Type = StyleValues.Paragraph,
             StyleId = name,
             CustomStyle = true,
-            Default = false,
+            Default = false
         };
 
 
-        style.Append(new StyleName()
+        style.Append(new StyleName
         {
             Val = name
         });
 
         var styleRunProperties = new StyleRunProperties();
-        styleRunProperties.Append(new RunFonts()
+        styleRunProperties.Append(new RunFonts
         {
-
             Ascii = "Times New Roman",
             HighAnsi = "Times New Roman"
         });
-        styleRunProperties.Append(new FontSize()
+        styleRunProperties.Append(new FontSize
         {
             Val = (size * pt_to_halfpt).ToString()
         });
-        styleRunProperties.Append(new Caps()
+        styleRunProperties.Append(new Caps
         {
             Val = caps
         });
@@ -89,20 +106,20 @@ public static class ReportStyles
         }
 
         ParagraphProperties paragraphProperties = new();
-        paragraphProperties.AddChild(new Justification()
+        paragraphProperties.AddChild(new Justification
         {
             Val = justify
         });
 
         if (outlineLevel != 0)
         {
-            paragraphProperties.AddChild(new OutlineLevel()
+            paragraphProperties.AddChild(new OutlineLevel
             {
                 Val = outlineLevel - 1
             });
         }
 
-        paragraphProperties.AddChild(new SpacingBetweenLines()
+        paragraphProperties.AddChild(new SpacingBetweenLines
         {
             After = (after * 20).ToString(),
             Before = (before * 20).ToString(),
@@ -111,23 +128,23 @@ public static class ReportStyles
         });
         if (hanging == 0)
         {
-            paragraphProperties.AddChild(new Indentation()
+            paragraphProperties.AddChild(new Indentation
             {
-
                 Left = ((int)(left * ReportPageSettings.cm_to_pt)).ToString(),
                 Right = ((int)(right * ReportPageSettings.cm_to_pt)).ToString(),
-                FirstLine = ((int)(firstLine * ReportPageSettings.cm_to_pt)).ToString(),
+                FirstLine = ((int)(firstLine * ReportPageSettings.cm_to_pt)).ToString()
             });
         }
         else
         {
-            paragraphProperties.AddChild(new Indentation()
+            paragraphProperties.AddChild(new Indentation
             {
                 Left = ((int)((left + hanging) * ReportPageSettings.cm_to_pt)).ToString(),
                 Right = ((int)(right * ReportPageSettings.cm_to_pt)).ToString(),
-                Hanging = ((int)(hanging * ReportPageSettings.cm_to_pt)).ToString(),
+                Hanging = ((int)(hanging * ReportPageSettings.cm_to_pt)).ToString()
             });
         }
+
         style.Append(styleRunProperties);
         style.Append(paragraphProperties);
         return style;

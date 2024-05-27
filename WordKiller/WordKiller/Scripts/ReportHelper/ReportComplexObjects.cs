@@ -1,19 +1,21 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Models;
 using WordKiller.Models.Template;
 using WordKiller.ViewModels;
+using DocumentType = WordKiller.DataTypes.Enums.DocumentType;
+using Settings = WordKiller.Properties.Settings;
 
 namespace WordKiller.Scripts.ReportHelper;
 
 public static class ReportComplexObjects
 {
-    public static void TitlePart(WordprocessingDocument doc, DataTypes.Enums.DocumentType typeDocument, ViewModelTitle title)
+    public static void TitlePart(WordprocessingDocument doc, DocumentType typeDocument, ViewModelTitle title)
     {
         if (title.Photo)
         {
@@ -25,7 +27,7 @@ public static class ReportComplexObjects
         }
         else
         {
-            if (typeDocument == DataTypes.Enums.DocumentType.ProductionPractice)
+            if (typeDocument == DocumentType.ProductionPractice)
             {
                 ProductionPractice(doc, title);
             }
@@ -34,28 +36,30 @@ public static class ReportComplexObjects
                 Ministry(doc, title.Cathedra);
                 switch (typeDocument)
                 {
-                    case DataTypes.Enums.DocumentType.LaboratoryWork:
+                    case DocumentType.LaboratoryWork:
                         LabPra(doc, "лабораторной", title);
                         break;
-                    case DataTypes.Enums.DocumentType.PracticeWork:
+                    case DocumentType.PracticeWork:
                         LabPra(doc, "практической", title);
                         break;
-                    case DataTypes.Enums.DocumentType.Coursework:
+                    case DocumentType.Coursework:
                         Coursework(doc, title);
                         break;
-                    case DataTypes.Enums.DocumentType.ControlWork:
+                    case DocumentType.ControlWork:
                         ControlWork(doc, title);
                         break;
-                    case DataTypes.Enums.DocumentType.Referat:
+                    case DocumentType.Referat:
                         Referat(doc, title);
                         break;
-                    case DataTypes.Enums.DocumentType.VKR:
+                    case DocumentType.VKR:
                         VKR(doc, title);
                         break;
                 }
             }
+
             Orel(doc);
         }
+
         ReportExtras.SectionBreak(doc);
     }
 
@@ -66,7 +70,7 @@ public static class ReportComplexObjects
         Paragraph paragraph = new();
         int i1 = 0;
         TemplateType templateType = null;
-        foreach (var item in Properties.Settings.Default.TemplateTypes)
+        foreach (var item in Settings.Default.TemplateTypes)
         {
             if (data.Type == item.Type)
             {
@@ -74,13 +78,13 @@ public static class ReportComplexObjects
                 break;
             }
         }
+
         int g = 0;
         foreach (Line line in lines)
         {
             g++;
             if (line.newPara)
             {
-
                 if (line.ParagraphProperties != null)
                 {
                     paragraph = body.AppendChild(new Paragraph());
@@ -99,10 +103,11 @@ public static class ReportComplexObjects
                 if (line.RunProperties != null)
                 {
                     RunProperties runProperties = new(line.RunProperties);
-                    if (runProperties.Highlight != null && runProperties.Highlight.Val == HighlightColorValues.Yellow && !string.IsNullOrEmpty(line.Text) && line.Text != "\n")
+                    if (runProperties.Highlight != null && runProperties.Highlight.Val == HighlightColorValues.Yellow &&
+                        !string.IsNullOrEmpty(line.Text) && line.Text != "\n")
                     {
                         text = data.Title.GetData(templateType.YellowFragment[i1].Index);
-                        runProperties.Highlight = new Highlight() { Val = HighlightColorValues.None };
+                        runProperties.Highlight = new() { Val = HighlightColorValues.None };
                         run.PrependChild(runProperties);
                         ReportText.TextToRun(run, text);
                         i1++;
@@ -115,9 +120,7 @@ public static class ReportComplexObjects
                 }
             }
         }
-        return;
     }
-
 
 
     static void LabPra(WordprocessingDocument doc, string type, ViewModelTitle title)
@@ -139,13 +142,14 @@ public static class ReportComplexObjects
         {
             text = "Выполнили: ";
         }
+
         text += title.AllPerformed();
         ReportText.Text(doc, text);
-        text = Properties.Settings.Default.Faculty;
+        text = Settings.Default.Faculty;
         ReportText.Text(doc, text);
-        text = "Направление: " + Properties.Settings.Default.Direction;
+        text = "Направление: " + Settings.Default.Direction;
         ReportText.Text(doc, text);
-        text = "Группа: " + Properties.Settings.Default.Group;
+        text = "Группа: " + Settings.Default.Group;
         ReportText.Text(doc, text);
 
         text = "Проверил: " + title.Professor;
@@ -155,7 +159,7 @@ public static class ReportComplexObjects
         text = "Отметка о зачёте: ";
         ReportText.Text(doc, text);
 
-        text = "Дата: «____» __________ " + SpaceForYear(Properties.Settings.Default.Year) + "г.";
+        text = "Дата: «____» __________ " + SpaceForYear(Settings.Default.Year) + "г.";
         ReportText.Text(doc, text, justify: JustificationValues.Right);
 
         ReportExtras.EmptyLines(doc, 8);
@@ -167,7 +171,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, multiplier: 1.5f, left: 9.5f);
         text = "______________Руководитель";
         ReportText.Text(doc, text, multiplier: 1.5f, left: 9.5f);
-        text = "«____»_____________" + SpaceForYear(Properties.Settings.Default.Year) + "г.";
+        text = "«____»_____________" + SpaceForYear(Settings.Default.Year) + "г.";
         ReportText.Text(doc, text, multiplier: 1.5f, left: 9.5f);
 
         ReportExtras.EmptyLines(doc, 3);
@@ -199,11 +203,11 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text, multiplier: 1.5f);
         text = "Шифр " + performed.Shifr;
         ReportText.Text(doc, text, multiplier: 1.5f);
-        text = Properties.Settings.Default.Faculty;
+        text = Settings.Default.Faculty;
         ReportText.Text(doc, text, multiplier: 1.5f);
-        text = "Направление: " + Properties.Settings.Default.Direction;
+        text = "Направление: " + Settings.Default.Direction;
         ReportText.Text(doc, text, multiplier: 1.5f);
-        text = "Группа: " + Properties.Settings.Default.Group;
+        text = "Группа: " + Settings.Default.Group;
         ReportText.Text(doc, text, multiplier: 1.5f);
 
         text = "Руководитель __________________" + title.Professor;
@@ -233,13 +237,14 @@ public static class ReportComplexObjects
         {
             text = "Выполнили: ";
         }
+
         text += title.AllPerformed();
         ReportText.Text(doc, text);
-        text = Properties.Settings.Default.Faculty;
+        text = Settings.Default.Faculty;
         ReportText.Text(doc, text);
-        text = "Направление: " + Properties.Settings.Default.Direction;
+        text = "Направление: " + Settings.Default.Direction;
         ReportText.Text(doc, text);
-        text = "Группа: " + Properties.Settings.Default.Group;
+        text = "Группа: " + Settings.Default.Group;
         ReportText.Text(doc, text);
 
         text = "Проверил: " + title.Professor;
@@ -250,7 +255,7 @@ public static class ReportComplexObjects
         text = "Отметка о зачёте: ";
         ReportText.Text(doc, text);
 
-        text = "Дата: «____» __________ " + SpaceForYear(Properties.Settings.Default.Year) + "г.";
+        text = "Дата: «____» __________ " + SpaceForYear(Settings.Default.Year) + "г.";
         ReportText.Text(doc, text, justify: JustificationValues.Right);
 
         ReportExtras.EmptyLines(doc, 9);
@@ -274,7 +279,8 @@ public static class ReportComplexObjects
         {
             text = "Выполнили: студенты группы ";
         }
-        text += Properties.Settings.Default.Group;
+
+        text += Settings.Default.Group;
         ReportText.Text(doc, text, justify: JustificationValues.Right);
         text = title.AllPerformed();
         ReportText.Text(doc, text, justify: JustificationValues.Right);
@@ -288,6 +294,7 @@ public static class ReportComplexObjects
                 cathedra = string.Join(" ", words);
             }
         }
+
         if (title.Rank == "и.о. зав. кафедрой")
         {
             text = "Проверил: " + title.Rank + " " + cathedra;
@@ -296,6 +303,7 @@ public static class ReportComplexObjects
         {
             text = "Проверил: " + title.Rank + " кафедры " + cathedra;
         }
+
         ReportText.Text(doc, text, justify: JustificationValues.Right);
         text = title.Professor;
         ReportText.Text(doc, text, justify: JustificationValues.Right);
@@ -306,22 +314,22 @@ public static class ReportComplexObjects
     static void ProductionPractice(WordprocessingDocument doc, ViewModelTitle title)
     {
         string text = "Федеральное государственное бюджетное образовательное учреждение высшего образования";
-        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = "«ОРЛОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ИМЕНИ И.С. ТУРГЕНЕВА»";
-        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true, caps: true);
+        ReportText.Text(doc, text, 12, JustificationValues.Center, true, caps: true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = title.Faculty;
-        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = title.Cathedra;
-        ReportText.Text(doc, text, size: 12, justify: JustificationValues.Center, bold: true);
+        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
 
         ReportExtras.EmptyLines(doc, 6);
 
@@ -344,7 +352,7 @@ public static class ReportComplexObjects
         ReportExtras.EmptyLines(doc, 3);
 
         text = "На материалах " + title.PracticeLocation;
-        ReportText.Text(doc, text, 14, multiplier: 1.5f);
+        ReportText.Text(doc, text, multiplier: 1.5f);
 
         ReportExtras.EmptyLines(doc, 4);
 
@@ -353,10 +361,10 @@ public static class ReportComplexObjects
         text = "Студент     _________________ " + performed.Full;
         ReportText.Text(doc, text, multiplier: 1.5f);
 
-        text = "Группа " + Properties.Settings.Default.Group;
+        text = "Группа " + Settings.Default.Group;
         ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
-        text = "Направление " + Properties.Settings.Default.Direction;
+        text = "Направление " + Settings.Default.Direction;
         ReportText.Text(doc, text, before: 6, multiplier: 1.5f);
 
         ReportExtras.EmptyLines(doc, 1);
@@ -390,7 +398,7 @@ public static class ReportComplexObjects
         text = "по направлению подготовки ";
         ReportText.Text(doc, text, justify: JustificationValues.Center);
 
-        text = Properties.Settings.Default.Direction;
+        text = Settings.Default.Direction;
         ReportText.Text(doc, text, justify: JustificationValues.Center);
 
         text = "Направленность (профиль) " + title.Direction;
@@ -399,7 +407,8 @@ public static class ReportComplexObjects
 
         User performed = title.FirstPerformed();
 
-        text = "Студента " + performed.LastName + " " + performed.FirstName + " " + performed.MiddleName + "\t шифр" + " " + performed.Shifr;
+        text = "Студента " + performed.LastName + " " + performed.FirstName + " " + performed.MiddleName + "\t шифр" +
+               " " + performed.Shifr;
         ReportText.Text(doc, text, multiplier: 1.5f);
 
         text = title.Faculty;
@@ -446,6 +455,7 @@ public static class ReportComplexObjects
                     }
                 }
             }
+
             if (index != -1)
             {
                 text = title.Cathedra[..index];
@@ -464,6 +474,7 @@ public static class ReportComplexObjects
             text = title.Cathedra + "\t" + title.HeadCathedra;
             ReportText.Text(doc, text, tabs: true);
         }
+
         ReportExtras.EmptyLines(doc, 1);
     }
 
@@ -490,7 +501,7 @@ public static class ReportComplexObjects
 
     static void Orel(WordprocessingDocument doc)
     {
-        string text = "Орел, " + SpaceForYear(Properties.Settings.Default.Year);
+        string text = "Орел, " + SpaceForYear(Settings.Default.Year);
         ReportText.Text(doc, text, justify: JustificationValues.Center);
     }
 
@@ -500,6 +511,7 @@ public static class ReportComplexObjects
         {
             year += spaceCharacter;
         }
+
         return year;
     }
 
@@ -512,17 +524,18 @@ public static class ReportComplexObjects
             {
                 ReportImage.FullScreen(doc, id);
             }
+
             ReportExtras.SectionBreak(doc);
             id = ReportImage.Registration(doc, taskSheet.SecondPicture);
             if (id != null && taskSheet.SecondPicture.Bitmap != null)
             {
                 ReportImage.FullScreen(doc, id);
             }
+
             ReportExtras.SectionBreak(doc);
         }
         else
         {
-
             ReportPageSettings.PageSetup(doc.MainDocumentPart.Document.Body, title: true);
             Ministry(doc, title.Cathedra);
 
@@ -530,7 +543,7 @@ public static class ReportComplexObjects
             ReportText.Text(doc, text, left: 9.5f);
             text = "____________и.о. зав. кафедрой";
             ReportText.Text(doc, text, left: 9.5f);
-            text = "«___»_____________" + Properties.Settings.Default.Year + "г.";
+            text = "«___»_____________" + Settings.Default.Year + "г.";
             ReportText.Text(doc, text, left: 9.5f);
             ReportExtras.EmptyLines(doc, 2);
             text = "ЗАДАНИЕ";
@@ -546,6 +559,7 @@ public static class ReportComplexObjects
                 text = "на курсовую работу";
                 type = "курсовой работы";
             }
+
             ReportText.Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
             text = "по дисциплине «" + title.Discipline + "»";
             ReportText.Text(doc, text, multiplier: 2);
@@ -553,11 +567,11 @@ public static class ReportComplexObjects
             User performed = title.FirstPerformed();
             text = "Студент    " + performed.Full + "                Шифр " + performed.Shifr;
             ReportText.Text(doc, text, multiplier: 1.5f);
-            text = Properties.Settings.Default.Faculty;
+            text = Settings.Default.Faculty;
             ReportText.Text(doc, text, multiplier: 1.5f);
-            text = "Направление подготовки " + Properties.Settings.Default.Direction;
+            text = "Направление подготовки " + Settings.Default.Direction;
             ReportText.Text(doc, text, multiplier: 1.5f);
-            text = "Группа " + Properties.Settings.Default.Group;
+            text = "Группа " + Settings.Default.Group;
             ReportText.Text(doc, text, multiplier: 1.5f);
             ReportExtras.EmptyLines(doc, 1);
             text = "1 Тема " + type;
@@ -565,7 +579,7 @@ public static class ReportComplexObjects
             text = title.Theme;
             ReportText.Text(doc, text, multiplier: 1.5f);
             ReportExtras.EmptyLines(doc, 1);
-            text = "2 Срок сдачи студентом законченной работы «___» _____________ " + Properties.Settings.Default.Year;
+            text = "2 Срок сдачи студентом законченной работы «___» _____________ " + Settings.Default.Year;
             ReportText.Text(doc, text, multiplier: 1.5f);
 
             ReportExtras.SectionBreak(doc);
@@ -596,7 +610,7 @@ public static class ReportComplexObjects
             ReportText.Text(doc, text, multiplier: 1.5f);
             ReportExtras.EmptyLines(doc, 1);
 
-            text = "Задание принял к исполнению: «___» _____________ " + Properties.Settings.Default.Year;
+            text = "Задание принял к исполнению: «___» _____________ " + Settings.Default.Year;
             ReportText.Text(doc, text, multiplier: 1.5f);
             ReportExtras.EmptyLines(doc, 1);
 
@@ -604,11 +618,11 @@ public static class ReportComplexObjects
             ReportText.Text(doc, text, multiplier: 1.5f);
             ReportExtras.EmptyLines(doc, 1);
             ReportExtras.SectionBreak(doc);
-
         }
     }
 
-    public static void ListOfReferencesPart(WordprocessingDocument doc, ViewModelListOfReferences listOfReferences, bool on)
+    public static void ListOfReferencesPart(WordprocessingDocument doc, ViewModelListOfReferences listOfReferences,
+        bool on)
     {
         if (on)
         {
@@ -620,29 +634,36 @@ public static class ReportComplexObjects
             {
                 ReportText.Text(doc, "СПИСОК ЛИТЕРАТУРЫ", "Раздел");
             }
-            List<string> resours = new();
+
+            List<string> resours = [];
             foreach (Book book in listOfReferences.Books)
             {
-                resours.Add(book.Autors + " " + book.Name + ". " + book.Publication + ", " + book.Year + ". " + book.Page + " с.");
+                resours.Add(book.Autors + " " + book.Name + ". " + book.Publication + ", " + book.Year + ". " +
+                            book.Page + " с.");
             }
+
             foreach (ElectronicResource electronicResource in listOfReferences.ElectronicResources)
             {
-                resours.Add(electronicResource.Name + " [Электронный ресурс]. URL: " + electronicResource.Url + " (дата обращения: " + electronicResource.CirculationDate + ").");
+                resours.Add(electronicResource.Name + " [Электронный ресурс]. URL: " + electronicResource.Url +
+                            " (дата обращения: " + electronicResource.CirculationDate + ").");
             }
+
             if (listOfReferences.AlphabeticalOrder)
             {
-                resours = resours.OrderBy(x => x).ToList();
+                resours = [.. resours.OrderBy(x => x)];
             }
+
             ReportList.ListOfReferences(doc, string.Join("\r\n", resours));
             ReportExtras.PageBreak(doc);
         }
     }
 
-    public static void AppendixPart(WordprocessingDocument doc, ViewModelAppendix viewModelAppendix, bool on, DataTypes.Enums.DocumentType type)
+    public static void AppendixPart(WordprocessingDocument doc, ViewModelAppendix viewModelAppendix, bool on,
+        DocumentType type)
     {
         if (on)
         {
-            if (type != DataTypes.Enums.DocumentType.VKR)
+            if (type != DocumentType.VKR)
             {
                 char letter = 'А';
                 foreach (IParagraphData appendix in viewModelAppendix.Paragraphs)
@@ -652,6 +673,7 @@ public static class ReportComplexObjects
                     {
                         name += appendix.Description;
                     }
+
                     name += "»";
                     TitleAppendix(doc, "ПРИЛОЖЕНИЕ " + letter + "\n(обязательное)\n" + name);
                     if (appendix is ParagraphPicture picture)
@@ -677,8 +699,10 @@ public static class ReportComplexObjects
                         {
                             data = appendix.Data;
                         }
+
                         ReportText.Text(doc, data, "Код");
                     }
+
                     ReportExtras.PageBreak(doc);
                     letter++;
                 }
@@ -712,8 +736,10 @@ public static class ReportComplexObjects
                         {
                             data = appendix.Data;
                         }
+
                         ReportText.Text(doc, data, "Код");
                     }
+
                     ReportExtras.PageBreak(doc);
                     number++;
                 }
@@ -727,8 +753,8 @@ public static class ReportComplexObjects
         Body body = mainPart.Document.Body;
 
         Paragraph paragraph = body.AppendChild(new Paragraph());
-        paragraph.ParagraphProperties = new ParagraphProperties(
-                new ParagraphStyleId() { Val = "РазделПриложение" });
+        paragraph.ParagraphProperties = new(
+            new ParagraphStyleId { Val = "РазделПриложение" });
         foreach (string line in text.Split('\n'))
         {
             string[] words = line.Split(' ');
@@ -736,10 +762,12 @@ public static class ReportComplexObjects
             {
                 ReportText.TextIntoParagraph(doc, words[i] + ' ', paragraph);
             }
+
             if (words.Length - 1 >= 0)
             {
                 ReportText.TextIntoParagraph(doc, words[^1], paragraph);
             }
+
             ReportExtras.NewLine(paragraph);
         }
     }

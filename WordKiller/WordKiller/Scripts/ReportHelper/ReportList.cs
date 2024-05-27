@@ -1,7 +1,7 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.Linq;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using System.Linq;
 
 namespace WordKiller.Scripts.ReportHelper;
 
@@ -9,27 +9,26 @@ public static class ReportList
 {
     public static void ListOfReferences(WordprocessingDocument doc, string list)
     {
-
         Level[] levels = new Level[9];
         string levelText = string.Empty;
 
-        levelText += "%" + (1);
+        levelText += "%" + 1;
         levels[0] = new()
         {
-            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
-            StartNumberingValue = new StartNumberingValue() { Val = 1 },
-            LevelText = new LevelText() { Val = levelText + "." },
+            NumberingFormat = new() { Val = NumberFormatValues.Decimal },
+            StartNumberingValue = new() { Val = 1 },
+            LevelText = new() { Val = levelText + "." },
             LevelIndex = 0,
-            LevelSuffix = new LevelSuffix()
+            LevelSuffix = new()
             {
                 Val = LevelSuffixValues.Space
             },
-            PreviousParagraphProperties = new PreviousParagraphProperties()
+            PreviousParagraphProperties = new PreviousParagraphProperties
             {
-                Indentation = new Indentation()
+                Indentation = new()
                 {
-                    Start = (0).ToString(),
-                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Start = 0.ToString(),
+                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString()
                 }
             }
         };
@@ -44,6 +43,7 @@ public static class ReportList
         {
             level = Level(items[0]);
         }
+
         for (int i = 0; i < items.Length; i++)
         {
             if (!string.IsNullOrWhiteSpace(items[i]))
@@ -56,48 +56,49 @@ public static class ReportList
                     {
                         item = itemText[..1];
                     }
+
                     item += itemText[1..];
                 }
+
                 level = Level(items[i]);
                 Paragraph paragraph = body.AppendChild(new Paragraph());
 
-                paragraph.ParagraphProperties = new ParagraphProperties(
+                paragraph.ParagraphProperties = new(
                     new NumberingProperties(
-                new NumberingLevelReference() { Val = Level(items[i]) },
-                        new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "Список" }
-                    );
+                        new NumberingLevelReference { Val = Level(items[i]) },
+                        new NumberingId { Val = numberId }),
+                    new ParagraphStyleId { Val = "Список" }
+                );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text() { Text = item, Space = SpaceProcessingModeValues.Preserve });
+                run.AppendChild(new Text { Text = item, Space = SpaceProcessingModeValues.Preserve });
             }
         }
     }
 
     public static void Create(WordprocessingDocument doc, string list)
     {
-
         Level[] levels = new Level[9];
         string levelText = string.Empty;
 
-        levelText += "%" + (1);
+        levelText += "%" + 1;
 
         levels[0] = new()
         {
-            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
-            StartNumberingValue = new StartNumberingValue() { Val = 1 },
-            LevelText = new LevelText() { Val = levelText + ")" },
+            NumberingFormat = new() { Val = NumberFormatValues.Decimal },
+            StartNumberingValue = new() { Val = 1 },
+            LevelText = new() { Val = levelText + ")" },
             LevelIndex = 0,
-            LevelSuffix = new LevelSuffix()
+            LevelSuffix = new()
             {
                 Val = LevelSuffixValues.Space
             },
-            PreviousParagraphProperties = new PreviousParagraphProperties()
+            PreviousParagraphProperties = new PreviousParagraphProperties
             {
-                Indentation = new Indentation()
+                Indentation = new()
                 {
-                    Start = (0).ToString(),
-                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Start = 0.ToString(),
+                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString()
                 }
             }
         };
@@ -108,20 +109,20 @@ public static class ReportList
             levelText += "%" + (i + 1);
             levels[i] = new()
             {
-                NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
-                StartNumberingValue = new StartNumberingValue() { Val = 1 },
-                LevelText = new LevelText() { Val = levelText + ")" },
+                NumberingFormat = new() { Val = NumberFormatValues.Decimal },
+                StartNumberingValue = new() { Val = 1 },
+                LevelText = new() { Val = levelText + ")" },
                 LevelIndex = i,
-                LevelSuffix = new LevelSuffix()
+                LevelSuffix = new()
                 {
                     Val = LevelSuffixValues.Space
                 },
-                PreviousParagraphProperties = new PreviousParagraphProperties()
+                PreviousParagraphProperties = new PreviousParagraphProperties
                 {
-                    Indentation = new Indentation()
+                    Indentation = new()
                     {
-                        Start = ((int)(0.63f * (i) * 2 * ReportPageSettings.cm_to_pt)).ToString(),
-                        Hanging = (-(int)(0.63f * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                        Start = ((int)(0.63f * i * 2 * ReportPageSettings.cm_to_pt)).ToString(),
+                        Hanging = (-(int)(0.63f * 1 * ReportPageSettings.cm_to_pt)).ToString()
                     }
                 }
             };
@@ -137,43 +138,43 @@ public static class ReportList
 
         levels[0] = new()
         {
-            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet },
-            LevelText = new LevelText() { Val = "\u2013" },
-            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            NumberingFormat = new() { Val = NumberFormatValues.Bullet },
+            LevelText = new() { Val = "\u2013" },
+            StartNumberingValue = new() { Val = 1 },
             LevelIndex = 0,
-            LevelSuffix = new LevelSuffix()
+            LevelSuffix = new()
             {
                 Val = LevelSuffixValues.Space
             },
-            PreviousParagraphProperties = new PreviousParagraphProperties()
+            PreviousParagraphProperties = new PreviousParagraphProperties
             {
-                Indentation = new Indentation()
+                Indentation = new()
                 {
-                    Start = (0).ToString(),
-                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Start = 0.ToString(),
+                    Hanging = (-(int)(1.25 * 1 * ReportPageSettings.cm_to_pt)).ToString()
                 }
             }
         };
 
         string levelText = string.Empty;
-        levelText = "%" + (2);
+        levelText = "%" + 2;
 
         levels[1] = new()
         {
-            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.RussianLower },
-            StartNumberingValue = new StartNumberingValue() { Val = 1 },
-            LevelText = new LevelText() { Val = levelText + ")" },
+            NumberingFormat = new() { Val = NumberFormatValues.RussianLower },
+            StartNumberingValue = new() { Val = 1 },
+            LevelText = new() { Val = levelText + ")" },
             LevelIndex = 1,
-            LevelSuffix = new LevelSuffix()
+            LevelSuffix = new()
             {
                 Val = LevelSuffixValues.Space
             },
-            PreviousParagraphProperties = new PreviousParagraphProperties()
+            PreviousParagraphProperties = new PreviousParagraphProperties
             {
-                Indentation = new Indentation()
+                Indentation = new()
                 {
-                    Start = ((int)(0.63f * (1) * 2 * ReportPageSettings.cm_to_pt)).ToString(),
-                    Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Start = ((int)(0.63f * 1 * 2 * ReportPageSettings.cm_to_pt)).ToString(),
+                    Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString()
                 }
             }
         };
@@ -183,20 +184,20 @@ public static class ReportList
             levelText += "%" + (i + 1);
             levels[i] = new()
             {
-                NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
-                StartNumberingValue = new StartNumberingValue() { Val = 1 },
-                LevelText = new LevelText() { Val = levelText + ")" },
+                NumberingFormat = new() { Val = NumberFormatValues.Decimal },
+                StartNumberingValue = new() { Val = 1 },
+                LevelText = new() { Val = levelText + ")" },
                 LevelIndex = i,
-                LevelSuffix = new LevelSuffix()
+                LevelSuffix = new()
                 {
                     Val = LevelSuffixValues.Space
                 },
-                PreviousParagraphProperties = new PreviousParagraphProperties()
+                PreviousParagraphProperties = new PreviousParagraphProperties
                 {
-                    Indentation = new Indentation()
+                    Indentation = new()
                     {
-                        Start = ((int)(0.63f * (i) * 2 * ReportPageSettings.cm_to_pt)).ToString(),
-                        Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString(),
+                        Start = ((int)(0.63f * i * 2 * ReportPageSettings.cm_to_pt)).ToString(),
+                        Hanging = (-(int)(1.25f * 1 * ReportPageSettings.cm_to_pt)).ToString()
                     }
                 }
             };
@@ -217,7 +218,8 @@ public static class ReportList
         }
 
         int abstractNumberId = numberingPart.Numbering.Elements<AbstractNum>().Count() + 1;
-        AbstractNum abstractNum1 = new(levels) { AbstractNumberId = abstractNumberId, MultiLevelType = new MultiLevelType() { Val = MultiLevelValues.HybridMultilevel } };
+        AbstractNum abstractNum1 = new(levels)
+            { AbstractNumberId = abstractNumberId, MultiLevelType = new() { Val = MultiLevelValues.HybridMultilevel } };
         if (abstractNumberId == 1)
         {
             numberingPart.Numbering.Append(abstractNum1);
@@ -242,6 +244,7 @@ public static class ReportList
             var lastNumberingInstance = numberingPart.Numbering.Elements<NumberingInstance>().Last();
             numberingPart.Numbering.InsertAfter(numberingInstance1, lastNumberingInstance);
         }
+
         return numberId;
     }
 
@@ -255,6 +258,7 @@ public static class ReportList
         {
             level = Level(items[0]);
         }
+
         for (int i = 0; i < items.Length; i++)
         {
             if (!string.IsNullOrWhiteSpace(items[i]))
@@ -267,8 +271,10 @@ public static class ReportList
                     {
                         item = itemText[..1];
                     }
+
                     item += itemText[1..];
                 }
+
                 string end;
                 if (i + 1 < items.Length)
                 {
@@ -285,18 +291,19 @@ public static class ReportList
                 {
                     end = ".";
                 }
+
                 level = Level(items[i]);
                 Paragraph paragraph = body.AppendChild(new Paragraph());
 
-                paragraph.ParagraphProperties = new ParagraphProperties(
+                paragraph.ParagraphProperties = new(
                     new NumberingProperties(
-                new NumberingLevelReference() { Val = Level(items[i]) },
-                        new NumberingId() { Val = numberId }),
-                    new ParagraphStyleId() { Val = "Список" }
-                    );
+                        new NumberingLevelReference { Val = Level(items[i]) },
+                        new NumberingId { Val = numberId }),
+                    new ParagraphStyleId { Val = "Список" }
+                );
 
                 Run run = paragraph.AppendChild(new Run());
-                run.AppendChild(new Text() { Text = item + end, Space = SpaceProcessingModeValues.Preserve });
+                run.AppendChild(new Text { Text = item + end, Space = SpaceProcessingModeValues.Preserve });
             }
         }
     }
@@ -315,6 +322,7 @@ public static class ReportList
                 break;
             }
         }
+
         return level;
     }
 
@@ -329,7 +337,7 @@ public static class ReportList
         {
             start = current;
         }
+
         return start;
     }
-
 }

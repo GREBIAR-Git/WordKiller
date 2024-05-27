@@ -7,18 +7,7 @@ namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 [Serializable]
 public class ParagraphH2 : SectionH2, IParagraphData
 {
-    public string Type { get => "SubHeader"; }
-
     string data;
-
-    public string Data { get => data; set => SetPropertyDocument(ref data, value, "Description"); }
-
-    public string Description { get => data.Replace("\r\n", " "); set => SetPropertyDocument(ref data, value, "Data"); }
-
-    public Visibility DescriptionVisibility
-    {
-        get => Visibility.Collapsed;
-    }
 
     public ParagraphH2(string data)
     {
@@ -29,4 +18,20 @@ public class ParagraphH2 : SectionH2, IParagraphData
     {
         data = string.Empty;
     }
+
+    public string Type => "SubHeader";
+
+    public string Data
+    {
+        get => data;
+        set => SetPropertyDocument(ref data, value, "Description");
+    }
+
+    public string Description
+    {
+        get => data.Replace("\r\n", " ");
+        set => SetPropertyDocument(ref data, value, "Data");
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Collapsed;
 }

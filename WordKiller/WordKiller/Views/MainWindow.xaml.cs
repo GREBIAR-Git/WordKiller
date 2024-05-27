@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WordKiller.Scripts;
+using WordKiller.Scripts.File;
 using WordKiller.ViewModels;
 
 namespace WordKiller;
@@ -21,6 +23,7 @@ public partial class MainWindow : Window
     {
         UIHelper.TableValidation(e, (TextBox)sender, true);
     }
+
     void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Space)
@@ -34,7 +37,8 @@ public partial class MainWindow : Window
 
     void TextBox_PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
     {
-        if (e.Command == ApplicationCommands.Copy || e.Command == ApplicationCommands.Cut || e.Command == ApplicationCommands.Paste)
+        if (e.Command == ApplicationCommands.Copy || e.Command == ApplicationCommands.Cut ||
+            e.Command == ApplicationCommands.Paste)
         {
             e.Handled = true;
         }
@@ -60,7 +64,7 @@ public partial class MainWindow : Window
         richTextBox.KeyProcessing(e);
     }
 
-    void Win_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    void Win_Closing(object sender, CancelEventArgs e)
     {
         if (SaveHelper.NeedSave)
         {

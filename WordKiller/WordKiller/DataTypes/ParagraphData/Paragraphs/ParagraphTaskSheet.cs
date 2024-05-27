@@ -8,11 +8,17 @@ public class ParagraphTaskSheet : IParagraphData
 {
     public string Type => "TaskSheet";
 
-    public string Data { get => "TaskSheet"; set => throw new NotImplementedException(); }
-    public string Description { get => "TaskSheet"; set => throw new NotImplementedException(); }
-
-    public Visibility DescriptionVisibility
+    public string Data
     {
-        get => Visibility.Collapsed;
+        get => "TaskSheet";
+        set => throw new NotImplementedException();
     }
+
+    public string Description
+    {
+        get => "TaskSheet";
+        set => throw new NotImplementedException();
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Collapsed;
 }

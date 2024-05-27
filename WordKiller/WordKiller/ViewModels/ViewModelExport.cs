@@ -5,35 +5,12 @@ namespace WordKiller.ViewModels;
 
 public class ViewModelExport : ViewModelBase
 {
-    Visibility visibilityExportPDF;
-    public Visibility VisibilityExportPDF { get => visibilityExportPDF; set => SetProperty(ref visibilityExportPDF, value); }
-
-    Visibility visibilityExportHTML;
-    public Visibility VisibilityExportHTML { get => visibilityExportHTML; set => SetProperty(ref visibilityExportHTML, value); }
+    bool exportHTML;
 
     bool exportPDF;
-    public bool ExportPDF
-    {
-        get => exportPDF;
-        set
-        {
-            SetProperty(ref exportPDF, value);
-            Properties.Settings.Default.ExportPDF = exportPDF;
-            Properties.Settings.Default.Save();
-        }
-    }
 
-    bool exportHTML;
-    public bool ExportHTML
-    {
-        get => exportHTML;
-        set
-        {
-            SetProperty(ref exportHTML, value);
-            Properties.Settings.Default.ExportHTML = exportHTML;
-            Properties.Settings.Default.Save();
-        }
-    }
+    Visibility visibilityExportHTML;
+    Visibility visibilityExportPDF;
 
     public ViewModelExport()
     {
@@ -48,6 +25,40 @@ public class ViewModelExport : ViewModelBase
             VisibilityExportHTML = Visibility.Collapsed;
             ExportPDF = false;
             ExportHTML = false;
+        }
+    }
+
+    public Visibility VisibilityExportPDF
+    {
+        get => visibilityExportPDF;
+        set => SetProperty(ref visibilityExportPDF, value);
+    }
+
+    public Visibility VisibilityExportHTML
+    {
+        get => visibilityExportHTML;
+        set => SetProperty(ref visibilityExportHTML, value);
+    }
+
+    public bool ExportPDF
+    {
+        get => exportPDF;
+        set
+        {
+            SetProperty(ref exportPDF, value);
+            Properties.Settings.Default.ExportPDF = exportPDF;
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    public bool ExportHTML
+    {
+        get => exportHTML;
+        set
+        {
+            SetProperty(ref exportHTML, value);
+            Properties.Settings.Default.ExportHTML = exportHTML;
+            Properties.Settings.Default.Save();
         }
     }
 }

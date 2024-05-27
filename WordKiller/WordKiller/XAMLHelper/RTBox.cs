@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -12,7 +11,6 @@ namespace WordKiller.XAMLHelper;
 
 public class RTBox : RichTextBox
 {
-
     public RTBox()
     {
         TextFormatter = new PlainTextFormatter();
@@ -28,6 +26,7 @@ public class RTBox : RichTextBox
                 text = text.Remove(text.Length - 2, 2);
             }
         }
+
         return text;
     }
 
@@ -41,7 +40,7 @@ public class RTBox : RichTextBox
         }
         else
         {
-            List<Paragraph> paragraphs = new();
+            List<Paragraph> paragraphs = [];
             SpellCheck.IsEnabled = false;
             foreach (string line in text.Split("\r\n"))
             {
@@ -49,15 +48,17 @@ public class RTBox : RichTextBox
                 paragraph.Inlines.Add(line);
                 paragraphs.Add(paragraph);
             }
+
             Document.Blocks.AddRange(paragraphs);
         }
+
         UndoLimit = 0;
         UndoLimit = -1;
     }
 
     void SetTextWithLanguage(string text)
     {
-        List<Paragraph> paragraphs = new();
+        List<Paragraph> paragraphs = [];
         foreach (string line in text.Split("\r\n"))
         {
             Paragraph paragraph = new();
@@ -78,6 +79,7 @@ public class RTBox : RichTextBox
                         Language = XmlLanguage.GetLanguage("en-us")
                     });
                 }
+
                 if (word.Length - 1 != i)
                 {
                     paragraph.Inlines.Add(new Run(" ")
@@ -86,8 +88,10 @@ public class RTBox : RichTextBox
                     });
                 }
             }
+
             paragraphs.Add(paragraph);
         }
+
         Document.Blocks.AddRange(paragraphs);
     }
 
@@ -182,7 +186,7 @@ public class RTBox : RichTextBox
     }
 
     /// <summary>
-    /// Converts an int position back into a TextPointer position and places the caret there.
+    ///     Converts an int position back into a TextPointer position and places the caret there.
     /// </summary>
     void SetIntPosition(int intPosition)
     {
@@ -193,6 +197,7 @@ public class RTBox : RichTextBox
             {
                 currentPosition = currentPosition.GetNextInsertionPosition(LogicalDirection.Forward);
             }
+
             if (currentPosition == null)
             {
                 CaretPosition = CaretPosition.DocumentEnd;
@@ -222,6 +227,7 @@ public class RTBox : RichTextBox
                     PerformSpellCheck();
                     SetIntPosition(i);
                 }
+
                 e.Handled = true;
             }
             else if (e.Key == Key.X)
@@ -231,7 +237,7 @@ public class RTBox : RichTextBox
                     int i = GetIntPosition();
                     int idxDelLine = GetLineOfCursor();
 
-                    List<string> lines = GetText().Split("\r\n").ToList();
+                    List<string> lines = [.. GetText().Split("\r\n")];
 
                     Clipboard.SetText(lines.ElementAt(idxDelLine - 1));
 

@@ -11,31 +11,59 @@ namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 [Serializable]
 public class ParagraphPicture : Numbered, IParagraphData
 {
-    public string Type { get => "Picture"; }
+    Bitmap? bitmap;
+
+    [NonSerialized] ImageSource? bitmapImage;
 
     string data;
 
-    public string Data { get => data; set => SetPropertyDocument(ref data, value); }
-
     string description;
 
-    public string Description { get => description; set => SetPropertyDocument(ref description, value); }
+    public ParagraphPicture(string description, Bitmap bitmap)
+    {
+        this.bitmap = bitmap;
+        this.description = description;
+        data = description;
+    }
 
-    Bitmap? bitmap;
+    public ParagraphPicture()
+    {
+        bitmap = new(200, 200);
+        description = string.Empty;
+        data = description;
+    }
 
-    public Bitmap? Bitmap { get { return bitmap; } set { SetPropertyDocument(ref bitmap, value); ; bitmapImage = null; } }
-
-    [NonSerialized]
-    ImageSource? bitmapImage;
+    public Bitmap? Bitmap
+    {
+        get => bitmap;
+        set
+        {
+            SetPropertyDocument(ref bitmap, value);
+            bitmapImage = null;
+        }
+    }
 
     public ImageSource? BitmapImage
     {
         get => GetBitmapImage();
-        set
-        {
-            SetProperty(ref bitmapImage, value);
-        }
+        set => SetProperty(ref bitmapImage, value);
     }
+
+    public string Type => "Picture";
+
+    public string Data
+    {
+        get => data;
+        set => SetPropertyDocument(ref data, value);
+    }
+
+    public string Description
+    {
+        get => description;
+        set => SetPropertyDocument(ref description, value);
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Visible;
 
     public void UpdateBitmapImage()
     {
@@ -59,7 +87,7 @@ public class ParagraphPicture : Numbered, IParagraphData
                     bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                     bitmapImage.EndInit();
                     bitmapImage.Freeze();
-                    this.BitmapImage = bitmapImage;
+                    BitmapImage = bitmapImage;
                     return bitmapImage;
                 }
             }
@@ -84,24 +112,5 @@ public class ParagraphPicture : Numbered, IParagraphData
         {
             return bitmapImage;
         }
-    }
-
-    public Visibility DescriptionVisibility
-    {
-        get => Visibility.Visible;
-    }
-
-    public ParagraphPicture(string description, Bitmap bitmap)
-    {
-        this.bitmap = bitmap;
-        this.description = description;
-        data = description;
-    }
-
-    public ParagraphPicture()
-    {
-        bitmap = new Bitmap(200, 200);
-        description = string.Empty;
-        data = description;
     }
 }

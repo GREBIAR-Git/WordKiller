@@ -14,6 +14,7 @@ public class FontConverter : IValueConverter
         {
             return ScalingFontSize.Scale(parameter.ToString(), double.Parse(value.ToString()));
         }
+
         return value;
     }
 

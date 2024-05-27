@@ -5,6 +5,13 @@ namespace WordKiller.XAMLHelper;
 
 public static class TextBoxHelper
 {
+    public static readonly DependencyProperty SelectedTextProperty =
+        DependencyProperty.RegisterAttached(
+            "SelectedText",
+            typeof(string),
+            typeof(TextBoxHelper),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                SelectedTextChanged));
 
     public static string GetSelectedText(DependencyObject obj)
     {
@@ -16,17 +23,9 @@ public static class TextBoxHelper
         obj.SetValue(SelectedTextProperty, value);
     }
 
-    public static readonly DependencyProperty SelectedTextProperty =
-        DependencyProperty.RegisterAttached(
-            "SelectedText",
-            typeof(string),
-            typeof(TextBoxHelper),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SelectedTextChanged));
-
-    private static void SelectedTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+    static void SelectedTextChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
     {
-        TextBox tb = obj as TextBox;
-        if (tb != null)
+        if (obj is TextBox tb)
         {
             if (e.OldValue == null && e.NewValue != null)
             {
@@ -37,11 +36,9 @@ public static class TextBoxHelper
                 tb.SelectionChanged -= tb_SelectionChanged;
             }
 
-            string newValue = e.NewValue as string;
-
-            if (newValue != null && newValue != tb.SelectedText)
+            if (e.NewValue is string newValue && newValue != tb.SelectedText)
             {
-                tb.SelectedText = newValue as string;
+                tb.SelectedText = newValue;
             }
         }
     }
@@ -54,5 +51,4 @@ public static class TextBoxHelper
             SetSelectedText(tb, tb.SelectedText);
         }
     }
-
 }

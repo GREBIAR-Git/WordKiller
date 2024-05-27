@@ -7,52 +7,41 @@ public class SelectionBindingTextBox : TextBox
 {
     public static readonly DependencyProperty BindableSelectionStartProperty =
         DependencyProperty.Register(
-        "BindableSelectionStart",
-        typeof(int),
-        typeof(SelectionBindingTextBox),
-        new PropertyMetadata(OnBindableSelectionStartChanged));
+            "BindableSelectionStart",
+            typeof(int),
+            typeof(SelectionBindingTextBox),
+            new(OnBindableSelectionStartChanged));
 
     public static readonly DependencyProperty BindableSelectionLengthProperty =
         DependencyProperty.Register(
-        "BindableSelectionLength",
-        typeof(int),
-        typeof(SelectionBindingTextBox),
-        new PropertyMetadata(OnBindableSelectionLengthChanged));
+            "BindableSelectionLength",
+            typeof(int),
+            typeof(SelectionBindingTextBox),
+            new(OnBindableSelectionLengthChanged));
 
-    private bool changeFromUI;
+    bool changeFromUI;
 
-    public SelectionBindingTextBox() : base()
+    public SelectionBindingTextBox()
     {
         SelectionChanged += OnSelectionChanged;
     }
 
     public int BindableSelectionStart
     {
-        get
-        {
-            return (int)GetValue(BindableSelectionStartProperty);
-        }
+        get => (int)GetValue(BindableSelectionStartProperty);
 
-        set
-        {
-            SetValue(BindableSelectionStartProperty, value);
-        }
+        set => SetValue(BindableSelectionStartProperty, value);
     }
 
     public int BindableSelectionLength
     {
-        get
-        {
-            return (int)GetValue(BindableSelectionLengthProperty);
-        }
+        get => (int)GetValue(BindableSelectionLengthProperty);
 
-        set
-        {
-            SetValue(BindableSelectionLengthProperty, value);
-        }
+        set => SetValue(BindableSelectionLengthProperty, value);
     }
 
-    private static void OnBindableSelectionStartChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+    static void OnBindableSelectionStartChanged(DependencyObject dependencyObject,
+        DependencyPropertyChangedEventArgs args)
     {
         var textBox = dependencyObject as SelectionBindingTextBox;
 
@@ -67,7 +56,8 @@ public class SelectionBindingTextBox : TextBox
         }
     }
 
-    private static void OnBindableSelectionLengthChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+    static void OnBindableSelectionLengthChanged(DependencyObject dependencyObject,
+        DependencyPropertyChangedEventArgs args)
     {
         var textBox = dependencyObject as SelectionBindingTextBox;
 
@@ -82,7 +72,7 @@ public class SelectionBindingTextBox : TextBox
         }
     }
 
-    private void OnSelectionChanged(object sender, RoutedEventArgs e)
+    void OnSelectionChanged(object sender, RoutedEventArgs e)
     {
         if (BindableSelectionStart != SelectionStart)
         {

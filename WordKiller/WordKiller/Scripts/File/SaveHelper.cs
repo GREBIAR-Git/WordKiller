@@ -1,13 +1,12 @@
-﻿namespace WordKiller.Scripts;
+﻿namespace WordKiller.Scripts.File;
 
 public static class SaveHelper
 {
     public delegate void MethodContainer();
 
-    public static event MethodContainer Change;
-
     static bool needSave;
-    static public bool NeedSave
+
+    public static bool NeedSave
     {
         get => needSave;
         set
@@ -16,4 +15,6 @@ public static class SaveHelper
             Change();
         }
     }
+
+    public static event MethodContainer Change;
 }

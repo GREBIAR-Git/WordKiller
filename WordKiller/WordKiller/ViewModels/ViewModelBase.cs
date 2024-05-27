@@ -8,8 +8,7 @@ namespace WordKiller.ViewModels;
 [Serializable]
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
-    [field: NonSerialized]
-    public event PropertyChangedEventHandler PropertyChanged;
+    [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
     protected bool SetProperty<T>(ref T oldValue, T newValue, [CallerMemberName] string property = "")
     {
@@ -17,13 +16,13 @@ public abstract class ViewModelBase : INotifyPropertyChanged
         if (oldValue != null && newValue != null)
             if (oldValue is byte[] && newValue is byte[])
                 if ((oldValue as byte[]).Count() == (newValue as byte[]).Count())
-                    if ((newValue as byte[]).SequenceEqual((oldValue as byte[])))
+                    if ((newValue as byte[]).SequenceEqual(oldValue as byte[]))
                         return false;
         if (oldValue is not byte[] || newValue is not byte[])
             if (Equals(oldValue, newValue))
                 return false;
         oldValue = newValue;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        PropertyChanged?.Invoke(this, new(property));
         return true;
     }
 
@@ -31,7 +30,7 @@ public abstract class ViewModelBase : INotifyPropertyChanged
     {
         if (PropertyChanged != null)
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged(this, new(propertyName));
         }
     }
 }

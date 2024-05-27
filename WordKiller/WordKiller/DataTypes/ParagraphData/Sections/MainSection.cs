@@ -14,6 +14,7 @@ public class MainSection : SectionParagraphs
             {
                 return null;
             }
+
             SectionParagraphs sectionParagraphs1 = sectionParagraphs.Current(data);
             if (sectionParagraphs1 is null)
             {
@@ -24,6 +25,7 @@ public class MainSection : SectionParagraphs
                 return sectionParagraphs1;
             }
         }
+
         return null;
     }
 
@@ -35,6 +37,7 @@ public class MainSection : SectionParagraphs
             {
                 return section as IParagraphData;
             }
+
             if (paragraph is SectionParagraphs section1)
             {
                 IParagraphData? paragraphData = PrevLevel(section1, data);
@@ -44,6 +47,7 @@ public class MainSection : SectionParagraphs
                 }
             }
         }
+
         return null;
     }
 
@@ -53,7 +57,8 @@ public class MainSection : SectionParagraphs
         {
             InsertAfter(Paragraphs[1], data);
         }
-        else if (Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTitle || Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTaskSheet)
+        else if ((Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTitle) ||
+                 (Paragraphs.Count > 0 && Paragraphs[0] is ParagraphTaskSheet))
         {
             InsertAfter(Paragraphs[0], data);
         }
@@ -83,7 +88,8 @@ public class MainSection : SectionParagraphs
                 InsertBefore(Paragraphs[^2], data);
             }
         }
-        else if (Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphListOfReferences || Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphAppendix)
+        else if ((Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphListOfReferences) ||
+                 (Paragraphs.Count > 0 && Paragraphs[^1] is ParagraphAppendix))
         {
             if (Paragraphs.Count > 1 && Paragraphs[^2] is SectionParagraphs paragraph && data is not ParagraphH1)
             {
@@ -140,6 +146,7 @@ public class MainSection : SectionParagraphs
                 }
             }
         }
+
         return null;
     }
 }

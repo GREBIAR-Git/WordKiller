@@ -5,13 +5,15 @@ using System.IO;
 
 namespace WordKiller.Scripts;
 
-static class ConfigFile
+internal static class ConfigFile
 {
     public static void Open()
     {
         if (ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).HasFile)
         {
-            Process.Start("explorer.exe", Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath));
+            Process.Start("explorer.exe",
+                Path.GetDirectoryName(ConfigurationManager
+                    .OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath));
         }
     }
 
@@ -19,7 +21,8 @@ static class ConfigFile
     {
         if (ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).HasFile)
         {
-            FileInfo fi = new(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
+            FileInfo fi = new(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal)
+                .FilePath);
             fi.Delete();
         }
     }

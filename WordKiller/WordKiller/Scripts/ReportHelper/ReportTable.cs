@@ -20,10 +20,11 @@ public static class ReportTable
             {
                 DataCell(tr, dataTable.Columns, 0, dataTable.DataTable[i, f]);
             }
+
             dTable.Append(tr);
         }
 
-        var tableWidth = new TableWidth()
+        var tableWidth = new TableWidth
         {
             Width = "5000",
             Type = TableWidthUnitValues.Pct
@@ -32,12 +33,12 @@ public static class ReportTable
 
         EnumValue<BorderValues> borderValues = new(BorderValues.Single);
         TableBorders tableBorders = new(
-                             new TopBorder { Val = borderValues, Size = 4 },
-                             new BottomBorder { Val = borderValues, Size = 4 },
-                             new LeftBorder { Val = borderValues, Size = 4 },
-                             new RightBorder { Val = borderValues, Size = 4 },
-                             new InsideHorizontalBorder { Val = borderValues, Size = 4 },
-                             new InsideVerticalBorder { Val = borderValues, Size = 4 });
+            new TopBorder { Val = borderValues, Size = 4 },
+            new BottomBorder { Val = borderValues, Size = 4 },
+            new LeftBorder { Val = borderValues, Size = 4 },
+            new RightBorder { Val = borderValues, Size = 4 },
+            new InsideHorizontalBorder { Val = borderValues, Size = 4 },
+            new InsideVerticalBorder { Val = borderValues, Size = 4 });
 
         props.Append(tableBorders);
 
@@ -49,11 +50,11 @@ public static class ReportTable
         if (numberOfСolumns > idx)
         {
             TableCell tc = new();
-            tc.Append(new Paragraph(new Run(new Text() { Text = text, Space = SpaceProcessingModeValues.Preserve }))
+            tc.Append(new Paragraph(new Run(new Text { Text = text, Space = SpaceProcessingModeValues.Preserve }))
             {
-                ParagraphProperties = new ParagraphProperties()
+                ParagraphProperties = new()
                 {
-                    ParagraphStyleId = new ParagraphStyleId() { Val = "Таблица" }
+                    ParagraphStyleId = new() { Val = "Таблица" }
                 }
             });
             tc.Append(new TableCellProperties());

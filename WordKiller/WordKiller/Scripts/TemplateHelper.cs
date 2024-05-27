@@ -1,20 +1,20 @@
-﻿namespace WordKiller.Scripts
+﻿namespace WordKiller.Scripts;
+
+internal class TemplateHelper
 {
-    internal class TemplateHelper
+    public delegate void MethodContainer();
+
+    static bool needSave;
+
+    public static bool NeedSave
     {
-        public delegate void MethodContainer();
-
-        public static event MethodContainer Change;
-
-        static bool needSave;
-        static public bool NeedSave
+        get => needSave;
+        set
         {
-            get => needSave;
-            set
-            {
-                needSave = value;
-                Change();
-            }
+            needSave = value;
+            Change();
         }
     }
+
+    public static event MethodContainer Change;
 }

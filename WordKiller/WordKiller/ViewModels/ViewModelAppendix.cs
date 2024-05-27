@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WordKiller.Commands;
 using WordKiller.DataTypes.ParagraphData;
@@ -11,14 +10,33 @@ namespace WordKiller.ViewModels;
 [Serializable]
 public class ViewModelAppendix : MainSection
 {
-    IParagraphData? selected;
-    public IParagraphData? Selected { get => selected; set => SetPropertyDocument(ref selected, value); }
+    [NonSerialized] ICommand? add;
 
     int addIndex;
-    public int AddIndex { get => addIndex; set => SetPropertyDocument(ref addIndex, value); }
 
-    [NonSerialized]
-    ICommand? add;
+    [NonSerialized] ICommand? delete;
+
+    [NonSerialized] ICommand? resetAddIndex;
+
+    IParagraphData? selected;
+
+    public ViewModelAppendix()
+    {
+        addIndex = -1;
+    }
+
+    public IParagraphData? Selected
+    {
+        get => selected;
+        set => SetPropertyDocument(ref selected, value);
+    }
+
+    public int AddIndex
+    {
+        get => addIndex;
+        set => SetPropertyDocument(ref addIndex, value);
+    }
+
     public ICommand Add
     {
         get
@@ -41,36 +59,13 @@ public class ViewModelAppendix : MainSection
         }
     }
 
-    [NonSerialized]
-    ICommand? resetAddIndex;
-
     public ICommand ResetAddIndex
     {
-        get
-        {
-            return resetAddIndex ??= new RelayCommand(obj =>
-            {
-                AddIndex = -1;
-            });
-        }
+        get { return resetAddIndex ??= new RelayCommand(obj => { AddIndex = -1; }); }
     }
-
-    [NonSerialized]
-    ICommand? delete;
 
     public ICommand Delete
     {
-        get
-        {
-            return delete ??= new RelayCommand(obj =>
-            {
-                Paragraphs.Remove(Selected);
-            });
-        }
-    }
-
-    public ViewModelAppendix()
-    {
-        addIndex = -1;
+        get { return delete ??= new RelayCommand(obj => { Paragraphs.Remove(Selected); }); }
     }
 }

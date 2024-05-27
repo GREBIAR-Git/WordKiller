@@ -4,45 +4,36 @@ namespace WordKiller.Commands;
 
 public class NetworkCommans
 {
-    private ICommand createNetwork;
+    ICommand createNetwork;
+
+    ICommand joinNetwork;
+
+    ICommand leaveNetwork;
 
     public ICommand CreateNetwork
     {
         get
         {
             return createNetwork ??= new RelayCommand(
-            obj =>
-            {
-
-            });
+                obj => { });
         }
     }
-
-    private ICommand joinNetwork;
 
     public ICommand JoinNetwork
     {
         get
         {
             return joinNetwork ??= new RelayCommand(
-            obj =>
-            {
-
-            });
+                obj => { });
         }
     }
-
-    private ICommand leaveNetwork;
 
     public ICommand LeaveNetwork
     {
         get
         {
             return leaveNetwork ??= new RelayCommand(
-            obj =>
-            {
-
-            });
+                obj => { });
         }
     }
 }

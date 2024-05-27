@@ -1,30 +1,24 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WordKiller.Converters
+namespace WordKiller.Converters;
+
+internal class BoolToVisibility : IValueConverter
 {
-    internal class BoolToVisibility : IValueConverter
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        if (value is bool boolean)
         {
-            if (value is bool boolean)
-            {
-                if (boolean)
-                {
-                    return Visibility.Visible;
-                }
-                else
-                {
-                    return Visibility.Collapsed;
-                }
-            }
-            return null;
+            return boolean ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value;
-        }
+        return null;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value;
     }
 }

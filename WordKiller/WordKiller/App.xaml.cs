@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using WordKiller.Properties;
 using WordKiller.Scripts;
 using WordKiller.ViewModels;
 
@@ -12,7 +14,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         Association(e.Args);
-        UIHelper.SelectCulture(WordKiller.Properties.Settings.Default.Language);
+        UIHelper.SelectCulture(Settings.Default.Language);
 
         string[] args = e.Args;
         //args = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\1.wkr" };
@@ -21,12 +23,12 @@ public partial class App : Application
         mainWindow.Show();
     }
 
-    static async Task<ViewModelDocument> OpenFile(string[] args)
+    static async Task<ViewModelDocument> OpenFile(IReadOnlyList<string> args)
     {
         ViewModelDocument document = new();
-        if (args.Length > 0)
+        if (args.Count > 0)
         {
-            if (args[0].EndsWith(WordKiller.Properties.Settings.Default.Extension) && File.Exists(args[0]))
+            if (args[0].EndsWith(Settings.Default.Extension) && File.Exists(args[0]))
             {
                 await document.OpenAsync(args[0]);
             }
@@ -35,24 +37,24 @@ public partial class App : Application
                 UIHelper.ShowError("1");
             }
         }
+
         return document;
     }
 
-    static void Association(string[] args)
+    static void Association(IReadOnlyList<string> args)
     {
-        if (args.Length > 0 && FileAssociation.IsRunAsAdmin())
+        if (args.Count > 0 && FileAssociation.IsRunAsAdmin())
         {
             if (args[0] == "FileAssociation")
             {
                 FileAssociation.Associate("WordKiller");
-                System.Environment.Exit(0);
+                Environment.Exit(0);
             }
             else if (args[0] == "RemoveFileAssociation")
             {
                 FileAssociation.Remove();
-                System.Environment.Exit(0);
+                Environment.Exit(0);
             }
         }
     }
 }
-

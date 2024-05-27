@@ -14,6 +14,7 @@ public class SectionH1 : SectionParagraphs
             {
                 return null;
             }
+
             SectionParagraphs sectionParagraphs1 = sectionParagraphs.Current(data);
             if (sectionParagraphs1 is null)
             {
@@ -24,6 +25,7 @@ public class SectionH1 : SectionParagraphs
                 return sectionParagraphs1;
             }
         }
+
         return null;
     }
 }

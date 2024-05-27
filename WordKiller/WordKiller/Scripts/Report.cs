@@ -1,17 +1,20 @@
-﻿using DocumentFormat.OpenXml;
+﻿using System.IO;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
-using System.IO;
 using WordKiller.DataTypes;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
 using WordKiller.Models.Template;
 using WordKiller.Scripts.ReportHelper;
+using DocumentType = WordKiller.DataTypes.Enums.DocumentType;
+using Settings = WordKiller.Properties.Settings;
 
 namespace WordKiller.Scripts;
-class Report
+
+internal class Report
 {
     public static bool Create(DocumentData data, bool exportPDF, bool exportHTML)
     {
@@ -27,20 +30,20 @@ class Report
             try
             {
                 using (WordprocessingDocument doc =
-                WordprocessingDocument.Create(pathSave,
-                WordprocessingDocumentType.Document, true))
+                       WordprocessingDocument.Create(pathSave,
+                           WordprocessingDocumentType.Document, true))
                 {
                     MainDocumentPart main = doc.AddMainDocumentPart();
 
-                    main.Document = new Document();
+                    main.Document = new();
                     Body body = main.Document.AppendChild(new Body());
                     ReportStyles.Init(doc, data.Type);
                     int pageStartNumber = 1;
                     try
                     {
-                        if (data.Type != DataTypes.Enums.DocumentType.DefaultDocument && data.Properties.Title)
+                        if (data.Type != DocumentType.DefaultDocument && data.Properties.Title)
                         {
-                            foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+                            foreach (TemplateType templateType in Settings.Default.TemplateTypes)
                             {
                                 if (templateType.Type == data.Type)
                                 {
@@ -55,6 +58,7 @@ class Report
                                     }
                                 }
                             }
+
                             pageStartNumber++;
                         }
                         else
@@ -108,7 +112,8 @@ class Report
 
                     try
                     {
-                        ReportComplexObjects.ListOfReferencesPart(doc, data.ListOfReferences, data.Properties.ListOfReferences);
+                        ReportComplexObjects.ListOfReferencesPart(doc, data.ListOfReferences,
+                            data.Properties.ListOfReferences);
                     }
                     catch
                     {
@@ -128,7 +133,7 @@ class Report
 
                     if (data.Properties.PageNumbers)
                     {
-                        foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+                        foreach (TemplateType templateType in Settings.Default.TemplateTypes)
                         {
                             if (templateType.Type == data.Type)
                             {
@@ -144,14 +149,17 @@ class Report
                         }
                     }
                 }
+
                 if (exportHTML)
                 {
                     WkrExport.ToHTML(pathSave);
                 }
+
                 if (exportPDF)
                 {
                     WkrExport.ToPDF(pathSave);
                 }
+
                 return true;
             }
             catch (IOException)
@@ -180,13 +188,14 @@ class Report
                 {
                     text = paragraph.Data;
                 }
+
                 if (paragraph is ParagraphText)
                 {
                     ReportText.Text(doc, text, "Текст");
                 }
                 else if (paragraph is ParagraphList)
                 {
-                    if (DataTypes.Enums.DocumentType.VKR == data.Type)
+                    if (DocumentType.VKR == data.Type)
                     {
                         ReportList.CreateVKR(doc, text);
                     }
@@ -208,6 +217,7 @@ class Report
                         {
                             text = numbered.Number + text;
                         }
+
                         ReportText.Text(doc, text, "Раздел");
                     }
                     else if (paragraph is ParagraphH2)
@@ -216,6 +226,7 @@ class Report
                         {
                             text = numbered.Number + text;
                         }
+
                         ReportText.Text(doc, "\n" + text, "Подраздел");
                     }
 
@@ -226,6 +237,7 @@ class Report
                         {
                             ReportImage.Create(doc, id, picture.Bitmap);
                         }
+
                         text = "Рисунок " + numbered.Number + " – " + paragraph.Description;
                         ReportText.Text(doc, text, "Картинка");
                     }
@@ -249,12 +261,14 @@ class Report
                     }
                     else
                     {
-                        if (paragraph is not ParagraphTitle && paragraph is not ParagraphTaskSheet && paragraph is not ParagraphListOfReferences && paragraph is not ParagraphAppendix)
+                        if (paragraph is not ParagraphTitle && paragraph is not ParagraphTaskSheet &&
+                            paragraph is not ParagraphListOfReferences && paragraph is not ParagraphAppendix)
                         {
                             Paragraph(paragraph);
                         }
                     }
                 }
+
                 if (section is ParagraphH1)
                 {
                     ReportExtras.PageBreak(doc);

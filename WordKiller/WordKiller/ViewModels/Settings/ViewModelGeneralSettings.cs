@@ -7,19 +7,38 @@ namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelGeneralSettings : ViewModelBase
 {
-    public General Commands { get; set; }
+    bool associationWKR;
+
+    bool autoHeader;
+
+
+    bool closeWindow;
+
+    int encodingIndex;
 
     bool? spellCheckRTB;
+
+    bool syntaxChecking;
+
+    public ViewModelGeneralSettings()
+    {
+        encodingIndex = Properties.Settings.Default.NumberEncryption;
+        closeWindow = Properties.Settings.Default.CloseWindow;
+        syntaxChecking = Properties.Settings.Default.SyntaxChecking;
+        autoHeader = Properties.Settings.Default.AutoHeader;
+        associationWKR = FileAssociation.IsAssociated;
+        spellCheckRTB = Properties.Settings.Default.SyntaxChecking;
+        Commands = new();
+    }
+
+    public General Commands { get; set; }
+
     public bool? SpellCheckRTB
     {
         get => spellCheckRTB;
-        set
-        {
-            SetProperty(ref spellCheckRTB, value);
-        }
+        set => SetProperty(ref spellCheckRTB, value);
     }
 
-    bool associationWKR;
     public bool AssociationWKR
     {
         get => associationWKR;
@@ -82,7 +101,6 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-    bool syntaxChecking;
     public bool SyntaxChecking
     {
         get => syntaxChecking;
@@ -95,7 +113,6 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-    int encodingIndex;
     public int EncodingIndex
     {
         get => encodingIndex;
@@ -107,8 +124,6 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-
-    bool closeWindow;
     public bool CloseWindow
     {
         get => closeWindow;
@@ -120,7 +135,6 @@ public class ViewModelGeneralSettings : ViewModelBase
         }
     }
 
-    bool autoHeader;
     public bool AutoHeader
     {
         get => autoHeader;
@@ -130,16 +144,5 @@ public class ViewModelGeneralSettings : ViewModelBase
             Properties.Settings.Default.AutoHeader = AutoHeader;
             Properties.Settings.Default.Save();
         }
-    }
-
-    public ViewModelGeneralSettings()
-    {
-        encodingIndex = Properties.Settings.Default.NumberEncryption;
-        closeWindow = Properties.Settings.Default.CloseWindow;
-        syntaxChecking = Properties.Settings.Default.SyntaxChecking;
-        autoHeader = Properties.Settings.Default.AutoHeader;
-        associationWKR = FileAssociation.IsAssociated;
-        spellCheckRTB = Properties.Settings.Default.SyntaxChecking;
-        Commands = new();
     }
 }

@@ -8,11 +8,17 @@ public class ParagraphAppendix : IParagraphData
 {
     public string Type => "Appendix";
 
-    public string Data { get => "Appendix"; set => throw new NotImplementedException(); }
-    public string Description { get => "Appendix"; set => throw new NotImplementedException(); }
-
-    public Visibility DescriptionVisibility
+    public string Data
     {
-        get => Visibility.Collapsed;
+        get => "Appendix";
+        set => throw new NotImplementedException();
     }
+
+    public string Description
+    {
+        get => "Appendix";
+        set => throw new NotImplementedException();
+    }
+
+    public Visibility DescriptionVisibility => Visibility.Collapsed;
 }

@@ -13,15 +13,9 @@ internal class FontConverterMax : IValueConverter
         {
             double scale = ScalingFontSize.Scale("14", double.Parse(value.ToString()));
             double max = double.Parse(parameter.ToString());
-            if (scale > max)
-            {
-                return max;
-            }
-            else
-            {
-                return scale;
-            }
+            return scale > max ? max : scale;
         }
+
         return value;
     }
 
