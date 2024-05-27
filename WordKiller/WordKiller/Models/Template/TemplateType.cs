@@ -24,17 +24,17 @@ public class TemplateType
         Type = type;
         Templates =
         [
-            new("Текст", justify: JustificationValues.Both, lineSpacing: 1.5f, firstLine: 1.25f),
-            new("Раздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f,
+            new("Текст", justify: "both", lineSpacing: 1.5f, firstLine: 1.25f),
+            new("Раздел", justify: "center", bold: true, after: 8, lineSpacing: 1.5f,
                 firstLine: 1.5f),
 
-            new("Подраздел", justify: JustificationValues.Center, bold: true, after: 8, lineSpacing: 1.5f,
+            new("Подраздел", justify: "center", bold: true, after: 8, lineSpacing: 1.5f,
                 firstLine: 1.5f),
 
-            new("Список", justify: JustificationValues.Both, lineSpacing: 1.5f, left: 1.25f),
-            new("Картинка", justify: JustificationValues.Center, after: 8, lineSpacing: 1.5f),
-            new("ТекстКТаблице", justify: JustificationValues.Both, before: 8, lineSpacing: 1.5f),
-            new("Таблица", justify: JustificationValues.Both, after: 6, lineSpacing: 1f),
+            new("Список", justify: "both", lineSpacing: 1.5f, left: 1.25f),
+            new("Картинка", justify: "center", after: 8, lineSpacing: 1.5f),
+            new("ТекстКТаблице", justify: "both", before: 8, lineSpacing: 1.5f),
+            new("Таблица", justify: "both", after: 6, lineSpacing: 1f),
             new("Код", 12)
         ];
     }
@@ -45,6 +45,15 @@ public class TemplateType
         startPageNumber = 0;
         Templates = [];
     }
+
+    [XmlIgnore]
+    public static List<string> Alignments { get; set; } =
+    [
+        "left",
+        "right",
+        "center",
+        "both"
+    ];
 
     public DocumentType Type { get; set; }
 

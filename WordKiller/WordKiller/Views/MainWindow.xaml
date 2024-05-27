@@ -13,6 +13,7 @@
         xmlns:rtb="clr-namespace:WordKiller.Scripts"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" Closing="Win_Closing">
     <i:Interaction.Triggers>
@@ -1588,7 +1589,36 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" Header="{DynamicResource Name}" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource FontSize}" Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
-                                        <DataGridComboBoxColumn Header="{DynamicResource Alignment}"  ItemsSource="{Binding Source={StaticResource typeDocument}}" SelectedItemBinding="{Binding Justify, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridComboBoxColumn Header="{DynamicResource Alignment}" SelectedItemBinding="{Binding Justify, UpdateSourceTrigger=PropertyChanged}" Width="20*">
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="ItemsSource">
+                                                        <Setter.Value>
+                                                            <x:Array Type="{x:Type sys:String}">
+                                                                <sys:String>left</sys:String>
+                                                                <sys:String>right</sys:String>
+                                                                <sys:String>center</sys:String>
+                                                                <sys:String>both</sys:String>
+                                                            </x:Array>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="ItemsSource">
+                                                        <Setter.Value>
+                                                            <x:Array Type="{x:Type sys:String}">
+                                                                <sys:String>left</sys:String>
+                                                                <sys:String>right</sys:String>
+                                                                <sys:String>center</sys:String>
+                                                                <sys:String>both</sys:String>
+                                                            </x:Array>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                        </DataGridComboBoxColumn>
                                         <DataGridCheckBoxColumn Header="{DynamicResource Bold}" Binding="{Binding Bold, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource BeforeS}" Binding="{Binding Before, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource AfterS}" Binding="{Binding After, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
