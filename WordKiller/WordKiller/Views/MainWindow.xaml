@@ -13,6 +13,7 @@
         xmlns:rtb="clr-namespace:WordKiller.Scripts"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" Closing="Win_Closing">
     <i:Interaction.Triggers>
@@ -40,19 +41,6 @@
         <KeyBinding Command="{Binding Quit}" Key="Q" Modifiers="Control"/>
         <KeyBinding Command="{Binding Document.Deselect}" Key="Esc"/>
     </Window.InputBindings>
-    <Window.Resources>
-        <DataTemplate x:Key="CustomTemplate">
-            <Border Padding="3" Background="Purple">
-                <TextBox Text="{Binding Path=Value}" />
-            </Border>
-        </DataTemplate>
-        <ObjectDataProvider x:Key="typeDocument" MethodName="GetValues"
-                            ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="td:JustificationValues"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
     <Grid x:Name="root" Background="{Binding Path=Settings.Personalization.MainColor}">
         <Grid Visibility="{Binding Path=VisibilityMainPanel}">
             <Grid.RowDefinitions>
@@ -130,12 +118,12 @@
                 <Button HorizontalAlignment="Right" ToolTip="{DynamicResource Settings}" Style="{StaticResource ButtonMI}" Command="{Binding Path=OpenSettings}">
                     <Image Margin="4" Source="/Resources/Pictures/Settings.png"/>
                 </Button>
+                <Viewbox Margin="0 10 52 0" Visibility="{Binding Document.File.VisibilityNeedSaveLogo}"  HorizontalAlignment="Right" >
+                    <TextBlock ToolTip="{DynamicResource ChangesMade}" Text="*" Style="{StaticResource TextBlock}"/>
+                </Viewbox>
                 <Grid Margin="0 0 44 0"  HorizontalAlignment="Right" Visibility="{Binding Document.File.VisibilitySaveLogo}">
                     <Image Margin="6" ToolTip="{DynamicResource Saved}" Source="/Resources/Pictures/512x512.png"/>
                 </Grid>
-                <Viewbox Margin="0 10 48 0" Visibility="{Binding Document.File.VisibilityNeedSaveLogo}"  HorizontalAlignment="Right" >
-                    <TextBlock ToolTip="{DynamicResource ChangesMade}" Text="*" Style="{StaticResource TextBlock}"/>
-                </Viewbox>
             </Grid>
             <Grid Grid.Row="1" Grid.Column="0" Background="{Binding Path=Settings.Personalization.MainColor}">
                 <Grid.ColumnDefinitions>
@@ -1588,7 +1576,36 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn IsReadOnly="True" Header="{DynamicResource Name}" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource FontSize}" Binding="{Binding Size, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
-                                        <DataGridComboBoxColumn Header="{DynamicResource Alignment}"  ItemsSource="{Binding Source={StaticResource typeDocument}}" SelectedItemBinding="{Binding Justify, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
+                                        <DataGridComboBoxColumn Header="{DynamicResource Alignment}" SelectedItemBinding="{Binding Justify, UpdateSourceTrigger=PropertyChanged}" Width="20*">
+                                            <DataGridComboBoxColumn.ElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="ItemsSource">
+                                                        <Setter.Value>
+                                                            <x:Array Type="{x:Type sys:String}">
+                                                                <sys:String>left</sys:String>
+                                                                <sys:String>right</sys:String>
+                                                                <sys:String>center</sys:String>
+                                                                <sys:String>both</sys:String>
+                                                            </x:Array>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridComboBoxColumn.ElementStyle>
+                                            <DataGridComboBoxColumn.EditingElementStyle>
+                                                <Style TargetType="ComboBox">
+                                                    <Setter Property="ItemsSource">
+                                                        <Setter.Value>
+                                                            <x:Array Type="{x:Type sys:String}">
+                                                                <sys:String>left</sys:String>
+                                                                <sys:String>right</sys:String>
+                                                                <sys:String>center</sys:String>
+                                                                <sys:String>both</sys:String>
+                                                            </x:Array>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DataGridComboBoxColumn.EditingElementStyle>
+                                        </DataGridComboBoxColumn>
                                         <DataGridCheckBoxColumn Header="{DynamicResource Bold}" Binding="{Binding Bold, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource BeforeS}" Binding="{Binding Before, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>
                                         <DataGridTextColumn Header="{DynamicResource AfterS}" Binding="{Binding After, UpdateSourceTrigger=PropertyChanged}" Width="20*"/>

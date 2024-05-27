@@ -8,7 +8,7 @@ namespace WordKiller.Scripts.ReportHelper;
 public static class ReportText
 {
     public static void Text(WordprocessingDocument doc, string text, int size = 14,
-        JustificationValues justify = JustificationValues.Left, bool bold = false,
+        string justify = "left", bool bold = false,
         int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0,
         bool caps = false, bool tabs = false)
     {
@@ -23,7 +23,7 @@ public static class ReportText
 
             paragraph.ParagraphProperties.AddChild(new Justification
             {
-                Val = justify
+                Val = new JustificationValues(justify)
             });
 
             if (text.Contains('\t') && tabs)

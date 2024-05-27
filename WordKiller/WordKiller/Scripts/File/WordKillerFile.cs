@@ -172,14 +172,13 @@ public class WordKillerFile : ViewModelBase
         {
             if (!NeedSave(data))
             {
-                return null;
+                return data;
             }
         }
 
         savePath = string.Empty;
-        data = new();
         SaveHelper.NeedSave = true;
-        return data;
+        return new();
     }
 
     public bool NeedSave(DocumentData data)

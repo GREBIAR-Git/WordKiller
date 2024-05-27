@@ -21,7 +21,7 @@ public static class ReportStyles
 
 
         styles.Append(
-            Init("EmptyLines", justify: JustificationValues.Center));
+            Init("EmptyLines", justify: "center"));
 
         foreach (TemplateType templateType in Settings.Default.TemplateTypes)
         {
@@ -37,11 +37,11 @@ public static class ReportStyles
                         styles.Append(Init(template.Name + "Приложение", template.Size, template.Justify, template.Bold,
                             template.Before, template.After, template.LineSpacing, template.Left, template.Right, 0f,
                             true, outlineLevel: 1));
-                        styles.Append(Init(template.Name + "ПриложениеВКР", template.Size, JustificationValues.Right,
+                        styles.Append(Init(template.Name + "ПриложениеВКР", template.Size, "right",
                             template.Bold, template.Before, template.After, template.LineSpacing, template.Left,
                             template.Right, outlineLevel: 1));
                         styles.Append(Init(template.Name + "ПриложениеВКРНазвание", template.Size,
-                            JustificationValues.Left, template.Bold, template.Before, template.After,
+                            "left", template.Bold, template.Before, template.After,
                             template.LineSpacing, template.Left, template.Right));
                     }
                     else if (template.Name == "Подраздел")
@@ -68,7 +68,7 @@ public static class ReportStyles
     }
 
     public static Style Init(string name, int size = 14,
-        JustificationValues justify = JustificationValues.Left, bool bold = false,
+        string justify = "left", bool bold = false,
         int before = 0, int after = 0, float multiplier = 1, float left = 0, float right = 0, float firstLine = 0,
         bool caps = false, float hanging = 0, int outlineLevel = 0)
     {
@@ -108,7 +108,7 @@ public static class ReportStyles
         ParagraphProperties paragraphProperties = new();
         paragraphProperties.AddChild(new Justification
         {
-            Val = justify
+            Val = new JustificationValues(justify)
         });
 
         if (outlineLevel != 0)

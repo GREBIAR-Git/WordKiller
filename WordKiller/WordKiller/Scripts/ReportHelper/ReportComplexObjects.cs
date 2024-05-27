@@ -126,13 +126,13 @@ public static class ReportComplexObjects
     static void LabPra(WordprocessingDocument doc, string type, ViewModelTitle title)
     {
         string text = "ОТЧЁТ";
-        ReportText.Text(doc, text, 16, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 16, "center", true);
         text = "По " + type + " работе №" + title.Number;
-        ReportText.Text(doc, text, 16, JustificationValues.Center, after: 10);
+        ReportText.Text(doc, text, 16, "center", after: 10);
         text = "на тему: «" + title.Theme + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "по дисциплине: «" + title.Discipline + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         ReportExtras.EmptyLines(doc, 8);
         if (title.OnePerformed())
         {
@@ -160,7 +160,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text);
 
         text = "Дата: «____» __________ " + SpaceForYear(Settings.Default.Year) + "г.";
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, justify: "right");
 
         ReportExtras.EmptyLines(doc, 8);
     }
@@ -185,7 +185,7 @@ public static class ReportComplexObjects
             text = "КУРСОВОЙ ПРОЕКТ";
         }
 
-        ReportText.Text(doc, text, justify: JustificationValues.Center, bold: true);
+        ReportText.Text(doc, text, justify: "center", bold: true);
 
         ReportExtras.EmptyLines(doc, 1);
 
@@ -222,10 +222,10 @@ public static class ReportComplexObjects
     static void ControlWork(WordprocessingDocument doc, ViewModelTitle title)
     {
         string text = "Контрольная работа";
-        ReportText.Text(doc, text, 16, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 16, "center", true);
 
         text = "по дисциплине: «" + title.Discipline + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
 
         ReportExtras.EmptyLines(doc, 10);
 
@@ -256,7 +256,7 @@ public static class ReportComplexObjects
         ReportText.Text(doc, text);
 
         text = "Дата: «____» __________ " + SpaceForYear(Settings.Default.Year) + "г.";
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, justify: "right");
 
         ReportExtras.EmptyLines(doc, 9);
     }
@@ -266,9 +266,9 @@ public static class ReportComplexObjects
         ReportExtras.EmptyLines(doc, 1);
 
         string text = "Реферат по дисциплине: «" + title.Discipline + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "Тема: «" + title.Theme + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         ReportExtras.EmptyLines(doc, 16);
 
         if (title.OnePerformed())
@@ -281,9 +281,9 @@ public static class ReportComplexObjects
         }
 
         text += Settings.Default.Group;
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, justify: "right");
         text = title.AllPerformed();
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, "right");
         string cathedra = title.Cathedra;
         if (!string.IsNullOrWhiteSpace(cathedra))
         {
@@ -304,9 +304,9 @@ public static class ReportComplexObjects
             text = "Проверил: " + title.Rank + " кафедры " + cathedra;
         }
 
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, justify: "right");
         text = title.Professor;
-        ReportText.Text(doc, text, justify: JustificationValues.Right);
+        ReportText.Text(doc, text, justify: "right");
 
         ReportExtras.EmptyLines(doc, 6);
     }
@@ -314,27 +314,27 @@ public static class ReportComplexObjects
     static void ProductionPractice(WordprocessingDocument doc, ViewModelTitle title)
     {
         string text = "Федеральное государственное бюджетное образовательное учреждение высшего образования";
-        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 12, "center", true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = "«ОРЛОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ ИМЕНИ И.С. ТУРГЕНЕВА»";
-        ReportText.Text(doc, text, 12, JustificationValues.Center, true, caps: true);
+        ReportText.Text(doc, text, 12, "center", true, caps: true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = title.Faculty;
-        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 12, "center", true);
 
         ReportExtras.EmptyLines(doc, 1);
 
         text = title.Cathedra;
-        ReportText.Text(doc, text, 12, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 12, "center", true);
 
         ReportExtras.EmptyLines(doc, 6);
 
         text = "ОТЧЁТ";
-        ReportText.Text(doc, text, 14, JustificationValues.Center, true);
+        ReportText.Text(doc, text, 14, "center", true);
 
         string type;
         if (title.Production)
@@ -347,7 +347,7 @@ public static class ReportComplexObjects
         }
 
         text = "по " + type + " практике";
-        ReportText.Text(doc, text, 14, JustificationValues.Center);
+        ReportText.Text(doc, text, 14, "center");
 
         ReportExtras.EmptyLines(doc, 3);
 
@@ -393,16 +393,16 @@ public static class ReportComplexObjects
     {
         ReportExtras.EmptyLines(doc, 2);
         string text = "ВЫПУСКНАЯ КВАЛИФИКАЦИОННАЯ РАБОТА";
-        ReportText.Text(doc, text, justify: JustificationValues.Center, caps: true, multiplier: 1.5f);
+        ReportText.Text(doc, text, justify: "center", caps: true, multiplier: 1.5f);
 
         text = "по направлению подготовки ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
 
         text = Settings.Default.Direction;
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
 
         text = "Направленность (профиль) " + title.Direction;
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         ReportExtras.EmptyLines(doc, 1);
 
         User performed = title.FirstPerformed();
@@ -420,10 +420,10 @@ public static class ReportComplexObjects
         ReportExtras.EmptyLines(doc, 2);
 
         text = "Тема выпускной квалификационной работы";
-        ReportText.Text(doc, text, justify: JustificationValues.Center, after: 10);
+        ReportText.Text(doc, text, justify: "center", after: 10);
 
         text = "«" + title.Theme + "»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center, after: 10);
+        ReportText.Text(doc, text, justify: "center", after: 10);
 
         ReportExtras.EmptyLines(doc, 2);
 
@@ -481,28 +481,28 @@ public static class ReportComplexObjects
     static void Ministry(WordprocessingDocument doc, string faculty)
     {
         string text = "МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "РОССИЙСКОЙ ФЕДЕРАЦИИ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ ВЫСШЕГО ОБРАЗОВАНИЯ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "«ОРЛОВСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         text = "ИМЕНИ И.С.ТУРГЕНЕВА»";
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         ReportExtras.EmptyLines(doc, 2);
 
         text = faculty;
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
         ReportExtras.EmptyLines(doc, 3);
     }
 
     static void Orel(WordprocessingDocument doc)
     {
         string text = "Орел, " + SpaceForYear(Settings.Default.Year);
-        ReportText.Text(doc, text, justify: JustificationValues.Center);
+        ReportText.Text(doc, text, justify: "center");
     }
 
     static string SpaceForYear(string year, char spaceCharacter = '_')
@@ -547,7 +547,7 @@ public static class ReportComplexObjects
             ReportText.Text(doc, text, left: 9.5f);
             ReportExtras.EmptyLines(doc, 2);
             text = "ЗАДАНИЕ";
-            ReportText.Text(doc, text, 16, JustificationValues.Center, true);
+            ReportText.Text(doc, text, 16, "center", true);
             string type = string.Empty;
             if (title.Project)
             {
@@ -560,7 +560,7 @@ public static class ReportComplexObjects
                 type = "курсовой работы";
             }
 
-            ReportText.Text(doc, text, 14, JustificationValues.Center, true, multiplier: 2);
+            ReportText.Text(doc, text, 14, "center", true, multiplier: 2);
             text = "по дисциплине «" + title.Discipline + "»";
             ReportText.Text(doc, text, multiplier: 2);
             ReportExtras.EmptyLines(doc, 1);

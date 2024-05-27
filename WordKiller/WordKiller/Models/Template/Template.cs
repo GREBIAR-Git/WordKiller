@@ -1,12 +1,11 @@
 ﻿using System;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace WordKiller.Models.Template;
 
 [Serializable]
 public class Template
 {
-    public Template(string name, int size = 14, JustificationValues justify = JustificationValues.Left,
+    public Template(string name, int size = 14, string justify = "left",
         bool bold = false, int before = 0, int after = 0, float lineSpacing = 1, float left = 0, float right = 0,
         float firstLine = 0)
     {
@@ -26,7 +25,7 @@ public class Template
     {
         Name = string.Empty;
         Size = 14;
-        Justify = JustificationValues.Left;
+        Justify = "left";
         Bold = false;
         Before = 0;
         After = 0;
@@ -36,9 +35,10 @@ public class Template
         FirstLine = 0;
     }
 
+
     public string Name { get; set; }
     public int Size { get; set; }
-    public JustificationValues Justify { get; set; }
+    public string Justify { get; set; }
     public bool Bold { get; set; }
     public int Before { get; set; }
     public int After { get; set; }
