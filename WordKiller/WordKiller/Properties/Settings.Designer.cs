@@ -61,12 +61,12 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Орловский Государственный университет имени И.С. Тургенева")]
-        public string Universitet {
+        public string University {
             get {
-                return ((string)(this["Universitet"]));
+                return ((string)(this["University"]));
             }
             set {
-                this["Universitet"] = value;
+                this["University"] = value;
             }
         }
         

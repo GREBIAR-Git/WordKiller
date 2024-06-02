@@ -75,14 +75,14 @@
     <system:String x:Key="ListSourcesUsed">Спіс выкарыстаных крыніц</system:String>
     <system:String x:Key="Book">Кніга</system:String>
     <system:String x:Key="ElectronicResources">Электронны рэсурс</system:String>
-    <system:String x:Key="Autors">Аўтар</system:String>
+    <system:String x:Key="Authors">Аўтар</system:String>
     <system:String x:Key="Name">Загаловак</system:String>
     <system:String x:Key="Publication">Выданне</system:String>
     <system:String x:Key="Page">Старонка</system:String>
     <system:String x:Key="Url">Спасылка</system:String>
     <system:String x:Key="CirculationDate">Дата звароту</system:String>
 
-    <system:String x:Key="DeleteСurrent">Выдаліць бягучы</system:String>
+    <system:String x:Key="DeleteCurrent">Выдаліць бягучы</system:String>
     <system:String x:Key="FirstPage">Першая старонка ліста заданні</system:String>
     <system:String x:Key="SecondPage">Другая старонка ліста заданні</system:String>
     
@@ -91,7 +91,7 @@
     <system:String x:Key="Unidentified">Ня вызначана</system:String>
     <system:String x:Key="NotFound">Не знойдзены</system:String>
     <system:String x:Key="ForPicture">Для малюнка</system:String>
-    <system:String x:Key="ForСode">Для кода</system:String>
+    <system:String x:Key="ForCode">Для кода</system:String>
 
     <system:String x:Key="Columns">Стоўбцы: </system:String>
     <system:String x:Key="Rows">Шэрагі: </system:String>
@@ -130,8 +130,8 @@
 
     <system:String x:Key="ByDefault">Па змаўчанні</system:String>
     <system:String x:Key="MainColor">Асноўны колер праграмы</system:String>
-    <system:String x:Key="ComplementaryСolor">Дадатковы колер праграмы</system:String>
-    <system:String x:Key="AlternativeСolor">Альтэрнатыўны колер колеру</system:String>
+    <system:String x:Key="ComplementaryColor">Дадатковы колер праграмы</system:String>
+    <system:String x:Key="AlternativeColor">Альтэрнатыўны колер колеру</system:String>
     <system:String x:Key="HoverColor">Колер пры навядзенні</system:String>
     <system:String x:Key="ActiveColor">Колер, калі аб'ект актыўны</system:String>
     <system:String x:Key="FontSize">Памер шрыфта</system:String>
@@ -142,9 +142,9 @@
     <system:String x:Key="FirstName">Імя</system:String>
     <system:String x:Key="LastName">Прозвішча</system:String>
     <system:String x:Key="MiddleName">Імя па бацьку</system:String>
-    <system:String x:Key="Universitet">Інстытут</system:String>
+    <system:String x:Key="University">Інстытут</system:String>
     <system:String x:Key="Faculty">Факультэт</system:String>
-    <system:String x:Key="Cours">Ну</system:String>
+    <system:String x:Key="Course">Ну</system:String>
     <system:String x:Key="Group">Група</system:String>
     <system:String x:Key="Shifr">Cipher</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>

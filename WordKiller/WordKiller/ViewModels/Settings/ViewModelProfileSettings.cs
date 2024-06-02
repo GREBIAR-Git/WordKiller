@@ -15,9 +15,9 @@ public class ViewModelProfileSettings : ViewModelBase
 
     bool autoInput;
 
-    string cours;
+    string course;
 
-    ObservableCollection<string> coursItems;
+    ObservableCollection<string> courseItems;
 
     string direction;
 
@@ -32,11 +32,11 @@ public class ViewModelProfileSettings : ViewModelBase
     ObservableCollection<string> groupItems;
     int selectedCategory;
 
-    string universitet;
+    string university;
 
-    ObservableCollection<string> universitetItems;
+    ObservableCollection<string> universityItems;
 
-    ICommand? updateCours;
+    ICommand? updateCourse;
 
     ICommand? updateFaculty;
 
@@ -58,19 +58,19 @@ public class ViewModelProfileSettings : ViewModelBase
 
     public ViewModelProfileSettings()
     {
-        UniversitetItems = [];
+        UniversityItems = [];
         FacultyItems = [];
-        CoursItems = [];
+        CourseItems = [];
         GroupItems = [];
         AutoInput = Properties.Settings.Default.AutoInput;
         VisibitityCategoryUsers = Visibility.Collapsed;
         Users = Properties.Settings.Default.Users;
         Users.CollectionChanged += DataGrid_CollectionChanged;
         Year = Properties.Settings.Default.Year;
-        UniversitetItems.Add("Орловский Государственный университет имени И.С. Тургенева");
-        Universitet = Properties.Settings.Default.Universitet;
+        UniversityItems.Add("Орловский Государственный университет имени И.С. Тургенева");
+        University = Properties.Settings.Default.University;
         Faculty = Properties.Settings.Default.Faculty;
-        Cours = Properties.Settings.Default.Course;
+        Course = Properties.Settings.Default.Course;
         Group = Properties.Settings.Default.Group;
         Direction = Properties.Settings.Default.Direction;
     }
@@ -197,18 +197,18 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    public string Universitet
+    public string University
     {
-        get => universitet;
+        get => university;
         set
         {
-            SetProperty(ref universitet, value);
+            SetProperty(ref university, value);
             if (!AutoInput)
             {
                 UpdateFaculty.Execute(null);
             }
 
-            Properties.Settings.Default.Universitet = universitet;
+            Properties.Settings.Default.University = university;
             Properties.Settings.Default.Save();
         }
     }
@@ -221,7 +221,7 @@ public class ViewModelProfileSettings : ViewModelBase
             SetProperty(ref faculty, value);
             if (!AutoInput)
             {
-                UpdateCours.Execute(null);
+                UpdateCourse.Execute(null);
             }
 
             Properties.Settings.Default.Faculty = faculty;
@@ -229,18 +229,18 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    public string Cours
+    public string Course
     {
-        get => cours;
+        get => course;
         set
         {
-            SetProperty(ref cours, value);
+            SetProperty(ref course, value);
             if (!AutoInput)
             {
                 UpdateGroup.Execute(null);
             }
 
-            Properties.Settings.Default.Course = cours;
+            Properties.Settings.Default.Course = course;
             Properties.Settings.Default.Save();
         }
     }
@@ -250,10 +250,10 @@ public class ViewModelProfileSettings : ViewModelBase
         get { return updateYear ??= new RelayCommand(obj => { Year = DateTime.Today.Year.ToString(); }); }
     }
 
-    public ObservableCollection<string> UniversitetItems
+    public ObservableCollection<string> UniversityItems
     {
-        get => universitetItems;
-        set => SetProperty(ref universitetItems, value);
+        get => universityItems;
+        set => SetProperty(ref universityItems, value);
     }
 
     public ObservableCollection<string> FacultyItems
@@ -262,10 +262,10 @@ public class ViewModelProfileSettings : ViewModelBase
         set => SetProperty(ref facultyItems, value);
     }
 
-    public ObservableCollection<string> CoursItems
+    public ObservableCollection<string> CourseItems
     {
-        get => coursItems;
-        set => SetProperty(ref coursItems, value);
+        get => courseItems;
+        set => SetProperty(ref courseItems, value);
     }
 
     public ObservableCollection<string> GroupItems
@@ -282,7 +282,7 @@ public class ViewModelProfileSettings : ViewModelBase
             {
                 OrelUniverAPI.Result<Division>? result = await OrelUniverAPI.GetDivisionsForStudentsAsync();
                 FacultyItems.Clear();
-                CoursItems.Clear();
+                CourseItems.Clear();
                 GroupItems.Clear();
                 if (GoodResponse(result))
                 {
@@ -295,13 +295,13 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    public ICommand UpdateCours
+    public ICommand UpdateCourse
     {
         get
         {
-            return updateCours ??= new RelayCommand(async obj =>
+            return updateCourse ??= new RelayCommand(async obj =>
             {
-                CoursItems.Clear();
+                CourseItems.Clear();
                 GroupItems.Clear();
                 OrelUniverAPI.Result<Division>? facylty = await OrelUniverAPI.GetDivisionsForStudentsAsync();
                 if (GoodResponse(facylty))
@@ -314,7 +314,7 @@ public class ViewModelProfileSettings : ViewModelBase
                                 await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString()); //
                             foreach (Cours cours in result.Response)
                             {
-                                CoursItems.Add(cours.Course);
+                                CourseItems.Add(cours.Course);
                             }
 
                             break;
@@ -343,7 +343,7 @@ public class ViewModelProfileSettings : ViewModelBase
                                 await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());
                             foreach (Cours cours in result.Response)
                             {
-                                if (cours.Course == Cours)
+                                if (cours.Course == Course)
                                 {
                                     OrelUniverAPI.Result<Group>? groups =
                                         await OrelUniverAPI.ScheduleGetGroupsAsync(division.Id.ToString(),
@@ -389,7 +389,7 @@ OrelUniverAPI.Result<EmployeeMax>? result1 = await OrelUniverAPI.EmployeeGetAsyn
 OrelUniverAPI.Result<Division>? result3 = await OrelUniverAPI.GetDivisionsForEmployeesAsync();//+
 OrelUniverAPI.Result<EmployeeMin>? result2 = await OrelUniverAPI.ScheduleGetEmployeesAsync("7", "498");//
 OrelUniverAPI.Result<Subdivision>? result16 = await OrelUniverAPI.ScheduleGetSubdivisionsAsync("7");//
-OrelUniverAPI.Result<Cours>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync("7");//
+OrelUniverAPI.Result<Course>? result12 = await OrelUniverAPI.ScheduleGetCourseAsync("7");//
 OrelUniverAPI.Result<OrelUniverEmbeddedAPI.Group>? result15 = await OrelUniverAPI.ScheduleGetGroupsAsync("7", "4");//
 OrelUniverAPI.Result<Division>? result6 = await OrelUniverAPI.GetDivisionsForStudentsAsync();//+
 OrelUniverAPI.Result<Building>? result7 = await OrelUniverAPI.ScheduleGetBuildingsAsync();//+

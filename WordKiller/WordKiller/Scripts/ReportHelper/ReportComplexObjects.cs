@@ -638,7 +638,7 @@ public static class ReportComplexObjects
             List<string> resours = [];
             foreach (Book book in listOfReferences.Books)
             {
-                resours.Add(book.Autors + " " + book.Name + ". " + book.Publication + ", " + book.Year + ". " +
+                resours.Add(book.Authors + " " + book.Name + ". " + book.Publication + ", " + book.Year + ". " +
                             book.Page + " с.");
             }
 

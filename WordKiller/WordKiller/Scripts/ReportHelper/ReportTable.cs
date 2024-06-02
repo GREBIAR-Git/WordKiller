@@ -45,9 +45,9 @@ public static class ReportTable
         doc.MainDocumentPart.Document.Body.Append(dTable);
     }
 
-    static void DataCell(TableRow tr, int numberOfСolumns, int idx, string text)
+    static void DataCell(TableRow tr, int numberOfColumns, int idx, string text)
     {
-        if (numberOfСolumns > idx)
+        if (numberOfColumns > idx)
         {
             TableCell tc = new();
             tc.Append(new Paragraph(new Run(new Text { Text = text, Space = SpaceProcessingModeValues.Preserve }))

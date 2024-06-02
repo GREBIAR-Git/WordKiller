@@ -75,14 +75,14 @@
     <system:String x:Key="ListSourcesUsed">Список использованных источников</system:String>
     <system:String x:Key="Book">Книга</system:String>
     <system:String x:Key="ElectronicResources">Электронный ресурс</system:String>
-    <system:String x:Key="Autors">Авторы</system:String>
+    <system:String x:Key="Authors">Авторы</system:String>
     <system:String x:Key="Name">Название</system:String>
     <system:String x:Key="Publication">Издание</system:String>
     <system:String x:Key="Page">Страница</system:String>
     <system:String x:Key="Url">Ссылка</system:String>
     <system:String x:Key="CirculationDate">Дата обращения</system:String>
 
-    <system:String x:Key="DeleteСurrent">Удалить текущий</system:String>
+    <system:String x:Key="DeleteCurrent">Удалить текущий</system:String>
     <system:String x:Key="FirstPage">Первая страница листа задания</system:String>
     <system:String x:Key="SecondPage">Вторая страница листа задания</system:String>
 
@@ -91,7 +91,7 @@
     <system:String x:Key="Unidentified">Не указан</system:String>
     <system:String x:Key="NotFound">Не найден</system:String>
     <system:String x:Key="ForPicture">Для картинки</system:String>
-    <system:String x:Key="ForСode">Для кода</system:String>
+    <system:String x:Key="ForCode">Для кода</system:String>
 
     <system:String x:Key="Columns">Столбцы:</system:String>
     <system:String x:Key="Rows">Строки:</system:String>
@@ -130,8 +130,8 @@
 
     <system:String x:Key="ByDefault">По умолчанию</system:String>
     <system:String x:Key="MainColor">Основной цвет программы</system:String>
-    <system:String x:Key="ComplementaryСolor">Дополнительный цвет программы</system:String>
-    <system:String x:Key="AlternativeСolor">Альтернативный цвет программы</system:String>
+    <system:String x:Key="ComplementaryColor">Дополнительный цвет программы</system:String>
+    <system:String x:Key="AlternativeColor">Альтернативный цвет программы</system:String>
     <system:String x:Key="HoverColor">Цвет при наведении</system:String>
     <system:String x:Key="ActiveColor">Цвет, когда объект активен</system:String>
     <system:String x:Key="FontSize">Размер шрифта</system:String>
@@ -142,9 +142,9 @@
     <system:String x:Key="FirstName">Имя</system:String>
     <system:String x:Key="LastName">Фамилия</system:String>
     <system:String x:Key="MiddleName">Отчество</system:String>
-    <system:String x:Key="Universitet">Институт</system:String>
+    <system:String x:Key="University">Институт</system:String>
     <system:String x:Key="Faculty">Факультет</system:String>
-    <system:String x:Key="Cours">Курс</system:String>
+    <system:String x:Key="Course">Курс</system:String>
     <system:String x:Key="Group">Группа</system:String>
     <system:String x:Key="Shifr">Шифр</system:String>
     <system:String x:Key="Companion">Напарник</system:String>

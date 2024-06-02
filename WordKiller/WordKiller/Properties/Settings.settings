@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WordKiller.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Universitet" Type="System.String" Scope="User">
+    <Setting Name="University" Type="System.String" Scope="User">
       <Value Profile="(Default)">Орловский Государственный университет имени И.С. Тургенева</Value>
     </Setting>
     <Setting Name="Faculty" Type="System.String" Scope="User">

@@ -75,14 +75,14 @@
     <system:String x:Key="ListSourcesUsed">Liste der verwendeten Quellen</system:String>
     <system:String x:Key="Book">Buch</system:String>
     <system:String x:Key="ElectronicResources">Elektronische Quelle</system:String>
-    <system:String x:Key="Autors">Autoren</system:String>
+    <system:String x:Key="Authors">Autoren</system:String>
     <system:String x:Key="Name">Titel</system:String>
     <system:String x:Key="Publication">Ausgabe</system:String>
     <system:String x:Key="Page">Seite</system:String>
     <system:String x:Key="Url">Link</system:String>
     <system:String x:Key="CirculationDate">Datum der Referenz</system:String>
 
-    <system:String x:Key="DeleteСurrent">Aktuell löschen</system:String>
+    <system:String x:Key="DeleteCurrent">Aktuell löschen</system:String>
     <system:String x:Key="FirstPage">Erste Seite des Auftragsblatts</system:String>
     <system:String x:Key="SecondPage">Zweite Seite des Auftragsblatts</system:String>
     
@@ -91,7 +91,7 @@
     <system:String x:Key="Unidentified">Unbestimmt</system:String>
     <system:String x:Key="NotFound">Nicht gefunden</system:String>
     <system:String x:Key="ForPicture">Für das Bild</system:String>
-    <system:String x:Key="ForСode">Für Code</system:String>
+    <system:String x:Key="ForCode">Für Code</system:String>
 
     <system:String x:Key="Columns">Rubriken:</system:String>
     <system:String x:Key="Rows">Zeilen:</system:String>
@@ -130,8 +130,8 @@
 
     <system:String x:Key="ByDefault">Default</system:String>
     <system:String x:Key="MainColor">Die Hauptfarbe des Programms</system:String>
-    <system:String x:Key="ComplementaryСolor">Zusätzliche Farbe des Programms</system:String>
-    <system:String x:Key="AlternativeСolor">Alternative Farbe</system:String>
+    <system:String x:Key="ComplementaryColor">Zusätzliche Farbe des Programms</system:String>
+    <system:String x:Key="AlternativeColor">Alternative Farbe</system:String>
     <system:String x:Key="HoverColor">Farbe beim Schweben</system:String>
     <system:String x:Key="ActiveColor">Farbe, wenn das Objekt aktiv ist</system:String>
     <system:String x:Key="FontSize">Schriftgröße</system:String>
@@ -142,9 +142,9 @@
     <system:String x:Key="FirstName">Name</system:String>
     <system:String x:Key="LastName">Familien-oder Nachname</system:String>
     <system:String x:Key="MiddleName">Zweiter Vorname</system:String>
-    <system:String x:Key="Universitet">Institut</system:String>
+    <system:String x:Key="University">Institut</system:String>
     <system:String x:Key="Faculty">Fakultät</system:String>
-    <system:String x:Key="Cours">Brunnen</system:String>
+    <system:String x:Key="Course">Brunnen</system:String>
     <system:String x:Key="Group">Gruppe</system:String>
     <system:String x:Key="Shifr">Chiffre</system:String>
     <system:String x:Key="Companion">Partner</system:String>

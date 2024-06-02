@@ -75,14 +75,14 @@
     <system:String x:Key="ListSourcesUsed">List sources used</system:String>
     <system:String x:Key="Book">Book</system:String>
     <system:String x:Key="ElectronicResources">Electronic resource</system:String>
-    <system:String x:Key="Autors">Authors</system:String>
+    <system:String x:Key="Authors">Authors</system:String>
     <system:String x:Key="Name">Title</system:String>
     <system:String x:Key="Publication">Edition</system:String>
     <system:String x:Key="Page">Page</system:String>
     <system:String x:Key="Url">Link</system:String>
     <system:String x:Key="CirculationDate">Date of reference</system:String>
 
-    <system:String x:Key="DeleteСurrent">Delete current</system:String>
+    <system:String x:Key="DeleteCurrent">Delete current</system:String>
     <system:String x:Key="FirstPage">First page of the task sheet</system:String>
     <system:String x:Key="SecondPage">Second page of the task sheet</system:String>
     
@@ -91,9 +91,9 @@
     <system:String x:Key="Unidentified">Not given</system:String>
     <system:String x:Key="NotFound">Not found</system:String>
     <system:String x:Key="ForPicture">Picture here</system:String>
-    <system:String x:Key="ForСode">Code here</system:String>
+    <system:String x:Key="ForCode">Code here</system:String>
 
-    <system:String x:Key="Columns">Сolumns:</system:String>
+    <system:String x:Key="Columns">Columns:</system:String>
     <system:String x:Key="Rows">Rows:</system:String>
     
     <system:String x:Key="Error">Error</system:String>
@@ -130,8 +130,8 @@
 
     <system:String x:Key="ByDefault">By default</system:String>
     <system:String x:Key="MainColor">Primary colour</system:String>
-    <system:String x:Key="ComplementaryСolor">Secondary colour</system:String>
-    <system:String x:Key="AlternativeСolor">Alternative colour</system:String>
+    <system:String x:Key="ComplementaryColor">Secondary colour</system:String>
+    <system:String x:Key="AlternativeColor">Alternative colour</system:String>
     <system:String x:Key="HoverColor">Selection colour</system:String>
     <system:String x:Key="ActiveColor">Color when object is active</system:String>
     <system:String x:Key="FontSize">Font size</system:String>
@@ -142,9 +142,9 @@
     <system:String x:Key="FirstName">Firstname</system:String>
     <system:String x:Key="LastName">Lastname</system:String>
     <system:String x:Key="MiddleName">Middlename</system:String>
-    <system:String x:Key="Universitet">Universitet</system:String>
+    <system:String x:Key="University">University</system:String>
     <system:String x:Key="Faculty">Faculty</system:String>
-    <system:String x:Key="Cours">Cours</system:String>
+    <system:String x:Key="Course">Course</system:String>
     <system:String x:Key="Group">Group</system:String>
     <system:String x:Key="Shifr">Shifr</system:String>
     <system:String x:Key="Companion">Mate</system:String>

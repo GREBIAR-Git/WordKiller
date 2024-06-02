@@ -75,14 +75,14 @@
     <system:String x:Key="ListSourcesUsed">所用资料来源清单</system:String>
     <system:String x:Key="Book">书籍</system:String>
     <system:String x:Key="ElectronicResources">电子资源</system:String>
-    <system:String x:Key="Autors">作者</system:String>
+    <system:String x:Key="Authors">作者</system:String>
     <system:String x:Key="Name">标题</system:String>
     <system:String x:Key="Publication">版本</system:String>
     <system:String x:Key="Page">页数</system:String>
     <system:String x:Key="Url">链接</system:String>
     <system:String x:Key="CirculationDate">参考日期</system:String>
 
-    <system:String x:Key="DeleteСurrent">删除当前</system:String>
+    <system:String x:Key="DeleteCurrent">删除当前</system:String>
     <system:String x:Key="FirstPage">工作表的第一页</system:String>
     <system:String x:Key="SecondPage">工作表的第二页</system:String>
     
@@ -91,7 +91,7 @@
     <system:String x:Key="Unidentified">未指定</system:String>
     <system:String x:Key="NotFound">未找到</system:String>
     <system:String x:Key="ForPicture">圖片</system:String>
-    <system:String x:Key="ForСode">對於代碼</system:String>
+    <system:String x:Key="ForCode">對於代碼</system:String>
 
     <system:String x:Key="Columns">专栏：</system:String>
     <system:String x:Key="Rows">行数：</system:String>
@@ -130,8 +130,8 @@
 
     <system:String x:Key="ByDefault">默認</system:String>
     <system:String x:Key="MainColor">程序的主要顏色</system:String>
-    <system:String x:Key="ComplementaryСolor">程序的其他顏色</system:String>
-    <system:String x:Key="AlternativeСolor">替代顏色</system:String>
+    <system:String x:Key="ComplementaryColor">程序的其他顏色</system:String>
+    <system:String x:Key="AlternativeColor">替代顏色</system:String>
     <system:String x:Key="HoverColor">懸停時顏色</system:String>
     <system:String x:Key="ActiveColor">对象处于活动状态时的颜色</system:String>
     <system:String x:Key="FontSize">字體大小</system:String>
@@ -142,9 +142,9 @@
     <system:String x:Key="FirstName">姓名</system:String>
     <system:String x:Key="LastName">姓</system:String>
     <system:String x:Key="MiddleName">中間名字</system:String>
-    <system:String x:Key="Universitet">研究所</system:String>
+    <system:String x:Key="University">研究所</system:String>
     <system:String x:Key="Faculty">學院</system:String>
-    <system:String x:Key="Cours">出色地</system:String>
+    <system:String x:Key="Course">出色地</system:String>
     <system:String x:Key="Group">團體</system:String>
     <system:String x:Key="Shifr">密碼</system:String>
     <system:String x:Key="Companion">夥伴</system:String>

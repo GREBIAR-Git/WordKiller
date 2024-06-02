@@ -10,9 +10,6 @@
         xmlns:gu="https://github.com/GuOrg/Gu.Wpf.FlipView"
         xmlns:t="clr-namespace:WordKiller.Models.Template"
         xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
-        xmlns:rtb="clr-namespace:WordKiller.Scripts"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:td="clr-namespace:DocumentFormat.OpenXml.Wordprocessing;assembly=DocumentFormat.OpenXml"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="{Binding Path=Document.WinTitle}" Height="500" Width="720" MinHeight="250" MinWidth="620" WindowStartupLocation="CenterScreen" Icon="/Resources/Pictures/512x512.png" AllowDrop="True" Closing="Win_Closing">
@@ -302,10 +299,10 @@
                         </TreeView.Resources>
                         <TreeView.ItemContainerStyle>
                             <Style TargetType="{x:Type TreeViewItem}">
-                                <EventSetter Event="TreeViewItem.DragOver" Handler="TreeView_DragOver"/>
-                                <EventSetter Event="TreeViewItem.DragEnter" Handler="TreeView_DragOver"/>
-                                <EventSetter Event="TreeViewItem.Drop" Handler="TreeView_Drop"/>
-                                <EventSetter Event="TreeViewItem.MouseMove" Handler="TreeView_MouseMove"/>
+                                <EventSetter Event="DragOver" Handler="TreeView_DragOver"/>
+                                <EventSetter Event="DragEnter" Handler="TreeView_DragOver"/>
+                                <EventSetter Event="Drop" Handler="TreeView_Drop"/>
+                                <EventSetter Event="MouseMove" Handler="TreeView_MouseMove"/>
                                 <Setter Property="IsExpanded" Value="True" />
                                 <Setter Property="AllowDrop" Value="True"/>
                             </Style>
@@ -895,7 +892,7 @@
                                 </i:Interaction.Triggers>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn IsReadOnly="True" Header="№" Binding="{Binding Id}" Width="20*"/>
-                                    <DataGridTextColumn Header="{DynamicResource Autors}" Binding="{Binding Autors}" Width="20*"/>
+                                    <DataGridTextColumn Header="{DynamicResource Authors}" Binding="{Binding Authors}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Name}" Binding="{Binding Name}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Publication}" Binding="{Binding Publication}" Width="20*"/>
                                     <DataGridTextColumn Header="{DynamicResource Year}" Binding="{Binding Year}" Width="20*"/>
@@ -1055,7 +1052,7 @@
                                     </DataTemplate>
                                 </gu:FlipView.Resources>
                             </gu:FlipView>
-                            <Button Grid.Row="2" Content="{DynamicResource DeleteСurrent}" Command="{Binding Document.Data.Appendix.Delete}"/>
+                            <Button Grid.Row="2" Content="{DynamicResource DeleteCurrent}" Command="{Binding Document.Data.Appendix.Delete}"/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -1272,7 +1269,7 @@
                                     <RowDefinition Height="45*"/>
                                     <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="{DynamicResource ComplementaryСolor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource ComplementaryColor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
                                 <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" SelectedColor="{Binding Path=Settings.Personalization.AdditionalColor}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
@@ -1291,7 +1288,7 @@
                                     <RowDefinition Height="45*"/>
                                     <RowDefinition Height="55*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="{DynamicResource AlternativeСolor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource AlternativeColor}" VerticalAlignment="Bottom" Style="{StaticResource TextBlock}"/>
                                 <xctk:ColorPicker Grid.Row="1" Width="250" MaxHeight="30" HorizontalAlignment="Center" Grid.Column="1" SelectedColor="{Binding Path=Settings.Personalization.AlternativeColor}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Closed">
@@ -1426,10 +1423,10 @@
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Universitet}" Style="{StaticResource TextBlock}"/>
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource University}" Style="{StaticResource TextBlock}"/>
                                         </Grid>
-                                        <ComboBox Grid.Row="1" ItemsSource="{Binding Path=Settings.Profile.UniversitetItems}" SelectedValue="{Binding Path=Settings.Profile.Universitet}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.Universitet}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
+                                        <ComboBox Grid.Row="1" ItemsSource="{Binding Path=Settings.Profile.UniversityItems}" SelectedValue="{Binding Path=Settings.Profile.University}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                        <TextBox Grid.Row="1" Text="{Binding Path=Settings.Profile.University}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="1" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
@@ -1459,13 +1456,13 @@
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Cours}" Style="{StaticResource TextBlock}"/>
-                                            <Button Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}" Command="{Binding Settings.Profile.UpdateCours}">
+                                            <TextBlock Grid.Column="0" TextAlignment="Right" Text="{DynamicResource Course}" Style="{StaticResource TextBlock}"/>
+                                            <Button Grid.Column="1" Width="20" Height="20" Margin="10 0 0 0" ToolTip="{DynamicResource RefreshAllData}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}" Command="{Binding Settings.Profile.UpdateCourse}">
                                                 <Image Source="/Resources/Pictures/Update.png"/>
                                             </Button>
                                         </Grid>
-                                        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.CoursItems}" SelectedValue="{Binding Path=Settings.Profile.Cours}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
-                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Cours}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
+                                        <ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Path=Settings.Profile.CourseItems}" SelectedValue="{Binding Path=Settings.Profile.Course}" Visibility="{Binding Path=Settings.Profile.VisibilityAutoInput}"/>
+                                        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=Settings.Profile.Course}" Visibility="{Binding Path=Settings.Profile.VisibilityManualInput}" Style="{StaticResource TextBox}"/>
                                     </Grid>
                                     <Grid Grid.Row="3" Margin="0 0 0 15">
                                         <Grid.RowDefinitions>
