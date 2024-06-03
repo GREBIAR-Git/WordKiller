@@ -63,10 +63,26 @@
             <RowDefinition Height="33*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="{DynamicResource DragDrop1}" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" Style="{StaticResource TextBlock}"/>
-        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" Content="*" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}"/>
-        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" Content="↑" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}"/>
-        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" Content="↓" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}"/>
-        <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" Content="**" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}"/>
+        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}">
+            <Button.Content>
+                <Image Margin="0 4 0 4" Source="{StaticResource InsertTree}" Stretch="Uniform"/>
+            </Button.Content>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}">
+            <Button.Content>
+                <Image Margin="3 3 3 3" Source="{StaticResource BeforeTree}" Stretch="Uniform"/>
+            </Button.Content>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}">
+            <Button.Content>
+                <Image Margin="3 3 3 3" Source="{StaticResource AfterTree}" Stretch="Uniform"/>
+            </Button.Content>
+        </Button>
+        <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}">
+            <Button.Content>
+                <Image Margin="3 3 3 3" Source="{StaticResource SwapTree}" Stretch="Uniform"/>
+            </Button.Content>
+        </Button>
         <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" MinWidth="100" Margin="0 0 0 3" Content="{DynamicResource Cancel}" Command="{Binding Exit}"/>
     </Grid>
 </Window>

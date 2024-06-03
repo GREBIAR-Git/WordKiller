@@ -45,6 +45,53 @@
                 </Setter>
             </Style>
 
+            <DrawingImage x:Key="SwapTree">
+                <DrawingImage.Drawing>
+                    <DrawingGroup ClipGeometry="M0,0 V21.986 H24 V0 H0 Z">
+                        <DrawingGroup.Transform>
+                            <TranslateTransform X="0" Y="0.0022463151253759861" />
+                        </DrawingGroup.Transform>
+                        <DrawingGroup Opacity="1">
+                            <GeometryDrawing Brush="White" Geometry="F1 M24,21.986z M0,0z M19.841,3.24A10.988,10.988,0,0,0,8.54,0.573L9.806,4.373A7.033,7.033,0,0,1,18.615,13.531L17,11.891 17,18.983 24,18.983 21.593,16.544A11.049,11.049,0,0,0,19.841,3.24z" />
+                            <GeometryDrawing Brush="White" Geometry="F1 M24,21.986z M0,0z M1,10.942A11.05,11.05,0,0,0,12.013,21.986A11.114,11.114,0,0,0,15.534,21.411L14.268,17.611A7.035,7.035,0,0,1,5.48,8.391L7,9.891 7,6.034C7.021,6.014,7.038,5.99,7.06,5.969L7,5.909 7,2.982 0,2.982 2.482,5.431A10.951,10.951,0,0,0,1,10.942z" />
+                        </DrawingGroup>
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+
+
+            <DrawingImage x:Key="BeforeTree">
+                <DrawingImage.Drawing>
+                    <DrawingGroup ClipGeometry="M0,0 V22.769 H14.821 V0 H0 Z">
+                        <DrawingGroup Opacity="1" Transform="0,1,-1,0,14.821,0">
+                            <GeometryDrawing Brush="White" Geometry="F1 M14.821,22.769z M0,0z M10.212,12.007L10.212,12.007 7.645,9.414 22.769,9.414 22.769,5.414 7.62,5.414 10.205,2.828 7.377,0 0,7.378 7.37,14.821 10.212,12.007z" />
+                        </DrawingGroup>
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+
+
+            <DrawingImage x:Key="AfterTree">
+                <DrawingImage.Drawing>
+                    <DrawingGroup ClipGeometry="M0,0 V22.769 H14.821 V0 H0 Z">
+                        <DrawingGroup Opacity="1" Transform="0,-1,1,0,0,22.769">
+                            <GeometryDrawing Brush="White" Geometry="F1 M14.821,22.769z M0,0z M10.212,12.007L10.212,12.007 7.645,9.414 22.769,9.414 22.769,5.414 7.62,5.414 10.205,2.828 7.377,0 0,7.378 7.37,14.821 10.212,12.007z" />
+                        </DrawingGroup>
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+
+
+            <DrawingImage x:Key="InsertTree">
+                <DrawingImage.Drawing>
+                    <DrawingGroup ClipGeometry="M0,0 V17 H22 V0 H0 Z">
+                        <GeometryDrawing Brush="White" Geometry="F1 M22,17z M0,0z M0,4L0,4 4.172,4 14.172,14 17,14 17,17 22,12 17,7 17,10 15.828,10 5.828,0 0,0 0,4z" />
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+
+            
+
             <Style x:Key="DGStandart" TargetType="{x:Type DataGrid}">
                 <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}"/>
                 <Setter Property="RowBackground" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}"/>
