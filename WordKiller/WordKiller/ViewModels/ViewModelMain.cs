@@ -153,7 +153,10 @@ public class ViewModelMain : ViewModelBase
         get
         {
             return updatePerformed ??= new RelayCommand(
-                obj => { Document.Data.Title.Performed = Settings.Profile.Users; });
+                obj => 
+                { 
+                    Document.Data.Title.Performed = [.. Settings.Profile.Users];
+                });
         }
     }
 

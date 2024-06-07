@@ -122,7 +122,10 @@ public class ViewModelSettings : ViewModelBase
         get
         {
             return openTemplates ??= new RelayCommand(
-                obj => { OpenTemplatesSettings(); });
+                obj => 
+                { 
+                    OpenTemplatesSettings(); 
+                });
         }
     }
 

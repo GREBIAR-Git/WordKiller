@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using OrelUniverEmbeddedAPI;
@@ -44,7 +45,7 @@ public class ViewModelProfileSettings : ViewModelBase
 
     ICommand? updateYear;
 
-    ObservableCollection<User> users;
+    BindingList<User> users;
 
     Visibility visibilityAutoInput;
 
@@ -65,7 +66,6 @@ public class ViewModelProfileSettings : ViewModelBase
         AutoInput = Properties.Settings.Default.AutoInput;
         VisibitityCategoryUsers = Visibility.Collapsed;
         Users = Properties.Settings.Default.Users;
-        Users.CollectionChanged += DataGrid_CollectionChanged;
         Year = Properties.Settings.Default.Year;
         UniversityItems.Add("Орловский Государственный университет имени И.С. Тургенева");
         University = Properties.Settings.Default.University;
@@ -106,7 +106,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set => SetProperty(ref visibitityCategoryUsers, value);
     }
 
-    public ObservableCollection<User> Users
+    public BindingList<User> Users
     {
         get => users;
         set => SetProperty(ref users, value);
@@ -373,12 +373,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
 
         return false;
-    }
-
-    void DataGrid_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        Properties.Settings.Default.Users = Users;
-        Properties.Settings.Default.Save();
     }
 }
 

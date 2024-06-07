@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using OrelUniverEmbeddedAPI;
@@ -43,7 +44,7 @@ public class ViewModelTitle : ViewModelDocumentChanges
     bool onHeadOrganization;
 
 
-    ObservableCollection<User> performed;
+    BindingList<User> performed;
 
     bool photo;
 
@@ -144,7 +145,7 @@ public class ViewModelTitle : ViewModelDocumentChanges
         UpdateFaculty.Execute(null);
     }
 
-    public ObservableCollection<User> Performed
+    public BindingList<User> Performed
     {
         get => performed;
         set => SetPropertyDocument(ref performed, value);

@@ -116,15 +116,15 @@
     <system:String x:Key="Styles">Стили</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
-    <system:String x:Key="IsAssociate">Расширение(wkr) ассоциировано с программой</system:String>
+    <system:String x:Key="IsAssociate">По умолчанию</system:String>
     <system:String x:Key="AutoSave">Авто-сохранение</system:String>
-    <system:String x:Key="IsSyntaxChecking">Проверка синтаксиса(Базовая)</system:String>
-    <system:String x:Key="Encoding">Шифрование при сохранении и открытии файла</system:String>
+    <system:String x:Key="IsSyntaxChecking">Орфография</system:String>
+    <system:String x:Key="Encoding">Шифрование</system:String>
     <system:String x:Key="Encoding0">Никакое</system:String>
     <system:String x:Key="Encoding1">Стандартное</system:String>
-    <system:String x:Key="AfterExportingClose">Закрытие приложения после формирования отчёта</system:String>
-    <system:String x:Key="IsAutoHeader">Автоматический заголовок для объекта</system:String>
-    <system:String x:Key="FileSettings">Файл с настройками приложения</system:String>
+    <system:String x:Key="AfterExportingClose">Закрытие приложения после экспорта</system:String>
+    <system:String x:Key="IsAutoHeader">Автоматический заголовок</system:String>
+    <system:String x:Key="FileSettings">Настройки приложения</system:String>
     <system:String x:Key="Delete">Удалить</system:String>
     <system:String x:Key="DeleteAll">Удалить все файлы</system:String>
 

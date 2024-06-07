@@ -7,15 +7,36 @@
     <Compile Update="Views\AboutProgram.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SettingsUserControl\AppearanceSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SettingsUserControl\GeneralSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\MessageDragDrop.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\MessageNeedSave.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SettingsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SettingsUserControl\ProfileSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SettingsUserControl\TemplatesSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\AboutProgram.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsUserControl\AppearanceSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsUserControl\GeneralSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MainWindow.xaml">
@@ -25,6 +46,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MessageNeedSave.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsUserControl\ProfileSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsUserControl\TemplatesSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

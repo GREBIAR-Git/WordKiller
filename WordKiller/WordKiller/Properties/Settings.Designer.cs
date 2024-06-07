@@ -11,6 +11,7 @@
 using System.Collections.ObjectModel;
 using WordKiller.Models.Template;
 using WordKiller.Models;
+using System.ComponentModel;
 
 namespace WordKiller.Properties {
     
@@ -30,11 +31,11 @@ namespace WordKiller.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public ObservableCollection<User> Users
+        public BindingList<User> Users
         {
             get
             {
-                return ((ObservableCollection<User>)(this["Users"]));
+                return ((BindingList<User>)(this["Users"]));
             }
             set
             {

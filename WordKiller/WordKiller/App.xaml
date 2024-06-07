@@ -5,6 +5,8 @@
     xmlns:vConverter="clr-namespace:WordKiller.Converters.ValueConverter"
     xmlns:mConverter="clr-namespace:WordKiller.Converters.MultiValueConverter">
     <Application.Resources>
+        
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Dictionary/StringResources.en.xaml" />
@@ -20,6 +22,130 @@
             <mConverter:AdaptiveFontSizeTextBlock x:Key="multiTBConverter"/>
             <iConverter:DocumentTypeLanguage x:Key="dtl"/>
             <iConverter:BoolToVisibility x:Key="btv"/>
+
+
+
+            <SolidColorBrush x:Key="FontColor" Color="#bfbfbf"/>
+            <SolidColorBrush x:Key="DullFontColor" Color="#5C5C5C"/>
+            <SolidColorBrush x:Key="HoverFontColor" Color="#3d4450"/>
+            <SolidColorBrush x:Key="PrimaryColor" Color="#262626"/>
+            <SolidColorBrush x:Key="SecondaryColor" Color="#1e1e1e"/>
+            <SolidColorBrush x:Key="SecondaryColor1" Color="#1f1f1f"/>
+            <SolidColorBrush x:Key="HoverColor" Color="#dcdedf"/>
+            <SolidColorBrush x:Key="SelectionColor" Color="#363636"/>
+            <SolidColorBrush x:Key="ButtonHoverColor" Color="#3f3f3f"/>
+            <SolidColorBrush x:Key="ToggleSwitchColor" Color="#9c6b33"/>
+            <SolidColorBrush x:Key="ComboBoxArrowColor" Color="#868686"/>
+
+
+            <Style x:Key="SliderAccentButtonStyle" TargetType="{x:Type RepeatButton}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Focusable" Value="false" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                            <Border Background="Transparent">
+                                <Border Height="4" CornerRadius="2, 0, 0, 2" Background="{TemplateBinding Foreground}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Focusable" Value="false" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type RepeatButton}">
+                            <Border Background="Transparent">
+                                <Border Height="4" CornerRadius="0, 2, 2, 0" Background="{TemplateBinding Foreground}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="Width" Value="20" />
+                <Setter Property="BorderThickness" Value="5" />
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Grid>
+                                <Border Name="AccentThumb"
+                                        Background="{StaticResource FontColor}"
+                                        BorderBrush="{StaticResource FontColor}"
+                                        Width="20"
+                                        Height="20"
+                                        CornerRadius="50" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="BaseVolumeSliderStyle" TargetType="{x:Type Slider}">
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Minimum" Value="0" />
+                <Setter Property="Maximum" Value="100" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="Interval" Value="1" />
+                <Setter Property="Height" Value="32" />
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="SmallChange" Value="1" />
+                <Setter Property="LargeChange" Value="10" />
+                <Setter Property="IsManipulationEnabled" Value="true" />
+            </Style>
+
+            <Style x:Key="{x:Type Slider}"
+                   BasedOn="{StaticResource BaseVolumeSliderStyle}"
+                   TargetType="{x:Type Slider}">
+                <Setter Property="Template" Value="{DynamicResource VolumeSliderTemplate}" />
+                <Setter Property="Margin" Value="5 0 5 0" />
+            </Style>
+
+            <ControlTemplate x:Key="VolumeSliderTemplate" TargetType="{x:Type Slider}">
+                <Grid>
+                    <Border Name="TrackBackground" Height="2" />
+
+                    <Track Name="PART_Track">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Name="SliderLeft"
+                                          Command="Slider.DecreaseLarge"
+                                          Foreground="{StaticResource ToggleSwitchColor}"
+                                          Style="{StaticResource SliderAccentButtonStyle}" />
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb Name="SliderThumb">
+                                <Thumb.Style>
+                                    <Style BasedOn="{StaticResource SliderThumbStyle}" TargetType="{x:Type Thumb}">
+                                        <Setter Property="Foreground" Value="{StaticResource SelectionColor}" />
+                                    </Style>
+                                </Thumb.Style>
+                            </Thumb>
+                        </Track.Thumb>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Name="SliderRight"
+                                          Command="Slider.IncreaseLarge"
+                                          Foreground="{StaticResource SelectionColor}"
+                                          Style="{StaticResource SliderButtonStyle}" />
+                        </Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="0.5" />
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+
             <Style x:Key="TheAwesomeXAMLimage" TargetType="ContentControl">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -41,6 +167,7 @@
                                 </Canvas>
                             </Viewbox>
                         </ControlTemplate>
+
                     </Setter.Value>
                 </Setter>
             </Style>
@@ -70,6 +197,13 @@
                 </DrawingImage.Drawing>
             </DrawingImage>
 
+            <DrawingImage x:Key="LeftArrow">
+                <DrawingImage.Drawing>
+                    <DrawingGroup ClipGeometry="M0,0 V14.821 H22.769 V0 H0 Z">
+                        <GeometryDrawing Brush="{StaticResource FontColor}" Geometry="F1 M22.769,14.821z M0,0z M10.212,12.007L10.212,12.007 7.645,9.414 22.769,9.414 22.769,5.414 7.62,5.414 10.205,2.828 7.377,0 0,7.378 7.37,14.821 10.212,12.007z" />
+                    </DrawingGroup>
+                </DrawingImage.Drawing>
+            </DrawingImage>
 
             <DrawingImage x:Key="AfterTree">
                 <DrawingImage.Drawing>
@@ -90,9 +224,165 @@
                 </DrawingImage.Drawing>
             </DrawingImage>
 
-            
+
+
+            <!--
+        SWITCH BUTTON ON/OFF
+        ToggleButton.BackGround  : BackGround color
+        ToggleButton.Foreground  : Icon color
+        ToggleButton.BorderBrush : Pill color
+    -->
+            <Style x:Key="ToggleButton"  TargetType="ToggleButton">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Width" Value="50" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Viewbox Width="{TemplateBinding Width}">
+                                <Grid Width="96">
+                                    <Grid
+                                Width="96"
+                                VerticalAlignment="Center"
+                                ShowGridLines="False">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Path
+                                    Grid.Column="0"
+                                    Height="18"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Panel.ZIndex="2"
+                                    Fill="{TemplateBinding Foreground}"
+                                    Stretch="Uniform"
+                                    Stroke="{TemplateBinding Foreground}"
+                                    StrokeThickness="1" />
+                                        <Rectangle
+                                    x:Name="BackGround"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Width="96"
+                                    Height="52"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Panel.ZIndex="0"
+                                    Fill="{StaticResource SelectionColor}"
+                                    RadiusX="26"
+                                    RadiusY="26" />
+                                        <Path
+                                    Grid.Column="1"
+                                    Height="21"
+                                    Margin="0,0,2,3"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Panel.ZIndex="2"
+                                    Fill="{TemplateBinding Foreground}"
+                                    Stretch="Uniform"
+                                    Stroke="{TemplateBinding Foreground}"
+                                    StrokeThickness="1" />
+                                    </Grid>
+                                    <Ellipse
+                                x:Name="Pill"
+                                Width="50"
+                                Height="50"
+                                Margin="1,0,1,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Panel.ZIndex="1"
+                                Fill="{StaticResource HoverColor}"
+                                Visibility="Visible" />
+                                </Grid>
+                            </Viewbox>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="Pill" Property="HorizontalAlignment" Value="Right" />
+                                    <Setter TargetName="BackGround" Property="Fill" Value="{StaticResource ToggleSwitchColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="DataGridSettings" TargetType="{x:Type DataGrid}">
+                <Setter Property="CellStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ColumnHeaderStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Margin" Value="2 0 2 0"/>
+                            <Setter Property="Background" Value="{StaticResource SelectionColor}" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="FontFamily" Value="Arial"/>
+                            <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                            <Setter Property="Height" Value="30"/>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="GridLinesVisibility" Value="None"/>
+                <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="RowBackground" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="AlternatingRowBackground" Value="{StaticResource SecondaryColor1}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="VerticalGridLinesBrush" Value="{StaticResource FontColor}"/>
+                <Setter Property="AutoGenerateColumns" Value="False"/>
+                <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="CanUserAddRows" Value="False"/>
+                <Setter Property="CanUserDeleteRows" Value="True"/>
+                <Setter Property="CanUserResizeColumns" Value="False"/>
+                <Setter Property="CanUserResizeRows" Value="False"/>
+                <Setter Property="RowHeaderWidth" Value="0"/>
+            </Style>
+
+            <Style x:Key="DataGridCheckBoxCellStyle" TargetType="DataGridCell">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="DataGridCell">
+                            <Grid Background="{TemplateBinding Background}">
+                                <CheckBox Width="25" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridCell}}, Path=Content, Mode=TwoWay}"
+                                      Style="{StaticResource ToggleButton}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <Style x:Key="DGStandart" TargetType="{x:Type DataGrid}">
+                <Setter Property="ColumnHeaderStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AdditionalColor}" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                            <Setter Property="FontFamily" Value="Serif"/>
+                            <Setter Property="FontSize">
+                                <Setter.Value>
+                                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                                        <Binding RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="DataContext.Settings.Personalization.FontSize" Mode="TwoWay" ElementName="root"/>
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Height" Value="30"/>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}"/>
                 <Setter Property="RowBackground" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}"/>
                 <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -105,26 +395,9 @@
                 <Setter Property="AlternatingRowBackground" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.MainColor}"/>
             </Style>
 
-            <Style x:Key="{x:Type DataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
-                <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AdditionalColor}" />
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize">
-                    <Setter.Value>
-                        <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
-                            <Binding RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="DataContext.Settings.Personalization.FontSize" Mode="TwoWay" ElementName="root"/>
-                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
-                        </MultiBinding>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Height" Value="30"/>
+
+            <Style x:Key="{x:Type Separator}" TargetType="{x:Type Separator}">
+                <Setter Property="Background" Value="{StaticResource HoverFontColor}"/>
             </Style>
 
             <Style x:Key="Lable" TargetType="{x:Type Label}">
@@ -153,6 +426,54 @@
                 <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="Foreground" Value="White"/>
+            </Style>
+
+            <Style x:Key="TextBlockSettingsDull" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=8}"/>
+                <Setter Property="Foreground" Value="{StaticResource DullFontColor}"/>
+            </Style>
+
+            <Style x:Key="TextBlockSettingsBoldMain" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+            </Style>
+
+            <Style x:Key="TextBlockSettingsBoldMainLeft" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="Margin" Value="10 25 10 10"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+
+            </Style>
+
+            <Style x:Key="TextBlockSettingsBold" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=10}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                
+            </Style>
+
+            <Style x:Key="TextBlockSettings" TargetType="{x:Type TextBlock}">
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=8}"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                
             </Style>
 
             <Style x:Key="TextBlockSize" TargetType="{x:Type TextBlock}">
@@ -198,6 +519,26 @@
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="BorderThickness" Value="3"/>
             </Style>
+
+            <Style x:Key="TextBoxSettings" TargetType="{x:Type TextBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Left"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="MaxWidth" Value="150"/>
+                <Setter Property="Padding" Value="3 5 3 5"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=12}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource FontColor}"/>
+                <Setter Property="Background" Value="{StaticResource SelectionColor}"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
 
             <Style x:Key="TextBox" TargetType="{x:Type TextBox}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -248,8 +589,10 @@
             <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Width" Value="20"/>
                 <Setter Property="Height" Value="20"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
                 <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
                 <Style.Resources>
                     <Style TargetType="Border">
@@ -279,7 +622,7 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsHighlighted" Value="true">
-                                    <Setter TargetName="Border" Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AlternativeColor}"/>
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource ToggleSwitchColor}"/>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="false">
                                     <Setter Property="Foreground" Value="#888888"/>
@@ -289,6 +632,60 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+
+            <Style x:Key="ComboBoxSettings" TargetType="{x:Type ComboBox}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=14}"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItem}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox" >
+                            <Grid>
+                                <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="7*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border x:Name="ButtonBorder" Grid.Column="0" Grid.ColumnSpan="2" CornerRadius="3"  Margin="1"  Background="{StaticResource SelectionColor}"  BorderBrush="Black" />
+                                                <Path x:Name="Arrow" Grid.Column="1" Fill="{StaticResource ComboBoxArrowColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="UIElement.IsMouseOver" Value="true">
+                                                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource ButtonHoverColor}"/>
+                                                </Trigger>
+                                                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                                                    <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource ButtonHoverColor}"/>
+                                                </Trigger>
+
+
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                                <ContentPresenter Name="ContentSite" HorizontalAlignment="Center" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="10 10 20 10"/>
+                                <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                    <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border x:Name="DropDownBorder" Background="{StaticResource SecondaryColor}" />
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True"/>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
 
             <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -415,7 +812,68 @@
                 <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=26}"/>
                 <Setter Property="FontWeight" Value="Bold"/>
             </Style>
-            
+
+
+            <Style x:Key="Button1" TargetType="{x:Type Button}">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="30"/>
+                    </Style>
+
+                </Style.Resources>
+
+                <Style.Setters>
+                    <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+                    <Setter Property="FontFamily" Value="Arial"/>
+                    <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=14}"/>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource ButtonHoverColor}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="Button" TargetType="{x:Type Button}">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+
+                </Style.Resources>
+
+                <Style.Setters>
+                    <Setter Property="Background" Value="{StaticResource SelectionColor}"/>
+                    <Setter Property="FontFamily" Value="Arial"/>
+                    <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverterMax},ConverterParameter=14}"/>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 0 10 0" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource ButtonHoverColor}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
                 <Style.Resources>
                     <Style TargetType="Border">
@@ -424,7 +882,7 @@
                         <Setter Property="BorderThickness" Value="1"/>
                     </Style>
                 </Style.Resources>
-                
+
                 <Style.Setters>
                     <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AlternativeColor}"/>
                     <Setter Property="FontFamily" Value="Serif"/>
@@ -458,13 +916,6 @@
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="{x:Type Slider}" TargetType="{x:Type Slider}">
-                <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}"/>
-            </Style>
-
-            <Style x:Key="Button" TargetType="{x:Type Button}">
-            </Style>
-
             <Style x:Key="ButtonMI" TargetType="{x:Type Button}">
                 <Style.Resources>
                     <Style TargetType="Border">
@@ -493,6 +944,53 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="RadioButtonSettings" TargetType="{x:Type ToggleButton}">
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </Style.Resources>
+
+                <Style.Setters>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="FontFamily" Value="Arial"/>
+                    <Setter Property="FontSize">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="14">
+                                <Binding RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="Settings.Personalization.FontSize" Mode="TwoWay"/>
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style.Setters>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource SelectionColor}"/>
+                        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Background" Value="{StaticResource HoverColor}"/>
+                        <Setter Property="Foreground" Value="{StaticResource HoverFontColor}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
 
             <Style x:Key="RadioButton" TargetType="{x:Type ToggleButton}">
                 <Style.Resources>
@@ -589,10 +1087,11 @@
                 <Setter Property="OverridesDefaultStyle" Value="true"/>
                 <Setter Property="IsTabStop" Value="false"/>
                 <Setter Property="Focusable" Value="false"/>
+                <Setter Property="Margin" Value="0 5 0 5"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Thumb}">
-                            <Border CornerRadius="3" Background="{Binding Path=Settings.Personalization.AdditionalColor}" BorderBrush="White" BorderThickness="0"  Width="6"/>
+                            <Border CornerRadius="3" Background="{StaticResource HoverColor}" BorderBrush="White" BorderThickness="0"  Width="6"/>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
