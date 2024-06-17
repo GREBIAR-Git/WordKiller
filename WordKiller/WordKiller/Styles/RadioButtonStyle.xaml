@@ -1,0 +1,114 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:typeXaml="clr-namespace:WordKiller.XAMLHelper">
+
+    <Style x:Key="RadioButton" TargetType="{x:Type ToggleButton}">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="3"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TertiaryColor}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+        </Style.Resources>
+
+        <Style.Setters>
+            <Setter Property="Background" Value="{StaticResource TertiaryColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+            <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+            <Setter Property="FontSize">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
+                        <Binding RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="Settings.Personalization.FontSize" Mode="TwoWay"/>
+                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
+                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource HoverColor}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AccentColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="RadioButtonSettings" TargetType="{x:Type typeXaml:ImageToggleButton}">
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="3"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+        </Style.Resources>
+
+        <Style.Setters>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+            <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=12}"/>
+            <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+        </Style.Setters>
+        <Style.Triggers>
+
+
+            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="False">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border Background="{TemplateBinding Background}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImageSource, RelativeSource={RelativeSource TemplatedParent}}" 
+                           Width="20" Height="20" Margin="5,0,5,0"/>
+                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border Background="{TemplateBinding Background}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImageSourceR, RelativeSource={RelativeSource TemplatedParent}}" 
+                           Width="20" Height="20" Margin="5,0,5,0"/>
+                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                                </StackPanel>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource TertiaryColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{StaticResource ActiveObjectColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource DarkFontColor}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

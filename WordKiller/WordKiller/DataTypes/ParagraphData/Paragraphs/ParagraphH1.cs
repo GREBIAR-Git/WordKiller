@@ -1,6 +1,8 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Windows;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
@@ -24,13 +26,13 @@ public class ParagraphH1 : SectionH1, IParagraphData
     public string Data
     {
         get => data;
-        set => SetPropertyDocument(ref data, value.ToUpper(), "Description");
+        set => SetPropertyDocument(ref data, CapsLockHelper.ToCapsLockH1(value), "Description");
     }
 
     public string Description
     {
         get => data.Replace("\r\n", " ");
-        set => SetPropertyDocument(ref data, value.ToUpper(), "Data");
+        set => SetPropertyDocument(ref data, CapsLockHelper.ToCapsLockH1(value), "Data");
     }
 
     public Visibility DescriptionVisibility => Visibility.Collapsed;

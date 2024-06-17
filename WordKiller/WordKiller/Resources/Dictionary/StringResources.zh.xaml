@@ -4,197 +4,277 @@
 
     <system:String x:Key="File">文件</system:String>
 
-    <system:String x:Key="Export">出口</system:String>
-    <system:String x:Key="PDF">以便攜式文檔格式格式</system:String>
-    <system:String x:Key="HTML">以超文本標記語言格式</system:String>
-    <system:String x:Key="Create">創造</system:String>
-    <system:String x:Key="Open">打開</system:String>
-    <system:String x:Key="Save">節省</system:String>
-    <system:String x:Key="SaveAs">另存為...</system:String>
-    <system:String x:Key="Exit">出口</system:String>
+    <system:String x:Key="Export">导出</system:String>
+    <system:String x:Key="PDF">PDF格式</system:String>
+    <system:String x:Key="HTML">HTML格式</system:String>
+    <system:String x:Key="Create">创建</system:String>
+    <system:String x:Key="Open">打开</system:String>
+    <system:String x:Key="Save">保存</system:String>
+    <system:String x:Key="SaveAs">另存为...</system:String>
+    <system:String x:Key="Exit">退出</system:String>
 
-    <system:String x:Key="Type">類型</system:String>
+    <system:String x:Key="Type">类型</system:String>
     <system:String x:Key="DefaultDocument">普通文件</system:String>
-    <system:String x:Key="Coursework">課程工作</system:String>
-    <system:String x:Key="LaboratoryWork">實驗室工作</system:String>
-    <system:String x:Key="PracticeWork">實際工作</system:String>
-    <system:String x:Key="ControlWork">測試</system:String>
-    <system:String x:Key="Referat">抽象的</system:String>
-    <system:String x:Key="ProductionPractice">工业实践</system:String>
-    <system:String x:Key="VKR">VKR</system:String>
-    
-    <system:String x:Key="Document">文檔</system:String>
-    <system:String x:Key="Title">標題</system:String>
+    <system:String x:Key="Coursework">课程作业</system:String>
+    <system:String x:Key="LaboratoryWork">实验报告</system:String>
+    <system:String x:Key="PracticeWork">实习报告</system:String>
+    <system:String x:Key="ControlWork">考核作业</system:String>
+    <system:String x:Key="Referat">论文</system:String>
+    <system:String x:Key="ProductionPractice">生产实习</system:String>
+    <system:String x:Key="VKR">毕业论文</system:String>
+
+    <system:String x:Key="Document">文件</system:String>
+    <system:String x:Key="Title">标题页</system:String>
     <system:String x:Key="TaskSheet">任务表</system:String>
-    <system:String x:Key="ListOfReferences">参考资料清单</system:String>
-    <system:String x:Key="PageNumbers">編號</system:String>
-    <system:String x:Key="TOC">內容</system:String>
-    <system:String x:Key="NumbersToHeaders">頭條新聞</system:String>
+    <system:String x:Key="PageNumbers">页码</system:String>
+    <system:String x:Key="TOC">目录</system:String>
+    <system:String x:Key="NumbersToHeaders">数字标头</system:String>
+    <system:String x:Key="ListOfReferences">参考文献</system:String>
     <system:String x:Key="Appendix">附录</system:String>
 
-    <system:String x:Key="Network">網</system:String>
+    <system:String x:Key="Network">网络</system:String>
 
-    <system:String x:Key="Help">參考</system:String>
-    <system:String x:Key="Documentation">文檔</system:String>
-    <system:String x:Key="AboutProgram">關於程序</system:String>
+    <system:String x:Key="Documentation">文档</system:String>
 
-    <system:String x:Key="MainClue">选择一个对象或点击添加按钮，开始工作</system:String>
-    <system:String x:Key="PictureClue">把封面照片拖到这里</system:String>
+    <system:String x:Key="MainClue">选择项目或点击添加按钮开始工作</system:String>
+    <system:String x:Key="PictureClue">将标题页照片拖放至此处</system:String>
 
-    <system:String x:Key="Header">章節</system:String>
-    <system:String x:Key="SubHeader">小節</system:String>
+    <system:String x:Key="Header">章节</system:String>
+    <system:String x:Key="SubHeader">子章节</system:String>
     <system:String x:Key="List">列表</system:String>
-    <system:String x:Key="Picture">圖片</system:String>
-    <system:String x:Key="Table">桌子</system:String>
-    <system:String x:Key="Code">編碼</system:String>
+    <system:String x:Key="Picture">图片</system:String>
+    <system:String x:Key="Table">表格</system:String>
+    <system:String x:Key="Code">代码</system:String>
     <system:String x:Key="Text">文本</system:String>
 
     <system:String x:Key="Add">添加</system:String>
-    <system:String x:Key="InsertBefore">插入 (之前)</system:String>
-    <system:String x:Key="InsertAfter">插入 (之后)</system:String>
+    <system:String x:Key="InsertBefore">插入（之前）</system:String>
+    <system:String x:Key="InsertAfter">插入（之后）</system:String>
 
-    <system:String x:Key="Cathedra">部门</system:String>
-    <system:String x:Key="Completed">实施者</system:String>
+    <system:String x:Key="Cathedra">教研室</system:String>
+    <system:String x:Key="Completed">完成</system:String>
     <system:String x:Key="Theme">主题</system:String>
     <system:String x:Key="Discipline">学科</system:String>
     <system:String x:Key="Lecturer">讲师</system:String>
-    <system:String x:Key="FacultyPosition">该部门的职位</system:String>
+    <system:String x:Key="FacultyPosition">教职</system:String>
     <system:String x:Key="CourseProject">课程项目</system:String>
-    <system:String x:Key="SourceData">输入数据</system:String>
+    <system:String x:Key="SourceData">源数据</system:String>
     <system:String x:Key="ReportingMaterial">报告材料</system:String>
-    <system:String x:Key="Direction">目的地</system:String>
+    <system:String x:Key="Direction">方向</system:String>
     <system:String x:Key="Production">生产</system:String>
-    <system:String x:Key="Educational">培训</system:String>
-    <system:String x:Key="PracticeLocation">培训地点</system:String>
-    <system:String x:Key="DirectionP">重点(简介)</system:String>
-    <system:String x:Key="Normocontrol">控制</system:String>
-    <system:String x:Key="HeadCathedra">部门主管</system:String>
-    <system:String x:Key="HeadOrganization">本组织的经理</system:String>
-    
-    <system:String x:Key="Bibliography">参考资料清单</system:String>
-    <system:String x:Key="ListSourcesUsed">所用资料来源清单</system:String>
+    <system:String x:Key="Educational">教育</system:String>
+    <system:String x:Key="PracticeLocation">实习地点</system:String>
+    <system:String x:Key="DirectionP">方向（专业）</system:String>
+    <system:String x:Key="Normocontrol">规范控制</system:String>
+    <system:String x:Key="HeadCathedra">系主任</system:String>
+    <system:String x:Key="HeadOrganization">组织负责人</system:String>
+
+    <system:String x:Key="Bibliography">参考书目</system:String>
+    <system:String x:Key="ListSourcesUsed">使用的参考资料</system:String>
     <system:String x:Key="Book">书籍</system:String>
     <system:String x:Key="ElectronicResources">电子资源</system:String>
     <system:String x:Key="Authors">作者</system:String>
-    <system:String x:Key="Name">标题</system:String>
-    <system:String x:Key="Publication">版本</system:String>
-    <system:String x:Key="Page">页数</system:String>
+    <system:String x:Key="Name">名称</system:String>
+    <system:String x:Key="Publication">出版物</system:String>
+    <system:String x:Key="Page">页码</system:String>
     <system:String x:Key="Url">链接</system:String>
-    <system:String x:Key="CirculationDate">参考日期</system:String>
+    <system:String x:Key="CirculationDate">访问日期</system:String>
 
     <system:String x:Key="DeleteCurrent">删除当前</system:String>
-    <system:String x:Key="FirstPage">工作表的第一页</system:String>
-    <system:String x:Key="SecondPage">工作表的第二页</system:String>
-    
-    <system:String x:Key="Content">內容</system:String>
+    <system:String x:Key="FirstPage">任务表第一页</system:String>
+    <system:String x:Key="SecondPage">任务表第二页</system:String>
+
+    <system:String x:Key="Content">内容</system:String>
 
     <system:String x:Key="Unidentified">未指定</system:String>
     <system:String x:Key="NotFound">未找到</system:String>
-    <system:String x:Key="ForPicture">圖片</system:String>
-    <system:String x:Key="ForCode">對於代碼</system:String>
+    <system:String x:Key="ForPicture">适用于图片</system:String>
+    <system:String x:Key="ForCode">适用于代码</system:String>
 
-    <system:String x:Key="Columns">专栏：</system:String>
-    <system:String x:Key="Rows">行数：</system:String>
-    
-    <system:String x:Key="Error">錯誤</system:String>
-    <system:String x:Key="Error1">文件打開錯誤：找不到文件或不支持格式</system:String>
-    <system:String x:Key="Error2">我們無法在您的設備上執行此操作，更新操作系統</system:String>
-    <system:String x:Key="Error3">标题页形成错误</system:String>
-    <system:String x:Key="Error4">驗證工作表時出錯</system:String>
-    <system:String x:Key="Error5">内容形成的错误</system:String>
-    <system:String x:Key="Error6">形成文档主文本时出错</system:String>
-    <system:String x:Key="Error7">生成参考文献列表时出错</system:String>
-    <system:String x:Key="Error8">生成附录时出错</system:String>
-    <system:String x:Key="Error9">生成报告时出错：要替换的文件已打开</system:String>
-    <system:String x:Key="Error10">文件打开错误：文件已损坏</system:String>
+    <system:String x:Key="Columns">列：</system:String>
+    <system:String x:Key="Rows">行：</system:String>
 
-    <system:String x:Key="Question1">我需要保存它吗？</system:String>
-    
-    <system:String x:Key="GeneralSettings">一般的</system:String>
-    <system:String x:Key="PersonalizationSettings">個性化</system:String>
-    <system:String x:Key="ProfileSettings">輪廓</system:String>
-    <system:String x:Key="Styles">款式</system:String>
-    <system:String x:Key="BackSettings">後退</system:String>
+    <system:String x:Key="Error">错误</system:String>
+    <system:String x:Key="Error1">打开文件错误：文件未找到或格式不支持</system:String>
+    <system:String x:Key="Error2">我们无法在您的设备上执行此操作，请更新您的操作系统</system:String>
+    <system:String x:Key="Error3">创建标题页时发生错误</system:String>
+    <system:String x:Key="Error4">创建任务表时发生错误</system:String>
+    <system:String x:Key="Error5">创建目录时发生错误</system:String>
+    <system:String x:Key="Error6">创建文档主文本时发生错误</system:String>
+    <system:String x:Key="Error7">创建参考文献时发生错误</system:String>
+    <system:String x:Key="Error8">创建附录时发生错误</system:String>
+    <system:String x:Key="Error9">创建报告时发生错误：您要替换的文件已打开</system:String>
+    <system:String x:Key="Error10">打开文件错误：文件损坏</system:String>
+    <system:String x:Key="Error11">创建时发生错误：样式文件已损坏，请删除配置文件</system:String>
 
-    <system:String x:Key="IsAssociate">与程序相关的扩展(wkr)</system:String>
+    <system:String x:Key="Question1">是否需要保存？</system:String>
+
+    <system:String x:Key="GeneralSettings">常规</system:String>
+    <system:String x:Key="PersonalizationSettings">个性化</system:String>
+    <system:String x:Key="ProfileSettings">个人资料</system:String>
+    <system:String x:Key="Styles">样式</system:String>
+    <system:String x:Key="BackSettings">返回</system:String>
+
+    <system:String x:Key="IsAssociate">默认</system:String>
     <system:String x:Key="AutoSave">自动保存</system:String>
-    <system:String x:Key="IsSyntaxChecking">语法检查(基本)</system:String>
-    <system:String x:Key="Encoding">保存和打开文件时的加密</system:String>
+    <system:String x:Key="IsSyntaxChecking">语法检查</system:String>
+    <system:String x:Key="Encoding">编码</system:String>
     <system:String x:Key="Encoding0">无</system:String>
     <system:String x:Key="Encoding1">标准</system:String>
-    <system:String x:Key="AfterExportingClose">报告生成后关闭应用程序</system:String>
-    <system:String x:Key="IsAutoHeader">对象的自动标头а</system:String>
-    <system:String x:Key="FileSettings">带有应用程序设置的文件</system:String>
-    <system:String x:Key="Delete">删除</system:String>
-    <system:String x:Key="DeleteAll">删除所有文件</system:String>
+    <system:String x:Key="AfterExportingClose">导出后关闭应用程序</system:String>
+    <system:String x:Key="IsAutoHeader">自动标头</system:String>
+    <system:String x:Key="FileSettings">应用程序设置</system:String>
 
-    <system:String x:Key="ByDefault">默認</system:String>
-    <system:String x:Key="MainColor">程序的主要顏色</system:String>
-    <system:String x:Key="ComplementaryColor">程序的其他顏色</system:String>
-    <system:String x:Key="AlternativeColor">替代顏色</system:String>
-    <system:String x:Key="HoverColor">懸停時顏色</system:String>
-    <system:String x:Key="ActiveColor">对象处于活动状态时的颜色</system:String>
-    <system:String x:Key="FontSize">字體大小</system:String>
-    <system:String x:Key="FontSizeRTB">RichTextBox 的字體大小</system:String>
-    <system:String x:Key="Language">語</system:String>
+    <system:String x:Key="IsAssociateDescription">允许通过双击在此应用程序中打开 .wkr 文件</system:String>
+    <system:String x:Key="AutoSaveDescription">每 5 分钟自动保存文档</system:String>
+    <system:String x:Key="IsSyntaxCheckingDescription">启用自动语法检查</system:String>
+    <system:String x:Key="EncodingDescription">启用文件加密</system:String>
+    <system:String x:Key="AfterExportingCloseDescription">在将文档导出为 docx 格式后自动关闭应用程序</system:String>
+    <system:String x:Key="IsAutoHeaderDescription">在向树状列表添加新对象时，自动将标题填充为对象类型</system:String>
+    <system:String x:Key="FileSettingsDescription">打开包含配置文件的文件夹</system:String>
 
-    <system:String x:Key="You">你</system:String>
-    <system:String x:Key="FirstName">姓名</system:String>
-    <system:String x:Key="LastName">姓</system:String>
-    <system:String x:Key="MiddleName">中間名字</system:String>
-    <system:String x:Key="University">研究所</system:String>
-    <system:String x:Key="Faculty">學院</system:String>
-    <system:String x:Key="Course">出色地</system:String>
-    <system:String x:Key="Group">團體</system:String>
-    <system:String x:Key="Shifr">密碼</system:String>
-    <system:String x:Key="Companion">夥伴</system:String>
+    <system:String x:Key="FontSize">字体大小</system:String>
+    <system:String x:Key="FontSizeRTB">编辑区域字体大小</system:String>
+    <system:String x:Key="Language">语言</system:String>
+
+    <system:String x:Key="You">您</system:String>
+    <system:String x:Key="FirstName">名字</system:String>
+    <system:String x:Key="LastName">姓氏</system:String>
+    <system:String x:Key="MiddleName">中间名</system:String>
+    <system:String x:Key="University">大学</system:String>
+    <system:String x:Key="Faculty">学院</system:String>
+    <system:String x:Key="Course">课程</system:String>
+    <system:String x:Key="Group">组</system:String>
+    <system:String x:Key="Shifr">编码</system:String>
+    <system:String x:Key="Companion">同伴</system:String>
     <system:String x:Key="Year">年</system:String>
     <system:String x:Key="Users">用户</system:String>
-    <system:String x:Key="AutoPerformed">已执行(自动)</system:String>
+    <system:String x:Key="AutoPerformed">自动执行</system:String>
 
-    <system:String x:Key="Alignment">统一口径</system:String>
-    <system:String x:Key="Bold">大胆</system:String>
-    <system:String x:Key="BeforeS">前</system:String>
-    <system:String x:Key="AfterS">后</system:String>
-    <system:String x:Key="LineSpacing">隔行扫描</system:String>
-    <system:String x:Key="Left">左边</system:String>
-    <system:String x:Key="Right">右边</system:String>
-    <system:String x:Key="FirstLine">第一叠</system:String>
-    
+    <system:String x:Key="Alignment">对齐</system:String>
+    <system:String x:Key="Bold">粗体</system:String>
+    <system:String x:Key="BeforeS">之前</system:String>
+    <system:String x:Key="AfterS">之后</system:String>
+    <system:String x:Key="LineSpacing">行间距</system:String>
+    <system:String x:Key="Left">左对齐</system:String>
+    <system:String x:Key="Right">右对齐</system:String>
+    <system:String x:Key="FirstLine">首行缩进</system:String>
+
     <system:String x:Key="Settings">设置</system:String>
     <system:String x:Key="Saved">已保存</system:String>
-    <system:String x:Key="OpensFolder">在资源管理器中打开带有应用程序设置文件的文件夹</system:String>
-    <system:String x:Key="DeletesFile">删除应用程序设置文件</system:String>
-    <system:String x:Key="DeletesAllFile">删除与应用程序设置相关的所有文件和文件夹</system:String>
-    <system:String x:Key="DefaultValues">将所有个性化设置恢复为默认值</system:String>
+    <system:String x:Key="OpensFolder">在资源管理器中打开包含应用程序配置文件的文件夹</system:String>
+
+    <system:String x:Key="DefaultValues">恢复默认值</system:String>
     <system:String x:Key="RefreshAllData">刷新下拉列表中的所有数据</system:String>
     <system:String x:Key="SetYear">设置当前年份</system:String>
-    <system:String x:Key="ManualInput">启用或禁用手动输入</system:String>
-    <system:String x:Key="DaDImage">在此拖放图片</system:String>
-    <system:String x:Key="DeleteNumbering">删除编号（例如：如果你复制时留下了编号）</system:String>
-    <system:String x:Key="LoadUsers">加载个人资料设置中已添加的用户</system:String>
+
+    <system:String x:Key="DaDImage">将图像拖放到此处</system:String>
+    <system:String x:Key="DeleteNumbering">删除编号（例如，复制后保留的编号）</system:String>
+    <system:String x:Key="LoadUsers">加载已添加到个人资料设置中的用户</system:String>
     <system:String x:Key="ReplacePagePhoto">用照片替换页面</system:String>
 
-    <system:String x:Key="ProductInfo">产品信息</system:String>
-    <system:String x:Key="WrittenIn">用C#编写</system:String>
-    <system:String x:Key="Interface">界面</system:String>
-    <system:String x:Key="Version">产品版本</system:String>
-
     <system:String x:Key="Insert">插入</system:String>
-    <system:String x:Key="Before">粘贴在前</system:String>
-    <system:String x:Key="After">粘贴在后</system:String>
-    <system:String x:Key="Swap">反转</system:String>
-    <system:String x:Key="Cancel">撤销</system:String>
-    <system:String x:Key="DragDrop1">你想做什么？</system:String>
-    <system:String x:Key="DragDrop2">不能做</system:String>
+    <system:String x:Key="Before">之前插入</system:String>
+    <system:String x:Key="After">之后插入</system:String>
+    <system:String x:Key="Swap">交换</system:String>
+    <system:String x:Key="Cancel">取消</system:String>
+    <system:String x:Key="DragDrop1">您想要做什么？</system:String>
+    <system:String x:Key="DragDrop2">此操作不可行</system:String>
 
-    <system:String x:Key="TitleNeedSave">我需要保留它吗？</system:String>
-    <system:String x:Key="ContentNeedSave">对文件进行了修改，是否需要保存？</system:String>
-    <system:String x:Key="Yes">需要</system:String>
-    <system:String x:Key="Not">不需要</system:String>
-    <system:String x:Key="ChangesMade">已对该文件进行了修改</system:String>
+    <system:String x:Key="TitleNeedSave">是否需要保存？</system:String>
+    <system:String x:Key="ContentNeedSave">文档已经进行了更改，是否需要保存？</system:String>
+    <system:String x:Key="Yes">是</system:String>
+    <system:String x:Key="Not">否</system:String>
+    <system:String x:Key="ChangesMade">文档已进行了更改</system:String>
 
-    <system:String x:Key="AlphabeticalOrder">启用或禁用按字母顺序排列</system:String>
-    <system:String x:Key="ManualPageNumbering">手动编页码</system:String>
+    <system:String x:Key="AlphabeticalOrder">是否启用字母顺序</system:String>
+    <system:String x:Key="ManualPageNumbering">手动页码</system:String>
     <system:String x:Key="StartsWith">开始于</system:String>
+
+    <system:String x:Key="ExitSettings">退出设置</system:String>
+
+    <system:String x:Key="MainTheme">主题</system:String>
+    <system:String x:Key="SelectMainColorScheme">选择WordKiller的主题颜色方案</system:String>
+    <system:String x:Key="Dark">深色模式</system:String>
+
+    <system:String x:Key="AccentColor">强调颜色</system:String>
+    <system:String x:Key="SelectAccentColor">选择应用程序中使用的强调颜色</system:String>
+
+    <system:String x:Key="ZoomLevel">缩放级别</system:String>
+    <system:String x:Key="ManageZoomLevel">管理应用程序中的总体缩放级别</system:String>
+
+    <system:String x:Key="ChangeInterfaceLanguage">更改界面语言</system:String>
+    <system:String x:Key="FontSizeInEditingArea">编辑区域的字体大小（像素）</system:String>
+
+    <system:String x:Key="InterfaceFont">界面字体</system:String>
+    <system:String x:Key="SelectInterfaceFont">选择WordKiller中的主要界面字体</system:String>
+    <system:String x:Key="Change">更改</system:String>
+
+    <system:String x:Key="TextFont">文本字体</system:String>
+    <system:String x:Key="SelectTextFont">选择用于编辑区域的字体</system:String>
+
+    <system:String x:Key="InstituteDescription">允许选择或输入用于页面（标题页、任务清单等）自动填充的学院名称</system:String>
+
+    <system:String x:Key="FacultyDescription">允许选择或输入用于页面（标题页、任务清单等）自动填充的系所名称</system:String>
+
+    <system:String x:Key="CourseDescription">允许选择或输入用于页面（标题页、任务清单等）自动填充的课程编号</system:String>
+
+    <system:String x:Key="GroupDescription">允许选择或输入用于页面（标题页、任务清单等）自动填充的小组编号</system:String>
+
+    <system:String x:Key="DirectionDescription">允许输入用于页面（标题页、任务清单等）自动填充的培养方向</system:String>
+
+    <system:String x:Key="YearDescription">允许输入用于页面（标题页、任务清单等）自动填充的年份</system:String>
+
+    <system:String x:Key="Students">学生</system:String>
+
+    <system:String x:Key="PageNumbering">页码</system:String>
+    <system:String x:Key="AutomaticPageNumbering">自动页码</system:String>
+    <system:String x:Key="TogglePageNumbering">启用或禁用标准页码计数</system:String>
+    <system:String x:Key="StartPageNumber">设置主文档页码起始编号</system:String>
+
+    <system:String x:Key="PageNumberingPosition">页码位置</system:String>
+    <system:String x:Key="PageNumberingLocation">选择页码位置</system:String>
+
+    <system:String x:Key="BottomLeft">左下角</system:String>
+    <system:String x:Key="BottomCenter">底部中间</system:String>
+    <system:String x:Key="BottomRight">右下角</system:String>
+    <system:String x:Key="TopLeft">左上角</system:String>
+    <system:String x:Key="TopCenter">顶部中间</system:String>
+    <system:String x:Key="TopRight">右上角</system:String>
+
+    <system:String x:Key="FiguresAndTables">图和表</system:String>
+    <system:String x:Key="FigureCaption">图题</system:String>
+    <system:String x:Key="FigureCaptionStyle">设置图下的标题样式</system:String>
+
+    <system:String x:Key="ContinuousFigureNumbering">连续图编号</system:String>
+    <system:String x:Key="FigureNumberingPrinciple">设置图编号原则</system:String>
+
+    <system:String x:Key="TableCaption">表题</system:String>
+    <system:String x:Key="TableCaptionStyle">设置表上的标题样式</system:String>
+
+    <system:String x:Key="ContinuousTableNumbering">连续表编号</system:String>
+    <system:String x:Key="TableNumberingPrinciple">设置表编号原则</system:String>
+
+    <system:String x:Key="SectionFormatting">章节格式</system:String>
+    <system:String x:Key="ToggleCapsLockForSections">在章节样式中启用或禁用大写锁定</system:String>
+    <system:String x:Key="TogglePeriodAfterSectionNumber">在章节编号后启用或禁用句号</system:String>
+
+    <system:String x:Key="SubsectionFormatting">子章节格式</system:String>
+    <system:String x:Key="ToggleCapsLockForSubsections">在子章节样式中启用或禁用大写锁定</system:String>
+    <system:String x:Key="EmptyLineAfterSection">在子章节接下来的章节之前启用或禁用空行</system:String>
+
+    <system:String x:Key="TitlePage">标题页</system:String>
+    <system:String x:Key="CustomTitlePage">自定义标题页</system:String>
+    <system:String x:Key="ToggleCustomTitlePage">启用或禁用自定义标题页</system:String>
+
+    <system:String x:Key="ReplaceTitlePage">替换标题页</system:String>
+    <system:String x:Key="SelectReplacementFile">选择要替换为的文件</system:String>
+    <system:String x:Key="Replace">替换</system:String>
+    <system:String x:Key="With">为</system:String>
+
+    <system:String x:Key="Font">字体</system:String>
+    <system:String x:Key="SectionsAndSubsections">章节和小节</system:String>
+    <system:String x:Key="LineAfterSection">章节后的空行</system:String>
+
+    <system:String x:Key="Delete">删除</system:String>
 </ResourceDictionary>

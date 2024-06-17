@@ -4,85 +4,64 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="DRAG DROP" Height="120" Width="230" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="3"/>
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                </Style>
-            </Style.Resources>
-
-            <Style.Setters>
-                <Setter Property="Background" Value="{Binding Path=AlternativeColor}"/>
-                <Setter Property="FontFamily" Value="Serif"/>
-                <Setter Property="FontSize">
-                    <Setter.Value>
-                        <MultiBinding Converter="{StaticResource multiConverter}" ConverterParameter="16">
-                            <Binding RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="Content" RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="FontSize" Mode="TwoWay"/>
-                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}"/>
-                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}"/>
-                        </MultiBinding>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style.Setters>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{Binding HoverColor}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    <Grid Background="{Binding Path=MainColor}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="33*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Text="{DynamicResource DragDrop1}" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" Style="{StaticResource TextBlock}"/>
-        <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}">
-            <Button.Content>
-                <Image Margin="0 4 0 4" Source="{StaticResource InsertTree}" Stretch="Uniform"/>
-            </Button.Content>
-        </Button>
-        <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}">
-            <Button.Content>
-                <Image Margin="3 3 3 3" Source="{StaticResource BeforeTree}" Stretch="Uniform"/>
-            </Button.Content>
-        </Button>
-        <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}">
-            <Button.Content>
-                <Image Margin="3 3 3 3" Source="{StaticResource AfterTree}" Stretch="Uniform"/>
-            </Button.Content>
-        </Button>
-        <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}">
-            <Button.Content>
-                <Image Margin="3 3 3 3" Source="{StaticResource SwapTree}" Stretch="Uniform"/>
-            </Button.Content>
-        </Button>
-        <Button Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" MinWidth="100" Margin="0 0 0 3" Content="{DynamicResource Cancel}" Command="{Binding Exit}"/>
-    </Grid>
+         Height="115" Width="220" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+    <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="8" Background="{StaticResource PrimaryColor}" >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="8, 8, 0, 0" Background="{StaticResource TertiaryColor}" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,0,0" Text=""/>
+                    <Button Grid.Column="1" Click="CloseButton_Click" Style="{StaticResource WindowButton}">
+                        <Button.Content>
+                            <Image Width="15" Height="15" Source="{StaticResource Сlose}" Stretch="Uniform"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{DynamicResource DragDrop1}" Margin="0 5 0 5" x:Name="mainText" FontSize="15" Grid.ColumnSpan="6" FontWeight="Normal" Style="{StaticResource TextBlockSettingsBoldMain}"/>
+                <Button Grid.Row="1" Grid.Column="1" Height="25" Width="48" Visibility="{Binding VisibilityInsert}" ToolTip="{DynamicResource Insert}" Margin="0 0 3 3" Command="{Binding Insert}" Style="{StaticResource ButtonDefault}">
+                    <Button.Content>
+                        <Image Margin="0 4 0 4" Source="{StaticResource InsertTree}" Stretch="Uniform"/>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="1" Grid.Column="2" Height="25" Width="48" Visibility="{Binding VisibilityBefore}" ToolTip="{DynamicResource Before}" Margin="0 0 3 3" Command="{Binding Before}" Style="{StaticResource ButtonDefault}">
+                    <Button.Content>
+                        <Image Margin="3 3 3 3" Source="{StaticResource BeforeTree}" Stretch="Uniform"/>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="1" Grid.Column="3" Height="25" Width="48" Visibility="{Binding VisibilityAfter}" ToolTip="{DynamicResource After}" Margin="0 0 3 3" Command="{Binding After}" Style="{StaticResource ButtonDefault}">
+                    <Button.Content>
+                        <Image Margin="3 3 3 3" Source="{StaticResource AfterTree}" Stretch="Uniform"/>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="1" Grid.Column="4" Height="25" Width="48" Visibility="{Binding VisibilitySwap}" ToolTip="{DynamicResource Swap}" Margin="0 0 0 3" Command="{Binding Swap}" Style="{StaticResource ButtonDefault}">
+                    <Button.Content>
+                        <Image Margin="3 3 3 3" Source="{StaticResource SwapTree}" Stretch="Uniform"/>
+                    </Button.Content>
+                </Button>
+                <Button Grid.Row="2" Grid.Column="1" Height="25" Grid.ColumnSpan="4" FontSize="14" VerticalAlignment="Top" Content="{DynamicResource Cancel}" Command="{Binding Exit}" Style="{StaticResource ButtonDefault}"/>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

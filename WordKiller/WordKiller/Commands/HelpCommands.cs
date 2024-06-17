@@ -5,22 +5,7 @@ namespace WordKiller.Commands;
 
 public class HelpCommands
 {
-    ICommand aboutProgram;
-
     ICommand documentation;
-
-    public ICommand AboutProgram
-    {
-        get
-        {
-            return aboutProgram ??= new RelayCommand(
-                obj =>
-                {
-                    AboutProgram aboutProgram = new();
-                    aboutProgram.Show();
-                });
-        }
-    }
 
     public ICommand Documentation
     {

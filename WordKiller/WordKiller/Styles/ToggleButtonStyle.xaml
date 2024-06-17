@@ -1,0 +1,81 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="ToggleButton"  TargetType="ToggleButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=28}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Viewbox Width="{TemplateBinding Width}">
+                        <Grid Width="96">
+                            <Grid
+                    Width="96"
+                    VerticalAlignment="Center"
+                    ShowGridLines="False">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Path
+                        Grid.Column="0"
+                        Height="18"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Panel.ZIndex="2"
+                        Fill="{TemplateBinding Foreground}"
+                        Stretch="Uniform"
+                        Stroke="{TemplateBinding Foreground}"
+                        StrokeThickness="1" />
+                                <Rectangle
+                        x:Name="BackGround"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Width="96"
+                        Height="52"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Panel.ZIndex="0"
+                        Fill="{StaticResource TertiaryColor}"
+                        RadiusX="26"
+                        RadiusY="26" />
+                                <Path
+                        Grid.Column="1"
+                        Height="21"
+                        Margin="0,0,2,3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Panel.ZIndex="2"
+                        Fill="{TemplateBinding Foreground}"
+                        Stretch="Uniform"
+                        Stroke="{TemplateBinding Foreground}"
+                        StrokeThickness="1" />
+                            </Grid>
+                            <Ellipse
+                    x:Name="Pill"
+                    Width="50"
+                    Height="50"
+                    Margin="1,0,1,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1"
+                    Fill="{StaticResource ActiveObjectColor}"
+                    Visibility="Visible" />
+                        </Grid>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Pill" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="BackGround" Property="Fill" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.AccentColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TableToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource ToggleButton}">
+        <Setter Property="Width" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=18}" />
+    </Style>
+    
+</ResourceDictionary>

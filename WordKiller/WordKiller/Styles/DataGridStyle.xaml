@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="DataGridSettings" TargetType="{x:Type DataGrid}">
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource TertiaryColor}"/>
+                            <Setter Property="Background" Value="{StaticResource TertiaryColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Background}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="False">
+                            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Background}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                    <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize, Mode=TwoWay, Converter={StaticResource fontConverter}, ConverterParameter=8}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Style.Triggers>
+                        <!-- Триггер для изменения фона выделенной строки -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{StaticResource TertiaryColor}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource TertiaryColor}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+                    <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize, Mode=TwoWay, Converter={StaticResource fontConverter}, ConverterParameter=8}"/>
+                    <Setter Property="Margin" Value="2 0 2 0"/>
+                    <Setter Property="Background" Value="{StaticResource TertiaryColor}" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="RowBackground" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource SecondaryColor}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource FontColor}"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="True"/>
+        <Setter Property="CanUserResizeColumns" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="RowHeaderWidth" Value="0"/>
+    </Style>
+</ResourceDictionary>

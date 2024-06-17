@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MathNet.Numerics.LinearAlgebra.Factorization;
 using Microsoft.Win32;
 using WordKiller.Commands;
 using WordKiller.DataTypes;
@@ -10,6 +11,7 @@ using WordKiller.DataTypes.Enums;
 using WordKiller.DataTypes.ParagraphData;
 using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.Models.Template;
 using WordKiller.Scripts;
 using WordKiller.Scripts.File;
 using WordKiller.Views;
@@ -129,6 +131,7 @@ public class ViewModelDocument : ViewModelBase
 
     public ViewModelDocument()
     {
+        CapsLockHelper.Change += CapsLockUpdate;
         timer = new(AutoSaveFile);
         AddIndex = -1;
         visibility = new();
@@ -137,6 +140,7 @@ public class ViewModelDocument : ViewModelBase
         data = new();
         file = new();
         DefaultDocument = true;
+        NumberingHelper.Change += UpdatingObjectNumbering;
     }
 
     public DocumentData Data
@@ -244,6 +248,42 @@ public class ViewModelDocument : ViewModelBase
                     }
                 }
             }
+        }
+    }
+
+    void CapsLockUpdate()
+    {
+        foreach(var paragraph in data.Paragraphs)
+        {
+            if(paragraph is ParagraphH1)
+            {
+                paragraph.Data = CapsLockUpdate(paragraph.Data, CapsLockHelper.CapsLockH1);
+            }
+            else if (paragraph is ParagraphH2)
+            {
+                paragraph.Data = CapsLockUpdate(paragraph.Data, CapsLockHelper.CapsLockH2);
+            }
+        }
+    }
+
+    string CapsLockUpdate(string test, bool isCapsLock)
+    {
+        if(isCapsLock)
+        {
+            return test.ToUpper();
+        }
+        else
+        {
+            string newstr = string.Empty;
+            if(test.Length>0)
+            {
+                newstr += char.ToUpper(test[0]);
+                if(test.Length > 1)
+                {
+                    newstr += test.Substring(1).ToLower();
+                }
+            }
+            return newstr;
         }
     }
 
@@ -420,6 +460,20 @@ public class ViewModelDocument : ViewModelBase
         set => SetProperty(ref winTitle, value);
     }
 
+    void ApplyTemplateSettings()
+    {
+        foreach (var template in Properties.Settings.Default.TemplateTypes)
+        {
+            if(template.Type == data.Type)
+            {
+                CapsLockHelper.CapsLockH1 = template.H1CapsLock;
+                CapsLockHelper.CapsLockH2 = template.H2CapsLock;
+                break;
+            }
+        }
+    }
+
+
     public bool DefaultDocument
     {
         get => defaultDocument;
@@ -445,6 +499,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref defaultDocument, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -473,6 +528,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref coursework, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -499,6 +555,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref laboratoryWork, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -525,6 +582,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref practiceWork, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -551,6 +609,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref controlWork, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -577,6 +636,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref referat, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -604,6 +664,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref productionPractice, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -631,6 +692,7 @@ public class ViewModelDocument : ViewModelBase
             {
                 SetProperty(ref vkr, value);
             }
+            ApplyTemplateSettings();
         }
     }
 
@@ -1096,11 +1158,18 @@ public class ViewModelDocument : ViewModelBase
 
     void UpdatingObjectNumbering()
     {
-        int h1 = 1, h2 = 1, p = 1, t = 1;
-        UpdatingObjectNumbering(Data, ref h1, ref h2, ref p, ref t);
+        int h1 = 0, h2 = 0, p = 0, t = 0;
+        foreach (TemplateType templateType in Properties.Settings.Default.TemplateTypes)
+        {
+            if (templateType.Type == data.Type)
+            {
+                UpdatingObjectNumbering(Data, ref h1, ref h2, ref p, ref t, templateType.isContinuousNumberingPicture, templateType.isContinuousNumberingTable, templateType.H1Point);
+            }
+        }
+        
     }
 
-    static void UpdatingObjectNumbering(SectionParagraphs section, ref int h1, ref int h2, ref int p, ref int t)
+    static void UpdatingObjectNumbering(SectionParagraphs section, ref int h1, ref int h2, ref int p, ref int t, bool isContinuousNumberingP, bool isContinuousNumberingT, bool h1Point)
     {
         foreach (IParagraphData paragraph in section.Paragraphs)
         {
@@ -1117,35 +1186,90 @@ public class ViewModelDocument : ViewModelBase
                     {
                         data = paragraph.Data;
                     }
-
-                    UpdatingObjectNumbering(paragraphH1, ref h1, ref h2, ref p, ref t);
+                    h1++;
+                    if(!isContinuousNumberingP)
+                    {
+                        p = 0;
+                    }
+                    if(!isContinuousNumberingT)
+                    {
+                         t = 0;
+                    }
+                    UpdatingObjectNumbering(paragraphH1, ref h1, ref h2, ref p, ref t, isContinuousNumberingP, isContinuousNumberingT, h1Point);
                     if (data.ToUpper() != "ВВЕДЕНИЕ" && data.ToUpper() != "ЗАКЛЮЧЕНИЕ")
                     {
-                        numbered.Number = h1++ + " ";
+                        numbered.Number = h1.ToString();
+                        if(h1Point)
+                        {
+                            numbered.Number += ".";
+                        }
+                        numbered.Number += " ";
                     }
                     else
                     {
                         numbered.Number = string.Empty;
                     }
 
-                    h2 = 1;
+                    h2 = 0;
                 }
                 else if (paragraph is ParagraphH2 paragraphH2)
                 {
-                    UpdatingObjectNumbering(paragraphH2, ref h1, ref h2, ref p, ref t);
-                    numbered.Number = h1 + "." + h2++ + " ";
+                    h2++;
+                    if(!isContinuousNumberingP)
+                    { 
+                        p = 0;
+                    }
+                    if(!isContinuousNumberingT)
+                    {
+                         t = 0;
+                    }
+                    UpdatingObjectNumbering(paragraphH2, ref h1, ref h2, ref p, ref t, isContinuousNumberingP,isContinuousNumberingT, h1Point);
+                    numbered.Number = h1 + "." + h2 + " ";
                 }
                 else if (paragraph is ParagraphPicture)
                 {
-                    numbered.Number = (p++).ToString();
+                    if(isContinuousNumberingP)
+                    {
+                        numbered.Number = (++p).ToString();
+                    }
+                    else
+                    {
+                        numbered.Number = test(h1,h2) + (++p).ToString();
+                    }
                 }
                 else if (paragraph is ParagraphTable)
                 {
-                    numbered.Number = (t++).ToString();
+                    if(isContinuousNumberingT)
+                    {
+                        numbered.Number = (++t).ToString();
+                    }
+                    else
+                    {
+                        numbered.Number =  test(h1,h2) +(++t).ToString();
+                    }
                 }
             }
         }
     }
+
+    static string test(int h1, int h2)
+    {
+        string test1 = string.Empty;
+        if(h1>0)
+        {
+            test1 += h1 + ".";
+            if(h2>0)
+            {
+                test1 += h2 + ".";
+            }
+        }
+        else if(h2>0)
+        {
+            test1 += h2 + ".";
+        }
+        return test1;
+    }
+
 
     public void DragDrop(IParagraphData targetItem, IParagraphData sourceItem)
     {
@@ -1572,6 +1696,7 @@ public class ViewModelDocument : ViewModelBase
     {
         DocumentTypeFalse();
         Data = await file.OpenFile(fileName);
+        UpdatingObjectNumbering();
         HeaderUpdate();
         Data.Title.FacultyItems = [];
         Data.Title.CathedraItems = [];

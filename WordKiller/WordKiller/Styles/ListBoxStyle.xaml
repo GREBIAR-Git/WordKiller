@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="ListBoxItem" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border Name="Border" Background="{StaticResource SecondaryColor}" Padding="2" SnapsToDevicePixels="true">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource TertiaryColor}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="Red"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type ListBox}" TargetType="{x:Type ListBox}">
+        <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItem}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+    </Style>
+
+    
+</ResourceDictionary>

@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using DynamicData;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using WordKiller.Commands;
@@ -137,6 +140,14 @@ public class ViewModelMain : ViewModelBase
         {
             return exitSettings ??= new RelayCommand(obj =>
             {
+                foreach(var template in Settings.Template.TemplateType)
+                {
+                    if(template.Type == Document.Data.Type)
+                    {
+                        CapsLockHelper.CapsLockH1 = template.H1CapsLock;
+                        CapsLockHelper.CapsLockH2 = template.H2CapsLock;
+                    }
+                }
                 VisibilitySettingsPanel = Visibility.Collapsed;
                 VisibilityMainPanel = Visibility.Visible;
             });
@@ -154,8 +165,13 @@ public class ViewModelMain : ViewModelBase
         {
             return updatePerformed ??= new RelayCommand(
                 obj => 
-                { 
-                    Document.Data.Title.Performed = [.. Settings.Profile.Users];
+                {
+                    Document.Data.Title.Performed = [];
+
+                    foreach(var user in Settings.Profile.Users)
+                    {
+                        Document.Data.Title.Performed.Add((Models.User)user.Clone());
+                    }
                 });
         }
     }

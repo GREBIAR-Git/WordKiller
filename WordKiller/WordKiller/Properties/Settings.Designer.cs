@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using WordKiller.Models.Template;
 using WordKiller.Models;
 using System.ComponentModel;
+using System.Windows;
 
 namespace WordKiller.Properties {
     
@@ -58,6 +59,83 @@ namespace WordKiller.Properties {
                 this["TemplateTypes"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arial")]
+        public string SelectedFonts
+        {
+            get
+            {
+                return ((string)(this["SelectedFonts"]));
+            }
+            set
+            {
+                this["SelectedFonts"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arial")]
+        public string SelectedFontsRTB
+        {
+            get
+            {
+                return ((string)(this["SelectedFontsRTB"]));
+            }
+            set
+            {
+                this["SelectedFontsRTB"] = value;
+            }
+        }
+
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("550")]
+        public int Height
+        {
+            get
+            {
+                return ((int)(this["Height"]));
+            }
+            set
+            {
+                this["Height"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("820")]
+        public int Width
+        {
+            get
+            {
+                return ((int)(this["Width"]));
+            }
+            set
+            {
+                this["Width"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public WindowState WindowState
+        {
+            get
+            {
+                return ((WindowState)(this["WindowState"]));
+            }
+            set
+            {
+                this["WindowState"] = value;
+            }
+        }
+
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -121,7 +199,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2023")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2024")]
         public string Year {
             get {
                 return ((string)(this["Year"]));
@@ -211,64 +289,16 @@ namespace WordKiller.Properties {
                 this["AutoHeader"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#8daacc")]
-        public string MainColor {
+        [global::System.Configuration.DefaultSettingValueAttribute("#9c6b33")]
+        public string AccentColor {
             get {
-                return ((string)(this["MainColor"]));
+                return ((string)(this["AccentColor"]));
             }
             set {
-                this["MainColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#4a76a8")]
-        public string AdditionalColor {
-            get {
-                return ((string)(this["AdditionalColor"]));
-            }
-            set {
-                this["AdditionalColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#335e8f")]
-        public string AlternativeColor {
-            get {
-                return ((string)(this["AlternativeColor"]));
-            }
-            set {
-                this["AlternativeColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#b8860b")]
-        public string HoverColor {
-            get {
-                return ((string)(this["HoverColor"]));
-            }
-            set {
-                this["HoverColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#ff0000")]
-        public string ActiveColor {
-            get {
-                return ((string)(this["ActiveColor"]));
-            }
-            set {
-                this["ActiveColor"] = value;
+                this["AccentColor"] = value;
             }
         }
         
@@ -310,7 +340,7 @@ namespace WordKiller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int MaxRowAndColumn {
             get {
                 return ((int)(this["MaxRowAndColumn"]));

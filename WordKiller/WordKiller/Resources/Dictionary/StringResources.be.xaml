@@ -2,199 +2,280 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="File">Напільнік</system:String>
+    <system:String x:Key="File">Файл</system:String>
 
     <system:String x:Key="Export">Экспарт</system:String>
-    <system:String x:Key="PDF">У фармаце PDF</system:String>
-    <system:String x:Key="HTML">У фармаце HTML</system:String>
-    <system:String x:Key="Create">Тварыць</system:String>
-    <system:String x:Key="Open">Адкрыты</system:String>
-    <system:String x:Key="Save">Ашчаджаць</system:String>
+    <system:String x:Key="PDF">У PDF фармаце</system:String>
+    <system:String x:Key="HTML">У HTML фармаце</system:String>
+    <system:String x:Key="Create">Стварыць</system:String>
+    <system:String x:Key="Open">Адкрыць</system:String>
+    <system:String x:Key="Save">Захаваць</system:String>
     <system:String x:Key="SaveAs">Захаваць як...</system:String>
-    <system:String x:Key="Exit">Выхадзіць</system:String>
+    <system:String x:Key="Exit">Выхад</system:String>
 
     <system:String x:Key="Type">Тып</system:String>
     <system:String x:Key="DefaultDocument">Звычайны дакумент</system:String>
-    <system:String x:Key="Coursework">Курсавая праца</system:String>
-    <system:String x:Key="LaboratoryWork">Лабараторная праца</system:String>
-    <system:String x:Key="PracticeWork">Практычная праца</system:String>
-    <system:String x:Key="ControlWork">Кантрольная праца</system:String>
-    <system:String x:Key="Referat">Урывак</system:String>
+    <system:String x:Key="Coursework">Курсавая работа</system:String>
+    <system:String x:Key="LaboratoryWork">Лабараторная работа</system:String>
+    <system:String x:Key="PracticeWork">Практычная работа</system:String>
+    <system:String x:Key="ControlWork">Кантрольная работа</system:String>
+    <system:String x:Key="Referat">Рэферат</system:String>
     <system:String x:Key="ProductionPractice">Вытворчая практыка</system:String>
-    <system:String x:Key="VKR">ВКР</system:String>
+    <system:String x:Key="VKR">Выпускная кваліфікацыйная работа</system:String>
 
     <system:String x:Key="Document">Дакумент</system:String>
-    <system:String x:Key="Title">Загаловак</system:String>
-    <system:String x:Key="TaskSheet">Ліст заданні</system:String>
-    <system:String x:Key="ListOfReferences">Спіс выкарыстанай літаратуры</system:String>
-    <system:String x:Key="PageNumbers">Нумараванне</system:String>
-    <system:String x:Key="TOC">Задаволены</system:String>
-    <system:String x:Key="NumbersToHeaders">Лічбы для загалоўкаў</system:String>
-    <system:String x:Key="Appendix">Прыкладанне</system:String>
+    <system:String x:Key="Title">Тытульны аркуш</system:String>
+    <system:String x:Key="TaskSheet">Ліст задання</system:String>
+    <system:String x:Key="PageNumbers">Нумерацыя старонак</system:String>
+    <system:String x:Key="TOC">Змест</system:String>
+    <system:String x:Key="NumbersToHeaders">Лічбы да загалоўкаў</system:String>
+    <system:String x:Key="ListOfReferences">Спіс літаратуры</system:String>
+    <system:String x:Key="Appendix">Дадатак</system:String>
 
     <system:String x:Key="Network">Сетка</system:String>
 
-    <system:String x:Key="Help">Рэкамендацыя</system:String>
     <system:String x:Key="Documentation">Дакументацыя</system:String>
-    <system:String x:Key="AboutProgram">Пра праграму</system:String>
 
-    <system:String x:Key="MainClue">Абярыце аб'ект або націсніце кнопку дадаць, каб пачаць працу</system:String>
-    <system:String x:Key="PictureClue">Перацягнеце сюды Фатаграфія тытульнага ліста</system:String>
+    <system:String x:Key="MainClue">Выбярыце аб'ект або націсніце кнопку "Дадаць", каб пачаць працу</system:String>
+    <system:String x:Key="PictureClue">Перацягніце сюды фатаграфію тытульнага аркуша</system:String>
 
     <system:String x:Key="Header">Раздзел</system:String>
-    <system:String x:Key="SubHeader">Падліў</system:String>
+    <system:String x:Key="SubHeader">Падраздзел</system:String>
     <system:String x:Key="List">Спіс</system:String>
-    <system:String x:Key="Picture">Карціна</system:String>
-    <system:String x:Key="Table">Стол</system:String>
+    <system:String x:Key="Picture">Выява</system:String>
+    <system:String x:Key="Table">Табліца</system:String>
     <system:String x:Key="Code">Код</system:String>
     <system:String x:Key="Text">Тэкст</system:String>
 
-    <system:String x:Key="Add">Дадаваць</system:String>
-    <system:String x:Key="InsertBefore">Уставіць (Да)</system:String>
+    <system:String x:Key="Add">Дадаць</system:String>
+    <system:String x:Key="InsertBefore">Уставіць (Перад)</system:String>
     <system:String x:Key="InsertAfter">Уставіць (Пасля)</system:String>
 
     <system:String x:Key="Cathedra">Кафедра</system:String>
     <system:String x:Key="Completed">Выканалі</system:String>
     <system:String x:Key="Theme">Тэма</system:String>
     <system:String x:Key="Discipline">Дысцыпліна</system:String>
-    <system:String x:Key="Lecturer">Лектар</system:String>
-    <system:String x:Key="FacultyPosition">Месца на кафедры</system:String>
-    <system:String x:Key="CourseProject">Курсавой праект</system:String>
-    <system:String x:Key="SourceData">Зыходныя дадзеныя</system:String>
-    <system:String x:Key="ReportingMaterial">Справаздачны матэрыял</system:String>
-    <system:String x:Key="Direction">Кірунак</system:String>
-    <system:String x:Key="Production">Вытворчы</system:String>
+    <system:String x:Key="Lecturer">Выкладчык</system:String>
+    <system:String x:Key="FacultyPosition">Пазіцыя на кафедры</system:String>
+    <system:String x:Key="CourseProject">Курсавы праект</system:String>
+    <system:String x:Key="SourceData">Выходныя дадзеныя</system:String>
+    <system:String x:Key="ReportingMaterial">Атчотны матэрыял</system:String>
+    <system:String x:Key="Direction">Напрамак</system:String>
+    <system:String x:Key="Production">Вытворчасць</system:String>
     <system:String x:Key="Educational">Навучальны</system:String>
-    <system:String x:Key="PracticeLocation">Месца праходжання</system:String>
-    <system:String x:Key="DirectionP">Накіраванасць (профіль)</system:String>
-    <system:String x:Key="Normocontrol">Нормакантроль</system:String>
-    <system:String x:Key="HeadCathedra">Заг. кафедра</system:String>
+    <system:String x:Key="PracticeLocation">Месца правядзення</system:String>
+    <system:String x:Key="DirectionP">Напрамак (профіль)</system:String>
+    <system:String x:Key="Normocontrol">Нармакантроль</system:String>
+    <system:String x:Key="HeadCathedra">Зав. кафедрай</system:String>
     <system:String x:Key="HeadOrganization">Кіраўнік ад арганізацыі</system:String>
 
-    <system:String x:Key="Bibliography">Спіс выкарыстанай літаратуры</system:String>
+    <system:String x:Key="Bibliography">Спіс літаратуры</system:String>
     <system:String x:Key="ListSourcesUsed">Спіс выкарыстаных крыніц</system:String>
     <system:String x:Key="Book">Кніга</system:String>
     <system:String x:Key="ElectronicResources">Электронны рэсурс</system:String>
-    <system:String x:Key="Authors">Аўтар</system:String>
-    <system:String x:Key="Name">Загаловак</system:String>
+    <system:String x:Key="Authors">Аўтары</system:String>
+    <system:String x:Key="Name">Назва</system:String>
     <system:String x:Key="Publication">Выданне</system:String>
     <system:String x:Key="Page">Старонка</system:String>
     <system:String x:Key="Url">Спасылка</system:String>
-    <system:String x:Key="CirculationDate">Дата звароту</system:String>
+    <system:String x:Key="CirculationDate">Дата абраджэння</system:String>
 
     <system:String x:Key="DeleteCurrent">Выдаліць бягучы</system:String>
-    <system:String x:Key="FirstPage">Першая старонка ліста заданні</system:String>
-    <system:String x:Key="SecondPage">Другая старонка ліста заданні</system:String>
-    
-    <system:String x:Key="Content">Задаволены</system:String>
+    <system:String x:Key="FirstPage">Першая старонка ліста задання</system:String>
+    <system:String x:Key="SecondPage">Другая старонка ліста задання</system:String>
 
-    <system:String x:Key="Unidentified">Ня вызначана</system:String>
-    <system:String x:Key="NotFound">Не знойдзены</system:String>
-    <system:String x:Key="ForPicture">Для малюнка</system:String>
+    <system:String x:Key="Content">Змест</system:String>
+
+    <system:String x:Key="Unidentified">Ня апазнаны</system:String>
+    <system:String x:Key="NotFound">Не знойдзена</system:String>
+    <system:String x:Key="ForPicture">Для выявы</system:String>
     <system:String x:Key="ForCode">Для кода</system:String>
 
-    <system:String x:Key="Columns">Стоўбцы: </system:String>
-    <system:String x:Key="Rows">Шэрагі: </system:String>
-    
-    <system:String x:Key="Error">Памылка</system:String>
-    <system:String x:Key="Error1">Памылка адкрыцця файла: файл не знойдзены альбо фармат не падтрымліваецца</system:String>
-    <system:String x:Key="Error2">Мы не можам зрабіць гэта на вашым прыладзе, абнавіць АС</system:String>
-    <system:String x:Key="Error3">Памылка пры фарміраванні тытульнай старонкі</system:String>
-    <system:String x:Key="Error4">Памылка пры праверцы ліста задання</system:String>
-    <system:String x:Key="Error5">Памылка пры фарміраванні зместу</system:String>
-    <system:String x:Key="Error6">Памылка пры фарміраванні асноўнага тэксту дакумента</system:String>
-    <system:String x:Key="Error7">Памылка пры фармаванні спісу літаратуры</system:String>
-    <system:String x:Key="Error8">Памылка пры фармаванні прыкладання</system:String>
-    <system:String x:Key="Error9">Памылка пры фарміраванні справаздачы: файл, які вы хочаце замяніць, адкрыты</system:String>
-    <system:String x:Key="Error10">Памылка адкрыцця файла: файл пашкоджаны</system:String>
+    <system:String x:Key="Columns">Калоны:</system:String>
+    <system:String x:Key="Rows">Радкі:</system:String>
 
-    <system:String x:Key="Question1">Трэба захаваць?</system:String>
-    
-    <system:String x:Key="GeneralSettings">Генерал</system:String>
+    <system:String x:Key="Error">Памылка</system:String>
+    <system:String x:Key="Error1">Памылка пры адкрыцці файла: файла не знойдзена або фармат не падтрымліваецца</system:String>
+    <system:String x:Key="Error2">Мы не можам выканаць гэтае дзеянне на вашым прыладзе, калі ласка, абнавіце вашую аперацыйную сістэму</system:String>
+    <system:String x:Key="Error3">Памылка пры стварэнні тытульнай старонкі</system:String>
+    <system:String x:Key="Error4">Памылка пры стварэнні ліста задання</system:String>
+    <system:String x:Key="Error5">Памылка пры стварэнні зместу</system:String>
+    <system:String x:Key="Error6">Памылка пры стварэнні асноўнага тэксту дакумента</system:String>
+    <system:String x:Key="Error7">Памылка пры стварэнні спісу літаратуры</system:String>
+    <system:String x:Key="Error8">Памылка пры стварэнні дадатку</system:String>
+    <system:String x:Key="Error9">Памылка пры стварэнні адзначэння: файл, які вы хочаце замяніць, адкрыты</system:String>
+    <system:String x:Key="Error10">Памылка пры адкрыцці файла: файл пашкоджаны</system:String>
+    <system:String x:Key="Error11">Памылка пры стварэнні: стылі пашкоджаныя, выдаліце файл канфігурацыі</system:String>
+
+    <system:String x:Key="Question1">Ці трэба захаваць?</system:String>
+
+    <system:String x:Key="GeneralSettings">Агульнае</system:String>
     <system:String x:Key="PersonalizationSettings">Персаналізацыя</system:String>
     <system:String x:Key="ProfileSettings">Профіль</system:String>
-    <system:String x:Key="Styles">Стыль</system:String>
+    <system:String x:Key="Styles">Стылі</system:String>
     <system:String x:Key="BackSettings">Назад</system:String>
 
-    <system:String x:Key="IsAssociate">Пашырэнне (wkr) асацыявана з праграмай</system:String>
+    <system:String x:Key="IsAssociate">Па змаўчанні</system:String>
     <system:String x:Key="AutoSave">Аўта-захаванне</system:String>
-    <system:String x:Key="IsSyntaxChecking">Праверка сінтаксісу(Базавая)</system:String>
-    <system:String x:Key="Encoding">Шыфраванне пры захаванні і адкрыцці файла</system:String>
-    <system:String x:Key="Encoding0">Які</system:String>
-    <system:String x:Key="Encoding1">Стандартны</system:String>
-    <system:String x:Key="AfterExportingClose">Закрыццё прыкладання пасля фарміравання справаздачы</system:String>
-    <system:String x:Key="IsAutoHeader">Аўтаматычны загаловак для аб'екта</system:String>
-    <system:String x:Key="FileSettings">Файл з наладамі прыкладання</system:String>
-    <system:String x:Key="Delete">Выдаліць</system:String>
-    <system:String x:Key="DeleteAll">Выдаліць усе файлы</system:String>
+    <system:String x:Key="IsSyntaxChecking">Праверка арфаграфіі</system:String>
+    <system:String x:Key="Encoding">Шыфраванне</system:String>
+    <system:String x:Key="Encoding0">Няма</system:String>
+    <system:String x:Key="Encoding1">Стандартнае</system:String>
+    <system:String x:Key="AfterExportingClose">Закрыць праграму пасля экспарту</system:String>
+    <system:String x:Key="IsAutoHeader">Аўтаматычны загаловак</system:String>
+    <system:String x:Key="FileSettings">Налады праграмы</system:String>
 
-    <system:String x:Key="ByDefault">Па змаўчанні</system:String>
-    <system:String x:Key="MainColor">Асноўны колер праграмы</system:String>
-    <system:String x:Key="ComplementaryColor">Дадатковы колер праграмы</system:String>
-    <system:String x:Key="AlternativeColor">Альтэрнатыўны колер колеру</system:String>
-    <system:String x:Key="HoverColor">Колер пры навядзенні</system:String>
-    <system:String x:Key="ActiveColor">Колер, калі аб'ект актыўны</system:String>
-    <system:String x:Key="FontSize">Памер шрыфта</system:String>
-    <system:String x:Key="FontSizeRTB">Памер шрыфта для RichTextBox</system:String>
+    <system:String x:Key="IsAssociateDescription">Дазваляе адкрыць файлы з разшырэннем .wkr праз гэту праграму па двойным кліку</system:String>
+    <system:String x:Key="AutoSaveDescription">Уключае аўтаматычнае захаванне дакумента кожныя 5 хвілін</system:String>
+    <system:String x:Key="IsSyntaxCheckingDescription">Уключае аўтаматычную праверку сінтаксісу</system:String>
+    <system:String x:Key="EncodingDescription">Уключае шыфраванне файлаў</system:String>
+    <system:String x:Key="AfterExportingCloseDescription">Аўтаматычна зачыняе праграму пасля экспарту дакумента ў фармат docx</system:String>
+    <system:String x:Key="IsAutoHeaderDescription">Пры даданні новага аб'екта ў дрэваападобны спіс загаловак аўтаматычна запоўваецца тыпам аб'екта</system:String>
+    <system:String x:Key="FileSettingsDescription">Адкрывае тэчку з файлам канфігурацыі</system:String>
+
+    <system:String x:Key="FontSize">Памер шрыфту</system:String>
+    <system:String x:Key="FontSizeRTB">Памер шрыфту ў вобласці рэдагавання</system:String>
     <system:String x:Key="Language">Мова</system:String>
 
-    <system:String x:Key="You">Ты</system:String>
+    <system:String x:Key="You">Вы</system:String>
     <system:String x:Key="FirstName">Імя</system:String>
     <system:String x:Key="LastName">Прозвішча</system:String>
-    <system:String x:Key="MiddleName">Імя па бацьку</system:String>
+    <system:String x:Key="MiddleName">Па бацьку</system:String>
     <system:String x:Key="University">Інстытут</system:String>
     <system:String x:Key="Faculty">Факультэт</system:String>
-    <system:String x:Key="Course">Ну</system:String>
+    <system:String x:Key="Course">Курс</system:String>
     <system:String x:Key="Group">Група</system:String>
-    <system:String x:Key="Shifr">Cipher</system:String>
+    <system:String x:Key="Shifr">Шыфр</system:String>
     <system:String x:Key="Companion">Партнёр</system:String>
     <system:String x:Key="Year">Год</system:String>
-    <system:String x:Key="Users">Карыстальнік</system:String>
-    <system:String x:Key="AutoPerformed">Выконваў (Аўта)</system:String>
+    <system:String x:Key="Users">Карыстальнікі</system:String>
+    <system:String x:Key="AutoPerformed">Выконваў (аўтаматычна)</system:String>
 
-    <system:String x:Key="Alignment">Выраўноўванне</system:String>
-    <system:String x:Key="Bold">Тлусты</system:String>
-    <system:String x:Key="BeforeS">Да</system:String>
+    <system:String x:Key="Alignment">Выраўнаванне</system:String>
+    <system:String x:Key="Bold">Жырны</system:String>
+    <system:String x:Key="BeforeS">Перад</system:String>
     <system:String x:Key="AfterS">Пасля</system:String>
-    <system:String x:Key="LineSpacing">Міжрадковы</system:String>
-    <system:String x:Key="Left">Злева</system:String>
-    <system:String x:Key="Right">Справа</system:String>
-    <system:String x:Key="FirstLine">Першы радок</system:String>
-    
-    <system:String x:Key="Settings">Наладжваньне</system:String>
+    <system:String x:Key="LineSpacing">Праміжковы</system:String>
+    <system:String x:Key="Left">Лева</system:String>
+    <system:String x:Key="Right">Права</system:String>
+    <system:String x:Key="FirstLine">Першая радок</system:String>
+
+    <system:String x:Key="Settings">Налады</system:String>
     <system:String x:Key="Saved">Захавана</system:String>
-    <system:String x:Key="OpensFolder">Адкрывае тэчку з файлам налад прыкладання ў правадыру</system:String>
-    <system:String x:Key="DeletesFile">Выдаляе файл з наладамі прыкладання</system:String>
-    <system:String x:Key="DeletesAllFile">Выдаляе ўсе файлы і тэчкі, звязаныя з наладамі прыкладання</system:String>
-    <system:String x:Key="DefaultValues">Аднавіць усе налады персаналізацыі да значэнняў па змаўчанні</system:String>
+    <system:String x:Key="OpensFolder">Адкрыць тэчку з файлам налад праграмы ў Провадніку</system:String>
+
+    <system:String x:Key="DefaultValues">Аднавіць значэнні па змаўчанні</system:String>
     <system:String x:Key="RefreshAllData">Абнавіць усе дадзеныя ў выпадальным спісе</system:String>
-    <system:String x:Key="SetYear">Ўсталяваць бягучы год</system:String>
-    <system:String x:Key="ManualInput">Ўключыць або адключыць ручной ўвод</system:String>
-    <system:String x:Key="DaDImage">Перацягнуць сюды малюнак</system:String>
-    <system:String x:Key="DeleteNumbering">Выдаліць нумарацыю (напрыклад: калі яна засталася пры капіяванні)</system:String>
-    <system:String x:Key="LoadUsers">Загрузіць карыстальнікаў, якія былі дададзеныя ў наладах профілю</system:String>
+    <system:String x:Key="SetYear">Усталяваць бягучы год</system:String>
+
+    <system:String x:Key="DaDImage">Перацягніце сюды малюнак</system:String>
+    <system:String x:Key="DeleteNumbering">Выдаліць нумерацыю (напрыклад, якшто яна засталася пасля капіравання)</system:String>
+    <system:String x:Key="LoadUsers">Загрузіць карыстальнікаў, якія былі дададзены ў наладах профіля</system:String>
     <system:String x:Key="ReplacePagePhoto">Замяніць старонку фатаграфіяй</system:String>
 
-    <system:String x:Key="ProductInfo">Інфармацыя пра прадукт</system:String>
-    <system:String x:Key="WrittenIn">Праграма напісана на мове C#</system:String>
-    <system:String x:Key="Interface">Інтэрфейс</system:String>
-    <system:String x:Key="Version">Версія прадукта</system:String>
-
     <system:String x:Key="Insert">Уставіць</system:String>
-    <system:String x:Key="Before">Уставіць да</system:String>
+    <system:String x:Key="Before">Уставіць перад</system:String>
     <system:String x:Key="After">Уставіць пасля</system:String>
-    <system:String x:Key="Swap">Памяняць месцамі</system:String>
-    <system:String x:Key="Cancel">Адмяніць</system:String>
+    <system:String x:Key="Swap">Абмен</system:String>
+    <system:String x:Key="Cancel">Скасаваць</system:String>
     <system:String x:Key="DragDrop1">Што вы хочаце зрабіць?</system:String>
-    <system:String x:Key="DragDrop2">Гэтага зрабіць немагчыма</system:String>
+    <system:String x:Key="DragDrop2">Гэта немагчыма</system:String>
 
     <system:String x:Key="TitleNeedSave">Ці трэба захаваць?</system:String>
-    <system:String x:Key="ContentNeedSave">Былі ўнесены змены ў дакумент, ці трэба іх захоўваць?</system:String>
+    <system:String x:Key="ContentNeedSave">Былі ўнесеныя змены ў дакумент, ці іх трэба захаваць?</system:String>
     <system:String x:Key="Yes">Так</system:String>
     <system:String x:Key="Not">Не</system:String>
-    <system:String x:Key="ChangesMade">У дакумент былі ўнесены змены</system:String>
+    <system:String x:Key="ChangesMade">Былі ўнесеныя змены ў дакумент</system:String>
 
-    <system:String x:Key="AlphabeticalOrder">Уключыць або адключыць алфавітны парадак</system:String>
-    <system:String x:Key="ManualPageNumbering">Ручная Нумарацыя старонак</system:String>
-    <system:String x:Key="StartsWith">Пачатак з</system:String>
+    <system:String x:Key="AlphabeticalOrder">Уключыць альфабетны парадак</system:String>
+    <system:String x:Key="ManualPageNumbering">Ручная нумарацыя старонак</system:String>
+    <system:String x:Key="StartsWith">Пачынаецца з</system:String>
+
+    <system:String x:Key="ExitSettings">Выйсці з налад</system:String>
+
+    <system:String x:Key="MainTheme">Асноўная тэма</system:String>
+    <system:String x:Key="SelectMainColorScheme">Выбар асноўнай каляровай схемы афармлення WordKiller</system:String>
+    <system:String x:Key="Dark">Цёмная</system:String>
+
+    <system:String x:Key="AccentColor">Акцэнтны колер</system:String>
+    <system:String x:Key="SelectAccentColor">Выбар акцэнтнага колеру, які выкарыстоўваецца ў ўсёй праграме</system:String>
+
+    <system:String x:Key="ZoomLevel">Ўзровень зуму</system:String>
+    <system:String x:Key="ManageZoomLevel">Кіраванне агульным ўзроўнем зуму ў праграме</system:String>
+
+    <system:String x:Key="ChangeInterfaceLanguage">Змяніць мову інтэрфейсу</system:String>
+    <system:String x:Key="FontSizeInEditingArea">Памер шрыфту ў пікселях у вобласці рэдагавання</system:String>
+
+    <system:String x:Key="InterfaceFont">Шрыфт інтэрфейсу</system:String>
+    <system:String x:Key="SelectInterfaceFont">Выбар асноўнага шрыфту інтэрфейсу ў WordKiller</system:String>
+    <system:String x:Key="Change">Змяніць</system:String>
+
+    <system:String x:Key="TextFont">Шрыфт тэксту</system:String>
+    <system:String x:Key="SelectTextFont">Выбар шрыфту для вобласцей рэдагавання</system:String>
+
+    <system:String x:Key="InstituteDescription">Дазваляе выбраць або ўвесці назву інстытута для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="FacultyDescription">Дазваляе выбраць або ўвесці назву факультэта для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="CourseDescription">Дазваляе выбраць або ўвесці нумар курсу для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="GroupDescription">Дазваляе выбраць або ўвесці нумар групы для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="DirectionDescription">Дазваляе ўвесці напрамак падрыхтоўкі для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="YearDescription">Дазваляе ўвесці год для аўтазапаўнення на старонках (тітульная старонка, ліст задання і г.д.)</system:String>
+
+    <system:String x:Key="Students">Студэнты</system:String>
+
+    <system:String x:Key="PageNumbering">Нумарацыя старонак</system:String>
+    <system:String x:Key="AutomaticPageNumbering">Аўтаматычная нумарацыя старонак</system:String>
+    <system:String x:Key="TogglePageNumbering">Уключыць або выключыць стандартную нумарацыю старонак</system:String>
+    <system:String x:Key="StartPageNumber">Задае лік пачатку нумарацыі старонкі асноўнага тэксту дакумента</system:String>
+
+    <system:String x:Key="PageNumberingPosition">Афармленне нумарацыі старонак</system:String>
+    <system:String x:Key="PageNumberingLocation">Выбар месца нумарацыі старонак</system:String>
+
+    <system:String x:Key="BottomLeft">Злева знізу</system:String>
+    <system:String x:Key="BottomCenter">Па цэнтры знізу</system:String>
+    <system:String x:Key="BottomRight">Зправа знізу</system:String>
+    <system:String x:Key="TopLeft">Злева зверху</system:String>
+    <system:String x:Key="TopCenter">Па цэнтры зверху</system:String>
+    <system:String x:Key="TopRight">Зправа зверху</system:String>
+
+    <system:String x:Key="FiguresAndTables">Выявы і табліцы</system:String>
+    <system:String x:Key="FigureCaption">Подпіс выявы</system:String>
+    <system:String x:Key="FigureCaptionStyle">Ўстанаўлівае выгляд падпісу пад выявай</system:String>
+
+    <system:String x:Key="ContinuousFigureNumbering">Паўторная нумарацыя выяваў</system:String>
+    <system:String x:Key="FigureNumberingPrinciple">Ўстанаўлівае прынцып нумарацыі выяваў</system:String>
+
+    <system:String x:Key="TableCaption">Подпіс табліцы</system:String>
+    <system:String x:Key="TableCaptionStyle">Ўстанаўлівае выгляд падпісу над табліцай</system:String>
+
+    <system:String x:Key="ContinuousTableNumbering">Паўторная нумарацыя табліц</system:String>
+    <system:String x:Key="TableNumberingPrinciple">Ўстанаўлівае прынцып нумарацыі табліц</system:String>
+
+    <system:String x:Key="SectionFormatting">Афармленне раздзелаў</system:String>
+    <system:String x:Key="ToggleCapsLockForSections">Уключае або выключае CapsLock у стылях раздзела</system:String>
+    <system:String x:Key="TogglePeriodAfterSectionNumber">Уключае або выключае кропку пасля нумару раздзела</system:String>
+
+    <system:String x:Key="SubsectionFormatting">Афармленне падраздзелаў</system:String>
+
+    <system:String x:Key="ToggleCapsLockForSubsections">Уключае або выключае CapsLock у стылях падраздзела</system:String>
+    <system:String x:Key="EmptyLineAfterSection">Уключае або выключае пустую радок пасля раздзела, калі наступны падраздзел</system:String>
+
+    <system:String x:Key="TitlePage">Тытульная старонка</system:String>
+    <system:String x:Key="CustomTitlePage">Кастомная тытульная старонка</system:String>
+    <system:String x:Key="ToggleCustomTitlePage">Уключае або выключае змену стандартнай тытульнай старонкі на кастомную</system:String>
+
+    <system:String x:Key="ReplaceTitlePage">Замена тытульніка</system:String>
+    <system:String x:Key="SelectReplacementFile">Выбіраецца файл, на які будзе заменены тытульнік</system:String>
+    <system:String x:Key="Replace">Замяніць</system:String>
+    <system:String x:Key="With">на</system:String>
+
+    <system:String x:Key="Font">Шрыфт</system:String>
+    <system:String x:Key="SectionsAndSubsections">Раздзелы і падраздзелы</system:String>
+    <system:String x:Key="LineAfterSection">Радок пасля раздзела</system:String>
+
+    <system:String x:Key="Delete">Выдаліць</system:String>
 </ResourceDictionary>

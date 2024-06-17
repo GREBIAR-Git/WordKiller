@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using WordKiller.DataTypes.ParagraphData.Sections;
+using WordKiller.ViewModels;
 
 namespace WordKiller.DataTypes.ParagraphData.Paragraphs;
 
@@ -24,13 +25,13 @@ public class ParagraphH2 : SectionH2, IParagraphData
     public string Data
     {
         get => data;
-        set => SetPropertyDocument(ref data, value, "Description");
+        set => SetPropertyDocument(ref data, CapsLockHelper.ToCapsLockH2(value), "Description");
     }
 
     public string Description
     {
         get => data.Replace("\r\n", " ");
-        set => SetPropertyDocument(ref data, value, "Data");
+        set => SetPropertyDocument(ref data, CapsLockHelper.ToCapsLockH2(value), "Data");
     }
 
     public Visibility DescriptionVisibility => Visibility.Collapsed;

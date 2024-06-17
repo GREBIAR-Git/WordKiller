@@ -1,0 +1,215 @@
+﻿<UserControl x:Class="WordKiller.Views.SettingsUserControl.ProfileSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WordKiller.Views.SettingsUserControl" xmlns:viewmodels="clr-namespace:WordKiller.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:sys="http://schemas.microsoft.com/winfx/2009/xaml" d:DataContext="{d:DesignInstance Type=viewmodels:ViewModelMain}"
+             mc:Ignorable="d">
+    <Grid x:Name="root">
+        <ScrollViewer Visibility="{Binding Path=Settings.VisibilityProfile}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                
+           
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{DynamicResource GeneralSettings}" Style="{StaticResource SettingsSectionName}"/>
+                <Separator Grid.Row="1" Margin="10 0 10 0"/>
+                <Grid Grid.Row="2" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource University}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource InstituteDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <ComboBox Grid.Column="1" MaxWidth="250" MinWidth="150" IsEditable="True" Text="{Binding Path=Settings.Profile.University}" ItemsSource="{Binding Path=Settings.Profile.UniversityItems}" SelectedValue="{Binding Path=Settings.Profile.University}" Style="{StaticResource ComboBoxSettings}"/>
+                </Grid>
+                <Separator Grid.Row="3" Margin="10 0 10 0"/>
+                <Grid Grid.Row="4" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Faculty}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource FacultyDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Height="25" HorizontalAlignment="Right" Margin="0 0 5 0" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Settings.Profile.UpdateFaculty}" Style="{StaticResource ButtonWithImage}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                        <ComboBox Grid.Column="1" MaxWidth="250" MinWidth="150" IsEditable="True" Text="{Binding Path=Settings.Profile.Faculty, Mode=TwoWay}" ItemsSource="{Binding Path=Settings.Profile.FacultyItems}" SelectedValue="{Binding Path=Settings.Profile.Faculty}" Style="{StaticResource ComboBoxSettings}"/>
+                    </Grid>
+                </Grid>
+                <Separator Grid.Row="5" Margin="10 0 10 0"/>
+                <Grid Grid.Row="6" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Course}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource CourseDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Height="25" HorizontalAlignment="Right" Margin="0 0 5 0" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Settings.Profile.UpdateCourse}" Style="{StaticResource ButtonWithImage}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                        <ComboBox Grid.Column="1" MaxWidth="250" MinWidth="150" IsEditable="True" Text="{Binding Path=Settings.Profile.Course, Mode=TwoWay}" ItemsSource="{Binding Path=Settings.Profile.CourseItems}" SelectedValue="{Binding Path=Settings.Profile.Course}" Style="{StaticResource ComboBoxSettings}"/>
+                    </Grid>
+                </Grid>
+                <Separator Grid.Row="7" Margin="10 0 10 0"/>
+                <Grid Grid.Row="8" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Group}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource GroupDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Height="25" HorizontalAlignment="Right" Margin="0 0 5 0" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Settings.Profile.UpdateGroup}" Style="{StaticResource ButtonWithImage}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                        <ComboBox Grid.Column="1" MaxWidth="250" MinWidth="150" IsEditable="True" Text="{Binding Path=Settings.Profile.Group, Mode=TwoWay}" ItemsSource="{Binding Path=Settings.Profile.GroupItems}" SelectedValue="{Binding Path=Settings.Profile.Group}" Style="{StaticResource ComboBoxSettings}"/>
+                    </Grid>
+                </Grid>
+                <Separator Grid.Row="9" Margin="10 0 10 0"/>
+                <Grid Grid.Row="10" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Direction}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource DirectionDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <TextBox Grid.Column="1" MaxWidth="250" MinWidth="150" Text="{Binding Path=Settings.Profile.Direction}" Style="{StaticResource TextBoxSettings}"/>
+                </Grid>
+                <Separator Grid.Row="11" Margin="10 0 10 0"/>
+                <Grid Grid.Row="12" Margin="10 10 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap" Text="{DynamicResource Year}" Style="{StaticResource SettingsItemName}"/>
+                        <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{DynamicResource YearDescription}" Style="{StaticResource SettingsItemDescription}"/>
+                    </Grid>
+                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Height="25" HorizontalAlignment="Right" Margin="0 0 5 0" ToolTip="{DynamicResource SetYear}" Command="{Binding Settings.Profile.UpdateYear}" Style="{StaticResource ButtonWithImage}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                        <TextBox Grid.Column="1" MaxWidth="250" MinWidth="150" Text="{Binding Path=Settings.Profile.Year}" Style="{StaticResource TextBoxSettings}"/>
+                    </Grid>
+                </Grid>
+                <Separator Grid.Row="13" Margin="10 0 10 0"/>
+                <TextBlock Grid.Row="14" Text="{DynamicResource Students}" Style="{StaticResource SettingsSectionName}"/>
+                <Separator Grid.Row="15" Margin="10 0 10 0"/>
+                <Grid Grid.Row="16" Margin="10 0 10 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100*"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding Settings.Profile.Users}" Style="{StaticResource DataGridSettings}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="CellEditEnding">
+                                <i:InvokeCommandAction Command="{Binding Path=Settings.Profile.EditPartnersCell}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{DynamicResource LastName}" Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource FirstName}" Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource MiddleName}" Binding="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn Header="{DynamicResource Shifr}" Binding="{Binding Shifr, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+
+                            <DataGridTemplateColumn Width="*" Header="{DynamicResource AutoPerformed}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding AutoSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource TableToggleButton}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.Settings.Profile.EditPartnersCell}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Grid.Row="1" Content="+" Command="{Binding Settings.Profile.Add}" Style="{StaticResource ButtonDefault}"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

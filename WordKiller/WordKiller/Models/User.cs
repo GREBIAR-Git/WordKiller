@@ -3,7 +3,7 @@
 namespace WordKiller.Models;
 
 [Serializable]
-public class User
+public class User : ICloneable
 {
     public User()
     {
@@ -27,4 +27,6 @@ public class User
     public string MiddleName { get; set; }
     public string Shifr { get; set; }
     public bool AutoSelected { get; set; }
+
+    public object Clone() => MemberwiseClone();
 }

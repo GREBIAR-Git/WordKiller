@@ -1,0 +1,352 @@
+﻿<UserControl x:Class="WordKiller.Views.ComplexObjectsUserControl.TitleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:local="clr-namespace:WordKiller.Views.ComplexObjectsUserControl" 
+             xmlns:viewmodels="clr-namespace:WordKiller.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ViewModelMain}"
+             mc:Ignorable="d">
+    <Grid x:Name="root" Visibility="{Binding Document.VisibilitY.TitlePanel}" Background="{StaticResource SecondaryColor}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="10 10 10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Width="30" Height="30" Grid.Column="0" Margin="0 0 10 0" ToolTip="{DynamicResource ReplacePagePhoto}" IsChecked="{Binding Path=Document.Data.Title.Photo}" Style="{StaticResource RadioButton}">
+                <Image Width="25" Height="25" HorizontalAlignment="Center" Source="{StaticResource Photograph}"/>
+            </CheckBox>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0 10 0 0" Visibility="{Binding Document.Data.Title.VisibitityPhoto}">
+            <Border Grid.Row="3" Grid.ColumnSpan="2" BorderThickness="3" CornerRadius="8" BorderBrush="{StaticResource PrimaryColor}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewDragEnter">
+                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewDragOver">
+                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewDragLeave">
+                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Drop">
+                        <i:InvokeCommandAction Command="{Binding Path=DropTitle}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <Border Grid.Column="1" CornerRadius="8" Background="{StaticResource TertiaryColor}">
+                    <Grid ToolTip="{DynamicResource DaDImage}">
+                        <TextBlock Text="{DynamicResource PictureClue}" Style="{StaticResource TextBlockSettingsBoldMain}"/>
+                        <Image Source="{Binding Document.Data.Title.Picture.BitmapImage}" Stretch="Fill" />
+                        <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource DragDrop}" />
+                    </Grid>
+                </Border>
+                    
+            </Border>
+        </Grid>
+        <ScrollViewer Margin="10 0 0 0" Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityTitleText}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource Faculty}" Style="{StaticResource SettingsSectionName}"/>
+                        <Button Grid.Column="1" Width="25" Height="25" VerticalAlignment="Center" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Document.Data.Title.UpdateFaculty}" Style="{StaticResource Button2}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                    <ComboBox Grid.Row="1" IsEditable="True" ItemsSource="{Binding Document.Data.Title.FacultyItems}" SelectedValue="{Binding Path=Document.Data.Title.Faculty}" Text="{Binding Path=Document.Data.Title.Faculty}" Style="{StaticResource ComboBoxTitle}"/>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Visibility="{Binding Document.Data.Title.VisibitityFaculty}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource Cathedra}" Style="{StaticResource SettingsSectionName}"/>
+                        <Button Grid.Column="1" Width="25" Height="25" VerticalAlignment="Center" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Document.Data.Title.UpdateCathedra}" Style="{StaticResource Button2}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <ComboBox Grid.Row="1" IsEditable="True" ItemsSource="{Binding Document.Data.Title.CathedraItems}" SelectedValue="{Binding Path=Document.Data.Title.Cathedra}" Text="{Binding Path=Document.Data.Title.Cathedra}" Style="{StaticResource ComboBoxTitle}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="2" Visibility="{Binding Document.Data.Title.VisibitityPerformed}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource Completed}" Style="{StaticResource SettingsSectionName}"/>
+                        <Button Grid.Column="1" Width="25" Height="25" VerticalAlignment="Center" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding UpdatePerformed}" Style="{StaticResource Button2}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Document.Data.Title.Performed, Mode=TwoWay}">
+                        <ListBox.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox IsChecked="{Binding AutoSelected}" Style="{StaticResource ToggleButton}"/>
+                                    <TextBlock Margin="10 0 0 0" Grid.Column="1" Text="{Binding Full}" HorizontalAlignment="Left" Style="{StaticResource SettingsItemDescription}"/>
+                                </Grid>
+                            </HierarchicalDataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="3" Visibility="{Binding Document.Data.Title.VisibitityNumber}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="№" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Number}" Style="{StaticResource TextBoxSettings1}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+
+                <Grid Grid.Row="4" Visibility="{Binding Document.Data.Title.VisibitityTheme}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource Theme}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Theme}" Style="{StaticResource TextBoxSettings1}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="5" Visibility="{Binding Document.Data.Title.VisibitityDiscipline}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource Discipline}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Discipline}" Style="{StaticResource TextBoxSettings1}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+
+                <Grid Grid.Row="6" Visibility="{Binding Document.Data.Title.VisibitityProfessor}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource Lecturer}" Style="{StaticResource SettingsSectionName}"/>
+                        <Button Grid.Column="1" Width="25" Height="25" VerticalAlignment="Center" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Document.Data.Title.UpdateProfessor}" Style="{StaticResource Button2}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <ComboBox Grid.Row="1" IsEditable="True" ItemsSource="{Binding Document.Data.Title.ProfessorItems}" SelectedValue="{Binding Path=Document.Data.Title.Professor}" Text="{Binding Path=Document.Data.Title.Professor}" Style="{StaticResource ComboBoxTitle}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+
+                <Grid Grid.Row="7" Visibility="{Binding Document.Data.Title.VisibitityRank}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource FacultyPosition}" Style="{StaticResource SettingsSectionName}"/>
+                        <Button Grid.Column="1" Width="25" Height="25" VerticalAlignment="Center" ToolTip="{DynamicResource RefreshAllData}" Command="{Binding Document.Data.Title.UpdateRank}" Style="{StaticResource Button2}">
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="{StaticResource Refresh}" Stretch="Uniform"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Rank}" Style="{StaticResource TextBoxSettings1}"/>
+
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="8" Visibility="{Binding Document.Data.Title.VisibitityType}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource Type}" Style="{StaticResource SettingsSectionName}"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="15*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Grid.Column="1" IsChecked="{Binding Path=Document.Data.Title.Work}" Margin="2,0,0,0" Content="{DynamicResource Coursework}" Style="{StaticResource RadioButton}"/>
+                        <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.Title.Project}" Margin="2,0,2,0" Content="{DynamicResource CourseProject}" Style="{StaticResource RadioButton}"/>
+                    </Grid>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="8" Visibility="{Binding Document.Data.Title.VisibitityPracticeType}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{DynamicResource Type}" Style="{StaticResource SettingsSectionName}"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="15*"/>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="15*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Grid.Column="1" IsChecked="{Binding Path=Document.Data.Title.Production}" Margin="2,0,0,0" Content="{DynamicResource Production}" Style="{StaticResource RadioButton}"/>
+                        <RadioButton Grid.Column="2" IsChecked="{Binding Path=Document.Data.Title.Educational}" Margin="2,0,2,0" Content="{DynamicResource Educational}" Style="{StaticResource RadioButton}"/>
+                    </Grid>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="9" Visibility="{Binding Document.Data.Title.VisibitityPracticeLocation}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource PracticeLocation}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.PracticeLocation}" Style="{StaticResource TextBoxSettings1}"/>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="10" Visibility="{Binding Document.Data.Title.VisibitityDirection}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource DirectionP}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Direction}" Style="{StaticResource TextBoxSettings1}"/>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="11" Visibility="{Binding Document.Data.Title.VisibitityNormocontrol}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource Normocontrol}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.Normocontrol}" Style="{StaticResource TextBoxSettings1}"/>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+
+                <Grid Grid.Row="12" Visibility="{Binding Document.Data.Title.VisibitityHeadCathedra}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="5"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource HeadCathedra}" Style="{StaticResource SettingsSectionName}"/>
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.HeadCathedra}" Style="{StaticResource TextBoxSettings1}"/>
+                    <Separator Grid.Row="2"/>
+                </Grid>
+
+                <Grid Grid.Row="13" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganization}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{DynamicResource HeadOrganization}" Style="{StaticResource SettingsSectionName}"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding Document.Data.Title.OnHeadOrganization}" Style="{StaticResource ToggleButton}"/>
+                    </Grid>
+
+                    <TextBox Grid.Row="1" Text="{Binding Path=Document.Data.Title.HeadOrganization}" Visibility="{Binding Document.Data.Title.VisibitityHeadOrganizationT}" Style="{StaticResource TextBoxSettings1}"/>
+
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

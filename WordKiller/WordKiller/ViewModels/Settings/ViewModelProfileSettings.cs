@@ -14,8 +14,6 @@ public class ViewModelProfileSettings : ViewModelBase
 {
     ICommand? add;
 
-    bool autoInput;
-
     string course;
 
     ObservableCollection<string> courseItems;
@@ -47,10 +45,6 @@ public class ViewModelProfileSettings : ViewModelBase
 
     BindingList<User> users;
 
-    Visibility visibilityAutoInput;
-
-    Visibility visibilityManualInput;
-
     Visibility visibitityCategoryGeneral;
 
     Visibility visibitityCategoryUsers;
@@ -63,8 +57,6 @@ public class ViewModelProfileSettings : ViewModelBase
         FacultyItems = [];
         CourseItems = [];
         GroupItems = [];
-        AutoInput = Properties.Settings.Default.AutoInput;
-        VisibitityCategoryUsers = Visibility.Collapsed;
         Users = Properties.Settings.Default.Users;
         Year = Properties.Settings.Default.Year;
         UniversityItems.Add("Орловский Государственный университет имени И.С. Тургенева");
@@ -152,40 +144,6 @@ public class ViewModelProfileSettings : ViewModelBase
         }
     }
 
-    public Visibility VisibilityManualInput
-    {
-        get => visibilityManualInput;
-        set => SetProperty(ref visibilityManualInput, value);
-    }
-
-    public Visibility VisibilityAutoInput
-    {
-        get => visibilityAutoInput;
-        set => SetProperty(ref visibilityAutoInput, value);
-    }
-
-    public bool AutoInput
-    {
-        get => autoInput;
-        set
-        {
-            SetProperty(ref autoInput, value);
-            if (autoInput)
-            {
-                VisibilityManualInput = Visibility.Visible;
-                VisibilityAutoInput = Visibility.Collapsed;
-            }
-            else
-            {
-                VisibilityManualInput = Visibility.Collapsed;
-                VisibilityAutoInput = Visibility.Visible;
-            }
-
-            Properties.Settings.Default.AutoInput = autoInput;
-            Properties.Settings.Default.Save();
-        }
-    }
-
     public string Direction
     {
         get => direction;
@@ -203,7 +161,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref university, value);
-            if (!AutoInput)
+            if (universityItems.Contains(university))
             {
                 UpdateFaculty.Execute(null);
             }
@@ -219,7 +177,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref faculty, value);
-            if (!AutoInput)
+            if (facultyItems.Contains(faculty))
             {
                 UpdateCourse.Execute(null);
             }
@@ -235,7 +193,7 @@ public class ViewModelProfileSettings : ViewModelBase
         set
         {
             SetProperty(ref course, value);
-            if (!AutoInput)
+            if (courseItems.Contains(course))
             {
                 UpdateGroup.Execute(null);
             }
@@ -311,7 +269,7 @@ public class ViewModelProfileSettings : ViewModelBase
                         if (division.Title == faculty)
                         {
                             OrelUniverAPI.Result<Cours>? result =
-                                await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString()); //
+                                await OrelUniverAPI.ScheduleGetCourseAsync(division.Id.ToString());
                             foreach (Cours cours in result.Response)
                             {
                                 CourseItems.Add(cours.Course);

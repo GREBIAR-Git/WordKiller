@@ -52,6 +52,8 @@ public class ViewModelTemplatesSettings : ViewModelBase
         }
 
         TemplateType.CollectionChanged += DataGrid_CollectionChanged;
+
+
     }
 
     public ObservableCollection<TemplateType> TemplateType

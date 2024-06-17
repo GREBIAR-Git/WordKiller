@@ -4,7 +4,19 @@
     <_LastSelectedProfileId>C:\Users\nikit\OneDrive\Рабочий стол\Programs\C#\WordKiller%28ВСЁ%29\WordKiller\WordKiller\WordKiller\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Update="Views\AboutProgram.xaml.cs">
+    <Compile Update="Views\ComplexObjectsUserControl\AppendixUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ComplexObjectsUserControl\ListOfReferencesUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ComplexObjectsUserControl\TaskSheetUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ComplexObjectsUserControl\TitleUserControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MainUserControl\MainUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SettingsUserControl\AppearanceSettings.xaml.cs">
@@ -30,7 +42,76 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\AboutProgram.xaml">
+    <Page Update="Styles\ButtonStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ColorPicker.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Colors.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ComboBoxStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Converters.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\DataGridStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\DrawingImages.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ListBoxStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\MenuStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\RadioButtonStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\RichTextBoxStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\SeparatorStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\SliderStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\TextBlockStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\TextBoxStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\ToggleButtonStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\Tooltip.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\TreeViewStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ComplexObjectsUserControl\AppendixUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ComplexObjectsUserControl\ListOfReferencesUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ComplexObjectsUserControl\TaskSheetUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ComplexObjectsUserControl\TitleUserControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MainUserControl\MainUserControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SettingsUserControl\AppearanceSettings.xaml">

@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:iConverter="clr-namespace:WordKiller.Converters"
+                    xmlns:vConverter="clr-namespace:WordKiller.Converters.ValueConverter"
+                    xmlns:mConverter="clr-namespace:WordKiller.Converters.MultiValueConverter"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <vConverter:FontConverter x:Key="fontConverter"/>
+    <vConverter:FontConverterMax x:Key="fontConverterMax"/>
+    <mConverter:AdaptiveFontSizeControl x:Key="multiConverter"/>
+    <mConverter:AdaptiveFontSizeTextBlock x:Key="multiTBConverter"/>
+    <iConverter:DocumentTypeLanguage x:Key="dtl"/>
+    <iConverter:BoolToVisibility x:Key="btv"/>
+    <iConverter:BoolToVisibilityReverse x:Key="btvr"/>
+</ResourceDictionary>

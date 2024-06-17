@@ -7,21 +7,13 @@ namespace WordKiller.ViewModels.DialogMessage;
 
 public class ViewModelMessageDragDrop : ViewModelBase
 {
-    string additionalColor;
-
     ICommand? after;
-
-    string alternativeColor;
 
     ICommand? before;
 
     ICommand? exit;
 
-    string hoverColor;
-
     ICommand? insert;
-
-    string mainColor;
 
     ICommand? swap;
 
@@ -35,10 +27,6 @@ public class ViewModelMessageDragDrop : ViewModelBase
 
     public ViewModelMessageDragDrop(Visibility insert, Visibility before, Visibility after, Visibility swap)
     {
-        mainColor = Properties.Settings.Default.MainColor;
-        additionalColor = Properties.Settings.Default.AdditionalColor;
-        alternativeColor = Properties.Settings.Default.AlternativeColor;
-        hoverColor = Properties.Settings.Default.HoverColor;
         Number = -1;
         VisibilityInsert = insert;
         VisibilityBefore = before;
@@ -71,31 +59,7 @@ public class ViewModelMessageDragDrop : ViewModelBase
         get => visibilitySwap;
         set => SetProperty(ref visibilitySwap, value);
     }
-
-    public string MainColor
-    {
-        get => mainColor;
-        set => SetProperty(ref mainColor, value);
-    }
-
-    public string AdditionalColor
-    {
-        get => additionalColor;
-        set => SetProperty(ref additionalColor, value);
-    }
-
-    public string AlternativeColor
-    {
-        get => alternativeColor;
-        set => SetProperty(ref alternativeColor, value);
-    }
-
-    public string HoverColor
-    {
-        get => hoverColor;
-        set => SetProperty(ref hoverColor, value);
-    }
-
+   
     public Action CloseAction { get; set; }
 
     public ICommand Exit

@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <SolidColorBrush x:Key="PrimaryColor" Color="#262626"/>
+    <SolidColorBrush x:Key="SecondaryColor" Color="#1e1e1e"/>
+    <SolidColorBrush x:Key="TertiaryColor" Color="#363636"/>
+    <SolidColorBrush x:Key="AccentColor" Color="#9c6b33"/>
+
+    
+    
+    <SolidColorBrush x:Key="BorderColor" Color="#555555"/>
+
+    <SolidColorBrush x:Key="FontColor" Color="#bfbfbf"/>
+
+    <SolidColorBrush x:Key="SecondaryFontColor" Color="#8c8c8c"/>
+    
+    <SolidColorBrush x:Key="DarkFontColor" Color="#3d4450"/>
+    <SolidColorBrush x:Key="DullFontColor" Color="#5C5C5C"/>
+
+    <SolidColorBrush x:Key="ActiveObjectColor" Color="#dcdedf"/>
+
+    <SolidColorBrush x:Key="HoverColor" Color="#3f3f3f"/>
+
+    <SolidColorBrush x:Key="ComboBoxArrowColor" Color="#868686"/>
+    
+</ResourceDictionary>

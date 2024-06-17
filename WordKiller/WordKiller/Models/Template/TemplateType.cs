@@ -4,12 +4,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Input;
 using System.Xml.Serialization;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
+using WordKiller.Commands;
 using WordKiller.DataTypes;
+using WordKiller.DataTypes.ParagraphData.Paragraphs;
 using WordKiller.Scripts;
+using WordKiller.ViewModels;
 using DocumentType = WordKiller.DataTypes.Enums.DocumentType;
 
 namespace WordKiller.Models.Template;
@@ -64,6 +68,156 @@ public class TemplateType
     public List<YellowFragment> YellowFragment { get; set; } = [];
 
 
+    public bool isContinuousNumberingPicture { get; set; }
+
+    public bool IsContinuousNumberingPicture
+    { 
+        get => isContinuousNumberingPicture; 
+        set
+        {
+            if (isContinuousNumberingPicture != value)
+            {
+                isContinuousNumberingPicture = value;
+                NumberingHelper.NeedUpdate = true;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public bool isContinuousNumberingTable { get; set; }
+
+    public bool IsContinuousNumberingTable 
+    { 
+        get => isContinuousNumberingTable; 
+        set
+        {
+            if (isContinuousNumberingTable != value)
+            {
+                isContinuousNumberingTable = value;
+                NumberingHelper.NeedUpdate = true;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+     public bool h1CapsLock { get; set; }
+
+    public bool H1CapsLock 
+    { 
+        get => h1CapsLock; 
+        set
+        {
+            if (h1CapsLock != value)
+            {
+                h1CapsLock = value;
+                CapsLockHelper.CapsLockH1 = h1CapsLock;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public bool h2CapsLock { get; set; }
+
+    public bool H2CapsLock 
+    { 
+        get => h2CapsLock; 
+        set
+        {
+            if (h2CapsLock != value)
+            {
+                h2CapsLock = value;
+                CapsLockHelper.CapsLockH2 = h2CapsLock;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public bool h1Point { get; set; }
+
+    public bool H1Point 
+    { 
+        get => h1Point; 
+        set
+        {
+            if (h1Point != value)
+            {
+                h1Point = value;
+                NumberingHelper.NeedUpdate = true;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public bool h1Enter { get; set; }
+
+    public bool H1Enter 
+    { 
+        get => h1Enter; 
+        set
+        {
+            if (h1Enter != value)
+            {
+                h1Enter = value;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+
+    public int numberingDesign { get; set; }
+
+    public int NumberingDesign 
+    { 
+        get => numberingDesign; 
+        set
+        {
+            if (numberingDesign != value)
+            {
+                numberingDesign = value;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public int imageDesign  { get; set; }
+
+    public int ImageDesign 
+    { 
+        get => imageDesign; 
+        set
+        {
+            if (imageDesign != value)
+            {
+                imageDesign = value;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
+    public int tableDesign  { get; set; }
+
+    public int TableDesign 
+    { 
+        get => tableDesign; 
+        set
+        {
+            if (tableDesign != value)
+            {
+                tableDesign = value;
+                TemplateHelper.NeedSave = true;
+            }
+
+        }
+    }
+
     public bool nonStandard { get; set; }
 
     [XmlIgnore]
@@ -75,25 +229,37 @@ public class TemplateType
             if (nonStandard != value)
             {
                 nonStandard = value;
-                if (nonStandard)
-                {
-                    if (!InitTitle())
-                    {
-                        nonStandard = false;
-                    }
-                }
-
-                Update();
                 TemplateHelper.NeedSave = true;
-                if (!nonStandard)
-                {
-                    YellowFragment.Clear();
-                    Lines.Clear();
-                    Visibilities.Clear();
-                }
             }
         }
     }
+
+    ICommand? openTitleTemplate;
+
+    public ICommand OpenTitleTemplate
+    {
+        get
+        {
+            return openTitleTemplate ??= new RelayCommand(
+                obj => 
+                { 
+                    if (nonStandard)
+                    {
+                        InitTitle();
+                    }
+
+                    Update();
+                    TemplateHelper.NeedSave = true;
+                    if (!nonStandard)
+                    {
+                        YellowFragment.Clear();
+                        Lines.Clear();
+                        Visibilities.Clear();
+                    }
+                });
+        }
+    }
+
 
     public bool manualPageNumbering { get; set; }
 
@@ -110,6 +276,9 @@ public class TemplateType
             }
         }
     }
+
+
+
 
     public int startPageNumber { get; set; }
 

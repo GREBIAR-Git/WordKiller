@@ -34,9 +34,7 @@
 
     <system:String x:Key="Network">Сеть</system:String>
 
-    <system:String x:Key="Help">Справка</system:String>
     <system:String x:Key="Documentation">Документация</system:String>
-    <system:String x:Key="AboutProgram">О программе</system:String>
 
     <system:String x:Key="MainClue">Выберите объект или нажмите на кнопку добавить, чтобы начать работу</system:String>
     <system:String x:Key="PictureClue">Перетащите сюда фотографию титульного листа</system:String>
@@ -107,6 +105,7 @@
     <system:String x:Key="Error8">Ошибка при формировании приложения</system:String>
     <system:String x:Key="Error9">Ошибка при формировании отчёта: файл, который вы хотите заменить, открыт</system:String>
     <system:String x:Key="Error10">Ошибка открытия файла: файл повреждён</system:String>
+    <system:String x:Key="Error11">Ошибка при формировании: стили повреждены удалите файл конфигурации</system:String>
 
     <system:String x:Key="Question1">Нужно ли сохранить?</system:String>
     
@@ -125,17 +124,17 @@
     <system:String x:Key="AfterExportingClose">Закрытие приложения после экспорта</system:String>
     <system:String x:Key="IsAutoHeader">Автоматический заголовок</system:String>
     <system:String x:Key="FileSettings">Настройки приложения</system:String>
-    <system:String x:Key="Delete">Удалить</system:String>
-    <system:String x:Key="DeleteAll">Удалить все файлы</system:String>
 
-    <system:String x:Key="ByDefault">По умолчанию</system:String>
-    <system:String x:Key="MainColor">Основной цвет программы</system:String>
-    <system:String x:Key="ComplementaryColor">Дополнительный цвет программы</system:String>
-    <system:String x:Key="AlternativeColor">Альтернативный цвет программы</system:String>
-    <system:String x:Key="HoverColor">Цвет при наведении</system:String>
-    <system:String x:Key="ActiveColor">Цвет, когда объект активен</system:String>
+    <system:String x:Key="IsAssociateDescription">Позволяет открывать файлы с расширением .wkr через это приложение при двойном клике</system:String>
+    <system:String x:Key="AutoSaveDescription">Включает автоматическое сохранение документа каждые 5 минут</system:String>
+    <system:String x:Key="IsSyntaxCheckingDescription">Включает автоматическую проверку синтаксиса</system:String>
+    <system:String x:Key="EncodingDescription">Включает шифрование файлов</system:String>
+    <system:String x:Key="AfterExportingCloseDescription">Автоматически закрывает приложение после экспорта документа в формат docx</system:String>
+    <system:String x:Key="IsAutoHeaderDescription">При добавлении нового объекта в древовидный список заголовок будет автоматически заполняться типом объекта</system:String>
+    <system:String x:Key="FileSettingsDescription">Открывает папку с файлом конфигурации</system:String>
+
     <system:String x:Key="FontSize">Размер шрифта</system:String>
-    <system:String x:Key="FontSizeRTB">Размер шрифта для RichTextBox</system:String>
+    <system:String x:Key="FontSizeRTB">Размер шрифта в области редактирования</system:String>
     <system:String x:Key="Language">Язык</system:String>
     
     <system:String x:Key="You">Вы</system:String>
@@ -164,21 +163,15 @@
     <system:String x:Key="Settings">Настройки</system:String>
     <system:String x:Key="Saved">Сохранено</system:String>
     <system:String x:Key="OpensFolder">Открывает папку с файлом настроек приложения в проводнике</system:String>
-    <system:String x:Key="DeletesFile">Удаляет файл с настройками приложения</system:String>
-    <system:String x:Key="DeletesAllFile">Удаляет все файлы и папки, связанные с настройками приложения</system:String>
-    <system:String x:Key="DefaultValues">Восстановить все настройки персонализации до значений по умолчанию</system:String>
+    
+    <system:String x:Key="DefaultValues">Востановить значение по умолчанию</system:String>
     <system:String x:Key="RefreshAllData">Обновить все данные в выпадающем списке</system:String>
     <system:String x:Key="SetYear">Установить текущий год</system:String>
-    <system:String x:Key="ManualInput">Включить или отключить ручной ввод</system:String>
+    
     <system:String x:Key="DaDImage">Перетащите сюда изображение</system:String>
-    <system:String x:Key="DeleteNumbering">Удалить нумерацию (например: если она осталось при копировании)</system:String>
+    <system:String x:Key="DeleteNumbering">Удалить нумерацию (например: если она осталась при копировании)</system:String>
     <system:String x:Key="LoadUsers">Загрузить пользователей, которые были добавлены в настройках профиля</system:String>
     <system:String x:Key="ReplacePagePhoto">Заменить страницу фотографией</system:String>
-
-    <system:String x:Key="ProductInfo">Информация о продукте</system:String>
-    <system:String x:Key="WrittenIn">Программа написана на языке C#</system:String>
-    <system:String x:Key="Interface">Интерфейс</system:String>
-    <system:String x:Key="Version">Версия продукта</system:String>
 
     <system:String x:Key="Insert">Вставить</system:String>
     <system:String x:Key="Before">Вставить до</system:String>
@@ -197,5 +190,91 @@
     <system:String x:Key="AlphabeticalOrder">Включить или отключить алфавитный порядок</system:String>
     <system:String x:Key="ManualPageNumbering">Ручная нумерация страниц</system:String>
     <system:String x:Key="StartsWith">Начало с</system:String>
-    
+
+    <system:String x:Key="ExitSettings">Выйти из настроек</system:String>
+
+    <system:String x:Key="MainTheme">Основная тема</system:String>
+    <system:String x:Key="SelectMainColorScheme">Выбор основной цветовой схемы оформления WordKiller</system:String>
+    <system:String x:Key="Dark">Тёмная</system:String>
+
+    <system:String x:Key="AccentColor">Акцентный цвет</system:String>
+    <system:String x:Key="SelectAccentColor">Выбор акцентного цвета, используемого во всём приложении</system:String>
+
+    <system:String x:Key="ZoomLevel">Уровень масштабирования</system:String>
+    <system:String x:Key="ManageZoomLevel">Управление общим уровнем масштабирования в приложении</system:String>
+
+    <system:String x:Key="ChangeInterfaceLanguage">Изменить язык интерфейса</system:String>
+    <system:String x:Key="FontSizeInEditingArea">Размер шрифта в пикселях в области редактирования</system:String>
+
+    <system:String x:Key="InterfaceFont">Шрифт интерфейса</system:String>
+    <system:String x:Key="SelectInterfaceFont">Выбор основного шрифта интерфейса в WordKiller</system:String>
+    <system:String x:Key="Change">Изменить</system:String>
+
+    <system:String x:Key="TextFont">Шрифт текста</system:String>
+    <system:String x:Key="SelectTextFont">Выбор шрифта для областей редактирования</system:String>
+
+    <system:String x:Key="InstituteDescription">Позволяет выбрать или ввести название института для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="FacultyDescription">Позволяет выбрать или ввести название факультета для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="CourseDescription">Позволяет выбрать или ввести номер курса для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="GroupDescription">Позволяет выбрать или ввести номер группы для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="DirectionDescription">Позволяет ввести направление подготовки для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="YearDescription">Позволяет ввести год для автозаполнения на страницах (титульная страница, лист задания и т.д.)</system:String>
+
+    <system:String x:Key="Students">Студенты</system:String>
+
+    <system:String x:Key="PageNumbering">Нумерация страниц</system:String>
+    <system:String x:Key="AutomaticPageNumbering">Автоматическая нумерация страниц</system:String>
+    <system:String x:Key="TogglePageNumbering">Включает или отключает стандартный подсчёт нумерации страниц</system:String>
+    <system:String x:Key="StartPageNumber">Задаёт число начала нумерации страницы основного текста документа</system:String>
+
+    <system:String x:Key="PageNumberingPosition">Оформление нумерации страниц</system:String>
+    <system:String x:Key="PageNumberingLocation">Выбор места нумерации страниц</system:String>
+
+    <system:String x:Key="BottomLeft">Слева внизу</system:String>
+    <system:String x:Key="BottomCenter">В центре внизу</system:String>
+    <system:String x:Key="BottomRight">Справа внизу</system:String>
+    <system:String x:Key="TopLeft">Слева вверху</system:String>
+    <system:String x:Key="TopCenter">В центре вверху</system:String>
+    <system:String x:Key="TopRight">Справа вверху</system:String>
+
+    <system:String x:Key="FiguresAndTables">Рисунки и таблицы</system:String>
+    <system:String x:Key="FigureCaption">Подпись рисунка</system:String>
+    <system:String x:Key="FigureCaptionStyle">Задаёт как будет выглядеть оформление подписи под рисунком</system:String>
+
+    <system:String x:Key="ContinuousFigureNumbering">Сквозная нумерация рисунков</system:String>
+    <system:String x:Key="FigureNumberingPrinciple">Задаёт принцип нумерации рисунков</system:String>
+
+    <system:String x:Key="TableCaption">Подпись таблицы</system:String>
+    <system:String x:Key="TableCaptionStyle">Задаёт как будет выглядеть оформление подписи над таблицей</system:String>
+
+    <system:String x:Key="ContinuousTableNumbering">Сквозная нумерация таблиц</system:String>
+    <system:String x:Key="TableNumberingPrinciple">Задаёт принцип нумерации таблиц</system:String>
+
+    <system:String x:Key="SectionFormatting">Оформление разделов</system:String>
+    <system:String x:Key="ToggleCapsLockForSections">Включает или отключает CapsLock в стилях раздела</system:String>
+    <system:String x:Key="TogglePeriodAfterSectionNumber">Включает или отключает точку после номера раздела</system:String>
+
+    <system:String x:Key="SubsectionFormatting">Оформление подразделов</system:String>
+    <system:String x:Key="ToggleCapsLockForSubsections">Включает или отключает CapsLock в стилях подраздела</system:String>
+    <system:String x:Key="EmptyLineAfterSection">Включает или отключает пустую строку после раздела, если следующий подраздел</system:String>
+
+    <system:String x:Key="TitlePage">Титульная страница</system:String>
+    <system:String x:Key="CustomTitlePage">Кастомная титульная страница</system:String>
+    <system:String x:Key="ToggleCustomTitlePage">Включает или отключает изменение стандартной титульной страницы на кастомную</system:String>
+
+    <system:String x:Key="ReplaceTitlePage">Замена титульника</system:String>
+    <system:String x:Key="SelectReplacementFile">Выбирается файл, на который будет заменён титульник</system:String>
+    <system:String x:Key="Replace">Заменять</system:String>
+    <system:String x:Key="With">на</system:String>
+
+    <system:String x:Key="Font">Шрифт</system:String>
+    <system:String x:Key="SectionsAndSubsections">Разделы и подразделы</system:String>
+    <system:String x:Key="LineAfterSection">Строка после раздела</system:String>
+
+    <system:String x:Key="Delete">Удалить</system:String>
 </ResourceDictionary>

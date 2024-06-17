@@ -39,26 +39,25 @@ internal class Report
                     Body body = main.Document.AppendChild(new Body());
                     ReportStyles.Init(doc, data.Type);
                     int pageStartNumber = 1;
+                    TemplateType? currentTemplate = CurrentTemplate(data.Type);
+                    if(currentTemplate == null)
+                    {
+                        UIHelper.ShowError("11");
+                        return false;
+                    }
                     try
                     {
                         if (data.Type != DocumentType.DefaultDocument && data.Properties.Title)
                         {
-                            foreach (TemplateType templateType in Settings.Default.TemplateTypes)
+                            if (currentTemplate.NonStandard)
                             {
-                                if (templateType.Type == data.Type)
-                                {
-                                    if (templateType.NonStandard)
-                                    {
-                                        ReportComplexObjects.Text(doc, templateType.Lines, data);
-                                    }
-                                    else
-                                    {
-                                        ReportPageSettings.PageSetup(body, title: true);
-                                        ReportComplexObjects.TitlePart(doc, data.Type, data.Title);
-                                    }
-                                }
+                                ReportComplexObjects.Text(doc, currentTemplate.Lines, data);
                             }
-
+                            else
+                            {
+                                ReportPageSettings.PageSetup(body, title: true);
+                                ReportComplexObjects.TitlePart(doc, data.Type, data.Title);
+                            }
                             pageStartNumber++;
                         }
                         else
@@ -102,7 +101,7 @@ internal class Report
 
                     try
                     {
-                        MainPart(doc, data, data.Properties.NumberHeading);
+                        MainPart(doc, data, currentTemplate, data.Properties.NumberHeading);
                     }
                     catch
                     {
@@ -133,19 +132,13 @@ internal class Report
 
                     if (data.Properties.PageNumbers)
                     {
-                        foreach (TemplateType templateType in Settings.Default.TemplateTypes)
+                        if (currentTemplate.ManualPageNumbering)
                         {
-                            if (templateType.Type == data.Type)
-                            {
-                                if (templateType.ManualPageNumbering)
-                                {
-                                    ReportPageSettings.PageNumber(doc, templateType.StartPageNumber);
-                                }
-                                else
-                                {
-                                    ReportPageSettings.PageNumber(doc, pageStartNumber);
-                                }
-                            }
+                            ReportPageSettings.HeaderPageNumber(doc, currentTemplate.StartPageNumber, currentTemplate.NumberingDesign);
+                        }
+                        else
+                        {
+                            ReportPageSettings.HeaderPageNumber(doc, pageStartNumber, currentTemplate.NumberingDesign);
                         }
                     }
                 }
@@ -171,8 +164,21 @@ internal class Report
         return false;
     }
 
-    static void MainPart(WordprocessingDocument doc, DocumentData data, bool numberHeading = true)
+    static TemplateType? CurrentTemplate(DocumentType documentType)
     {
+        foreach (TemplateType templateType in Settings.Default.TemplateTypes)
+        {
+            if (templateType.Type == documentType)
+            {
+                return templateType;
+            }
+        }
+        return null;
+    }
+
+    static void MainPart(WordprocessingDocument doc, DocumentData data, TemplateType currentTemplate, bool numberHeading = true)
+    {
+        bool newPage = true;
         if (data != null)
         {
             Section(data);
@@ -226,8 +232,11 @@ internal class Report
                         {
                             text = numbered.Number + text;
                         }
-
-                        ReportText.Text(doc, "\n" + text, "Подраздел");
+                        if(!newPage && currentTemplate.H1Enter)
+                        {
+                            ReportExtras.EmptyLines(doc, 1, "Подраздел");
+                        }
+                        ReportText.Text(doc, text, "Подраздел");
                     }
 
                     else if (paragraph is ParagraphPicture picture)
@@ -238,16 +247,31 @@ internal class Report
                             ReportImage.Create(doc, id, picture.Bitmap);
                         }
 
-                        text = "Рисунок " + numbered.Number + " – " + paragraph.Description;
+                        string type = "Рисунок";
+
+                        if(currentTemplate.ImageDesign == 1)
+                        {
+                            type = "Рис.";
+                        }
+
+                        text = type + " " + numbered.Number + " – " + paragraph.Description;
                         ReportText.Text(doc, text, "Картинка");
                     }
                     else if (paragraph is ParagraphTable paragraphTable)
                     {
-                        text = "Таблица " + numbered.Number + " – " + paragraphTable.Description;
+                        string type = "Таблица";
+
+                        if(currentTemplate.TableDesign == 1)
+                        {
+                            type = "Tабл.";
+                        }
+
+                        text = type + " " + numbered.Number + " – " + paragraphTable.Description;
                         ReportText.Text(doc, text, "ТекстКТаблице");
                         ReportTable.Create(doc, paragraphTable.TableData);
                     }
                 }
+                newPage=false;
             }
 
             void Section(SectionParagraphs section)
@@ -272,6 +296,7 @@ internal class Report
                 if (section is ParagraphH1)
                 {
                     ReportExtras.PageBreak(doc);
+                    newPage=true;
                 }
             }
         }

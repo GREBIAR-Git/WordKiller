@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WordKiller.ViewModels.DialogMessage;
 
 namespace WordKiller.Views;
@@ -23,4 +24,17 @@ public partial class MessageDragDrop : Window
     }
 
     public ViewModelMessageDragDrop ViewModel { get; set; }
+
+    private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        
+        if(e.ChangedButton == MouseButton.Left)
+            DragMove();
+    }
+
+
+    void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
 }

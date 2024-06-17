@@ -6,15 +6,7 @@ namespace WordKiller.ViewModels.DialogMessage;
 
 public class ViewModelMessageNeedSave : ViewModelBase
 {
-    string additionalColor;
-
-    string alternativeColor;
-
     ICommand? exit;
-
-    string hoverColor;
-
-    string mainColor;
 
     ICommand? not;
 
@@ -22,38 +14,10 @@ public class ViewModelMessageNeedSave : ViewModelBase
 
     public ViewModelMessageNeedSave()
     {
-        mainColor = Properties.Settings.Default.MainColor;
-        additionalColor = Properties.Settings.Default.AdditionalColor;
-        alternativeColor = Properties.Settings.Default.AlternativeColor;
-        hoverColor = Properties.Settings.Default.HoverColor;
         Number = -1;
     }
 
     public int Number { get; set; }
-
-    public string MainColor
-    {
-        get => mainColor;
-        set => SetProperty(ref mainColor, value);
-    }
-
-    public string AdditionalColor
-    {
-        get => additionalColor;
-        set => SetProperty(ref additionalColor, value);
-    }
-
-    public string AlternativeColor
-    {
-        get => alternativeColor;
-        set => SetProperty(ref alternativeColor, value);
-    }
-
-    public string HoverColor
-    {
-        get => hoverColor;
-        set => SetProperty(ref hoverColor, value);
-    }
 
     public Action CloseAction { get; set; }
 

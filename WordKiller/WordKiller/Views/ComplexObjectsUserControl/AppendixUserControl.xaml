@@ -1,0 +1,149 @@
+﻿<UserControl x:Class="WordKiller.Views.ComplexObjectsUserControl.AppendixUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:typeXaml="clr-namespace:WordKiller.XAMLHelper"
+             xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
+             xmlns:gu="https://github.com/GuOrg/Gu.Wpf.FlipView"
+             xmlns:local="clr-namespace:WordKiller.Views.ComplexObjectsUserControl" 
+             xmlns:viewmodels="clr-namespace:WordKiller.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ViewModelMain}"
+             mc:Ignorable="d">
+    <Grid x:Name="root" Visibility="{Binding Document.VisibilitY.AppendixPanel}" Background="{StaticResource SecondaryColor}">
+        <Grid Margin="10 15 10 15" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <ComboBox Grid.Row="0" Style="{StaticResource ComboBox1}" SelectedIndex="{Binding Document.Data.Appendix.AddIndex}" AllowDrop="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Path=Document.Data.Appendix.Add}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DropDownClosed">
+                        <i:InvokeCommandAction Command="{Binding Path=Document.Data.Appendix.ResetAddIndex}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Drop">
+                        <i:InvokeCommandAction Command="{Binding Path=DropNotComplexObjectsAppendix}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DragOver">
+                        <i:InvokeCommandAction Command="{Binding Path=AllowDropNotComplexObjects}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ComboBoxItem Content="{DynamicResource Picture}"/>
+                <ComboBoxItem Content="{DynamicResource Table}"/>
+                <ComboBoxItem Content="{DynamicResource Code}"/>
+            </ComboBox>
+            <gu:FlipView Grid.Row="1" Margin="0 0 0 15" ArrowPlacement="InsideTop" ItemsSource="{Binding Document.Data.Appendix.Paragraphs}" SelectedItem="{Binding Document.Data.Appendix.Selected}">
+                <gu:FlipView.Resources>
+                    <DataTemplate DataType="{x:Type tp:ParagraphCode}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0" Style="{StaticResource TextBoxSettings1}" Text="{Binding Description}" AllowDrop="True"/>
+                            <typeXaml:RTBox Grid.Row="1" Language="ru-RU" Style="{StaticResource RichTextBox}" Text="{Binding Data}" SpellCheck.IsEnabled="False" AllowDrop="True">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.DropAppendix}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </typeXaml:RTBox>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type tp:ParagraphPicture}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0" Style="{StaticResource TextBoxSettings1}" Text="{Binding Description}" AllowDrop="True">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDrop}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDrop}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.DisallowDrop}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+                            <Border Grid.Row="1" BorderThickness="3" BorderBrush="White" AllowDrop="True">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="DragEnter">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="DragOver">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="DragLeave">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding ElementName=root, Path=DataContext.DropAppendix}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Border BorderThickness="4" BorderBrush="{Binding Path=DataContext.Settings.Personalization.AlternativeColor, ElementName=root}">
+                                    <Grid Background="{Binding Path=DataContext.Settings.Personalization.AdditionalColor, ElementName=root}" ToolTip="{DynamicResource DaDImage}">
+                                        <Image Source="{Binding BitmapImage}" Stretch="Fill" />
+                                        <ContentControl Background="White" Visibility="{Binding ElementName=root, Path=DataContext.VisibilityDrag}" Style="{StaticResource DragDrop}"/>
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type tp:ParagraphTable}">
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0" Style="{StaticResource TextBoxSettings1}" Text="{Binding Description}" AllowDrop="True" />
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="25*" MinWidth="10"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="25*" MinWidth="10"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" Text="{Binding TableData.Rows, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBoxSettings1}"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" Text="{Binding TableData.Columns, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBoxSettings1}"/>
+                                </Grid>
+                                <Grid Margin="0 3 0 0" typeXaml:GridHelpers.Selected="{Binding TableData}" typeXaml:GridHelpers.RowCount="{Binding TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding TableData.Columns}" Grid.Row="1" Grid.Column="0"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </gu:FlipView.Resources>
+            </gu:FlipView>
+            <Button Grid.Row="2" Content="{DynamicResource DeleteCurrent}" Command="{Binding Document.Data.Appendix.Delete}" Style="{StaticResource ButtonDefault}"/>
+        </Grid>
+    </Grid>
+</UserControl>

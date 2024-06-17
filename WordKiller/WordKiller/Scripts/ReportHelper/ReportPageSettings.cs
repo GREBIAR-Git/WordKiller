@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -9,51 +10,82 @@ public static class ReportPageSettings
 {
     public const short cm_to_pt = 567;
 
-    public static void PageNumber(WordprocessingDocument document, int start = 4)
+    public static void HeaderPageNumber(WordprocessingDocument document, int start = 4, int type = 4)
     {
         MainDocumentPart mainDocumentPart = document.MainDocumentPart;
 
-        mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
+        Justification justification = new Justification();
 
-        HeaderPart headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
-
-        string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
-
-        GeneratePageNumber(headerPart);
-        IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Descendants<SectionProperties>();
-        foreach (SectionProperties section in sections)
+        if(type % 3 == 0)
         {
-            section.RemoveAllChildren<HeaderReference>();
-            section.PrependChild(new HeaderReference { Id = headerPartId, Type = HeaderFooterValues.Default });
-            section.PrependChild(new PageNumberType { Start = start });
+            justification.Val = JustificationValues.Left;
         }
+        else if(type % 3 == 1)
+        {
+            justification.Val = JustificationValues.Center;
+        }
+        else if(type % 3 == 2)
+        {
+            justification.Val = JustificationValues.Right;
+        }
+
+        if(type<3)
+        {
+            mainDocumentPart.DeleteParts(mainDocumentPart.FooterParts);
+
+            FooterPart footerPart = mainDocumentPart.AddNewPart<FooterPart>();
+
+            string headerPartId = mainDocumentPart.GetIdOfPart(footerPart);
+
+            footerPart.Footer = GeneratePageNumber<Footer>(justification);
+            IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Descendants<SectionProperties>();
+            foreach (SectionProperties section in sections)
+            {
+                section.RemoveAllChildren<FooterReference>();
+                section.PrependChild(new FooterReference { Id = headerPartId, Type = HeaderFooterValues.Default });
+                section.PrependChild(new PageNumberType { Start = start});
+            }
+        }
+        else
+        {
+            mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
+
+            HeaderPart headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
+
+            string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
+
+            headerPart.Header = GeneratePageNumber<Header>(justification);
+            IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Descendants<SectionProperties>();
+            foreach (SectionProperties section in sections)
+            {
+                section.RemoveAllChildren<HeaderReference>();
+                section.PrependChild(new HeaderReference { Id = headerPartId, Type = HeaderFooterValues.Default });
+                section.PrependChild(new PageNumberType { Start = start});
+            }
+        }
+
     }
 
-    static void GeneratePageNumber(HeaderPart part)
+    public static T GeneratePageNumber<T>(Justification justification) where T : OpenXmlElement, new()
     {
-        Header header =
-            new(
-                new Paragraph(
-                    new ParagraphProperties(
-                        new ParagraphStyleId
-                        {
-                            Val = "Header"
-                        },
-                        new Justification
-                        {
-                            Val = JustificationValues.Center
-                        },
-                        new SpacingBetweenLines
-                        {
-                            After = 0.ToString(),
-                            Before = 0.ToString(),
-                            Line = 240.ToString(),
-                            LineRule = LineSpacingRuleValues.Auto
-                        }
-                    ),
-                    new Run(new SimpleField { Instruction = "Page" })
-                ));
-        part.Header = header;
+        T openXmlElement = new T();
+
+        Paragraph paragraph = new Paragraph(
+            new ParagraphProperties(
+                justification,
+                new SpacingBetweenLines
+                {
+                    After = "0",
+                    Before = "0",
+                    Line = "240",
+                    LineRule = LineSpacingRuleValues.Auto
+                }
+            ),
+            new Run(new SimpleField { Instruction = "Page" })
+        );
+
+        openXmlElement.Append(paragraph);
+        return openXmlElement;
     }
 
     public static void PageSetup(Body body, float top = 2, float right = 1.5f, float bot = 2, float left = 3,

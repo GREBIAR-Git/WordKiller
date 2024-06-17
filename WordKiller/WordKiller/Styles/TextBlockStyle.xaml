@@ -1,0 +1,79 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="TextBlockCore" TargetType="{x:Type TextBlock}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFonts}"/>
+    </Style>
+
+    <Style x:Key="TextBlockDull" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockCore}">
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=8}"/>
+        <Setter Property="Foreground" Value="{StaticResource DullFontColor}"/>
+    </Style>
+
+    <Style x:Key="TextBlockDefault" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockCore}">
+        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+    </Style>
+
+    <Style x:Key="TextBlockSettingsBoldMain" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="TextBlockBoldMainLeft" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=11}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="TextBlockLeft" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="3"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=8}"/>
+    </Style>
+
+    <Style x:Key="SettingsSectionName" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="10 30 10 10"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=13}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="SettingsItemName" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0 0 0 5"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=10}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+    </Style>
+
+    <Style x:Key="SettingsItemDescription" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="Foreground" Value="{StaticResource SecondaryFontColor}"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0 0 20 0"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=8}"/>
+    </Style>
+
+    <Style x:Key="TextBlockTitle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=14}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="TextBlockMI" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockDefault}">
+        <Setter Property="Margin" Value="2,4,2,3"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSize,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=11}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    
+</ResourceDictionary>

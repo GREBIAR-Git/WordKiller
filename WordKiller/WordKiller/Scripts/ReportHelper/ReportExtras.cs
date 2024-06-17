@@ -31,7 +31,7 @@ internal class ReportExtras
         paragraph.AppendChild(run);
     }
 
-    public static void EmptyLines(WordprocessingDocument doc, int number)
+    public static void EmptyLines(WordprocessingDocument doc, int number, string style = "EmptyLines")
     {
         MainDocumentPart mainPart = doc.MainDocumentPart;
         Body body = mainPart.Document.Body;
@@ -39,7 +39,7 @@ internal class ReportExtras
         paragraph.AppendChild(new ParagraphProperties());
 
         paragraph.ParagraphProperties = new(
-            new ParagraphStyleId { Val = "EmptyLines" });
+            new ParagraphStyleId { Val = style });
 
         Run run = paragraph.AppendChild(new Run());
 

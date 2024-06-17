@@ -16,9 +16,6 @@ namespace WordKiller.ViewModels;
 [Serializable]
 public class ViewModelTitle : ViewModelDocumentChanges
 {
-    bool autoInput;
-
-
     string cathedra;
 
     [NonSerialized] ObservableCollection<string> cathedraItems;
@@ -42,7 +39,6 @@ public class ViewModelTitle : ViewModelDocumentChanges
     string number;
 
     bool onHeadOrganization;
-
 
     BindingList<User> performed;
 
@@ -72,8 +68,6 @@ public class ViewModelTitle : ViewModelDocumentChanges
 
     [NonSerialized] ICommand? updateRank;
 
-    Visibility visibitityAutoInput;
-
     [NonSerialized] Visibility visibitityDirection;
 
     [NonSerialized] Visibility visibitityDiscipline;
@@ -85,8 +79,6 @@ public class ViewModelTitle : ViewModelDocumentChanges
     [NonSerialized] Visibility visibitityHeadOrganization;
 
     [NonSerialized] Visibility visibitityHeadOrganizationT;
-
-    Visibility visibitityManualInput;
 
     [NonSerialized] Visibility visibitityNormocontrol;
 
@@ -132,15 +124,12 @@ public class ViewModelTitle : ViewModelDocumentChanges
         rank = string.Empty;
         project = false;
         work = true;
-        autoInput = false;
         photo = false;
         production = true;
         educational = false;
         onHeadOrganization = true;
         visibitityTitleText = Visibility.Visible;
         visibitityPhoto = Visibility.Collapsed;
-        visibitityManualInput = Visibility.Collapsed;
-        visibitityAutoInput = Visibility.Visible;
         VisibitityHeadOrganizationT = Visibility.Visible;
         UpdateFaculty.Execute(null);
     }
@@ -551,18 +540,6 @@ public class ViewModelTitle : ViewModelDocumentChanges
         set => SetProperty(ref visibitityHeadOrganizationT, value);
     }
 
-    public Visibility VisibitityManualInput
-    {
-        get => visibitityManualInput;
-        set => SetProperty(ref visibitityManualInput, value);
-    }
-
-    public Visibility VisibitityAutoInput
-    {
-        get => visibitityAutoInput;
-        set => SetProperty(ref visibitityAutoInput, value);
-    }
-
     public Visibility VisibitityPhoto
     {
         get => visibitityPhoto;
@@ -573,25 +550,6 @@ public class ViewModelTitle : ViewModelDocumentChanges
     {
         get => visibitityTitleText;
         set => SetProperty(ref visibitityTitleText, value);
-    }
-
-    public bool AutoInput
-    {
-        get => autoInput;
-        set
-        {
-            SetProperty(ref autoInput, value);
-            if (autoInput)
-            {
-                VisibitityManualInput = Visibility.Visible;
-                VisibitityAutoInput = Visibility.Collapsed;
-            }
-            else
-            {
-                VisibitityManualInput = Visibility.Collapsed;
-                VisibitityAutoInput = Visibility.Visible;
-            }
-        }
     }
 
     public bool Photo

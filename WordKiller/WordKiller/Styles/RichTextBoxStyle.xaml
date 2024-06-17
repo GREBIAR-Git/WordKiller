@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Style x:Key="RichTextBox" TargetType="{x:Type RichTextBox}">
+        <Setter Property="FontSize" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.FontSizeRTB,Mode=TwoWay,Converter={StaticResource fontConverter},ConverterParameter=16}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource FontColor}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontFamily" Value="{Binding ElementName=root, Path=DataContext.Settings.Personalization.SelectedFontsRTB}"/>
+        <Style.Resources>
+            <Style TargetType="{x:Type Paragraph}">
+                <Setter Property="Margin" Value="0,0,0,10"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+    
+</ResourceDictionary>

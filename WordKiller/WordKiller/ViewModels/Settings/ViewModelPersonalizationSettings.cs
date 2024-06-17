@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Media;
 using WordKiller.Commands;
 using WordKiller.Scripts;
 
@@ -6,73 +8,154 @@ namespace WordKiller.ViewModels.Settings;
 
 public class ViewModelPersonalizationSettings : ViewModelBase
 {
-    string activeColor;
 
-    string additionalColor;
+    ICommand? restoreDefaultSelectedFonts;
+    public ICommand RestoreDefaultSelectedFonts
+    {
+        get
+        {
+            return restoreDefaultSelectedFonts ??= new RelayCommand(
+                obj =>
+                {
+                    SelectedFonts = "Arial";
+                    Properties.Settings.Default.SelectedFonts = SelectedFonts;
+                    Properties.Settings.Default.Save();
+                });
+        }
+    }
 
-    string alternativeColor;
+    ICommand? restoreDefaultSelectedFontsRTB;
 
-    ICommand? byDefault;
+    public ICommand RestoreDefaultSelectedFontsRTB
+    {
+        get
+        {
+            return restoreDefaultSelectedFontsRTB ??= new RelayCommand(
+                obj =>
+                {
+                    SelectedFontsRTB = "Arial";
+                    Properties.Settings.Default.SelectedFontsRTB = SelectedFontsRTB;
+                    Properties.Settings.Default.Save();
+                });
+        }
+    }
 
-    ICommand? closingActiveColor;
+
+    BindingList<string> availableFonts;
+
+
+    public BindingList<string> AvailableFonts
+    {
+        get => availableFonts;
+        set => SetProperty(ref availableFonts, value);
+    }
+
+
+    string selectedFonts;
+
+    public string SelectedFonts
+    {
+        get => selectedFonts;
+        set
+        {
+            SetProperty(ref selectedFonts, value);
+            Properties.Settings.Default.SelectedFonts = SelectedFonts;
+            Properties.Settings.Default.Save();
+        }
+    }
+
+    BindingList<string> availableFontsRTB;
+
+
+    public BindingList<string> AvailableFontsRTB
+    {
+        get => availableFontsRTB;
+        set => SetProperty(ref availableFontsRTB, value);
+    }
+
+
+    string selectedFontsRTB;
+
+    public string SelectedFontsRTB
+    {
+        get => selectedFontsRTB;
+        set
+        {
+            SetProperty(ref selectedFontsRTB, value);
+            Properties.Settings.Default.SelectedFontsRTB = SelectedFontsRTB;
+            Properties.Settings.Default.Save();
+        }
+    }
+
+
+    string accentColor;
+
+    ICommand? restoreDefaultAccentColor;
+
+
+    public ICommand RestoreDefaultAccentColor
+    {
+        get
+        {
+            return restoreDefaultAccentColor ??= new RelayCommand(
+                obj =>
+                {
+                    AccentColor = "#9c6b33";
+                    Properties.Settings.Default.AccentColor = accentColor;
+                    Properties.Settings.Default.Save();
+                });
+        }
+    }
+
+    ICommand? closingAccentColor;
 
     double fontSize;
 
     double fontSizeRTB;
 
-    string hoverColor;
 
     int language;
-    string mainColor;
-
-    ICommand? сlosingAdditionalColor;
-
-    ICommand? сlosingAlternativeColor;
-
-    ICommand? сlosingHoverColor;
-
-    ICommand? сlosingMainColor;
 
     public ViewModelPersonalizationSettings()
     {
-        mainColor = Properties.Settings.Default.MainColor;
-        additionalColor = Properties.Settings.Default.AdditionalColor;
-        alternativeColor = Properties.Settings.Default.AlternativeColor;
-        hoverColor = Properties.Settings.Default.HoverColor;
-        activeColor = Properties.Settings.Default.ActiveColor;
+        AvailableFonts = [];
+        AvailableFontsRTB = [];
+
+
+        foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
+        {
+            AvailableFonts.Add(fontFamily.Source);
+            AvailableFontsRTB.Add(fontFamily.Source);
+        }
+
+        SelectedFonts = Properties.Settings.Default.SelectedFonts;
+        SelectedFontsRTB = Properties.Settings.Default.SelectedFontsRTB;
         fontSize = Properties.Settings.Default.FontSize;
         fontSizeRTB = Properties.Settings.Default.FontSizeRTB;
         language = Properties.Settings.Default.Language;
+        accentColor = Properties.Settings.Default.AccentColor;
     }
 
-    public string MainColor
+    public string AccentColor
     {
-        get => mainColor;
-        set => SetProperty(ref mainColor, value);
+        get => accentColor;
+        set => SetProperty(ref accentColor, value);
     }
 
-    public string AdditionalColor
-    {
-        get => additionalColor;
-        set => SetProperty(ref additionalColor, value);
-    }
+    ICommand? restoreDefaultFontSize;
 
-    public string AlternativeColor
+    public ICommand RestoreDefaultFontSize
     {
-        get => alternativeColor;
-        set => SetProperty(ref alternativeColor, value);
-    }
-
-    public string HoverColor
-    {
-        get => hoverColor;
-        set => SetProperty(ref hoverColor, value);
-    }
-
-    public string ActiveColor
-    {
-        get => activeColor;
-        set => SetProperty(ref activeColor, value);
+        get
+        {
+            return restoreDefaultFontSize ??= new RelayCommand(
+                obj =>
+                {
+                    FontSize = 28;
+                    Properties.Settings.Default.FontSize = FontSize;
+                    Properties.Settings.Default.Save();
+                });
+        }
     }
 
     public double FontSize
@@ -90,6 +173,23 @@ public class ViewModelPersonalizationSettings : ViewModelBase
             fontSize = size;
             Properties.Settings.Default.FontSize = size;
             Properties.Settings.Default.Save();
+        }
+    }
+
+    ICommand? restoreDefaultFontSizeRTB;
+
+
+    public ICommand RestoreDefaultFontSizeRTB
+    {
+        get
+        {
+            return restoreDefaultFontSizeRTB ??= new RelayCommand(
+            obj =>
+            {
+                FontSizeRTB = 18;
+                Properties.Settings.Default.FontSizeRTB = FontSizeRTB;
+                Properties.Settings.Default.Save();
+            });
         }
     }
 
@@ -124,90 +224,16 @@ public class ViewModelPersonalizationSettings : ViewModelBase
         }
     }
 
-    public ICommand ByDefault
+    public ICommand ClosingAccentColor
     {
         get
         {
-            return byDefault ??= new RelayCommand(
+            return closingAccentColor ??= new RelayCommand(
                 obj =>
                 {
-                    MainColor = "#8daacc";
-                    AdditionalColor = "#4a76a8";
-                    AlternativeColor = "#335e8f";
-                    HoverColor = "#b8860b";
-                    ActiveColor = "#ff0000";
-                    Language = 0;
-                    FontSize = 28;
-                    FontSizeRTB = 20;
-                    Properties.Settings.Default.MainColor = mainColor;
-                    Properties.Settings.Default.AdditionalColor = additionalColor;
-                    Properties.Settings.Default.AlternativeColor = alternativeColor;
-                    Properties.Settings.Default.HoverColor = hoverColor;
-                    Properties.Settings.Default.ActiveColor = activeColor;
+                    Properties.Settings.Default.AccentColor = AccentColor;
                     Properties.Settings.Default.Save();
                 });
-        }
-    }
-
-    public ICommand ClosingMainColor
-    {
-        get
-        {
-            return сlosingMainColor ??= new RelayCommand(
-                obj =>
-                {
-                    Properties.Settings.Default.MainColor = MainColor;
-                    Properties.Settings.Default.Save();
-                });
-        }
-    }
-
-    public ICommand ClosingAdditionalColor
-    {
-        get
-        {
-            return сlosingAdditionalColor ??= new RelayCommand(
-                obj =>
-                {
-                    Properties.Settings.Default.AdditionalColor = AdditionalColor;
-                    Properties.Settings.Default.Save();
-                });
-        }
-    }
-
-    public ICommand ClosingAlternativeColor
-    {
-        get
-        {
-            return сlosingAlternativeColor ??= new RelayCommand(obj =>
-            {
-                Properties.Settings.Default.AlternativeColor = AlternativeColor;
-                Properties.Settings.Default.Save();
-            });
-        }
-    }
-
-    public ICommand ClosingHoverColor
-    {
-        get
-        {
-            return сlosingHoverColor ??= new RelayCommand(obj =>
-            {
-                Properties.Settings.Default.HoverColor = HoverColor;
-                Properties.Settings.Default.Save();
-            });
-        }
-    }
-
-    public ICommand ClosingActiveColor
-    {
-        get
-        {
-            return closingActiveColor ??= new RelayCommand(obj =>
-            {
-                Properties.Settings.Default.ActiveColor = ActiveColor;
-                Properties.Settings.Default.Save();
-            });
         }
     }
 }

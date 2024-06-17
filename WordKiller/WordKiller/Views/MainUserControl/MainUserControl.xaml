@@ -1,0 +1,375 @@
+﻿<UserControl x:Class="WordKiller.Views.MainUserControl.MainUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:typeXaml="clr-namespace:WordKiller.XAMLHelper"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:tp="clr-namespace:WordKiller.DataTypes.ParagraphData.Paragraphs"
+             xmlns:couc="clr-namespace:WordKiller.Views.ComplexObjectsUserControl" 
+             xmlns:local="clr-namespace:WordKiller.Views.MainUserControl" 
+             xmlns:viewmodels="clr-namespace:WordKiller.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ViewModelMain}"
+             mc:Ignorable="d">
+    <Grid x:Name="root">
+        <Grid Background="{StaticResource SecondaryColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding Path=Resizing.TreeViewSize, Mode=TwoWay}" MinWidth="75"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="{Binding Path=Resizing.ContentPanelSize, Mode=TwoWay}" MinWidth="75"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource PrimaryColor}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="90*"/>
+                    <RowDefinition Height="10*" MaxHeight="65" MinHeight="30"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Visibility="{Binding Document.VisibilitY.FF}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" x:Name="S1" TextChanged="TextBox_TextChanged" Style="{StaticResource TextBoxSettings}" />
+                    <Button Grid.Column="1" Content="→" Click="Button_Next" Style="{StaticResource ButtonMM}"/>
+                    <Button Grid.Column="2" Content="x" Command="{Binding HideFF}" Style="{StaticResource ButtonMM}"/>
+                </Grid>
+                <typeXaml:StretchingTreeView Grid.Row="1" Background="{StaticResource PrimaryColor}" BorderBrush="{StaticResource PrimaryColor}" typeXaml:DragDropExtension.ScrollOnDragDrop="True" ItemsSource="{Binding Path=Document.Data.Paragraphs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="paragraphTree" SelectedItemChanged="ParagraphTree_SelectedItemChanged">
+                    <i:Interaction.Behaviors>
+                        <typeXaml:BindableSelectedItemBehavior SelectedItem="{Binding Document.Selected, Mode=TwoWay}" />
+                    </i:Interaction.Behaviors>
+                    <TreeView.Resources>
+                        <SolidColorBrush
+                x:Key="{x:Static SystemColors.ControlBrushKey}" 
+                Color="#363636" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                     Color="#363636" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                     Color="#363636"/>
+                        <SolidColorBrush
+                x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                Color="#363636" />
+                        <SolidColorBrush
+                x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+                Color="#363636" />
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs}" DataType="{x:Type tp:ParagraphH1}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Visibility="{Binding ElementName=root, Path=DataContext.Document.Data.Properties.NumberHeading, Converter={StaticResource btv}}" Text="{Binding Number}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="1" Text="{DynamicResource Header}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Paragraphs}" DataType="{x:Type tp:ParagraphH2}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Visibility="{Binding ElementName=root, Path=DataContext.Document.Data.Properties.NumberHeading, Converter={StaticResource btv}}" Text="{Binding Number}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="1" Text="{DynamicResource SubHeader}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphList}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource List}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphPicture}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource Picture}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="1" Text=" №" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Number}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTable}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{DynamicResource Table}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="1" Text=" №" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Number}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphCode}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource Code}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphText}" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource Text}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" Style="{StaticResource TextBlockLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTitle}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource Title}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphTaskSheet}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource TaskSheet}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphListOfReferences}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource ListOfReferences}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type tp:ParagraphAppendix}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{DynamicResource Appendix}" Style="{StaticResource TextBlockBoldMainLeft}"/>
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <EventSetter Event="DragOver" Handler="TreeView_DragOver"/>
+                            <EventSetter Event="DragEnter" Handler="TreeView_DragOver"/>
+                            <EventSetter Event="Drop" Handler="TreeView_Drop"/>
+                            <EventSetter Event="MouseMove" Handler="TreeView_MouseMove"/>
+                            <Setter Property="IsExpanded" Value="True" />
+                            <Setter Property="AllowDrop" Value="True"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="{DynamicResource InsertBefore}">
+                                <MenuItem Header="{DynamicResource Text}" Command="{Binding Document.InsertTextBefore}"/>
+                                <MenuItem Header="{DynamicResource Header}" Command="{Binding Document.InsertHeaderBefore}"/>
+                                <MenuItem Header="{DynamicResource SubHeader}" Command="{Binding Document.InsertSubHeaderBefore}"/>
+                                <MenuItem Header="{DynamicResource List}" Command="{Binding Document.InsertListBefore}"/>
+                                <MenuItem Header="{DynamicResource Picture}" Command="{Binding Document.InsertPictureBefore}"/>
+                                <MenuItem Header="{DynamicResource Table}" Command="{Binding Document.InsertTableBefore}"/>
+                                <MenuItem Header="{DynamicResource Code}" Command="{Binding Document.InsertCodeBefore}"/>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource InsertAfter}">
+                                <MenuItem Header="{DynamicResource Text}" Command="{Binding Document.InsertTextAfter}"/>
+                                <MenuItem Header="{DynamicResource Header}" Command="{Binding Document.InsertHeaderAfter}"/>
+                                <MenuItem Header="{DynamicResource SubHeader}" Command="{Binding Document.InsertSubHeaderAfter}"/>
+                                <MenuItem Header="{DynamicResource List}" Command="{Binding Document.InsertListAfter}"/>
+                                <MenuItem Header="{DynamicResource Picture}" Command="{Binding Document.InsertPictureAfter}"/>
+                                <MenuItem Header="{DynamicResource Table}" Command="{Binding Document.InsertTableAfter}"/>
+                                <MenuItem Header="{DynamicResource Code}" Command="{Binding Document.InsertCodeAfter}"/>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource Delete}" Command="{Binding Document.DeleteSelected}"/>
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                </typeXaml:StretchingTreeView>
+                <ComboBox Grid.Row="2" SelectedIndex="{Binding Document.AddIndex}" AllowDrop="True" Style="{StaticResource ComboBox1}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Path=Document.Add}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="DropDownClosed">
+                            <i:InvokeCommandAction Command="{Binding Path=Document.ResetAddIndex}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Drop">
+                            <i:InvokeCommandAction Command="{Binding Path=DropNotComplexObjects}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="DragOver">
+                            <i:InvokeCommandAction Command="{Binding Path=AllowDropNotComplexObjects}" PassEventArgsToCommand="True"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <ComboBoxItem Content="{DynamicResource Text}"/>
+                    <ComboBoxItem Content="{DynamicResource Header}"/>
+                    <ComboBoxItem Content="{DynamicResource SubHeader}"/>
+                    <ComboBoxItem Content="{DynamicResource List}"/>
+                    <ComboBoxItem Content="{DynamicResource Picture}"/>
+                    <ComboBoxItem Content="{DynamicResource Table}"/>
+                    <ComboBoxItem Content="{DynamicResource Code}"/>
+                </ComboBox>
+            </Grid>
+            <GridSplitter Grid.Column="1" Background="Transparent" IsTabStop="True" Width="3" ShowsPreview="False" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DragCompleted">
+                        <i:InvokeCommandAction Command="{Binding Path=Resizing.ResizingTreeView}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </GridSplitter>
+            <Grid Grid.Column="2">
+                <TextBlock Text="{DynamicResource MainClue}" Margin="40 20 40 20" Visibility="{Binding Path=Document.VisibilitY.UnselectInfo}" Style="{StaticResource TextBlockSettingsBoldMain}"/>
+                <Grid Visibility="{Binding Path=Document.VisibilitY.NotComplexObjects}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="76*"/>
+                        <ColumnDefinition Width="12*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="10*" MaxHeight="45" MinHeight="30"/>
+                            <RowDefinition Height="90*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Row="0" Language="ru-RU" Text="{Binding Document.Selected.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" Visibility="{Binding Document.Selected.DescriptionVisibility}" AllowDrop="True" Style="{StaticResource TextBoxSettings1}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewDragEnter">
+                                    <i:InvokeCommandAction Command="{Binding Path=AllowDrop}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewDragOver">
+                                    <i:InvokeCommandAction Command="{Binding Path=AllowDrop}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewDragLeave">
+                                    <i:InvokeCommandAction Command="{Binding Path=DisallowDrop}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <Grid Grid.Row="1" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Viewbox>
+                                <TextBlock Text="{DynamicResource Content}" Style="{StaticResource TextBlockSettingsBoldMain}"/>
+                            </Viewbox>
+                            <Button Grid.Column="1" Width="30" Height="30" Content="A" ToolTip="{DynamicResource DeleteNumbering}" FontSize="20" Margin="10 0 0 0" Visibility="{Binding Document.VisibilitY.AutoList}" Command="{Binding Document.AutoList}" Style="{StaticResource ButtonMM}"/>
+                        </Grid>
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.TablePanel}" Background="{StaticResource PrimaryColor}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="100*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="25*" MinWidth="10"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="25*" MinWidth="10"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" Text = "{DynamicResource Rows}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource SettingsItemDescription}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="3 0 3 0" Text="{Binding Document.Selected.TableData.Rows, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBoxSettings}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{DynamicResource Columns}" FontSize="{Binding Path=Settings.Personalization.FontSize,Converter={StaticResource fontConverterMax},ConverterParameter=38}" Style="{StaticResource SettingsItemDescription}"/>
+                                <TextBox Grid.Row="0" Grid.Column="3" Margin="3 0 0 0" Text="{Binding Document.Selected.TableData.Columns, UpdateSourceTrigger=PropertyChanged}" CommandManager.PreviewExecuted="TextBox_PreviewExecuted" PreviewTextInput="NumberValidationTextBox" Style="{StaticResource TextBoxSettings}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="0" Margin="0 3 0 0" typeXaml:GridHelpers.Selected="{Binding Document.Selected.TableData}" typeXaml:GridHelpers.RowCount="{Binding Document.Selected.TableData.Rows}" typeXaml:GridHelpers.ColumnCount="{Binding Document.Selected.TableData.Columns}" />
+                        </Grid>
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.RTBPanel}">
+                            <typeXaml:RTBox x:Name="richTextBox" CaretBrush="{StaticResource FontColor}"  Language="ru-RU" Style="{StaticResource RichTextBox}" Text="{Binding Document.Selected.Data, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" SpellCheck.IsEnabled="{Binding Path=Settings.General.SpellCheckRTB,Mode=TwoWay}" PreviewKeyDown="RichTextBox_PreviewKeyDown" AllowDrop="{Binding Document.AllowDropRTB, Mode=TwoWay}" LostFocus="RichTextBox_LostFocus">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=Drop}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </typeXaml:RTBox>
+                        </Grid>
+                        <Grid Grid.Row="2" Visibility="{Binding Document.VisibilitY.ImagePanel}">
+                            <Border Grid.ColumnSpan="2" BorderThickness="3" CornerRadius="8" BorderBrush="{StaticResource PrimaryColor}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewDragEnter">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragOver">
+                                        <i:InvokeCommandAction Command="{Binding Path=AllowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="PreviewDragLeave">
+                                        <i:InvokeCommandAction Command="{Binding Path=DisallowDropImage}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Drop">
+                                        <i:InvokeCommandAction Command="{Binding Path=Drop}" PassEventArgsToCommand="True"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Border CornerRadius="8" Background="{StaticResource TertiaryColor}">
+                                    <Grid ToolTip="{DynamicResource DaDImage}">
+                                        <Image Source="{Binding Document.Selected.BitmapImage}" Stretch="Fill" />
+                                        <ContentControl Background="White" Visibility="{Binding VisibilityDrag}" Style="{StaticResource DragDrop}" />
+                                    </Grid>
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <couc:TitleUserControl/>
+                <couc:TaskSheetUserControl/>
+                <couc:ListOfReferencesUserControl/>
+                <couc:AppendixUserControl/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

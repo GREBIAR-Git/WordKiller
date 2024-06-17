@@ -5,46 +5,44 @@
     <system:String x:Key="File">File</system:String>
 
     <system:String x:Key="Export">Export</system:String>
-    <system:String x:Key="PDF">As PDF</system:String>
-    <system:String x:Key="HTML">As HTML</system:String>
+    <system:String x:Key="PDF">PDF Format</system:String>
+    <system:String x:Key="HTML">HTML Format</system:String>
     <system:String x:Key="Create">Create</system:String>
     <system:String x:Key="Open">Open</system:String>
     <system:String x:Key="Save">Save</system:String>
-    <system:String x:Key="SaveAs">Save as...</system:String>
+    <system:String x:Key="SaveAs">Save As...</system:String>
     <system:String x:Key="Exit">Exit</system:String>
 
     <system:String x:Key="Type">Type</system:String>
-    <system:String x:Key="DefaultDocument">Default document</system:String>
+    <system:String x:Key="DefaultDocument">Default Document</system:String>
     <system:String x:Key="Coursework">Coursework</system:String>
-    <system:String x:Key="LaboratoryWork">Laboratory work</system:String>
-    <system:String x:Key="PracticeWork">Practice work</system:String>
-    <system:String x:Key="ControlWork">Control work</system:String>
+    <system:String x:Key="LaboratoryWork">Laboratory Work</system:String>
+    <system:String x:Key="PracticeWork">Practice Work</system:String>
+    <system:String x:Key="ControlWork">Control Work</system:String>
     <system:String x:Key="Referat">Referat</system:String>
-    <system:String x:Key="ProductionPractice">Production practice</system:String>
-    <system:String x:Key="VKR">VKR</system:String>
+    <system:String x:Key="ProductionPractice">Production Practice</system:String>
+    <system:String x:Key="VKR">Final Qualification Work</system:String>
 
     <system:String x:Key="Document">Document</system:String>
-    <system:String x:Key="Title">Title menu</system:String>
-    <system:String x:Key="TaskSheet">Task sheet</system:String>
-    <system:String x:Key="ListOfReferences">List of references</system:String>
-    <system:String x:Key="PageNumbers">Page numbers</system:String>
-    <system:String x:Key="TOC">Table of Columns</system:String>
-    <system:String x:Key="NumbersToHeaders">Header numbers</system:String>
+    <system:String x:Key="Title">Title Page</system:String>
+    <system:String x:Key="TaskSheet">Task Sheet</system:String>
+    <system:String x:Key="PageNumbers">Page Numbers</system:String>
+    <system:String x:Key="TOC">Table of Contents</system:String>
+    <system:String x:Key="NumbersToHeaders">Numbers to Headers</system:String>
+    <system:String x:Key="ListOfReferences">List of References</system:String>
     <system:String x:Key="Appendix">Appendix</system:String>
 
     <system:String x:Key="Network">Network</system:String>
 
-    <system:String x:Key="Help">Help</system:String>
     <system:String x:Key="Documentation">Documentation</system:String>
-    <system:String x:Key="AboutProgram">About</system:String>
 
-    <system:String x:Key="MainClue">Select an item or click the add button to begin</system:String>
-    <system:String x:Key="PictureClue">Drag and drop the cover page photo here</system:String>
+    <system:String x:Key="MainClue">Select an item or click add to start working</system:String>
+    <system:String x:Key="PictureClue">Drag the title page photo here</system:String>
 
     <system:String x:Key="Header">Section</system:String>
     <system:String x:Key="SubHeader">Subsection</system:String>
     <system:String x:Key="List">List</system:String>
-    <system:String x:Key="Picture">Image</system:String>
+    <system:String x:Key="Picture">Picture</system:String>
     <system:String x:Key="Table">Table</system:String>
     <system:String x:Key="Code">Code</system:String>
     <system:String x:Key="Text">Text</system:String>
@@ -54,61 +52,62 @@
     <system:String x:Key="InsertAfter">Insert (After)</system:String>
 
     <system:String x:Key="Cathedra">Department</system:String>
-    <system:String x:Key="Completed">Implemented by</system:String>
-    <system:String x:Key="Theme">Subject</system:String>
+    <system:String x:Key="Completed">Completed by</system:String>
+    <system:String x:Key="Theme">Theme</system:String>
     <system:String x:Key="Discipline">Discipline</system:String>
     <system:String x:Key="Lecturer">Lecturer</system:String>
-    <system:String x:Key="FacultyPosition">Faculty position</system:String>
-    <system:String x:Key="CourseProject">Course project</system:String>
-    <system:String x:Key="SourceData">Source data</system:String>
-    <system:String x:Key="ReportingMaterial">Reporting material</system:String>
+    <system:String x:Key="FacultyPosition">Faculty Position</system:String>
+    <system:String x:Key="CourseProject">Course Project</system:String>
+    <system:String x:Key="SourceData">Source Data</system:String>
+    <system:String x:Key="ReportingMaterial">Reporting Material</system:String>
     <system:String x:Key="Direction">Direction</system:String>
     <system:String x:Key="Production">Production</system:String>
     <system:String x:Key="Educational">Educational</system:String>
-    <system:String x:Key="PracticeLocation">Practice location</system:String>
-    <system:String x:Key="DirectionP">Focus (profile)</system:String>
+    <system:String x:Key="PracticeLocation">Practice Location</system:String>
+    <system:String x:Key="DirectionP">Direction (profile)</system:String>
     <system:String x:Key="Normocontrol">Normocontrol</system:String>
-    <system:String x:Key="HeadCathedra">Head cathedra</system:String>
-    <system:String x:Key="HeadOrganization">Head organization</system:String>
-    
-    <system:String x:Key="Bibliography">List of references</system:String>
-    <system:String x:Key="ListSourcesUsed">List sources used</system:String>
-    <system:String x:Key="Book">Book</system:String>
-    <system:String x:Key="ElectronicResources">Electronic resource</system:String>
-    <system:String x:Key="Authors">Authors</system:String>
-    <system:String x:Key="Name">Title</system:String>
-    <system:String x:Key="Publication">Edition</system:String>
-    <system:String x:Key="Page">Page</system:String>
-    <system:String x:Key="Url">Link</system:String>
-    <system:String x:Key="CirculationDate">Date of reference</system:String>
+    <system:String x:Key="HeadCathedra">Head of Department</system:String>
+    <system:String x:Key="HeadOrganization">Organization Supervisor</system:String>
 
-    <system:String x:Key="DeleteCurrent">Delete current</system:String>
-    <system:String x:Key="FirstPage">First page of the task sheet</system:String>
-    <system:String x:Key="SecondPage">Second page of the task sheet</system:String>
-    
+    <system:String x:Key="Bibliography">Bibliography</system:String>
+    <system:String x:Key="ListSourcesUsed">List of Used Sources</system:String>
+    <system:String x:Key="Book">Book</system:String>
+    <system:String x:Key="ElectronicResources">Electronic Resource</system:String>
+    <system:String x:Key="Authors">Authors</system:String>
+    <system:String x:Key="Name">Name</system:String>
+    <system:String x:Key="Publication">Publication</system:String>
+    <system:String x:Key="Page">Page</system:String>
+    <system:String x:Key="Url">URL</system:String>
+    <system:String x:Key="CirculationDate">Access Date</system:String>
+
+    <system:String x:Key="DeleteCurrent">Delete Current</system:String>
+    <system:String x:Key="FirstPage">First Page of Task Sheet</system:String>
+    <system:String x:Key="SecondPage">Second Page of Task Sheet</system:String>
+
     <system:String x:Key="Content">Content</system:String>
 
-    <system:String x:Key="Unidentified">Not given</system:String>
-    <system:String x:Key="NotFound">Not found</system:String>
-    <system:String x:Key="ForPicture">Picture here</system:String>
-    <system:String x:Key="ForCode">Code here</system:String>
+    <system:String x:Key="Unidentified">Unspecified</system:String>
+    <system:String x:Key="NotFound">Not Found</system:String>
+    <system:String x:Key="ForPicture">For Picture</system:String>
+    <system:String x:Key="ForCode">For Code</system:String>
 
     <system:String x:Key="Columns">Columns:</system:String>
     <system:String x:Key="Rows">Rows:</system:String>
-    
-    <system:String x:Key="Error">Error</system:String>
-    <system:String x:Key="Error1">File opening error: File not found or format not supported</system:String>
-    <system:String x:Key="Error2">We can't do this on your device, update the OS</system:String>
-    <system:String x:Key="Error3">Error generating the front page</system:String>
-    <system:String x:Key="Error4">Error validating task sheet</system:String>
-    <system:String x:Key="Error5">Error generating content</system:String>
-    <system:String x:Key="Error6">Error in generating the body text of the document</system:String>
-    <system:String x:Key="Error7">Error in generating a reference list</system:String>
-    <system:String x:Key="Error8">Error in generating an appendix</system:String>
-    <system:String x:Key="Error9">Error when generating the report: The file you want to replace is open</system:String>
-    <system:String x:Key="Error10">Error opening the file: The file is corrupted</system:String>
 
-    <system:String x:Key="Question1">Do you need to save it?</system:String>
+    <system:String x:Key="Error">Error</system:String>
+    <system:String x:Key="Error1">Error opening file: file not found or format not supported</system:String>
+    <system:String x:Key="Error2">We cannot perform this action on your device, please update your OS</system:String>
+    <system:String x:Key="Error3">Error creating title page</system:String>
+    <system:String x:Key="Error4">Error creating task sheet</system:String>
+    <system:String x:Key="Error5">Error creating content</system:String>
+    <system:String x:Key="Error6">Error creating main document text</system:String>
+    <system:String x:Key="Error7">Error creating list of references</system:String>
+    <system:String x:Key="Error8">Error creating appendix</system:String>
+    <system:String x:Key="Error9">Error creating report: the file you want to replace is open</system:String>
+    <system:String x:Key="Error10">Error opening file: file is corrupted</system:String>
+    <system:String x:Key="Error11">Error creating: styles are corrupted, delete configuration file</system:String>
+
+    <system:String x:Key="Question1">Do you need to save?</system:String>
 
     <system:String x:Key="GeneralSettings">General</system:String>
     <system:String x:Key="PersonalizationSettings">Personalization</system:String>
@@ -116,38 +115,38 @@
     <system:String x:Key="Styles">Styles</system:String>
     <system:String x:Key="BackSettings">Back</system:String>
 
-    <system:String x:Key="IsAssociate">The extension(wkr) is associated with the program</system:String>
-    <system:String x:Key="AutoSave">Autosave</system:String>
-    <system:String x:Key="IsSyntaxChecking">Syntax Check (Basic)</system:String>
-    <system:String x:Key="Encoding">Encryption when saving and opening a file</system:String>
+    <system:String x:Key="IsAssociate">Default</system:String>
+    <system:String x:Key="AutoSave">Auto-save</system:String>
+    <system:String x:Key="IsSyntaxChecking">Spell Check</system:String>
+    <system:String x:Key="Encoding">Encryption</system:String>
     <system:String x:Key="Encoding0">None</system:String>
-    <system:String x:Key="Encoding1">Default</system:String>
-    <system:String x:Key="AfterExportingClose">Closing the application after the report is generated</system:String>
-    <system:String x:Key="IsAutoHeader">Automatic header for the object</system:String>
-    <system:String x:Key="FileSettings">File with application settings</system:String>
-    <system:String x:Key="Delete">Delete</system:String>
-    <system:String x:Key="DeleteAll">Delete all files</system:String>
+    <system:String x:Key="Encoding1">Standard</system:String>
+    <system:String x:Key="AfterExportingClose">Close application after export</system:String>
+    <system:String x:Key="IsAutoHeader">Automatic header</system:String>
+    <system:String x:Key="FileSettings">Application settings</system:String>
 
-    <system:String x:Key="ByDefault">By default</system:String>
-    <system:String x:Key="MainColor">Primary colour</system:String>
-    <system:String x:Key="ComplementaryColor">Secondary colour</system:String>
-    <system:String x:Key="AlternativeColor">Alternative colour</system:String>
-    <system:String x:Key="HoverColor">Selection colour</system:String>
-    <system:String x:Key="ActiveColor">Color when object is active</system:String>
+    <system:String x:Key="IsAssociateDescription">Allows opening .wkr files with this application on double-click</system:String>
+    <system:String x:Key="AutoSaveDescription">Enables automatic saving of the document every 5 minutes</system:String>
+    <system:String x:Key="IsSyntaxCheckingDescription">Enables automatic syntax checking</system:String>
+    <system:String x:Key="EncodingDescription">Enables file encryption</system:String>
+    <system:String x:Key="AfterExportingCloseDescription">Automatically closes the application after exporting the document to docx format</system:String>
+    <system:String x:Key="IsAutoHeaderDescription">When adding a new object to the tree list, the header will automatically be filled with the object type</system:String>
+    <system:String x:Key="FileSettingsDescription">Opens the folder with the configuration file</system:String>
+
     <system:String x:Key="FontSize">Font size</system:String>
-    <system:String x:Key="FontSizeRTB">Font size for RichTextBox</system:String>
+    <system:String x:Key="FontSizeRTB">Font size in the editing area</system:String>
     <system:String x:Key="Language">Language</system:String>
 
     <system:String x:Key="You">You</system:String>
-    <system:String x:Key="FirstName">Firstname</system:String>
-    <system:String x:Key="LastName">Lastname</system:String>
-    <system:String x:Key="MiddleName">Middlename</system:String>
+    <system:String x:Key="FirstName">First name</system:String>
+    <system:String x:Key="LastName">Last name</system:String>
+    <system:String x:Key="MiddleName">Middle name</system:String>
     <system:String x:Key="University">University</system:String>
     <system:String x:Key="Faculty">Faculty</system:String>
     <system:String x:Key="Course">Course</system:String>
     <system:String x:Key="Group">Group</system:String>
-    <system:String x:Key="Shifr">Shifr</system:String>
-    <system:String x:Key="Companion">Mate</system:String>
+    <system:String x:Key="Shifr">Code</system:String>
+    <system:String x:Key="Companion">Partner</system:String>
     <system:String x:Key="Year">Year</system:String>
     <system:String x:Key="Users">Users</system:String>
     <system:String x:Key="AutoPerformed">Performed (auto)</system:String>
@@ -156,29 +155,23 @@
     <system:String x:Key="Bold">Bold</system:String>
     <system:String x:Key="BeforeS">Before</system:String>
     <system:String x:Key="AfterS">After</system:String>
-    <system:String x:Key="LineSpacing">Interline</system:String>
+    <system:String x:Key="LineSpacing">Line spacing</system:String>
     <system:String x:Key="Left">Left</system:String>
     <system:String x:Key="Right">Right</system:String>
     <system:String x:Key="FirstLine">First line</system:String>
-    
+
     <system:String x:Key="Settings">Settings</system:String>
     <system:String x:Key="Saved">Saved</system:String>
-    <system:String x:Key="OpensFolder">Opens the folder with the application settings file in Explorer</system:String>
-    <system:String x:Key="DeletesFile">Deletes the file with application settings</system:String>
-    <system:String x:Key="DeletesAllFile">Deletes all files and folders associated with the application settings</system:String>
-    <system:String x:Key="DefaultValues">Restore all personalization settings to defaults</system:String>
-    <system:String x:Key="RefreshAllData">Refresh all data in the drop-down list</system:String>
-    <system:String x:Key="SetYear">Set current year</system:String>
-    <system:String x:Key="ManualInput">Enable or disable manual input</system:String>
-    <system:String x:Key="DaDImage">Drag and drop image here</system:String>
-    <system:String x:Key="DeleteNumbering">Delete numbering (for example: if it was left when you copied it)</system:String>
-    <system:String x:Key="LoadUsers">Load users that have been added in the profile settings</system:String>
-    <system:String x:Key="ReplacePagePhoto">Replace page with photo</system:String>
+    <system:String x:Key="OpensFolder">Opens the folder with the application's settings file in Explorer</system:String>
 
-    <system:String x:Key="ProductInfo">Product info</system:String>
-    <system:String x:Key="WrittenIn">The program is written in C#</system:String>
-    <system:String x:Key="Interface">Interface</system:String>
-    <system:String x:Key="Version">Product version</system:String>
+    <system:String x:Key="DefaultValues">Restore default values</system:String>
+    <system:String x:Key="RefreshAllData">Refresh all data in the dropdown list</system:String>
+    <system:String x:Key="SetYear">Set current year</system:String>
+
+    <system:String x:Key="DaDImage">Drag and drop an image here</system:String>
+    <system:String x:Key="DeleteNumbering">Delete numbering (e.g., if it remains after copying)</system:String>
+    <system:String x:Key="LoadUsers">Load users added in the profile settings</system:String>
+    <system:String x:Key="ReplacePagePhoto">Replace page with a photo</system:String>
 
     <system:String x:Key="Insert">Insert</system:String>
     <system:String x:Key="Before">Insert before</system:String>
@@ -186,10 +179,10 @@
     <system:String x:Key="Swap">Swap</system:String>
     <system:String x:Key="Cancel">Cancel</system:String>
     <system:String x:Key="DragDrop1">What do you want to do?</system:String>
-    <system:String x:Key="DragDrop2">Can't do it</system:String>
+    <system:String x:Key="DragDrop2">This cannot be done</system:String>
 
-    <system:String x:Key="TitleNeedSave">Do I need to keep it?</system:String>
-    <system:String x:Key="ContentNeedSave">Changes have been made to the document, do I need to keep them?</system:String>
+    <system:String x:Key="TitleNeedSave">Do you need to save?</system:String>
+    <system:String x:Key="ContentNeedSave">Changes have been made to the document, do you want to save them?</system:String>
     <system:String x:Key="Yes">Yes</system:String>
     <system:String x:Key="Not">No</system:String>
     <system:String x:Key="ChangesMade">Changes have been made to the document</system:String>
@@ -197,4 +190,91 @@
     <system:String x:Key="AlphabeticalOrder">Enable or disable alphabetical order</system:String>
     <system:String x:Key="ManualPageNumbering">Manual page numbering</system:String>
     <system:String x:Key="StartsWith">Starts with</system:String>
+
+    <system:String x:Key="ExitSettings">Exit settings</system:String>
+
+    <system:String x:Key="MainTheme">Main theme</system:String>
+    <system:String x:Key="SelectMainColorScheme">Select the main color scheme for WordKiller</system:String>
+    <system:String x:Key="Dark">Dark</system:String>
+
+    <system:String x:Key="AccentColor">Accent color</system:String>
+    <system:String x:Key="SelectAccentColor">Select the accent color used throughout the application</system:String>
+
+    <system:String x:Key="ZoomLevel">Zoom level</system:String>
+    <system:String x:Key="ManageZoomLevel">Manage the overall zoom level of the application</system:String>
+
+    <system:String x:Key="ChangeInterfaceLanguage">Change interface language</system:String>
+    <system:String x:Key="FontSizeInEditingArea">Font size in pixels in the editing area</system:String>
+
+    <system:String x:Key="InterfaceFont">Interface font</system:String>
+    <system:String x:Key="SelectInterfaceFont">Select the main interface font in WordKiller</system:String>
+    <system:String x:Key="Change">Change</system:String>
+
+    <system:String x:Key="TextFont">Text font</system:String>
+    <system:String x:Key="SelectTextFont">Select the font used in editing areas</system:String>
+
+    <system:String x:Key="InstituteDescription">Allows you to choose or enter the name of the institute for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="FacultyDescription">Allows you to choose or enter the name of the faculty for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="CourseDescription">Allows you to choose or enter the course number for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="GroupDescription">Allows you to choose or enter the group number for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="DirectionDescription">Allows you to enter the training direction for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="YearDescription">Allows you to enter the year for autocompletion on pages (title page, task list, etc.)</system:String>
+
+    <system:String x:Key="Students">Students</system:String>
+
+    <system:String x:Key="PageNumbering">Page numbering</system:String>
+    <system:String x:Key="AutomaticPageNumbering">Automatic page numbering</system:String>
+    <system:String x:Key="TogglePageNumbering">Toggle standard page numbering</system:String>
+    <system:String x:Key="StartPageNumber">Set starting page number of the main text document</system:String>
+
+    <system:String x:Key="PageNumberingPosition">Page numbering position</system:String>
+    <system:String x:Key="PageNumberingLocation">Select page numbering location</system:String>
+
+    <system:String x:Key="BottomLeft">Bottom left</system:String>
+    <system:String x:Key="BottomCenter">Bottom center</system:String>
+    <system:String x:Key="BottomRight">Bottom right</system:String>
+    <system:String x:Key="TopLeft">Top left</system:String>
+    <system:String x:Key="TopCenter">Top center</system:String>
+    <system:String x:Key="TopRight">Top right</system:String>
+
+    <system:String x:Key="FiguresAndTables">Figures and tables</system:String>
+    <system:String x:Key="FigureCaption">Figure caption</system:String>
+    <system:String x:Key="FigureCaptionStyle">Set the style of the caption below the figure</system:String>
+
+    <system:String x:Key="ContinuousFigureNumbering">Continuous figure numbering</system:String>
+    <system:String x:Key="FigureNumberingPrinciple">Set the principle of figure numbering</system:String>
+
+    <system:String x:Key="TableCaption">Table caption</system:String>
+    <system:String x:Key="TableCaptionStyle">Set the style of the caption above the table</system:String>
+
+    <system:String x:Key="ContinuousTableNumbering">Continuous table numbering</system:String>
+    <system:String x:Key="TableNumberingPrinciple">Set the principle of table numbering</system:String>
+
+    <system:String x:Key="SectionFormatting">Section formatting</system:String>
+    <system:String x:Key="ToggleCapsLockForSections">Toggle Caps Lock in section styles</system:String>
+    <system:String x:Key="TogglePeriodAfterSectionNumber">Toggle period after section number</system:String>
+
+    <system:String x:Key="SubsectionFormatting">Subsection formatting</system:String>
+    <system:String x:Key="ToggleCapsLockForSubsections">Toggle Caps Lock in subsection styles</system:String>
+    <system:String x:Key="EmptyLineAfterSection">Toggle empty line after section if next subsection</system:String>
+
+    <system:String x:Key="TitlePage">Title page</system:String>
+    <system:String x:Key="CustomTitlePage">Custom title page</system:String>
+    <system:String x:Key="ToggleCustomTitlePage">Toggle customizing the standard title page</system:String>
+
+    <system:String x:Key="ReplaceTitlePage">Replace title page</system:String>
+    <system:String x:Key="SelectReplacementFile">Select file to replace title page with</system:String>
+    <system:String x:Key="Replace">Replace</system:String>
+    <system:String x:Key="With">with</system:String>
+
+    <system:String x:Key="Font">Font</system:String>
+    <system:String x:Key="SectionsAndSubsections">Sections and Subsections</system:String>
+    <system:String x:Key="LineAfterSection">Line after Section</system:String>
+
+    <system:String x:Key="Delete">Delete</system:String>
 </ResourceDictionary>

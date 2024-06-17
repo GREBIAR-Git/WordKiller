@@ -50,7 +50,7 @@
     <Setting Name="AlternativeColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#335e8f</Value>
     </Setting>
-    <Setting Name="HoverColor" Type="System.String" Scope="User">
+    <Setting Name="HoverColor156" Type="System.String" Scope="User">
       <Value Profile="(Default)">#b8860b</Value>
     </Setting>
     <Setting Name="ActiveColor" Type="System.String" Scope="User">
